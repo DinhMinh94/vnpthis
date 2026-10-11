@@ -4,5 +4,6 @@
   "simulationMode": false,
   "autoCheckIntervalMinutes": 0,
   "timeoutSeconds": 15,
-  "securityPin": "123456"
+  "securityPin": "112233",
+  "hasSecurityPin": true
 }

@@ -131,10 +131,6 @@
           <i data-lucide="unlock" class="w-4 h-4"></i>
           <span>{{ isVerifyingPin ? 'Đang xác thực...' : 'Mở khóa hệ thống' }}</span>
         </button>
-
-        <p class="text-[11px] text-slate-400 mt-3">
-          * Mã PIN mặc định: <strong class="text-blue-600 font-mono">123456</strong> (đổi được trong Cài đặt)
-        </p>
       </div>
     </div>
 
@@ -1446,9 +1442,15 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           isVerifyingPin.value = true;
           pinErrorMsg.value = '';
           try {
-            const res = await axios.post('/api/settings/verify-pin', { pin: enteredPin.value });
+            const clientSavedPin = localStorage.getItem('vnpt_hmis_custom_pin') || '';
+            const res = await axios.post('/api/settings/verify-pin', {
+              pin: enteredPin.value,
+              clientSavedPin: clientSavedPin || undefined
+            });
             if (res.data.success) {
               sessionStorage.setItem('vnpt_hmis_unlocked', 'true');
+              // Lưu mã PIN đã mở khóa thành công vào localStorage
+              localStorage.setItem('vnpt_hmis_custom_pin', enteredPin.value);
               isLocked.value = false;
               enteredPin.value = '';
               showToast('Đã mở khóa hệ thống thành công!');
@@ -1483,6 +1485,9 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               newPin: changePinForm.value.newPin
             });
             if (res.data.success) {
+              const newPinStr = String(changePinForm.value.newPin).trim();
+              // Lưu vĩnh viễn vào localStorage để Render restart vẫn nhớ
+              localStorage.setItem('vnpt_hmis_custom_pin', newPinStr);
               showToast('Đổi Mã PIN bảo mật thành công!');
               changePinForm.value = { oldPin: '', newPin: '' };
             }
@@ -2333,6 +2338,16 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         }
 
         onMounted(async () => {
+          // Tự động khôi phục mã PIN đã đổi vào server nếu Render vừa restart
+          const savedCustomPin = localStorage.getItem('vnpt_hmis_custom_pin');
+          if (savedCustomPin) {
+            try {
+              await axios.post('/api/settings/sync-pin', { pin: savedCustomPin });
+            } catch (e) {
+              // Bỏ qua nếu lỗi mạng
+            }
+          }
+
           await fetchSettings();
           await fetchStations();
           refreshIcons();

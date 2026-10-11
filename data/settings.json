@@ -1,0 +1,7 @@
+{
+  "centerName": "Hệ thống Y Tế Cơ Sở (HMIS)",
+  "defaultHisUrl": "https://ytcs.hmis.vn/",
+  "simulationMode": false,
+  "autoCheckIntervalMinutes": 0,
+  "timeoutSeconds": 15
+}

@@ -1,0 +1,2261 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VNPT HMIS 4.0 - Quản lý & Cấu hình Trạm Y Tế</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <!-- Offline-ready Vendor Libraries -->
+  <script src="/vendor/tailwind.min.js"></script>
+  <script src="/vendor/vue.global.prod.js"></script>
+  <script src="/vendor/axios.min.js"></script>
+  <script src="/vendor/lucide.js"></script>
+  <style>
+    [v-cloak] { display: none; }
+    /* Tùy chỉnh thanh cuộn */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    /* Cố định dòng tiêu đề & các cột nhận diện trạm */
+    .table-fixed-header {
+      overflow: auto;
+      max-height: 600px;
+    }
+    .table-fixed-header thead th {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background-color: #f1f5f9;
+      box-shadow: inset 0 -1px 0 #e2e8f0;
+    }
+    .table-fixed-header thead th.col-sticky-1 {
+      position: sticky;
+      left: 0;
+      z-index: 30;
+      background-color: #f1f5f9;
+    }
+    .table-fixed-header thead th.col-sticky-2 {
+      position: sticky;
+      left: 44px;
+      z-index: 30;
+      background-color: #f1f5f9;
+    }
+    .table-fixed-header thead th.col-sticky-3 {
+      position: sticky;
+      left: 140px;
+      z-index: 30;
+      background-color: #f1f5f9;
+      box-shadow: inset 0 -1px 0 #e2e8f0, 3px 0 6px -2px rgba(0, 0, 0, 0.08);
+    }
+    .table-fixed-header tbody td.col-sticky-1 {
+      position: sticky;
+      left: 0;
+      z-index: 10;
+      background-color: #ffffff;
+    }
+    .table-fixed-header tbody td.col-sticky-2 {
+      position: sticky;
+      left: 44px;
+      z-index: 10;
+      background-color: #ffffff;
+    }
+    .table-fixed-header tbody td.col-sticky-3 {
+      position: sticky;
+      left: 140px;
+      z-index: 10;
+      background-color: #ffffff;
+      box-shadow: 3px 0 6px -2px rgba(0, 0, 0, 0.08);
+    }
+    .table-fixed-header tbody tr:hover td.col-sticky-1,
+    .table-fixed-header tbody tr:hover td.col-sticky-2,
+    .table-fixed-header tbody tr:hover td.col-sticky-3 {
+      background-color: #eff6ff;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans min-h-screen">
+  <div id="app" v-cloak class="min-h-screen flex flex-col">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="bg-gradient-to-r from-blue-700 via-sky-700 to-indigo-800 text-white shadow-lg sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center space-x-3">
+            <img src="/logo.png" alt="Logo" class="w-10 h-10 rounded-xl object-contain bg-white/95 p-0.5 shadow-md border border-white/20">
+            <div>
+              <div class="flex items-center space-x-2">
+                <span class="font-extrabold text-lg tracking-wide text-white">VNPT HMIS 4.0</span>
+                <span class="bg-sky-400/30 text-sky-200 text-xs px-2 py-0.5 rounded-full font-medium border border-sky-400/40">Multi-Station Hub</span>
+              </div>
+              <p class="text-xs text-sky-200 font-normal">Quản lý & Cấu hình hàng loạt tài khoản Trạm Y Tế</p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <!-- Badge Chế độ hoạt động -->
+            <div @click="openSettingsModal" class="cursor-pointer px-3 py-1 rounded-full text-xs font-medium flex items-center space-x-1.5 transition-all shadow-sm"
+                 :class="settings.simulationMode ? 'bg-amber-500/20 text-amber-200 border border-amber-400/40 hover:bg-amber-500/30' : 'bg-emerald-500/20 text-emerald-200 border border-emerald-400/40 hover:bg-emerald-500/30'">
+              <span class="w-2 h-2 rounded-full animate-pulse" :class="settings.simulationMode ? 'bg-amber-400' : 'bg-emerald-400'"></span>
+              <span>{{ settings.simulationMode ? 'Chế độ: Mô phỏng' : 'Chế độ: Kết nối thật' }}</span>
+            </div>
+
+            <!-- Nút Cài đặt -->
+            <button @click="openSettingsModal" title="Cài đặt hệ thống" class="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors">
+              <i data-lucide="settings" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+      <!-- BANNER TIÊU ĐỀ & THÔNG TIN ĐƠN VỊ -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-center space-x-4">
+          <img src="/logo.png" alt="Logo" class="w-14 h-14 rounded-2xl object-contain border border-slate-200 bg-white p-1 shadow-xs flex-shrink-0">
+          <div>
+            <div class="flex items-center space-x-2">
+              <h1 class="text-xl font-bold text-slate-800">{{ settings.centerName || 'Trung tâm Y tế Huyện' }}</h1>
+              <span class="text-xs font-semibold px-2 py-0.5 bg-blue-50 text-blue-700 rounded-md border border-blue-200">
+                {{ stations.length }} Trạm Y tế cơ sở
+              </span>
+            </div>
+            <p class="text-sm text-slate-500 mt-1">
+              Thiết lập nhanh tài khoản, mật khẩu riêng cho từng trạm và đồng bộ kiểm tra kết nối VNPT HMIS 4.0 tự động.
+            </p>
+          </div>
+        </div>
+
+        <!-- CÁC NÚT TÁC VỤ CHÍNH -->
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Nút Cấu hình nhanh -->
+          <button @click="openBatchModal" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium text-sm rounded-xl shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:-translate-y-0.5">
+            <i data-lucide="zap" class="w-4 h-4 text-amber-300"></i>
+            <span>Cấu hình nhanh</span>
+          </button>
+
+          <!-- Nút Nhập Excel -->
+          <button @click="openImportModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm rounded-xl shadow-sm transition-colors">
+            <i data-lucide="file-up" class="w-4 h-4"></i>
+            <span>Nhập Excel</span>
+          </button>
+
+          <!-- Nút Xuất Excel -->
+          <button @click="exportExcel" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-xl border border-slate-300 transition-colors">
+            <i data-lucide="file-down" class="w-4 h-4 text-emerald-600"></i>
+            <span>Xuất Excel</span>
+          </button>
+
+          <!-- Nút Cấu hình nghiệp vụ HMIS -->
+          <button @click="openCauHinhModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium text-sm rounded-xl border border-indigo-200 transition-colors shadow-sm" title="Xem & tải toàn bộ 160 cấu hình nghiệp vụ thực tế từ cổng HMIS">
+            <i data-lucide="sliders" class="w-4 h-4 text-indigo-600"></i>
+            <span>Cấu hình nghiệp vụ HMIS</span>
+          </button>
+
+          <!-- Nút Thêm Xã / Phường -->
+          <button @click="openAddModal" class="inline-flex items-center space-x-1.5 px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-xl border border-slate-300 transition-colors">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Thêm Xã / Phường</span>
+          </button>
+
+          <!-- Nút Xóa hết trạm -->
+          <button v-if="stations.length > 0" @click="openClearAllModal" class="inline-flex items-center space-x-1.5 px-3 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium text-sm rounded-xl border border-rose-200 transition-colors" title="Xóa toàn bộ danh sách trạm y tế">
+            <i data-lucide="trash-2" class="w-4 h-4 text-rose-600"></i>
+            <span>Xóa hết trạm</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TIẾN TRÌNH KIỂM TRA HÀNG LOẠT (Hiện khi đang test) -->
+      <div v-if="isTestingBatch" class="bg-blue-50 border border-blue-200 rounded-2xl p-4 shadow-sm animate-pulse">
+        <div class="flex items-center justify-between text-sm text-blue-900 font-medium mb-2">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-blue-600"></i>
+            <span>Đang kiểm tra kết nối tài khoản các trạm y tế...</span>
+          </div>
+          <span class="text-xs bg-blue-200 text-blue-800 px-2 py-0.5 rounded-full font-bold">
+            Vui lòng chờ
+          </span>
+        </div>
+        <div class="w-full bg-blue-200 rounded-full h-2 overflow-hidden">
+          <div class="bg-blue-600 h-2 rounded-full transition-all duration-300 w-full animate-indeterminate"></div>
+        </div>
+      </div>
+
+      <!-- CARDS THỐNG KÊ NHANH -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <!-- Tổng số trạm -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Tổng số trạm</p>
+            <p class="text-2xl font-bold text-slate-900 mt-1">{{ stations.length }}</p>
+          </div>
+          <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
+            <i data-lucide="hospital" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <!-- Trạm đã kết nối thành công -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Kết nối tốt</p>
+            <p class="text-2xl font-bold text-emerald-600 mt-1">{{ countSuccess }}</p>
+          </div>
+          <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
+            <i data-lucide="check-circle" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <!-- Trạm lỗi đăng nhập / kết nối -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Lỗi kết nối</p>
+            <p class="text-2xl font-bold text-rose-600 mt-1">{{ countFailed }}</p>
+          </div>
+          <div class="p-3 bg-rose-50 text-rose-600 rounded-xl">
+            <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <!-- Trạm chưa kiểm tra -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Chưa kiểm tra</p>
+            <p class="text-2xl font-bold text-amber-600 mt-1">{{ countUntested }}</p>
+          </div>
+          <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
+            <i data-lucide="help-circle" class="w-6 h-6"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- THANH TÁC VỤ HÀNG LOẠT (HIỆN KHI CÓ CHECKBOX ĐƯỢC CHỌN) -->
+      <div v-if="selectedIds.length > 0" class="bg-indigo-900 text-white rounded-xl p-3 px-4 shadow-md flex flex-wrap items-center justify-between gap-3 transition-all animate-fadeIn">
+        <div class="flex items-center space-x-2 text-sm font-medium">
+          <span class="bg-indigo-700 px-2.5 py-0.5 rounded-full text-xs font-bold text-white">
+            Đã chọn {{ selectedIds.length }} trạm
+          </span>
+          <span class="text-indigo-200 text-xs">Thao tác áp dụng cho các trạm được chọn:</span>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <!-- Kiểm tra các trạm đã chọn -->
+          <button @click="testSelectedStations" :disabled="isTestingBatch" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-sky-500 hover:bg-sky-600 text-white text-xs font-medium rounded-lg transition-colors shadow">
+            <i data-lucide="play" class="w-3.5 h-3.5"></i>
+            <span>Kiểm tra kết nối</span>
+          </button>
+
+          <!-- Cập nhật URL chung -->
+          <button @click="openBatchUrlModal" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-indigo-700 hover:bg-indigo-600 text-white text-xs font-medium rounded-lg transition-colors">
+            <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+            <span>Đổi URL chung</span>
+          </button>
+
+          <!-- Sửa tham số cấu hình nhanh cho các trạm đang tích -->
+          <button @click="openBulkParamEditModal" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-lg transition-colors shadow" title="Sửa tham số cấu hình đồng loạt cho các trạm đang được chọn">
+            <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
+            <span>Sửa cấu hình nhanh</span>
+          </button>
+
+          <!-- Xóa các trạm đã chọn -->
+          <button @click="deleteSelectedStations" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-medium rounded-lg transition-colors">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span>Xóa</span>
+          </button>
+
+          <!-- Hủy chọn -->
+          <button @click="selectedIds = []" class="p-1 text-indigo-300 hover:text-white rounded" title="Bỏ chọn">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- BẢNG DANH SÁCH TRẠM Y TẾ -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <!-- THANH TÌM KIẾM & BỘ LỌC -->
+        <div class="p-4 border-b border-slate-200 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex flex-1 items-center space-x-2 max-w-md">
+            <div class="relative w-full">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+              <input v-model="searchQuery" type="text" placeholder="Tìm theo tên trạm, mã CSKCB, tài khoản..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+            </div>
+            <button v-if="searchQuery" @click="searchQuery = ''" class="text-xs text-slate-500 hover:text-slate-700 p-2">Xóa</button>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <!-- Lọc trạng thái -->
+            <select v-model="filterStatus" class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="all">Tất cả trạng thái ({{ stations.length }})</option>
+              <option value="success">🟢 Đã kết nối ({{ countSuccess }})</option>
+              <option value="failed">🔴 Lỗi kết nối ({{ countFailed }})</option>
+              <option value="untested">🟡 Chưa kiểm tra ({{ countUntested }})</option>
+            </select>
+
+            <!-- Nút Test toàn bộ -->
+            <button @click="testAllStations" :disabled="isTestingBatch" class="inline-flex items-center space-x-1.5 px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium text-xs rounded-xl border border-blue-200 transition-colors">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5" :class="{ 'animate-spin': isTestingBatch }"></i>
+              <span>Kiểm tra toàn bộ</span>
+            </button>
+
+            <!-- Nút bật/tắt hiển thị mật khẩu -->
+            <button @click="toggleShowAllPasswords" class="p-2 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl text-slate-600 text-xs font-medium flex items-center space-x-1 transition-colors" :title="showAllPasswords ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'">
+              <i :data-lucide="showAllPasswords ? 'eye-off' : 'eye'" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- BẢNG DỮ LIỆU -->
+        <div class="table-fixed-header border border-slate-200/80 rounded-xl shadow-2xs">
+          <table class="w-full text-left text-xs text-slate-600">
+            <thead class="text-xs font-bold text-slate-700 uppercase tracking-wider border-b border-slate-200">
+              <tr>
+                <th class="col-sticky-1 py-2.5 px-3 w-11 min-w-[44px] max-w-[44px] text-center">
+                  <input type="checkbox" :checked="isAllSelected" @change="toggleSelectAll" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer">
+                </th>
+                <th class="col-sticky-2 py-2.5 px-3 w-24 min-w-[96px] max-w-[96px]">Mã CSKCB</th>
+                <th class="col-sticky-3 py-2.5 px-3 min-w-[280px]">Tên Xã / Phường</th>
+                <th class="py-2.5 px-3 w-40">Tài khoản (Username)</th>
+                <th class="py-2.5 px-3 w-40">Mật khẩu</th>
+                <th class="py-2.5 px-3 w-36">Portal HMIS 4.0</th>
+                <th class="py-2.5 px-3 w-44">Trạng thái kết nối</th>
+                <th class="py-2.5 px-3 w-28 text-right">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr v-if="filteredStations.length === 0">
+                <td colspan="8" class="text-center py-10 text-slate-400">
+                  <i data-lucide="inbox" class="w-10 h-10 mx-auto mb-2 opacity-40"></i>
+                  <p class="font-medium text-slate-500">Không tìm thấy trạm y tế nào phù hợp</p>
+                  <button @click="openBatchModal" class="mt-2 text-xs text-blue-600 hover:underline font-medium">Bấm vào đây để cấu hình nhanh nhiều trạm</button>
+                </td>
+              </tr>
+              <tr v-for="(station, index) in filteredStations" :key="station.id" class="hover:bg-blue-50/50 transition-colors group">
+                <!-- Checkbox -->
+                <td class="col-sticky-1 py-2 px-3 w-11 min-w-[44px] max-w-[44px] text-center">
+                  <input type="checkbox" :value="station.id" v-model="selectedIds" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer">
+                </td>
+
+                <!-- Mã CSKCB -->
+                <td class="col-sticky-2 py-2 px-3 w-24 min-w-[96px] max-w-[96px] font-mono font-medium text-slate-700">
+                  <span class="bg-slate-100 px-2 py-0.5 rounded text-xs border border-slate-200">
+                    {{ station.code || 'Chưa có' }}
+                  </span>
+                </td>
+
+                <!-- Tên Xã / Phường (1 dòng duy nhất, rộng rãi, không chú thích, cố định khi cuộn) -->
+                <td class="col-sticky-3 py-2 px-3 whitespace-nowrap min-w-[280px]">
+                  <span class="font-bold text-slate-900 text-xs" :title="station.district ? station.district + (station.notes ? ' - ' + station.notes : '') : station.notes || station.name">
+                    {{ station.name }}
+                  </span>
+                </td>
+
+                <!-- Username -->
+                <td class="py-2 px-3 whitespace-nowrap">
+                  <div class="flex items-center space-x-1">
+                    <span class="font-mono text-slate-800 bg-slate-50 px-2 py-0.5 rounded border border-slate-200 text-xs">
+                      {{ station.username }}
+                    </span>
+                    <button @click="copyText(station.username, 'Tài khoản')" class="text-slate-400 hover:text-blue-600 transition-colors p-0.5" title="Sao chép tài khoản">
+                      <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                    </button>
+                  </div>
+                </td>
+
+                <!-- Password -->
+                <td class="py-2 px-3 whitespace-nowrap">
+                  <div class="flex items-center space-x-1">
+                    <span class="font-mono text-xs px-2 py-0.5 rounded border border-slate-200 bg-slate-50" :class="showAllPasswords || station._showPassword ? 'text-slate-800' : 'text-slate-400 tracking-widest'">
+                      {{ (showAllPasswords || station._showPassword) ? station.password : (station.passwordMasked || '••••••••') }}
+                    </span>
+                    <button @click="station._showPassword = !station._showPassword" class="text-slate-400 hover:text-slate-600 p-0.5" title="Xem/Ẩn mật khẩu">
+                      <i :data-lucide="(showAllPasswords || station._showPassword) ? 'eye-off' : 'eye'" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button @click="copyText(station.password, 'Mật khẩu')" class="text-slate-400 hover:text-blue-600 p-0.5" title="Sao chép mật khẩu">
+                      <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                    </button>
+                  </div>
+                </td>
+
+                <!-- Portal HIS URL -->
+                <td class="py-2 px-3 whitespace-nowrap">
+                  <div class="flex items-center space-x-1 text-xs text-slate-600 max-w-[160px] truncate" :title="station.url">
+                    <a :href="station.url" target="_blank" class="hover:text-blue-600 underline truncate flex items-center space-x-1">
+                      <span>{{ cleanUrl(station.url) }}</span>
+                      <i data-lucide="external-link" class="w-3 h-3 flex-shrink-0"></i>
+                    </a>
+                  </div>
+                </td>
+
+                <!-- Trạng thái kết nối (1 dòng gọn gàng) -->
+                <td class="py-2 px-3 whitespace-nowrap">
+                  <div class="flex items-center space-x-1.5">
+                    <span v-if="station.status === 'success'" class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      <span>Đã kết nối</span>
+                    </span>
+                    <span v-else-if="station.status === 'failed'" class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200" :title="station.lastTestedMessage">
+                      <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                      <span>Lỗi kết nối</span>
+                    </span>
+                    <span v-else-if="station.status === 'testing'" class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                      <i data-lucide="loader-2" class="w-3 h-3 animate-spin text-blue-600"></i>
+                      <span>Đang kiểm tra...</span>
+                    </span>
+                    <span v-else class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                      <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                      <span>Chưa kiểm tra</span>
+                    </span>
+
+                    <span v-if="station.lastResponseTime" class="text-[10px] text-slate-400 font-mono" title="Thời gian phản hồi">
+                      {{ station.lastResponseTime }}ms
+                    </span>
+                  </div>
+                </td>
+
+                <!-- Thao tác dòng -->
+                <td class="py-2 px-3 text-right whitespace-nowrap">
+                  <div class="flex items-center justify-end space-x-0.5">
+                    <button @click="testSingleStation(station)" :disabled="station.status === 'testing'" class="p-1 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors" title="Thử kết nối ngay">
+                      <i data-lucide="play" class="w-4 h-4"></i>
+                    </button>
+                    <button @click="openEditModal(station)" class="p-1 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors" title="Chỉnh sửa">
+                      <i data-lucide="edit-3" class="w-4 h-4"></i>
+                    </button>
+                    <button @click="deleteSingleStation(station)" class="p-1 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors" title="Xóa trạm">
+                      <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- FOOTER TỔNG KẾT BẢNG -->
+        <div class="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between text-xs text-slate-500">
+          <div>
+            Hiển thị <span class="font-bold text-slate-700">{{ filteredStations.length }}</span> / {{ stations.length }} trạm y tế
+          </div>
+          <div class="flex items-center space-x-4">
+            <span class="flex items-center space-x-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>Đã kiểm tra thành công: {{ countSuccess }}</span>
+            </span>
+            <span class="flex items-center space-x-1">
+              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+              <span>Lỗi: {{ countFailed }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 1: THIẾT LẬP NHANH 15-20 TRẠM (BULK SETUP MODAL)                    -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.batch" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+        <!-- Header Modal -->
+        <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white p-5 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white/20 p-2 rounded-lg">
+              <i data-lucide="zap" class="w-6 h-6 text-amber-300"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold">Cấu hình nhanh cho nhiều trạm y tế</h3>
+              <p class="text-xs text-blue-100">Điền trực tiếp vào bảng hoặc dán danh sách tài khoản theo định dạng</p>
+            </div>
+          </div>
+          <button @click="modals.batch = false" class="text-white/80 hover:text-white p-1 rounded-lg">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+        <!-- Tabs chuyển đổi giữa Bảng trực tiếp & Dán văn bản -->
+        <div class="flex border-b border-slate-200 bg-slate-50 px-6 pt-3 space-x-4">
+          <button @click="batchTab = 'grid'" class="pb-3 text-sm font-semibold border-b-2 flex items-center space-x-2 transition-colors"
+                  :class="batchTab === 'grid' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-800'">
+            <i data-lucide="table" class="w-4 h-4"></i>
+            <span>Bảng nhập nhanh (Grid Editor)</span>
+          </button>
+          <button @click="batchTab = 'paste'" class="pb-3 text-sm font-semibold border-b-2 flex items-center space-x-2 transition-colors"
+                  :class="batchTab === 'paste' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-800'">
+            <i data-lucide="clipboard-paste" class="w-4 h-4"></i>
+            <span>Dán danh sách văn bản (Quick Paste)</span>
+          </button>
+        </div>
+
+        <!-- Body Modal -->
+        <div class="p-6 overflow-y-auto flex-1 space-y-4">
+
+          <!-- TAB 1: BẢNG NHẬP TRỰC TIẾP -->
+          <div v-if="batchTab === 'grid'" class="space-y-4">
+            <!-- Thanh công cụ tự động hóa điền mẫu -->
+            <div class="flex flex-wrap items-center justify-between gap-2 p-3 bg-blue-50/70 border border-blue-200 rounded-xl text-xs">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="font-bold text-blue-900">Tiện ích nhanh:</span>
+                <button @click="batchFillHmisUrl" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-lg font-medium transition-colors">
+                  🏥 Điền URL https://ytcs.hmis.vn/
+                </button>
+                <button @click="batchFillDefaultUrl" class="px-2.5 py-1 bg-white hover:bg-blue-100 text-blue-700 border border-blue-300 rounded-lg font-medium transition-colors">
+                  🔗 Điền URL mặc định
+                </button>
+                <button @click="batchAutoGenerateCodes" class="px-2.5 py-1 bg-white hover:bg-blue-100 text-blue-700 border border-blue-300 rounded-lg font-medium transition-colors">
+                  🔢 Tự động sinh mã CSKCB
+                </button>
+                <button @click="loadSample20Stations" class="px-2.5 py-1 bg-white hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-lg font-medium transition-colors">
+                  ⚡ Nạp sẵn mẫu 20 Trạm Y Tế
+                </button>
+              </div>
+
+              <div class="flex items-center space-x-2">
+                <button @click="addBatchRows(5)" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                  + Thêm 5 dòng
+                </button>
+                <button @click="clearBatchRows" class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg font-medium transition-colors">
+                  Xóa trắng bảng
+                </button>
+              </div>
+            </div>
+
+            <!-- Bảng Grid -->
+            <div class="border border-slate-200 rounded-xl overflow-x-auto max-h-[380px]">
+              <table class="w-full text-xs text-left">
+                <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200">
+                  <tr>
+                    <th class="p-2 w-10 text-center">STT</th>
+                    <th class="p-2 w-48">Tên Xã / Phường <span class="text-rose-500">*</span></th>
+                    <th class="p-2 w-28">Mã CSKCB</th>
+                    <th class="p-2 w-36">Tài khoản (Username) <span class="text-rose-500">*</span></th>
+                    <th class="p-2 w-36">Mật khẩu <span class="text-rose-500">*</span></th>
+                    <th class="p-2">URL Portal HMIS 4.0</th>
+                    <th class="p-2 w-10 text-center">Xóa</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr v-for="(row, idx) in batchRows" :key="idx" class="hover:bg-slate-50">
+                    <td class="p-2 text-center text-slate-400 font-mono font-bold">{{ idx + 1 }}</td>
+                    <td class="p-1">
+                      <input v-model="row.name" list="xaPhuongDatalist" type="text" placeholder="VD: Phường Điện Biên Phủ..." class="w-full px-2 py-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-blue-500 text-xs">
+                    </td>
+                    <td class="p-1">
+                      <input v-model="row.code" type="text" placeholder="01001" class="w-full px-2 py-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-blue-500 text-xs font-mono">
+                    </td>
+                    <td class="p-1">
+                      <input v-model="row.username" type="text" placeholder="tyt_user" class="w-full px-2 py-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-blue-500 text-xs font-mono">
+                    </td>
+                    <td class="p-1">
+                      <input v-model="row.password" type="text" placeholder="Mật khẩu riêng" class="w-full px-2 py-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-blue-500 text-xs font-mono">
+                    </td>
+                    <td class="p-1">
+                      <input v-model="row.url" type="text" :placeholder="settings.defaultHisUrl" class="w-full px-2 py-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-blue-500 text-xs">
+                    </td>
+                    <td class="p-1 text-center">
+                      <button @click="batchRows.splice(idx, 1)" class="text-slate-400 hover:text-rose-600 p-1" title="Xóa dòng này">
+                        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-xs text-slate-500 italic">
+              * Mẹo: Các dòng có đầy đủ Tên trạm và Username sẽ được lưu vào hệ thống. Các dòng để trống sẽ tự động bỏ qua.
+            </p>
+          </div>
+
+          <!-- TAB 2: DÁN VĂN BẢN NHANH -->
+          <div v-if="batchTab === 'paste'" class="space-y-4">
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900">
+              <p class="font-bold mb-1">Định dạng hỗ trợ:</p>
+              <p>Mỗi trạm trên một dòng, cách nhau bởi dấu gạch đứng <code class="bg-amber-100 px-1 rounded">|</code> hoặc dấu phẩy <code class="bg-amber-100 px-1 rounded">,</code> hoặc Tab (Copy trực tiếp từ Excel):</p>
+              <div class="bg-white/80 p-2 rounded mt-2 font-mono text-[11px] border border-amber-200">
+                Tên trạm | Mã CSKCB | Username | Password | URL Portal HMIS 4.0 (tùy chọn)
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Dán danh sách vào đây:</label>
+              <textarea v-model="pasteText" rows="10" placeholder="Trạm Y tế Xã An Bình | 01001 | tyt_anbinh | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Bình Minh | 01002 | tyt_binhminh | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://his-longan.vnpt.vn" class="w-full p-3 font-mono text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+            </div>
+
+            <div class="flex items-center space-x-2">
+              <button @click="parsePastedText" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-xl shadow-sm transition-colors">
+                🔍 Phân tích và chuyển sang bảng Grid
+              </button>
+              <button @click="loadSamplePasteText" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs rounded-xl border border-slate-300">
+                Dán mẫu 15 trạm
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="p-4 bg-slate-100 border-t border-slate-200 flex items-center justify-between">
+          <div class="text-xs text-slate-500">
+            Số dòng hợp lệ sẵn sàng lưu: <span class="font-bold text-blue-700">{{ validBatchRowCount }}</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button @click="modals.batch = false" class="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl border border-slate-300">
+              Hủy bỏ
+            </button>
+            <button @click="saveBatchStations" :disabled="validBatchRowCount === 0 || isSavingBatch" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center space-x-1.5 disabled:opacity-50">
+              <i data-lucide="check" class="w-4 h-4"></i>
+              <span>{{ isSavingBatch ? 'Đang lưu...' : 'Lưu cấu hình ' + validBatchRowCount + ' trạm' }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 2: IMPORT EXCEL                                                    -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.importExcel" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden">
+        <div class="bg-emerald-700 text-white p-5 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="file-up" class="w-6 h-6"></i>
+            <h3 class="text-lg font-bold">Nhập danh sách trạm từ Excel</h3>
+          </div>
+          <button @click="modals.importExcel = false" class="text-white/80 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="p-6 space-y-4">
+          <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-xs text-emerald-900">
+            <p class="font-bold mb-1">Bước 1: Tải file mẫu chuẩn</p>
+            <p class="mb-2">Bạn nên tải file Excel mẫu về, điền tài khoản 15 - 20 trạm theo đúng các cột rồi tải lên lại.</p>
+            <a href="/api/stations/excel/template" download class="inline-flex items-center space-x-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Tải file Excel mẫu (.xlsx)</span>
+            </a>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-2">Bước 2: Chọn file Excel đã điền</label>
+            <input type="file" ref="excelFileInput" accept=".xlsx, .xls, .csv" class="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer border border-slate-200 rounded-xl p-2">
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end space-x-2">
+          <button @click="modals.importExcel = false" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-white border border-slate-300 rounded-xl">Đóng</button>
+          <button @click="submitImportExcel" :disabled="isUploadingExcel" class="px-5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow transition-colors flex items-center space-x-1">
+            <i data-lucide="upload" class="w-4 h-4"></i>
+            <span>{{ isUploadingExcel ? 'Đang đọc file...' : 'Tải lên & Lưu' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 3: THÊM / CHỈNH SỬA 1 TRẠM                                         -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.editStation" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden">
+        <div class="bg-blue-700 text-white p-5 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="hospital" class="w-6 h-6"></i>
+            <h3 class="text-lg font-bold">{{ currentStation.id ? 'Chỉnh sửa Xã / Phường' : 'Thêm mới Xã / Phường' }}</h3>
+          </div>
+          <button @click="modals.editStation = false" class="text-white/80 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="p-6 space-y-4 text-xs">
+          <!-- Datalist gợi ý cho việc gõ nhanh -->
+          <datalist id="xaPhuongDatalist">
+            <option v-for="item in allXaPhuongList" :key="item" :value="item"></option>
+          </datalist>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Tên Xã / Phường <span class="text-rose-500">*</span></label>
+            <input v-model="currentStation.name" list="xaPhuongDatalist" type="text" placeholder="Ví dụ: Phường Điện Biên Phủ" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Mã CSKCB (5 số)</label>
+              <input v-model="currentStation.code" type="text" placeholder="01001" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm font-mono">
+            </div>
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block font-bold text-slate-700">Xã / Phường <span class="text-rose-500">*</span></label>
+                <span class="text-[10px] text-blue-600 font-semibold bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">3 phường, 42 xã</span>
+              </div>
+              <select v-model="currentStation.district" @change="onDistrictChange" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm bg-white text-slate-800 font-medium cursor-pointer">
+                <option value="">-- Chọn Xã / Phường (Điện Biên) --</option>
+                <option v-if="currentStation.district && !allXaPhuongList.includes(currentStation.district)" :value="currentStation.district">
+                  {{ currentStation.district }} (Khác)
+                </option>
+                <optgroup label="🏛️ 3 Phường (TP. Điện Biên Phủ & TX. Mường Lay)">
+                  <option v-for="p in phuongList" :key="p" :value="p">{{ p }}</option>
+                </optgroup>
+                <optgroup label="🌾 42 Xã">
+                  <option v-for="x in xaList" :key="x" :value="x">{{ x }}</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">URL Portal VNPT HMIS 4.0</label>
+            <input v-model="currentStation.url" type="text" :placeholder="settings.defaultHisUrl" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm font-mono">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Tên đăng nhập (Username) <span class="text-rose-500">*</span></label>
+              <input v-model="currentStation.username" type="text" placeholder="11010.ADMINBV" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm font-mono">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Mật khẩu riêng <span class="text-rose-500">*</span></label>
+              <input v-model="currentStation.password" type="text" placeholder="Password@123" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm font-mono">
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Ghi chú</label>
+            <input v-model="currentStation.notes" type="text" placeholder="Ghi chú nghiệp vụ..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm">
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end space-x-2">
+          <button @click="modals.editStation = false" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-white border border-slate-300 rounded-xl">Hủy</button>
+          <button @click="saveSingleStation" class="px-5 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow transition-colors">Lưu trạm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 4: ĐỔI URL CHUNG CHO CÁC TRẠM ĐÃ CHỌN                             -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.batchUrl" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 overflow-hidden">
+        <div class="bg-indigo-700 text-white p-5 flex items-center justify-between">
+          <h3 class="text-base font-bold">Cập nhật URL Portal HMIS 4.0 hàng loạt</h3>
+          <button @click="modals.batchUrl = false" class="text-white/80 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="p-5 space-y-3 text-xs">
+          <p class="text-slate-600">
+            Áp dụng đường dẫn Portal HMIS 4.0 chung cho <span class="font-bold text-indigo-700">{{ selectedIds.length }}</span> trạm đã chọn:
+          </p>
+          <input v-model="bulkUrlInput" type="text" placeholder="https://his-[tinh].vnpt.vn" class="w-full px-3 py-2 border border-slate-200 rounded-xl font-mono text-xs focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end space-x-2">
+          <button @click="modals.batchUrl = false" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-white border border-slate-300 rounded-xl">Hủy</button>
+          <button @click="applyBatchUrl" class="px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow transition-colors">Cập nhật ngay</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 5: CÀI ĐẶT HỆ THỐNG                                               -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.settings" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 overflow-hidden">
+        <div class="bg-slate-800 text-white p-5 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="settings" class="w-5 h-5 text-sky-400"></i>
+            <h3 class="text-base font-bold">Cài đặt hệ thống</h3>
+          </div>
+          <button @click="modals.settings = false" class="text-white/80 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="p-5 space-y-4 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Tên Đơn vị Quản lý (TTYT)</label>
+            <input v-model="settingsForm.centerName" type="text" placeholder="Trung tâm Y tế Huyện..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">URL Portal HMIS 4.0 Mặc định</label>
+            <input v-model="settingsForm.defaultHisUrl" type="text" placeholder="https://ytcs.hmis.vn" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm font-mono">
+          </div>
+
+          <!-- Chế độ mô phỏng -->
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
+            <div>
+              <p class="font-bold text-slate-800">Chế độ Mô phỏng (Simulation)</p>
+              <p class="text-[11px] text-slate-500">Bật khi test cục bộ hoặc chưa cắm mạng chuyên dùng VNPT</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" v-model="settingsForm.simulationMode" class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Thời gian chờ kết nối (Timeout giây)</label>
+            <input v-model.number="settingsForm.timeoutSeconds" type="number" min="3" max="60" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm font-mono">
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end space-x-2">
+          <button @click="modals.settings = false" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-white border border-slate-300 rounded-xl">Đóng</button>
+          <button @click="saveSettings" class="px-5 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow transition-colors">Lưu cài đặt</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 6: XÁC NHẬN XÓA TOÀN BỘ TRẠM Y TẾ                                  -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.clearAll" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 overflow-hidden animate-fadeIn">
+        <div class="bg-rose-600 text-white p-5 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="alert-triangle" class="w-6 h-6 text-amber-300"></i>
+            <h3 class="text-base font-bold">Xác nhận xóa hết trạm y tế</h3>
+          </div>
+          <button @click="modals.clearAll = false" class="text-white/80 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="p-6 space-y-3 text-sm text-slate-600">
+          <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl flex items-start space-x-3">
+            <i data-lucide="alert-octagon" class="w-6 h-6 text-rose-600 flex-shrink-0 mt-0.5"></i>
+            <div>
+              <p class="font-bold text-rose-900">Cảnh báo: Hành động không thể hoàn tác!</p>
+              <p class="text-xs text-rose-700 mt-1">
+                Bạn sắp xóa sạch toàn bộ <strong class="text-rose-900 underline">{{ stations.length }} trạm y tế</strong> cùng mọi thông tin tài khoản, mật khẩu và lịch sử kết nối.
+              </p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500">
+            Nếu bạn muốn lưu trữ lại trước khi xóa, vui lòng bấm <strong>Hủy bỏ</strong> và sử dụng tính năng <strong>Xuất Excel</strong> trước.
+          </p>
+        </div>
+
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end space-x-2">
+          <button @click="modals.clearAll = false" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-white border border-slate-300 rounded-xl hover:bg-slate-100">
+            Hủy bỏ
+          </button>
+          <button @click="confirmClearAll" :disabled="isClearingAll" class="px-5 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow transition-colors flex items-center space-x-1.5 disabled:opacity-50">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+            <span>{{ isClearingAll ? 'Đang xóa...' : 'Đồng ý xóa sạch tất cả' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 7: TOÀN BỘ CẤU HÌNH NGHIỆP VỤ HMIS                                 -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.cauhinh" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-indigo-700 via-purple-700 to-blue-800 text-white p-5 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white/20 p-2 rounded-lg">
+              <i data-lucide="sliders" class="w-6 h-6 text-cyan-300"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-lg font-bold">Cấu hình nghiệp vụ hệ thống HMIS Y Tế Cơ Sở</h3>
+                <span class="bg-white/20 text-xs px-2.5 py-0.5 rounded-full font-bold">160 Nhóm / 1,708 Tham số</span>
+              </div>
+              <p class="text-xs text-indigo-100">Dữ liệu trích xuất từ https://ytcs.hmis.vn/new/his/danhmuc/cau-hinh/nghiep-vu</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <!-- Nút Refresh Cấu Hình -->
+            <button @click="refreshCauHinhFromHmis" :disabled="isRefreshingCauhinh" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg backdrop-blur-sm transition-colors border border-white/20" title="Kết nối trực tiếp tới cổng HMIS để tải lại dữ liệu cấu hình mới nhất">
+              <i data-lucide="refresh-cw" class="w-4 h-4 text-cyan-300" :class="{ 'animate-spin': isRefreshingCauhinh }"></i>
+              <span>{{ isRefreshingCauhinh ? 'Đang cập nhật...' : 'Làm mới cấu hình' }}</span>
+            </button>
+            <a href="/api/stations/cauhinh-nghiepvu/download-excel" download class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow transition-colors">
+              <i data-lucide="download" class="w-4 h-4"></i>
+              <span>Tải file Excel (.xlsx)</span>
+            </a>
+            <button @click="modals.cauhinh = false" class="text-white/80 hover:text-white p-1 rounded-lg">
+              <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-4">
+          <div class="relative flex-1 max-w-md">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input v-model="cauhinhSearch" type="text" placeholder="Tìm theo mã cấu hình (VD: GOI_BN, EMR, PHARMA...), tên, tham số..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+          </div>
+          <div class="text-xs text-slate-500 font-medium">
+            Hiển thị <span class="font-bold text-indigo-700">{{ filteredCauHinh.length }}</span> / {{ cauhinhList.length }} nhóm cấu hình
+          </div>
+        </div>
+
+        <!-- Body list -->
+        <div class="p-6 overflow-y-auto flex-1 space-y-3">
+          <div v-if="isLoadingCauhinh" class="text-center py-12 text-slate-400">
+            <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2 text-indigo-600"></i>
+            <p>Đang tải dữ liệu cấu hình nghiệp vụ...</p>
+          </div>
+          <div v-else-if="filteredCauHinh.length === 0" class="text-center py-12 text-slate-400">
+            <p>Không tìm thấy cấu hình nghiệp vụ nào khớp với từ khóa tìm kiếm</p>
+          </div>
+          <div v-for="item in filteredCauHinh" :key="item.id" class="border border-slate-200 rounded-xl p-4 bg-white hover:border-indigo-300 transition-all shadow-sm">
+            <div class="flex items-start justify-between gap-3 mb-2">
+              <div>
+                <div class="flex items-center space-x-2">
+                  <span class="font-mono font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded text-xs border border-indigo-200">
+                    {{ item.maCauHinh }}
+                  </span>
+                  <span class="text-xs font-bold text-slate-800">{{ item.tenCauHinh }}</span>
+                </div>
+                <p v-if="item.moTa" class="text-xs text-slate-500 mt-1 italic">{{ item.moTa }}</p>
+              </div>
+              <div class="flex items-center space-x-2 text-xs">
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold" :class="item.trangThai === 1 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500'">
+                  {{ item.trangThai === 1 ? 'Đang bật' : 'Đang tắt' }}
+                </span>
+                <span class="text-slate-400 text-[11px]">{{ item.ngaySua || item.ngayTao }}</span>
+              </div>
+            </div>
+
+            <!-- Tham số chi tiết -->
+            <div class="bg-slate-50 rounded-lg p-3 border border-slate-100 text-xs">
+              <div class="font-semibold text-slate-700 mb-1.5 flex items-center space-x-1">
+                <span>Chi tiết tham số thiết lập ({{ parseParams(item.giaTriThietLap).length }} tham số):</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+                <div v-for="p in parseParams(item.giaTriThietLap)" :key="p.key" class="p-2 bg-white rounded border border-slate-200 text-[11px] transition-all" :class="{ 'ring-2 ring-indigo-500 bg-indigo-50/60 border-indigo-300 font-semibold shadow-sm': cauhinhSearch && (p.key.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()) || (p.mota && p.mota.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()))) }">
+                  <div class="flex items-center justify-between text-slate-600 font-mono font-bold">
+                    <span>{{ p.key }}</span>
+                    <span class="text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">{{ p.giatri !== undefined ? p.giatri : '—' }}</span>
+                  </div>
+                  <div v-if="p.mota" class="text-slate-500 mt-1 text-[10px] whitespace-pre-line">{{ p.mota }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="p-4 bg-slate-100 border-t border-slate-200 flex items-center justify-between">
+          <span class="text-xs text-slate-500">File Excel CauHinh_NghiepVu_HMIS.xlsx đã được lưu sẵn trong thư mục dự án của bạn.</span>
+          <button @click="modals.cauhinh = false" class="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl border border-slate-300">
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 8: SỬA THAM SỐ CẤU HÌNH NHANH CHO CÁC TRẠM ĐANG TÍCH               -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.bulkParamEdit" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full border border-slate-200 overflow-hidden flex flex-col h-[92vh] max-h-[92vh]">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 text-white px-6 py-4 flex items-center justify-between shadow-sm">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+              <i data-lucide="sliders" class="w-6 h-6 text-amber-300"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-lg font-bold">Sửa Tham Số Cấu Hình Nhanh</h3>
+                <span class="bg-purple-500/60 border border-purple-300/40 text-[11px] px-2.5 py-0.5 rounded-full font-bold">
+                  {{ selectedIds.length }} trạm y tế
+                </span>
+              </div>
+              <p class="text-xs text-purple-100 mt-0.5">Tìm kiếm theo tên cấu hình, tên tham số hoặc mô tả nghiệp vụ và cập nhật hàng loạt</p>
+            </div>
+          </div>
+          <button @click="modals.bulkParamEdit = false" class="text-white/80 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+        <!-- Thanh thông tin các trạm áp dụng -->
+        <div class="bg-purple-50/80 border-b border-purple-100 px-6 py-2.5 flex items-center justify-between text-xs gap-3">
+          <div class="flex items-center space-x-2 overflow-hidden flex-1">
+            <span class="font-bold text-purple-900 whitespace-nowrap">Danh sách trạm áp dụng ({{ selectedStationsList.length }}):</span>
+            <div class="flex items-center space-x-1.5 overflow-x-auto py-0.5">
+              <span v-for="st in selectedStationsList" :key="st.id" class="bg-white px-2 py-0.5 rounded text-purple-800 border border-purple-200 font-medium text-[11px] whitespace-nowrap shadow-2xs">
+                {{ st.name }} ({{ st.username }})
+              </span>
+            </div>
+          </div>
+          <span class="text-[11px] text-purple-700 font-semibold whitespace-nowrap bg-purple-100/60 px-2 py-0.5 rounded border border-purple-200">
+            ⚡ Tự động đăng nhập & cập nhật từng trạm
+          </span>
+        </div>
+
+        <!-- Nội dung chính: 2 Cột Rộng Rãi -->
+        <div class="p-6 overflow-hidden flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 bg-slate-50/50 min-h-0 text-xs">
+
+          <!-- ========================================== -->
+          <!-- CỘT TRÁI: BƯỚC 1 - TÌM & CHỌN NHÓM CẤU HÌNH -->
+          <!-- ========================================== -->
+          <div class="lg:col-span-6 flex flex-col h-full min-h-0 bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <label class="block font-bold text-slate-800 text-sm">
+                1. Chọn Nhóm Cấu Hình (160 nhóm) <span class="text-rose-500">*</span>
+              </label>
+              <span class="text-[11px] text-slate-500 font-medium">
+                Tìm thấy <strong class="text-purple-700">{{ filteredConfigGroups.length }}</strong> / {{ cauhinhList.length }}
+              </span>
+            </div>
+
+            <!-- Ô tìm kiếm nhóm cấu hình -->
+            <div class="relative mb-2">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+              <input
+                v-model="groupSearchQuery"
+                type="text"
+                placeholder="Gõ mã nhóm, tên nhóm, tên tham số hoặc mô tả (VD: BHYT, KHO, kê đơn...)..."
+                class="w-full pl-9 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-purple-500 focus:outline-none font-medium shadow-2xs transition-all"
+              />
+              <button
+                v-if="groupSearchQuery"
+                @click="groupSearchQuery = ''"
+                type="button"
+                class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5"
+                title="Xóa từ khóa tìm kiếm"
+              >
+                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+
+            <!-- Thẻ hiển thị nhóm đang được chọn -->
+            <div v-if="selectedGroupObj" class="mb-2 p-2.5 bg-purple-50 border border-purple-200 rounded-xl flex items-center justify-between shadow-2xs">
+              <div class="flex items-center space-x-2">
+                <span class="font-mono font-bold text-xs bg-purple-600 text-white px-2 py-0.5 rounded shadow-2xs">
+                  {{ selectedGroupObj.maCauHinh }}
+                </span>
+                <span class="font-bold text-purple-950 text-xs truncate max-w-[230px]" :title="selectedGroupObj.tenCauHinh">
+                  {{ selectedGroupObj.tenCauHinh }}
+                </span>
+                <span class="text-[11px] text-purple-700">({{ selectedGroupParams.length }} tham số)</span>
+              </div>
+              <button
+                @click="clearSelectedGroup"
+                type="button"
+                class="text-[11px] font-semibold text-rose-600 hover:text-rose-700 bg-white border border-rose-200 px-2 py-0.5 rounded-lg shadow-2xs hover:bg-rose-50 transition-colors"
+              >
+                Hủy chọn
+              </button>
+            </div>
+
+            <!-- Danh sách cuộn trực tiếp các nhóm cấu hình (Rộng rãi, hiển thị đầy đủ thông tin) -->
+            <div class="flex-1 overflow-y-auto border border-slate-200 rounded-xl divide-y divide-slate-100 bg-white min-h-0">
+              <div
+                v-for="c in filteredConfigGroups"
+                :key="c.id"
+                @click="selectConfigGroup(c)"
+                class="p-3 hover:bg-purple-50/80 cursor-pointer transition-all flex flex-col gap-1.5"
+                :class="{ 'bg-purple-50 border-l-4 border-purple-600 ring-1 ring-purple-200': bulkParamForm.maCauHinh === c.maCauHinh }"
+              >
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex items-center space-x-2">
+                    <span class="font-mono font-bold text-purple-700 bg-purple-100/80 px-2 py-0.5 rounded text-xs border border-purple-200/60">
+                      {{ c.maCauHinh }}
+                    </span>
+                    <span class="font-bold text-slate-800 text-xs">{{ c.tenCauHinh }}</span>
+                  </div>
+                  <span class="text-[10px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">
+                    {{ parseParams(c.giaTriThietLap).length }} tham số
+                  </span>
+                </div>
+
+                <!-- Mô tả đầy đủ của nhóm cấu hình (Không bị cắt ngắn) -->
+                <p v-if="c.moTa" class="text-[11px] text-slate-500 italic whitespace-normal leading-relaxed">
+                  {{ c.moTa }}
+                </p>
+
+                <!-- Hiển thị các tham số khớp với từ khóa tìm kiếm (nếu có) -->
+                <div v-if="groupSearchQuery && getMatchingParamsInGroup(c, groupSearchQuery).length > 0" class="mt-1 p-2 bg-amber-50 border border-amber-200 rounded-lg text-[11px] text-amber-900">
+                  <div class="font-bold text-[10px] text-amber-800 flex items-center space-x-1 mb-1">
+                    <i data-lucide="tag" class="w-3 h-3 text-amber-600"></i>
+                    <span>Khớp {{ getMatchingParamsInGroup(c, groupSearchQuery).length }} tham số bên trong:</span>
+                  </div>
+                  <div class="space-y-1">
+                    <div v-for="mp in getMatchingParamsInGroup(c, groupSearchQuery).slice(0, 3)" :key="mp.key" class="text-[11px]">
+                      • <span class="font-mono font-bold text-amber-950">{{ mp.key }}</span>
+                      <span v-if="mp.mota" class="text-amber-800 italic"> ({{ mp.mota }})</span>
+                    </div>
+                    <div v-if="getMatchingParamsInGroup(c, groupSearchQuery).length > 3" class="text-[10px] text-amber-600 italic">
+                      + {{ getMatchingParamsInGroup(c, groupSearchQuery).length - 3 }} tham số khớp khác...
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div v-if="filteredConfigGroups.length === 0" class="p-8 text-center text-slate-400">
+                <i data-lucide="search-x" class="w-8 h-8 mx-auto mb-2 text-slate-300"></i>
+                <p>Không tìm thấy nhóm cấu hình hoặc tham số nào khớp với "{{ groupSearchQuery }}"</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ========================================== -->
+          <!-- CỘT PHẢI: BƯỚC 2 & 3 - THAM SỐ & GIÁ TRỊ   -->
+          <!-- ========================================== -->
+          <div class="lg:col-span-6 flex flex-col h-full min-h-0 bg-white rounded-2xl border border-slate-200 p-4 shadow-sm overflow-y-auto">
+            
+            <!-- Trạng thái chưa chọn nhóm ở cột trái -->
+            <div v-if="!bulkParamForm.maCauHinh" class="flex-1 flex flex-col items-center justify-center p-8 text-center text-slate-400">
+              <div class="w-16 h-16 rounded-2xl bg-purple-50 text-purple-400 flex items-center justify-center mb-3 border border-purple-100">
+                <i data-lucide="arrow-left" class="w-8 h-8"></i>
+              </div>
+              <h4 class="font-bold text-slate-700 text-sm mb-1">Vui lòng chọn một nhóm cấu hình ở cột bên trái</h4>
+              <p class="text-xs text-slate-400 max-w-sm">
+                Bạn có thể gõ tìm kiếm theo tên nhóm hoặc bất kỳ tên tham số / mô tả nghiệp vụ nào để tìm nhanh nhóm cần sửa.
+              </p>
+            </div>
+
+            <!-- Đã chọn nhóm cấu hình -->
+            <div v-else class="space-y-4">
+              <!-- BƯỚC 2: CHỌN THAM SỐ CẦN SỬA -->
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <label class="block font-bold text-slate-800 text-sm">
+                    2. Chọn Tham Số Cần Sửa ({{ selectedGroupParams.length }} tham số) <span class="text-rose-500">*</span>
+                  </label>
+                  <span v-if="bulkParamForm.paramKey" class="text-[11px] text-purple-700 font-semibold bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
+                    Đã chọn: <span class="font-mono text-purple-900">{{ bulkParamForm.paramKey }}</span>
+                  </span>
+                </div>
+
+                <!-- Ô tìm kiếm tham số theo tên & mô tả -->
+                <div class="relative mb-2">
+                  <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                  <input
+                    v-model="paramSearchQuery"
+                    type="text"
+                    placeholder="Gõ tên tham số hoặc mô tả tham số để tìm..."
+                    class="w-full pl-9 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-purple-500 focus:outline-none font-medium shadow-2xs transition-all"
+                  />
+                  <button
+                    v-if="paramSearchQuery"
+                    @click="paramSearchQuery = ''"
+                    type="button"
+                    class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5"
+                    title="Xóa từ khóa tìm kiếm"
+                  >
+                    <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+
+                <!-- Danh sách tham số trong nhóm (Rộng rãi, hiển thị mô tả rõ ràng) -->
+                <div class="max-h-52 overflow-y-auto border border-slate-200 rounded-xl divide-y divide-slate-100 bg-white">
+                  <div
+                    v-for="p in filteredGroupParams"
+                    :key="p.key"
+                    @click="selectParamItem(p)"
+                    class="p-2.5 hover:bg-purple-50 cursor-pointer transition-colors flex flex-col gap-1"
+                    :class="{ 'bg-purple-50 border-l-4 border-purple-600': bulkParamForm.paramKey === p.key }"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="font-mono font-bold text-purple-800 text-xs">{{ p.key }}</span>
+                      <span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200 font-medium">
+                        Giá trị hiện tại: {{ p.giatri !== undefined ? p.giatri : '—' }}
+                      </span>
+                    </div>
+                    <p v-if="p.mota" class="text-[11px] text-slate-500 italic whitespace-normal leading-relaxed">
+                      {{ p.mota }}
+                    </p>
+                  </div>
+                  <div v-if="filteredGroupParams.length === 0" class="p-4 text-center text-slate-400">
+                    Không tìm thấy tham số nào khớp với "{{ paramSearchQuery }}"
+                  </div>
+                </div>
+
+                <!-- Thẻ chi tiết tham số đang được chọn -->
+                <div v-if="selectedParamMeta" class="mt-2.5 p-3.5 bg-purple-50/80 border border-purple-200 rounded-xl space-y-1.5 shadow-2xs">
+                  <div class="flex items-center justify-between">
+                    <span class="font-mono font-bold text-xs bg-purple-200 text-purple-900 px-2.5 py-0.5 rounded border border-purple-300">
+                      {{ selectedParamMeta.key }}
+                    </span>
+                    <span class="text-xs text-slate-600">
+                      Giá trị hiện tại: <code class="bg-white px-2 py-0.5 rounded font-mono font-bold text-purple-800 border border-purple-200">{{ selectedParamMeta.giatri }}</code>
+                    </span>
+                  </div>
+                  <p v-if="selectedParamMeta.mota" class="text-xs text-slate-600 italic whitespace-pre-line pt-1.5 border-t border-purple-200/60 leading-relaxed">
+                    💡 <strong>Ý nghĩa tham số:</strong> {{ selectedParamMeta.mota }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- BƯỚC 3: NHẬP GIÁ TRỊ MỚI CHO THAM SỐ -->
+              <div v-if="bulkParamForm.paramKey" class="pt-2 border-t border-slate-200">
+                <label class="block font-bold text-slate-800 text-sm mb-1.5">
+                  3. Nhập Giá Trị Mới Cho Tham Số <span class="text-rose-500">*</span>:
+                </label>
+                <input
+                  v-model="bulkParamForm.paramValue"
+                  type="text"
+                  placeholder="Nhập giá trị mới cho tham số này..."
+                  class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none font-mono text-slate-900 font-bold bg-white shadow-2xs"
+                />
+                <p class="text-[11px] text-slate-400 mt-1">
+                  Giá trị cũ đang lưu trên HMIS là: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-700 font-bold">{{ selectedParamMeta?.giatri }}</code>
+                </p>
+              </div>
+
+              <!-- KẾT QUẢ THỰC THI HÀNG LOẠT (NẾU CÓ) -->
+              <div v-if="bulkUpdateResults" class="mt-3 p-4 rounded-xl border shadow-sm" :class="bulkUpdateResults.failedCount === 0 ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-200'">
+                <div class="font-bold mb-2 flex items-center justify-between text-xs">
+                  <span>Kết quả cập nhật:</span>
+                  <span class="text-emerald-700">Thành công: {{ bulkUpdateResults.successCount }} / {{ bulkUpdateResults.total }} trạm</span>
+                </div>
+                <div class="space-y-1.5 max-h-40 overflow-y-auto">
+                  <div v-for="res in bulkUpdateResults.results" :key="res.id" class="flex items-center justify-between p-2 rounded-lg text-[11px]" :class="res.success ? 'bg-white text-emerald-800 border border-emerald-100 shadow-2xs' : 'bg-rose-50 text-rose-800 border border-rose-100'">
+                    <span class="font-bold">{{ res.name }} ({{ res.username }})</span>
+                    <span>{{ res.message }} ({{ res.duration }}ms)</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between shadow-inner">
+          <span class="text-xs text-slate-500">Cập nhật trực tiếp lên cổng HMIS theo tài khoản từng trạm đã tích chọn.</span>
+          <div class="flex items-center space-x-3">
+            <button @click="modals.bulkParamEdit = false" class="px-5 py-2.5 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl transition-colors">
+              Đóng
+            </button>
+            <button
+              @click="submitBulkParamUpdate"
+              :disabled="!bulkParamForm.maCauHinh || !bulkParamForm.paramKey || isUpdatingParams"
+              class="px-6 py-2.5 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl shadow transition-colors flex items-center space-x-2 disabled:opacity-50"
+            >
+              <i data-lucide="check" class="w-4 h-4"></i>
+              <span>{{ isUpdatingParams ? 'Đang cập nhật...' : 'Cập nhật cho ' + selectedIds.length + ' trạm' }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST THÔNG BÁO -->
+    <div class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none">
+      <div v-for="toast in toasts" :key="toast.id" class="pointer-events-auto px-4 py-3 rounded-xl shadow-xl text-xs font-medium text-white flex items-center space-x-2 animate-bounce transition-all"
+           :class="toast.type === 'success' ? 'bg-emerald-600' : toast.type === 'error' ? 'bg-rose-600' : 'bg-slate-800'">
+        <i :data-lucide="toast.type === 'success' ? 'check-circle' : toast.type === 'error' ? 'alert-circle' : 'info'" class="w-4 h-4"></i>
+        <span>{{ toast.message }}</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- VUE APPLICATION LOGIC -->
+  <script>
+    const { createApp, ref, computed, onMounted, nextTick } = Vue;
+
+    createApp({
+      setup() {
+        const stations = ref([]);
+        const settings = ref({
+          centerName: 'Trung tâm Y tế Huyện',
+          defaultHisUrl: 'https://his-longan.vnpt.vn',
+          simulationMode: true,
+          timeoutSeconds: 10
+        });
+
+        const selectedIds = ref([]);
+        const searchQuery = ref('');
+        const filterStatus = ref('all');
+        const showAllPasswords = ref(false);
+        const isTestingBatch = ref(false);
+        const isSavingBatch = ref(false);
+        const isUploadingExcel = ref(false);
+        const isClearingAll = ref(false);
+
+        const modals = ref({
+          batch: false,
+          importExcel: false,
+          editStation: false,
+          batchUrl: false,
+          settings: false,
+          clearAll: false,
+          cauhinh: false,
+          bulkParamEdit: false
+        });
+
+        const cauhinhList = ref([]);
+        const cauhinhSearch = ref('');
+        const isLoadingCauhinh = ref(false);
+        const isRefreshingCauhinh = ref(false);
+
+        const bulkParamForm = ref({ maCauHinh: '', paramKey: '', paramValue: '' });
+        const selectedGroupParams = ref([]);
+        const selectedParamMeta = ref(null);
+        const isUpdatingParams = ref(false);
+        const bulkUpdateResults = ref(null);
+        const groupSearchQuery = ref('');
+        const isGroupDropdownOpen = ref(false);
+        const paramSearchQuery = ref('');
+        const isParamDropdownOpen = ref(false);
+
+        const batchTab = ref('grid');
+        const batchRows = ref([]);
+        const pasteText = ref('');
+        const bulkUrlInput = ref('');
+        const excelFileInput = ref(null);
+        const currentStation = ref({});
+        const settingsForm = ref({});
+        const toasts = ref([]);
+
+        // ==========================================
+        // DANH SÁCH 3 PHƯỜNG, 42 XÃ TỈNH ĐIỆN BIÊN
+        // ==========================================
+        const phuongList = [
+          'Phường Điện Biên Phủ',
+          'Phường Mường Lay',
+          'Phường Mường Thanh'
+        ];
+
+        const xaList = [
+          'Xã Búng Lao',
+          'Xã Chà Tở',
+          'Xã Chiềng Sinh',
+          'Xã Mường Ảng',
+          'Xã Mường Chà',
+          'Xã Mường Lạn',
+          'Xã Mường Luân',
+          'Xã Mường Mùn',
+          'Xã Mường Nhà',
+          'Xã Mường Nhé',
+          'Xã Mường Phăng',
+          'Xã Mường Pồn',
+          'Xã Mường Toong',
+          'Xã Mường Tùng',
+          'Xã Nà Bủng',
+          'Xã Nà Hỳ',
+          'Xã Na Sang',
+          'Xã Na Son',
+          'Xã Nà Tấu',
+          'Xã Nậm Kè',
+          'Xã Nậm Nèn',
+          'Xã Núa Ngam',
+          'Xã Pa Ham',
+          'Xã Phình Giàng',
+          'Xã Pu Nhi',
+          'Xã Pú Nhung',
+          'Xã Quài Tở',
+          'Xã Quảng Lâm',
+          'Xã Sam Mứn',
+          'Xã Sáng Nhè',
+          'Xã Si Pa Phìn',
+          'Xã Sín Chải',
+          'Xã Sín Thầu',
+          'Xã Sính Phình',
+          'Xã Thanh An',
+          'Xã Thanh Nưa',
+          'Xã Thanh Yên',
+          'Xã Tìa Dình',
+          'Xã Tủa Chùa',
+          'Xã Tủa Thàng',
+          'Xã Tuần Giáo',
+          'Xã Xa Dung'
+        ];
+
+        const allXaPhuongList = [...phuongList, ...xaList];
+
+        function onDistrictChange() {
+          if (currentStation.value.district) {
+            // Tự động điền Tên Xã / Phường nếu tên đang trống hoặc trùng với danh sách cũ
+            if (!currentStation.value.name || currentStation.value.name.trim() === '' || allXaPhuongList.includes(currentStation.value.name)) {
+              currentStation.value.name = currentStation.value.district;
+            }
+          }
+        }
+
+        function refreshIcons() {
+          nextTick(() => {
+            if (window.lucide) {
+              window.lucide.createIcons();
+            }
+          });
+        }
+
+        function showToast(message, type = 'success') {
+          const id = Date.now() + Math.random();
+          toasts.value.push({ id, message, type });
+          refreshIcons();
+          setTimeout(() => {
+            toasts.value = toasts.value.filter(t => t.id !== id);
+          }, 3500);
+        }
+
+        async function fetchStations() {
+          try {
+            const res = await axios.get('/api/stations?show_passwords=true');
+            if (res.data.success) {
+              stations.value = res.data.data;
+            }
+          } catch (err) {
+            showToast('Lỗi tải danh sách trạm: ' + err.message, 'error');
+          } finally {
+            refreshIcons();
+          }
+        }
+
+        async function fetchSettings() {
+          try {
+            const res = await axios.get('/api/settings');
+            if (res.data.success) {
+              settings.value = res.data.data;
+              bulkUrlInput.value = settings.value.defaultHisUrl;
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        }
+
+        const filteredStations = computed(() => {
+          let list = stations.value;
+          if (filterStatus.value !== 'all') {
+            list = list.filter(s => s.status === filterStatus.value);
+          }
+          if (searchQuery.value.trim()) {
+            const q = searchQuery.value.toLowerCase().trim();
+            list = list.filter(s =>
+              (s.name && s.name.toLowerCase().includes(q)) ||
+              (s.code && s.code.toLowerCase().includes(q)) ||
+              (s.username && s.username.toLowerCase().includes(q)) ||
+              (s.district && s.district.toLowerCase().includes(q))
+            );
+          }
+          return list;
+        });
+
+        const countSuccess = computed(() => stations.value.filter(s => s.status === 'success').length);
+        const countFailed = computed(() => stations.value.filter(s => s.status === 'failed').length);
+        const countUntested = computed(() => stations.value.filter(s => !s.status || s.status === 'untested').length);
+
+        const isAllSelected = computed(() => {
+          return filteredStations.value.length > 0 && selectedIds.value.length === filteredStations.value.length;
+        });
+
+        function toggleSelectAll() {
+          if (isAllSelected.value) {
+            selectedIds.value = [];
+          } else {
+            selectedIds.value = filteredStations.value.map(s => s.id);
+          }
+        }
+
+        function cleanUrl(url) {
+          if (!url) return '';
+          return url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        }
+
+        function copyText(text, label = 'Nội dung') {
+          if (!text) return;
+          navigator.clipboard.writeText(text).then(() => {
+            showToast(`Đã sao chép ${label} vào bộ nhớ tạm!`);
+          }).catch(() => {
+            showToast('Không thể sao chép!', 'error');
+          });
+        }
+
+        function toggleShowAllPasswords() {
+          showAllPasswords.value = !showAllPasswords.value;
+          refreshIcons();
+        }
+
+        // ==========================================
+        // THIẾT LẬP NHANH 15-20 TRẠM (BATCH MODAL)
+        // ==========================================
+        function initBatchRows(count = 20) {
+          const rows = [];
+          for (let i = 1; i <= count; i++) {
+            rows.push({
+              name: '',
+              code: '',
+              username: '',
+              password: '',
+              url: settings.value.defaultHisUrl || ''
+            });
+          }
+          batchRows.value = rows;
+        }
+
+        function openBatchModal() {
+          initBatchRows(20);
+          batchTab.value = 'grid';
+          modals.value.batch = true;
+          refreshIcons();
+        }
+
+        function addBatchRows(count = 5) {
+          for (let i = 0; i < count; i++) {
+            batchRows.value.push({
+              name: '',
+              code: '',
+              username: '',
+              password: '',
+              url: settings.value.defaultHisUrl || ''
+            });
+          }
+          refreshIcons();
+        }
+
+        function clearBatchRows() {
+          initBatchRows(15);
+          refreshIcons();
+        }
+
+        function batchFillHmisUrl() {
+          batchRows.value.forEach(row => {
+            row.url = 'https://ytcs.hmis.vn/';
+          });
+          showToast('Đã gán URL https://ytcs.hmis.vn/ cho tất cả các dòng!');
+        }
+
+        function batchFillDefaultUrl() {
+          const defaultUrl = settings.value.defaultHisUrl || 'https://his-portal.vnpt.vn';
+          batchRows.value.forEach(row => {
+            row.url = defaultUrl;
+          });
+          showToast('Đã điền URL mặc định cho tất cả các dòng!');
+        }
+
+        function batchAutoGenerateCodes() {
+          batchRows.value.forEach((row, idx) => {
+            const num = String(idx + 1).padStart(3, '0');
+            row.code = `01${num}`;
+          });
+          showToast('Đã tự động đánh mã CSKCB theo thứ tự!');
+        }
+
+        function loadSample20Stations() {
+          const samples = [];
+          const sampleUnits = [
+            'Phường Điện Biên Phủ', 'Phường Mường Lay', 'Phường Mường Thanh',
+            'Xã Búng Lao', 'Xã Chà Tở', 'Xã Chiềng Sinh', 'Xã Mường Ảng',
+            'Xã Mường Chà', 'Xã Mường Lạn', 'Xã Mường Luân', 'Xã Mường Mùn',
+            'Xã Mường Nhà', 'Xã Mường Nhé', 'Xã Mường Phăng', 'Xã Mường Pồn',
+            'Xã Mường Toong', 'Xã Mường Tùng', 'Xã Nà Bủng', 'Xã Nà Hỳ', 'Xã Na Sang'
+          ];
+          
+          sampleUnits.forEach((unitName, idx) => {
+            const clean = unitName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "");
+            samples.push({
+              name: `Trạm Y tế ${unitName}`,
+              district: unitName,
+              code: `01${String(idx + 1).padStart(3, '0')}`,
+              username: `tyt_${clean}`,
+              password: `Pass@${idx + 1}23`,
+              url: settings.value.defaultHisUrl || 'https://his-dienbien.vnpt.vn'
+            });
+          });
+
+          batchRows.value = samples;
+          showToast('Đã nạp sẵn danh sách mẫu 20 Trạm Y Tế tỉnh Điện Biên!');
+          refreshIcons();
+        }
+
+        const validBatchRowCount = computed(() => {
+          return batchRows.value.filter(r => r.name.trim() && r.username.trim()).length;
+        });
+
+        async function saveBatchStations() {
+          const validStations = batchRows.value
+            .filter(r => r.name.trim() && r.username.trim())
+            .map(r => ({
+              name: r.name.trim(),
+              code: r.code.trim() || `00${Date.now().toString().slice(-3)}`,
+              username: r.username.trim(),
+              password: r.password.trim(),
+              url: r.url.trim() || settings.value.defaultHisUrl,
+              active: true
+            }));
+
+          if (validStations.length === 0) {
+            showToast('Vui lòng nhập ít nhất 1 trạm có Tên và Tên đăng nhập', 'error');
+            return;
+          }
+
+          isSavingBatch.value = true;
+          try {
+            const res = await axios.post('/api/stations/batch', { stations: validStations });
+            if (res.data.success) {
+              showToast(res.data.message);
+              modals.value.batch = false;
+              await fetchStations();
+            }
+          } catch (err) {
+            showToast('Lỗi lưu cấu hình: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isSavingBatch.value = false;
+            refreshIcons();
+          }
+        }
+
+        // TAB PASTE
+        function parsePastedText() {
+          if (!pasteText.value.trim()) {
+            showToast('Vui lòng dán nội dung văn bản trước', 'error');
+            return;
+          }
+
+          const lines = pasteText.value.split('\n');
+          const parsed = [];
+
+          lines.forEach((line, index) => {
+            const trimmed = line.trim();
+            if (!trimmed) return;
+
+            let parts = [];
+            if (trimmed.includes('\t')) {
+              parts = trimmed.split('\t');
+            } else if (trimmed.includes('|')) {
+              parts = trimmed.split('|');
+            } else if (trimmed.includes(',')) {
+              parts = trimmed.split(',');
+            } else {
+              parts = [trimmed];
+            }
+
+            parts = parts.map(p => p.trim());
+
+            parsed.push({
+              name: parts[0] || `Trạm Y tế ${index + 1}`,
+              code: parts[1] || `01${String(index + 1).padStart(3, '0')}`,
+              username: parts[2] || '',
+              password: parts[3] || '',
+              url: parts[4] || settings.value.defaultHisUrl || ''
+            });
+          });
+
+          if (parsed.length > 0) {
+            batchRows.value = parsed;
+            batchTab.value = 'grid';
+            showToast(`Đã phân tích thành công ${parsed.length} trạm và chuyển sang bảng Grid!`);
+            refreshIcons();
+          } else {
+            showToast('Không phân tích được dòng nào hợp lệ', 'error');
+          }
+        }
+
+        function loadSamplePasteText() {
+          pasteText.value = `Trạm Y tế Xã An Bình | 01001 | tyt_anbinh | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Bình Minh | 01002 | tyt_binhminh | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Dân Chủ | 01004 | tyt_danchu | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Đông Hòa | 01005 | tyt_donghoa | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Gia Lộc | 01006 | tyt_gialoc | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Hải Đường | 01007 | tyt_haiduong | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Hồng Phong | 01008 | tyt_hongphong | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Khánh An | 01009 | tyt_khanhan | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Liên Hiệp | 01010 | tyt_lienhiep | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Minh Hưng | 01011 | tyt_minhhung | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Nam Sơn | 01012 | tyt_namson | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Phú Lâm | 01013 | tyt_phulam | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Quảng Cương | 01014 | tyt_quangcuong | Password@123 | https://his-longan.vnpt.vn
+Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-longan.vnpt.vn`;
+          refreshIcons();
+        }
+
+        // ==========================================
+        // IMPORT / EXPORT EXCEL
+        // ==========================================
+        function openImportModal() {
+          modals.value.importExcel = true;
+          refreshIcons();
+        }
+
+        async function submitImportExcel() {
+          const file = excelFileInput.value?.files[0];
+          if (!file) {
+            showToast('Vui lòng chọn file Excel trước', 'error');
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append('file', file);
+
+          isUploadingExcel.value = true;
+          try {
+            const res = await axios.post('/api/stations/excel/import', formData, {
+              headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            if (res.data.success) {
+              showToast(res.data.message);
+              modals.value.importExcel = false;
+              await fetchStations();
+            }
+          } catch (err) {
+            showToast('Lỗi nhập Excel: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isUploadingExcel.value = false;
+            refreshIcons();
+          }
+        }
+
+        function exportExcel() {
+          window.location.href = '/api/stations/excel/export';
+          showToast('Đang tải file Excel danh sách cấu hình trạm...');
+        }
+
+        // ==========================================
+        // THÊM / CHỈNH SỬA ĐƠN LẺ 1 TRẠM
+        // ==========================================
+        function openAddModal() {
+          currentStation.value = {
+            name: '',
+            code: '',
+            district: '',
+            url: settings.value.defaultHisUrl,
+            username: '',
+            password: '',
+            notes: '',
+            active: true
+          };
+          modals.value.editStation = true;
+          refreshIcons();
+        }
+
+        function openEditModal(st) {
+          currentStation.value = { ...st };
+          if (!currentStation.value.district && allXaPhuongList.includes(st.name)) {
+            currentStation.value.district = st.name;
+          }
+          modals.value.editStation = true;
+          refreshIcons();
+        }
+
+        async function saveSingleStation() {
+          if (!currentStation.value.name && currentStation.value.district) {
+            currentStation.value.name = currentStation.value.district;
+          }
+          if (!currentStation.value.district && allXaPhuongList.includes(currentStation.value.name)) {
+            currentStation.value.district = currentStation.value.name;
+          }
+
+          if (!currentStation.value.name || !currentStation.value.username) {
+            showToast('Vui lòng nhập Tên Xã / Phường và Tên đăng nhập', 'error');
+            return;
+          }
+
+          try {
+            if (currentStation.value.id) {
+              // Cập nhật
+              await axios.put(`/api/stations/${currentStation.value.id}`, currentStation.value);
+              showToast('Cập nhật trạm thành công!');
+            } else {
+              // Thêm mới
+              await axios.post('/api/stations', currentStation.value);
+              showToast('Thêm trạm mới thành công!');
+            }
+            modals.value.editStation = false;
+            await fetchStations();
+          } catch (err) {
+            showToast('Lỗi lưu trạm: ' + err.message, 'error');
+          } finally {
+            refreshIcons();
+          }
+        }
+
+        async function deleteSingleStation(st) {
+          if (!confirm(`Bạn có chắc chắn muốn xóa "${st.name}"?`)) return;
+          try {
+            await axios.delete(`/api/stations/${st.id}`);
+            showToast(`Đã xóa ${st.name}`);
+            await fetchStations();
+          } catch (err) {
+            showToast('Lỗi xóa trạm: ' + err.message, 'error');
+          } finally {
+            refreshIcons();
+          }
+        }
+
+        // ==========================================
+        // THAO TÁC HÀNG LOẠT VỚI CHECKBOX
+        // ==========================================
+        async function testSelectedStations() {
+          if (selectedIds.value.length === 0) return;
+          isTestingBatch.value = true;
+          try {
+            const res = await axios.post('/api/stations/test-batch', { stationIds: selectedIds.value });
+            if (res.data.success) {
+              showToast(`Đã kiểm tra ${res.data.data.total} trạm: ${res.data.data.successCount} thành công, ${res.data.data.failedCount} lỗi`);
+              await fetchStations();
+            }
+          } catch (err) {
+            showToast('Lỗi kiểm tra hàng loạt: ' + err.message, 'error');
+          } finally {
+            isTestingBatch.value = false;
+            refreshIcons();
+          }
+        }
+
+        async function testAllStations() {
+          isTestingBatch.value = true;
+          try {
+            const res = await axios.post('/api/stations/test-batch');
+            if (res.data.success) {
+              showToast(`Đã kiểm tra toàn bộ ${res.data.data.total} trạm: ${res.data.data.successCount} thành công, ${res.data.data.failedCount} lỗi`);
+              await fetchStations();
+            }
+          } catch (err) {
+            showToast('Lỗi kiểm tra: ' + err.message, 'error');
+          } finally {
+            isTestingBatch.value = false;
+            refreshIcons();
+          }
+        }
+
+        async function testSingleStation(st) {
+          st.status = 'testing';
+          refreshIcons();
+          try {
+            const res = await axios.post(`/api/stations/${st.id}/test`);
+            if (res.data.success) {
+              if (res.data.data.success) {
+                showToast(`[${st.name}] ${res.data.data.message}`, 'success');
+              } else {
+                showToast(`[${st.name}] ${res.data.data.message}`, 'error');
+              }
+              await fetchStations();
+            }
+          } catch (err) {
+            showToast('Lỗi kiểm tra: ' + err.message, 'error');
+            await fetchStations();
+          } finally {
+            refreshIcons();
+          }
+        }
+
+        function openBatchUrlModal() {
+          bulkUrlInput.value = settings.value.defaultHisUrl;
+          modals.value.batchUrl = true;
+          refreshIcons();
+        }
+
+        async function applyBatchUrl() {
+          if (!bulkUrlInput.value.trim()) {
+            showToast('Vui lòng nhập URL', 'error');
+            return;
+          }
+          try {
+            await axios.post('/api/stations/batch-update-url', {
+              stationIds: selectedIds.value,
+              url: bulkUrlInput.value.trim()
+            });
+            showToast(`Đã cập nhật URL cho ${selectedIds.value.length} trạm`);
+            modals.value.batchUrl = false;
+            await fetchStations();
+          } catch (err) {
+            showToast('Lỗi cập nhật URL: ' + err.message, 'error');
+          } finally {
+            refreshIcons();
+          }
+        }
+
+        async function deleteSelectedStations() {
+          if (!confirm(`Bạn có chắc chắn muốn xóa ${selectedIds.value.length} trạm đã chọn?`)) return;
+          try {
+            await axios.post('/api/stations/delete-batch', { stationIds: selectedIds.value });
+            showToast(`Đã xóa ${selectedIds.value.length} trạm y tế`);
+            selectedIds.value = [];
+            await fetchStations();
+          } catch (err) {
+            showToast('Lỗi xóa: ' + err.message, 'error');
+          } finally {
+            refreshIcons();
+          }
+        }
+
+        // ==========================================
+        // XÓA TOÀN BỘ TRẠM Y TẾ
+        // ==========================================
+        function openClearAllModal() {
+          modals.value.clearAll = true;
+          refreshIcons();
+        }
+
+        async function confirmClearAll() {
+          isClearingAll.value = true;
+          try {
+            const res = await axios.post('/api/stations/clear-all');
+            if (res.data.success) {
+              stations.value = [];
+              selectedIds.value = [];
+              modals.value.clearAll = false;
+              showToast(res.data.message || 'Đã xóa toàn bộ trạm y tế thành công');
+            }
+          } catch (err) {
+            showToast('Lỗi khi xóa trạm: ' + err.message, 'error');
+          } finally {
+            isClearingAll.value = false;
+            refreshIcons();
+          }
+        }
+
+        // ==========================================
+        // CÀI ĐẶT HỆ THỐNG
+        // ==========================================
+        function openSettingsModal() {
+          settingsForm.value = { ...settings.value };
+          modals.value.settings = true;
+          refreshIcons();
+        }
+
+        async function saveSettings() {
+          try {
+            const res = await axios.put('/api/settings', settingsForm.value);
+            if (res.data.success) {
+              settings.value = res.data.data;
+              showToast('Đã lưu cài đặt hệ thống!');
+              modals.value.settings = false;
+            }
+          } catch (err) {
+            showToast('Lỗi lưu cài đặt: ' + err.message, 'error');
+          } finally {
+            refreshIcons();
+          }
+        }
+
+        // ==========================================
+        // CẤU HÌNH NGHIỆP VỤ HMIS
+        // ==========================================
+        const filteredCauHinh = computed(() => {
+          if (!cauhinhSearch.value.trim()) return cauhinhList.value;
+          const q = cauhinhSearch.value.toLowerCase().trim();
+          return cauhinhList.value.filter(item =>
+            (item.maCauHinh && item.maCauHinh.toLowerCase().includes(q)) ||
+            (item.tenCauHinh && item.tenCauHinh.toLowerCase().includes(q)) ||
+            (item.moTa && item.moTa.toLowerCase().includes(q)) ||
+            (item.giaTriThietLap && item.giaTriThietLap.toLowerCase().includes(q))
+          );
+        });
+
+        function parseParams(jsonStr) {
+          if (!jsonStr) return [];
+          try {
+            const obj = typeof jsonStr === 'string' ? JSON.parse(jsonStr) : jsonStr;
+            return Object.keys(obj).map(k => ({
+              key: k,
+              giatri: typeof obj[k]?.giatri === 'object' ? JSON.stringify(obj[k]?.giatri) : obj[k]?.giatri,
+              mota: obj[k]?.mota || ''
+            }));
+          } catch (e) {
+            return [];
+          }
+        }
+
+        async function openCauHinhModal() {
+          modals.value.cauhinh = true;
+          refreshIcons();
+          if (cauhinhList.value.length === 0) {
+            isLoadingCauhinh.value = true;
+            try {
+              const res = await axios.get('/api/stations/cauhinh-nghiepvu');
+              if (res.data.success) {
+                cauhinhList.value = res.data.data;
+              }
+            } catch (err) {
+              showToast('Lỗi tải cấu hình: ' + err.message, 'error');
+            } finally {
+              isLoadingCauhinh.value = false;
+              refreshIcons();
+            }
+          }
+        }
+
+        async function refreshCauHinhFromHmis() {
+          isRefreshingCauhinh.value = true;
+          try {
+            const res = await axios.post('/api/stations/cauhinh-nghiepvu/refresh');
+            if (res.data.success) {
+              cauhinhList.value = res.data.data;
+              showToast(res.data.message);
+            }
+          } catch (err) {
+            showToast('Lỗi làm mới cấu hình: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isRefreshingCauhinh.value = false;
+            refreshIcons();
+          }
+        }
+
+        const selectedStationsList = computed(() => {
+          return stations.value.filter(s => selectedIds.value.includes(s.id));
+        });
+
+        async function openBulkParamEditModal() {
+          if (selectedIds.value.length === 0) {
+            showToast('Vui lòng chọn ít nhất 1 trạm y tế', 'error');
+            return;
+          }
+          if (cauhinhList.value.length === 0) {
+            try {
+              const res = await axios.get('/api/stations/cauhinh-nghiepvu');
+              if (res.data.success) {
+                cauhinhList.value = res.data.data;
+              }
+            } catch (e) {}
+          }
+          bulkParamForm.value = { maCauHinh: '', paramKey: '', paramValue: '' };
+          selectedGroupParams.value = [];
+          selectedParamMeta.value = null;
+          bulkUpdateResults.value = null;
+          groupSearchQuery.value = '';
+          isGroupDropdownOpen.value = false;
+          paramSearchQuery.value = '';
+          isParamDropdownOpen.value = false;
+          modals.value.bulkParamEdit = true;
+          refreshIcons();
+        }
+
+        const filteredConfigGroups = computed(() => {
+          if (!groupSearchQuery.value.trim()) return cauhinhList.value;
+          const q = groupSearchQuery.value.toLowerCase().trim();
+          return cauhinhList.value.filter(c =>
+            (c.maCauHinh && c.maCauHinh.toLowerCase().includes(q)) ||
+            (c.tenCauHinh && c.tenCauHinh.toLowerCase().includes(q)) ||
+            (c.moTa && c.moTa.toLowerCase().includes(q)) ||
+            (c.giaTriThietLap && c.giaTriThietLap.toLowerCase().includes(q))
+          );
+        });
+
+        function getMatchingParamsInGroup(c, query) {
+          if (!query || !query.trim()) return [];
+          const q = query.toLowerCase().trim();
+          const params = parseParams(c.giaTriThietLap);
+          return params.filter(p =>
+            (p.key && p.key.toLowerCase().includes(q)) ||
+            (p.mota && p.mota.toLowerCase().includes(q))
+          );
+        }
+
+        const selectedGroupObj = computed(() => {
+          if (!bulkParamForm.value.maCauHinh) return null;
+          return cauhinhList.value.find(c => c.maCauHinh === bulkParamForm.value.maCauHinh) || null;
+        });
+
+        function selectConfigGroup(group) {
+          bulkParamForm.value.maCauHinh = group.maCauHinh;
+          const prevQuery = groupSearchQuery.value.trim();
+          isGroupDropdownOpen.value = false;
+          groupSearchQuery.value = '';
+          onSelectGroupChange();
+
+          // Nếu trước đó người dùng tìm theo tên/mô tả tham số, tự động chọn tham số đó luôn
+          if (prevQuery) {
+            const matched = selectedGroupParams.value.find(p =>
+              (p.key && p.key.toLowerCase().includes(prevQuery.toLowerCase())) ||
+              (p.mota && p.mota.toLowerCase().includes(prevQuery.toLowerCase()))
+            );
+            if (matched) {
+              selectParamItem(matched);
+            }
+          }
+          refreshIcons();
+        }
+
+        function clearSelectedGroup() {
+          bulkParamForm.value.maCauHinh = '';
+          bulkParamForm.value.paramKey = '';
+          bulkParamForm.value.paramValue = '';
+          selectedGroupParams.value = [];
+          selectedParamMeta.value = null;
+          groupSearchQuery.value = '';
+          isGroupDropdownOpen.value = true;
+          paramSearchQuery.value = '';
+          isParamDropdownOpen.value = false;
+          refreshIcons();
+        }
+
+        function onSelectGroupChange() {
+          const group = cauhinhList.value.find(c => c.maCauHinh === bulkParamForm.value.maCauHinh);
+          if (group) {
+            selectedGroupParams.value = parseParams(group.giaTriThietLap);
+          } else {
+            selectedGroupParams.value = [];
+          }
+          bulkParamForm.value.paramKey = '';
+          bulkParamForm.value.paramValue = '';
+          selectedParamMeta.value = null;
+          paramSearchQuery.value = '';
+          isParamDropdownOpen.value = false;
+        }
+
+        // Lọc danh sách tham số theo tên tham số (key) hoặc mô tả tham số (mota)
+        const filteredGroupParams = computed(() => {
+          if (!paramSearchQuery.value.trim()) return selectedGroupParams.value;
+          const q = paramSearchQuery.value.toLowerCase().trim();
+          return selectedGroupParams.value.filter(p =>
+            (p.key && p.key.toLowerCase().includes(q)) ||
+            (p.mota && p.mota.toLowerCase().includes(q)) ||
+            (p.giatri !== undefined && String(p.giatri).toLowerCase().includes(q))
+          );
+        });
+
+        function selectParamItem(p) {
+          bulkParamForm.value.paramKey = p.key;
+          selectedParamMeta.value = p;
+          bulkParamForm.value.paramValue = p.giatri !== undefined ? p.giatri : '';
+          isParamDropdownOpen.value = false;
+          paramSearchQuery.value = '';
+          refreshIcons();
+        }
+
+        function clearSelectedParam() {
+          bulkParamForm.value.paramKey = '';
+          selectedParamMeta.value = null;
+          bulkParamForm.value.paramValue = '';
+          paramSearchQuery.value = '';
+          isParamDropdownOpen.value = true;
+          refreshIcons();
+        }
+
+        function onSelectParamChange() {
+          const p = selectedGroupParams.value.find(item => item.key === bulkParamForm.value.paramKey);
+          selectedParamMeta.value = p || null;
+          bulkParamForm.value.paramValue = p?.giatri !== undefined ? p.giatri : '';
+        }
+
+        async function submitBulkParamUpdate() {
+          if (!bulkParamForm.value.maCauHinh || !bulkParamForm.value.paramKey) {
+            showToast('Vui lòng chọn nhóm và tham số', 'error');
+            return;
+          }
+          isUpdatingParams.value = true;
+          try {
+            const res = await axios.post('/api/stations/cauhinh-nghiepvu/batch-update-param', {
+              stationIds: selectedIds.value,
+              maCauHinh: bulkParamForm.value.maCauHinh,
+              paramKey: bulkParamForm.value.paramKey,
+              paramValue: bulkParamForm.value.paramValue
+            });
+            if (res.data.success) {
+              bulkUpdateResults.value = res.data.data;
+              showToast(res.data.message);
+            }
+          } catch (err) {
+            showToast('Lỗi cập nhật cấu hình: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isUpdatingParams.value = false;
+            refreshIcons();
+          }
+        }
+
+        onMounted(async () => {
+          await fetchSettings();
+          await fetchStations();
+          refreshIcons();
+        });
+
+        return {
+          stations,
+          settings,
+          selectedIds,
+          searchQuery,
+          filterStatus,
+          showAllPasswords,
+          isTestingBatch,
+          isSavingBatch,
+          isUploadingExcel,
+          isClearingAll,
+          modals,
+          batchTab,
+          batchRows,
+          pasteText,
+          bulkUrlInput,
+          excelFileInput,
+          currentStation,
+          settingsForm,
+          toasts,
+          filteredStations,
+          countSuccess,
+          countFailed,
+          countUntested,
+          isAllSelected,
+          validBatchRowCount,
+          cleanUrl,
+          copyText,
+          toggleSelectAll,
+          toggleShowAllPasswords,
+          openBatchModal,
+          addBatchRows,
+          clearBatchRows,
+          batchFillHmisUrl,
+          batchFillDefaultUrl,
+          batchAutoGenerateCodes,
+          loadSample20Stations,
+          saveBatchStations,
+          parsePastedText,
+          loadSamplePasteText,
+          openImportModal,
+          submitImportExcel,
+          exportExcel,
+          openAddModal,
+          openEditModal,
+          saveSingleStation,
+          deleteSingleStation,
+          testSelectedStations,
+          testAllStations,
+          testSingleStation,
+          openBatchUrlModal,
+          applyBatchUrl,
+          deleteSelectedStations,
+          openClearAllModal,
+          confirmClearAll,
+          openCauHinhModal,
+          filteredCauHinh,
+          parseParams,
+          cauhinhSearch,
+          cauhinhList,
+          isLoadingCauhinh,
+          isRefreshingCauhinh,
+          bulkParamForm,
+          selectedGroupParams,
+          selectedParamMeta,
+          isUpdatingParams,
+          bulkUpdateResults,
+          selectedStationsList,
+          groupSearchQuery,
+          isGroupDropdownOpen,
+          filteredConfigGroups,
+          selectedGroupObj,
+          selectConfigGroup,
+          clearSelectedGroup,
+          getMatchingParamsInGroup,
+          paramSearchQuery,
+          isParamDropdownOpen,
+          filteredGroupParams,
+          selectParamItem,
+          clearSelectedParam,
+          refreshCauHinhFromHmis,
+          openBulkParamEditModal,
+          onSelectGroupChange,
+          onSelectParamChange,
+          submitBulkParamUpdate,
+          openSettingsModal,
+          saveSettings,
+          phuongList,
+          xaList,
+          allXaPhuongList,
+          onDistrictChange
+        };
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

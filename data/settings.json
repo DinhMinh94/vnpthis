@@ -3,5 +3,6 @@
   "defaultHisUrl": "https://ytcs.hmis.vn/",
   "simulationMode": false,
   "autoCheckIntervalMinutes": 0,
-  "timeoutSeconds": 15
+  "timeoutSeconds": 15,
+  "securityPin": "123456"
 }

@@ -614,10 +614,6 @@
               <i data-lucide="download" class="w-5 h-5 text-emerald-700"></i>
               <span>TẢI FILE EXCEL 78 CỘT VỀ MÁY</span>
             </button>
-            <button @click="scrollToThuocResult" class="px-4 py-3.5 bg-emerald-800/60 hover:bg-emerald-800 text-white font-bold text-xs rounded-2xl border border-emerald-400/40 transition-colors flex items-center justify-center space-x-1.5 cursor-pointer">
-              <i data-lucide="arrow-down" class="w-4 h-4"></i>
-              <span>Xem bảng chi tiết ↓</span>
-            </button>
           </div>
         </div>
 
@@ -744,22 +740,14 @@
                   <p class="text-xs text-emerald-800 font-medium mt-1">{{ convertStatusMsg }}</p>
                 </div>
               </div>
-              <div class="flex flex-col sm:flex-row items-center gap-2 pt-1">
+              <div class="pt-1">
                 <button
                   type="button"
                   @click="downloadConvertedExcel"
-                  class="w-full sm:w-auto flex-1 py-3 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-98"
+                  class="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-98"
                 >
                   <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
                   <span>TẢI FILE EXCEL (.XLSX) 78 CỘT VỀ MÁY</span>
-                </button>
-                <button
-                  type="button"
-                  @click="scrollToThuocResult"
-                  class="w-full sm:w-auto px-4 py-3 bg-white hover:bg-emerald-100 text-emerald-900 font-bold text-xs rounded-xl border border-emerald-300 transition-colors flex items-center justify-center space-x-1.5 cursor-pointer"
-                >
-                  <i data-lucide="arrow-down-circle" class="w-4 h-4 text-emerald-700"></i>
-                  <span>Xem bảng kết quả bên dưới</span>
                 </button>
               </div>
             </div>
@@ -774,159 +762,7 @@
           </div>
         </div>
 
-        <!-- KHU VỰC THỐNG KÊ & BẢNG KẾT QUẢ DANH SÁCH THUỐC -->
-        <div v-if="convertResult" id="thuocResultSection" class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-5 animate-in fade-in duration-200">
-          
-          <!-- TIÊU ĐỀ KHU VỰC KẾT QUẢ & NÚT DOWNLOAD TRỌNG TÂM -->
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center border border-emerald-200 shadow-xs">
-                <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
-              </div>
-              <div>
-                <h2 class="text-base sm:text-lg font-black text-slate-800 uppercase tracking-tight">
-                  BẢNG DỮ LIỆU THUỐC ĐÃ CHUYỂN ĐỔI (78 CỘT CHUẨN)
-                </h2>
-                <p class="text-xs text-slate-500 font-medium">
-                  Đã chuẩn hóa hoàn tất • Sẵn sàng tải về file Excel hoặc import trực tiếp vào phân hệ Quản lý Dược VNPT HMIS
-                </p>
-              </div>
-            </div>
 
-            <!-- NÚT TẢI EXCEL LỚN NỔI BẬT -->
-            <button
-              type="button"
-              @click="downloadConvertedExcel"
-              class="inline-flex items-center justify-center space-x-2.5 px-6 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-emerald-600/30 transition-all hover:scale-102 cursor-pointer flex-shrink-0 active:scale-98"
-            >
-              <i data-lucide="download" class="w-5 h-5"></i>
-              <span>TẢI VỀ FILE EXCEL (.XLSX) 78 CỘT NGAY</span>
-            </button>
-          </div>
-
-          <!-- THỐNG KÊ CARDS -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div class="bg-blue-50/60 border border-blue-200 p-3.5 rounded-2xl">
-              <span class="text-[11px] font-bold text-blue-700 uppercase tracking-wider block">Tổng số thuốc</span>
-              <span class="text-xl font-extrabold text-blue-900 mt-1 block">{{ convertResult.totalRows }}</span>
-            </div>
-            <div class="bg-emerald-50/60 border border-emerald-200 p-3.5 rounded-2xl">
-              <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider block">Tân dược (TH)</span>
-              <span class="text-xl font-extrabold text-emerald-900 mt-1 block">{{ convertResult.summary?.thCount || 0 }}</span>
-            </div>
-            <div class="bg-amber-50/60 border border-amber-200 p-3.5 rounded-2xl">
-              <span class="text-[11px] font-bold text-amber-700 uppercase tracking-wider block">Chế phẩm YHCT (CP)</span>
-              <span class="text-xl font-extrabold text-amber-900 mt-1 block">{{ convertResult.summary?.cpCount || 0 }}</span>
-            </div>
-            <div class="bg-purple-50/60 border border-purple-200 p-3.5 rounded-2xl">
-              <span class="text-[11px] font-bold text-purple-700 uppercase tracking-wider block">Quy chuẩn cột</span>
-              <span class="text-xl font-extrabold text-purple-900 mt-1 block">78 Cột HIS</span>
-            </div>
-          </div>
-
-          <!-- BỘ LỌC & TÌM KIẾM TRONG BẢNG THUỐC -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div class="flex items-center space-x-2 flex-1 max-w-md">
-              <div class="relative w-full">
-                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
-                <input
-                  v-model="thuocSearchQuery"
-                  type="text"
-                  placeholder="Tìm kiếm theo Tên thuốc, Hoạt chất, Số đăng ký..."
-                  class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none bg-slate-50/50"
-                />
-              </div>
-            </div>
-
-            <!-- Lọc Nhóm TH / CP -->
-            <div class="flex items-center space-x-2">
-              <span class="text-xs text-slate-500 font-medium">Nhóm:</span>
-              <button @click="thuocFilterNhom = 'all'"
-                      class="px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                      :class="thuocFilterNhom === 'all' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'">
-                Tất cả ({{ convertResult.totalRows }})
-              </button>
-              <button @click="thuocFilterNhom = 'TH'"
-                      class="px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                      :class="thuocFilterNhom === 'TH' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'">
-                Tân dược ({{ convertResult.summary?.thCount || 0 }})
-              </button>
-              <button @click="thuocFilterNhom = 'CP'"
-                      class="px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                      :class="thuocFilterNhom === 'CP' ? 'bg-amber-600 text-white' : 'bg-amber-50 text-amber-700 hover:bg-amber-100'">
-                Thuốc YHCT ({{ convertResult.summary?.cpCount || 0 }})
-              </button>
-            </div>
-          </div>
-
-          <!-- BẢNG DỮ LIỆU THUỐC ĐẦY ĐỦ CÓ SCROLL -->
-          <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
-            <div class="overflow-x-auto max-h-[500px]">
-              <table class="w-full text-xs text-left border-collapse">
-                <thead class="bg-slate-100 text-slate-700 sticky top-0 z-20 shadow-2xs font-bold uppercase text-[11px]">
-                  <tr>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">STT</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Mã Nhóm</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Mã Hoạt Chất</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Tên Hoạt Chất</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Mã Thuốc</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Tên Thuốc Thành Phẩm</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Hàm Lượng</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">ĐVT</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Đường Dùng</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Giá Thầu (VNĐ)</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Số Đăng Ký</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Hãng SX</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Nước SX</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Nhà Thầu Cung Cấp</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Thầu Ghép</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Từ Ngày</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Đến Ngày</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Số Lượng</th>
-                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Mã CSKCB</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 bg-white">
-                  <tr v-for="(r, i) in filteredThuocList" :key="i" class="hover:bg-rose-50/40 transition-colors">
-                    <td class="p-3 font-mono font-bold text-slate-500">{{ r[0] }}</td>
-                    <td class="p-3 font-bold" :class="r[1] === 'TH' ? 'text-blue-600' : 'text-amber-600'">
-                      <span class="px-2 py-0.5 rounded-md" :class="r[1] === 'TH' ? 'bg-blue-50' : 'bg-amber-50'">{{ r[1] }}</span>
-                    </td>
-                    <td class="p-3 font-mono font-semibold text-slate-700 whitespace-nowrap">{{ r[3] }}</td>
-                    <td class="p-3 font-medium text-slate-800 whitespace-nowrap">{{ r[4] }}</td>
-                    <td class="p-3 font-mono text-slate-600 whitespace-nowrap">{{ r[5] }}</td>
-                    <td class="p-3 font-bold text-slate-900 whitespace-nowrap">{{ r[6] }}</td>
-                    <td class="p-3 text-slate-700 whitespace-nowrap">{{ r[7] }}</td>
-                    <td class="p-3 text-slate-700 whitespace-nowrap">{{ r[8] }}</td>
-                    <td class="p-3 text-slate-700 whitespace-nowrap">{{ r[9] }}</td>
-                    <td class="p-3 font-bold font-mono text-emerald-700 whitespace-nowrap">{{ Number(r[13] || 0).toLocaleString('vi-VN') }}đ</td>
-                    <td class="p-3 font-mono text-slate-700 whitespace-nowrap">{{ r[22] }}</td>
-                    <td class="p-3 text-slate-600 whitespace-nowrap max-w-xs truncate" :title="r[11]">{{ r[11] }}</td>
-                    <td class="p-3 text-slate-600 whitespace-nowrap">{{ r[12] }}</td>
-                    <td class="p-3 text-slate-600 whitespace-nowrap max-w-xs truncate" :title="r[25]">{{ r[25] }}</td>
-                    <td class="p-3 text-[11px] text-slate-600 font-mono whitespace-nowrap max-w-xs truncate" :title="r[35]">{{ r[35] }}</td>
-                    <td class="p-3 font-mono text-slate-600 whitespace-nowrap">{{ r[38] }}</td>
-                    <td class="p-3 font-mono text-slate-600 whitespace-nowrap">{{ r[39] }}</td>
-                    <td class="p-3 font-mono font-bold text-slate-800 whitespace-nowrap">{{ Number(r[42] || 0).toLocaleString('vi-VN') }}</td>
-                    <td class="p-3 font-mono font-bold text-purple-700 whitespace-nowrap">{{ r[43] }}</td>
-                  </tr>
-                  <tr v-if="filteredThuocList.length === 0">
-                    <td colspan="19" class="p-8 text-center text-slate-500">
-                      Không tìm thấy thuốc nào khớp với từ khóa tìm kiếm.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Footer của bảng -->
-            <div class="p-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
-              <span>Đang hiển thị <strong>{{ filteredThuocList.length }}</strong> / {{ convertResult.totalRows }} thuốc</span>
-              <span>Định dạng tương thích cổng Dược VNPT HMIS 4.0</span>
-            </div>
-          </div>
-
-        </div>
 
       </div>
     </main>
@@ -2082,9 +1918,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
               <span>TẢI FILE EXCEL (.XLSX) 78 CỘT VỀ MÁY NGAY</span>
             </button>
-            <button @click="closeThuocModalAndScroll" class="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors flex items-center justify-center space-x-1.5 cursor-pointer">
-              <i data-lucide="eye" class="w-4 h-4"></i>
-              <span>Xem bảng dữ liệu chi tiết bên dưới</span>
+            <button @click="thuocModal.show = false" class="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors flex items-center justify-center space-x-1.5 cursor-pointer">
+              <span>Đóng thông báo</span>
             </button>
           </div>
         </div>
@@ -3289,15 +3124,15 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               thuocModal.value = {
                 show: true,
                 mode: 'success',
-                title: 'NẠP FILE THUỐC CỔNG GIÁM ĐỊNH THÀNH CÔNG!',
-                message: `Đã nạp và chuẩn hóa thành công ${res.data.totalRows} danh mục thuốc sang định dạng 78 cột chuẩn cổng Dược VNPT HMIS 4.0.`,
+                title: 'NẠP & CHUYỂN ĐỔI THÀNH CÔNG!',
+                message: `Đã chuẩn hóa thành công ${res.data.totalRows} danh mục thuốc sang định dạng 78 cột chuẩn cổng Dược VNPT HMIS 4.0. File Excel đã được tự động tải về máy của bạn!`,
                 progressStep: 4,
                 totalRows: res.data.totalRows,
                 thCount: res.data.summary?.thCount || 0,
                 cpCount: res.data.summary?.cpCount || 0
               };
-              scrollToThuocResult();
-              showToast(`Đã nạp và hiển thị ${res.data.totalRows} thuốc từ Cổng Giám Định!`, 'success');
+              await downloadConvertedExcel();
+              showToast(`Đã chuyển đổi thành công ${res.data.totalRows} thuốc và tải file về máy!`, 'success');
             } else {
               convertStatus.value = 'error';
               convertStatusMsg.value = res.data.message || 'Lỗi nạp file mẫu từ cổng giám định';
@@ -3334,7 +3169,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         }
 
         async function startConvertThuoc() {
-          // Nếu người dùng chưa chọn file -> Tự động nạp file thuốc từ Cổng Giám Định và hiển thị ngay bảng kết quả
+          // Nếu người dùng chưa chọn file -> Tự động nạp file thuốc từ Cổng Giám Định và tải file về
           if (!thuocFile.value) {
             showToast('Chưa chọn file, đang tự động nạp và chuyển đổi dữ liệu thuốc từ Cổng Giám Định...', 'info');
             await loadSampleThuocData();
@@ -3373,15 +3208,15 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                 show: true,
                 mode: 'success',
                 title: 'CHUYỂN ĐỔI THÀNH CÔNG!',
-                message: `Đã chuẩn hóa thành công ${res.data.totalRows} danh mục thuốc sang định dạng 78 cột chuẩn cổng Dược VNPT HMIS 4.0.`,
+                message: `Đã chuẩn hóa thành công ${res.data.totalRows} danh mục thuốc sang định dạng 78 cột chuẩn cổng Dược VNPT HMIS 4.0. File Excel đã được tự động tải về máy của bạn!`,
                 progressStep: 4,
                 totalRows: res.data.totalRows,
                 thCount: res.data.summary?.thCount || 0,
                 cpCount: res.data.summary?.cpCount || 0
               };
 
-              scrollToThuocResult();
-              showToast(`Chuyển đổi thành công ${res.data.totalRows} thuốc!`, 'success');
+              await downloadConvertedExcel();
+              showToast(`Đã chuyển đổi thành công ${res.data.totalRows} thuốc và tải file về máy!`, 'success');
             } else {
               convertStatus.value = 'error';
               convertStatusMsg.value = res.data.message || 'Lỗi khi xử lý file';

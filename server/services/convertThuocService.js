@@ -212,8 +212,8 @@ function convertRows(sourceRows, options = {}) {
     const maHoatChat = d.MA_HOAT_CHAT_AX || d.MA_HOAT_CHAT || d.MA_THUOC || '';
     const hoatChat = d.HOAT_CHAT_AX || d.TEN_HOAT_CHAT || d.HOAT_CHAT || '';
     
-    // MA_THUOC trên HIS: nếu có MA_CSKCB_THUOC thì dùng, nếu không dùng d.MA_THUOC (hoặc TH_00001)
-    const maThuoc = d.MA_CSKCB_THUOC || d.MA_THUOC || `TH_${String(stt).padStart(5, '0')}`;
+    // MA_THUOC trên HIS: bỏ trống theo yêu cầu người dùng
+    const maThuoc = '';
     const tenThuoc = d.TEN_THUOC || d.TEN_THUOC_AX || '';
     const hamLuong = d.HAM_LUONG || '';
     const donViTinh = d.DON_VI_TINH || '';
@@ -230,11 +230,16 @@ function convertRows(sourceRows, options = {}) {
     const giaBhyt = parseNumberVi(d.DON_GIA_BH || d.DON_GIA || 0);
     const giaBhytQuyetToan = giaBhyt;
     
+    // BHYT_CHI_TRA: mặc định 100 theo yêu cầu người dùng
+    const bhytChiTra = 100;
+    
     const soDangKy = d.SO_DANG_KY || d.SO_DANG_KY_AX || '';
     const dongGoi = d.QUY_CACH || d.DONG_GOI || '';
     const lieuLuong = hamLuong;
     const nhaCungCap = d.NHA_THAU || d.NHA_CUNG_CAP || '';
-    const soGoiThau = extractGoiThau(d.TT_THAU) || '';
+    
+    // SO_GOI_THAU: bỏ trống theo yêu cầu người dùng
+    const soGoiThau = '';
     const dangBaoChe = d.DANG_BAO_CHE || '';
     const tyleHuHao = d.TLHH_CB || '';
     const congBo = formatDate(d.NGAY_NHAN || d.TU_NGAY);
@@ -266,7 +271,7 @@ function convertRows(sourceRows, options = {}) {
     const row = [
       stt, maNhom, '', maHoatChat, hoatChat, maThuoc, tenThuoc, hamLuong,
       donViTinh, duongDung, maDuongDung, hangSx, nuocSx, giaThau, nhomBhxh,
-      giaBan, giaDichVu, giaBhyt, giaBhytQuyetToan, '', '', '',
+      giaBan, giaDichVu, giaBhyt, giaBhytQuyetToan, bhytChiTra, '', '',
       soDangKy, dongGoi, lieuLuong, nhaCungCap, soGoiThau, dangBaoChe, tyleHuHao,
       congBo, sttThau, tenGiamDinhBh, maThuocBv, nguonCt, '', thauGhep,
       maPpCheBien, '', tuNgay, denNgay, tuNgay, denNgay, soLuong,

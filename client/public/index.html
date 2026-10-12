@@ -172,8 +172,42 @@
       </div>
     </header>
 
+    <!-- MAIN NAVIGATION TABS BAR -->
+    <nav class="bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-2xs sticky top-16 z-30">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center space-x-3 py-2.5">
+          <!-- Tab 1: Cấu hình Trạm Y Tế -->
+          <button @click="switchMainTab('stations')"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border"
+                  :class="currentMainTab === 'stations' ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
+            <i data-lucide="building-2" class="w-4 h-4"></i>
+            <span>1. Quản Lý & Cấu Hình Trạm Y Tế</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold" :class="currentMainTab === 'stations' ? 'bg-blue-700 text-white' : 'bg-slate-200 text-slate-700'">
+              {{ stations.length }} Trạm
+            </span>
+          </button>
+
+          <!-- Tab 2: Gen File Thuốc HIS (78 Cột) -->
+          <button @click="switchMainTab('thuoc')"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative"
+                  :class="currentMainTab === 'thuoc' ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white border-rose-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
+            <i data-lucide="pill" class="w-4 h-4" :class="currentMainTab === 'thuoc' ? 'text-white' : 'text-rose-600'"></i>
+            <span>2. Gen File Thuốc Chuẩn VNPT HIS (78 Cột)</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-400 text-amber-950 shadow-2xs animate-pulse">
+              Mới
+            </span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
     <!-- MAIN BODY -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+      <!-- ============================================================== -->
+      <!-- TAB 1: QUẢN LÝ & CẤU HÌNH TRẠM Y TẾ                             -->
+      <!-- ============================================================== -->
+      <div v-show="currentMainTab === 'stations'" class="space-y-6">
 
       <!-- BANNER TIÊU ĐỀ & THÔNG TIN ĐƠN VỊ -->
       <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -216,6 +250,12 @@
           <button @click="openCauHinhModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium text-sm rounded-xl border border-indigo-200 transition-colors shadow-sm" title="Xem & tải toàn bộ 160 cấu hình nghiệp vụ thực tế từ cổng HMIS">
             <i data-lucide="sliders" class="w-4 h-4 text-indigo-600"></i>
             <span>Cấu hình nghiệp vụ HMIS</span>
+          </button>
+
+          <!-- Nút Gen File Thuốc HIS -->
+          <button @click="openConvertThuocModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium text-sm rounded-xl border border-rose-200 transition-colors shadow-sm" title="Chuyển đổi file danh mục thuốc sang mẫu 78 cột chuẩn import VNPT HIS">
+            <i data-lucide="pill" class="w-4 h-4 text-rose-600"></i>
+            <span>Gen File Thuốc HIS</span>
           </button>
 
           <!-- Nút Thêm Xã / Phường -->
@@ -507,6 +547,275 @@
             </span>
           </div>
         </div>
+      </div>
+      </div> <!-- /END TAB 1: STATIONS -->
+
+      <!-- ============================================================== -->
+      <!-- TAB 2: GEN FILE THUỐC IMPORT VNPT HIS (78 CỘT CHUẨN)             -->
+      <!-- ============================================================== -->
+      <div v-show="currentMainTab === 'thuoc'" class="space-y-6">
+
+        <!-- BANNER TIÊU ĐỀ TAB THUỐC -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5 bg-gradient-to-br from-white via-rose-50/20 to-pink-50/30">
+          <div class="flex items-start sm:items-center space-x-4">
+            <div class="p-3.5 bg-gradient-to-br from-rose-500 to-pink-600 rounded-2xl text-white shadow-md shadow-rose-500/20 flex-shrink-0">
+              <i data-lucide="pill" class="w-8 h-8"></i>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <h1 class="text-xl font-extrabold text-slate-800 tracking-tight">Gen File Danh Mục Thuốc Chuẩn VNPT HIS</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200">
+                  Chuẩn 78 Cột Cổng Dược HMIS 4.0
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                  Tương thích 100%
+                </span>
+              </div>
+              <p class="text-sm text-slate-600 mt-1 max-w-3xl">
+                Chuyển đổi tức thì từ bảng kết quả thầu, danh mục thuốc nội bộ sang file Excel định dạng 78 cột chuẩn để import trực tiếp vào phân hệ Quản lý Dược cổng VNPT HMIS.
+              </p>
+            </div>
+          </div>
+
+          <!-- Nút tác vụ nhanh -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <a href="/api/thuoc/download-template" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl border border-slate-300 transition-colors">
+              <i data-lucide="download" class="w-4 h-4 text-slate-600"></i>
+              <span>Tải file Excel mẫu 78 cột</span>
+            </a>
+            <button @click="loadSampleThuocData" :disabled="isConvertingThuoc" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white font-bold text-xs rounded-xl shadow-md transition-all hover:scale-102 cursor-pointer disabled:opacity-50">
+              <i data-lucide="sparkles" class="w-4 h-4 text-amber-300"></i>
+              <span>Nạp 609 Thuốc Mẫu Của Đơn Vị</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- KHU VỰC THAO TÁC UPLOAD & CẤU HÌNH -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <!-- CỘT 1 & 2: KHU VỰC TẢI LÊN FILE NGUỒN -->
+          <div class="lg:col-span-2 bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-lg bg-rose-100 text-rose-700 font-bold text-xs flex items-center justify-center">1</span>
+                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Tải Lên File Dữ Liệu Nguồn</h3>
+              </div>
+              <span class="text-xs text-slate-500">Định dạng hỗ trợ: .xlsx, .xls, .csv</span>
+            </div>
+
+            <!-- Drag & Drop Box -->
+            <label class="block border-2 border-dashed border-rose-300 hover:border-rose-500 bg-rose-50/20 hover:bg-rose-50/50 rounded-2xl p-8 text-center transition-all cursor-pointer relative"
+                   @dragover.prevent @drop.prevent="handleThuocDrop">
+              <input type="file" accept=".xlsx,.xls,.csv" @change="handleThuocFileChange" class="hidden">
+              <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center shadow-xs">
+                <i data-lucide="upload-cloud" class="w-7 h-7"></i>
+              </div>
+              <div v-if="!thuocFileName">
+                <p class="text-sm font-bold text-slate-800">
+                  Nhấp vào đây để chọn file dữ liệu thuốc, hoặc kéo thả file vào khung
+                </p>
+                <p class="text-xs text-slate-500 mt-1.5">
+                  Hệ thống tự động nhận diện và ánh xạ các cột: Tên thuốc, hoạt chất, hàm lượng, số ĐK, giá thầu, thầu ghép...
+                </p>
+              </div>
+              <div v-else>
+                <p class="text-sm font-bold text-rose-700 flex items-center justify-center space-x-2">
+                  <i data-lucide="file-check" class="w-5 h-5 text-emerald-600"></i>
+                  <span>Đã chọn file: <strong class="underline">{{ thuocFileName }}</strong></span>
+                </p>
+                <p class="text-xs text-slate-500 mt-1">Nhấp lại nếu muốn chọn file khác</p>
+              </div>
+            </label>
+          </div>
+
+          <!-- CỘT 3: CẤU HÌNH THAM SỐ CHUYỂN ĐỔI -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="flex items-center space-x-2 pb-2 border-b border-slate-100">
+                <span class="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center justify-center">2</span>
+                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Cấu Hình Tham Số Áp Dụng</h3>
+              </div>
+
+              <!-- Chọn Trạm CSKCB -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Mã CSKCB Cơ sở khám chữa bệnh:</label>
+                <select v-model="thuocOptions.maCskcb" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                  <option value="">Giữ nguyên mã CSKCB theo từng dòng file nguồn</option>
+                  <option v-for="st in stations" :key="st.id" :value="st.cskcbCode">
+                    {{ st.name }} ({{ st.cskcbCode }})
+                  </option>
+                </select>
+                <p class="text-[11px] text-slate-500 mt-1">Gán 1 mã trạm cụ thể nếu cần import riêng cho trạm đó</p>
+              </div>
+
+              <!-- Nhóm chi phí BHXH -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Nhóm chi phí BHXH mặc định:</label>
+                <select v-model="thuocOptions.nhomBhxh" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                  <option :value="4">Nhóm 4 - Thuốc trong danh mục BHYT (Mặc định)</option>
+                  <option :value="5">Nhóm 5 - Thuốc thanh toán theo tỷ lệ</option>
+                  <option :value="10">Nhóm 10 - Vật tư y tế</option>
+                </select>
+              </div>
+
+              <!-- Nguồn chương trình -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Nguồn chương trình:</label>
+                <input v-model="thuocOptions.nguonCt" type="text" placeholder="74" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none">
+              </div>
+            </div>
+
+            <!-- Nút Bắt đầu chuyển đổi -->
+            <button
+              @click="startConvertThuoc"
+              :disabled="(!thuocFile && !convertResult) || isConvertingThuoc"
+              class="w-full py-3 bg-gradient-to-r from-rose-600 via-pink-600 to-indigo-600 hover:from-rose-700 hover:to-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer mt-2"
+            >
+              <i data-lucide="play" class="w-4 h-4" v-if="!isConvertingThuoc"></i>
+              <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-else></i>
+              <span>{{ isConvertingThuoc ? 'Đang xử lý dữ liệu...' : 'BẮT ĐẦU CHUYỂN ĐỔI & PHÂN TÍCH' }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- KHU VỰC THỐNG KÊ & BẢNG KẾT QUẢ DANH SÁCH THUỐC -->
+        <div v-if="convertResult" id="thuocResultSection" class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-5 animate-in fade-in duration-200">
+          
+          <!-- THỐNG KÊ CARDS & NÚT DOWNLOAD -->
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+            <!-- 4 Thẻ thống kê -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 flex-1">
+              <div class="bg-blue-50/60 border border-blue-200 p-3.5 rounded-2xl">
+                <span class="text-[11px] font-bold text-blue-700 uppercase tracking-wider block">Tổng số thuốc</span>
+                <span class="text-xl font-extrabold text-blue-900 mt-1 block">{{ convertResult.totalRows }}</span>
+              </div>
+              <div class="bg-emerald-50/60 border border-emerald-200 p-3.5 rounded-2xl">
+                <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider block">Tân dược (TH)</span>
+                <span class="text-xl font-extrabold text-emerald-900 mt-1 block">{{ convertResult.summary?.thCount || 0 }}</span>
+              </div>
+              <div class="bg-amber-50/60 border border-amber-200 p-3.5 rounded-2xl">
+                <span class="text-[11px] font-bold text-amber-700 uppercase tracking-wider block">Chế phẩm YHCT (CP)</span>
+                <span class="text-xl font-extrabold text-amber-900 mt-1 block">{{ convertResult.summary?.cpCount || 0 }}</span>
+              </div>
+              <div class="bg-purple-50/60 border border-purple-200 p-3.5 rounded-2xl">
+                <span class="text-[11px] font-bold text-purple-700 uppercase tracking-wider block">Quy chuẩn cột</span>
+                <span class="text-xl font-extrabold text-purple-900 mt-1 block">78 Cột HIS</span>
+              </div>
+            </div>
+
+            <!-- NÚT TẢI EXCEL LỚN -->
+            <button
+              @click="downloadConvertedExcel"
+              class="inline-flex items-center justify-center space-x-2.5 px-6 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-emerald-600/20 transition-all hover:scale-102 cursor-pointer flex-shrink-0"
+            >
+              <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+              <span>TẢI VỀ FILE EXCEL (.XLSX) IMPORT VNPT HIS</span>
+            </button>
+          </div>
+
+          <!-- BỘ LỌC & TÌM KIẾM TRONG BẢNG THUỐC -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center space-x-2 flex-1 max-w-md">
+              <div class="relative w-full">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+                <input
+                  v-model="thuocSearchQuery"
+                  type="text"
+                  placeholder="Tìm kiếm theo Tên thuốc, Hoạt chất, Số đăng ký..."
+                  class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none bg-slate-50/50"
+                />
+              </div>
+            </div>
+
+            <!-- Lọc Nhóm TH / CP -->
+            <div class="flex items-center space-x-2">
+              <span class="text-xs text-slate-500 font-medium">Nhóm:</span>
+              <button @click="thuocFilterNhom = 'all'"
+                      class="px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                      :class="thuocFilterNhom === 'all' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'">
+                Tất cả ({{ convertResult.totalRows }})
+              </button>
+              <button @click="thuocFilterNhom = 'TH'"
+                      class="px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                      :class="thuocFilterNhom === 'TH' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'">
+                Tân dược ({{ convertResult.summary?.thCount || 0 }})
+              </button>
+              <button @click="thuocFilterNhom = 'CP'"
+                      class="px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                      :class="thuocFilterNhom === 'CP' ? 'bg-amber-600 text-white' : 'bg-amber-50 text-amber-700 hover:bg-amber-100'">
+                Thuốc YHCT ({{ convertResult.summary?.cpCount || 0 }})
+              </button>
+            </div>
+          </div>
+
+          <!-- BẢNG DỮ LIỆU THUỐC ĐẦY ĐỦ CÓ SCROLL -->
+          <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
+            <div class="overflow-x-auto max-h-[500px]">
+              <table class="w-full text-xs text-left border-collapse">
+                <thead class="bg-slate-100 text-slate-700 sticky top-0 z-20 shadow-2xs font-bold uppercase text-[11px]">
+                  <tr>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">STT</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Mã Nhóm</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Mã Hoạt Chất</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Tên Hoạt Chất</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Mã Thuốc</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Tên Thuốc Thành Phẩm</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Hàm Lượng</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">ĐVT</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Đường Dùng</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Giá Thầu (VNĐ)</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Số Đăng Ký</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Hãng SX</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Nước SX</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Nhà Thầu Cung Cấp</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Thầu Ghép</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Từ Ngày</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Đến Ngày</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Số Lượng</th>
+                    <th class="p-3 border-b border-slate-200 whitespace-nowrap">Mã CSKCB</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 bg-white">
+                  <tr v-for="(r, i) in filteredThuocList" :key="i" class="hover:bg-rose-50/40 transition-colors">
+                    <td class="p-3 font-mono font-bold text-slate-500">{{ r[0] }}</td>
+                    <td class="p-3 font-bold" :class="r[1] === 'TH' ? 'text-blue-600' : 'text-amber-600'">
+                      <span class="px-2 py-0.5 rounded-md" :class="r[1] === 'TH' ? 'bg-blue-50' : 'bg-amber-50'">{{ r[1] }}</span>
+                    </td>
+                    <td class="p-3 font-mono font-semibold text-slate-700 whitespace-nowrap">{{ r[3] }}</td>
+                    <td class="p-3 font-medium text-slate-800 whitespace-nowrap">{{ r[4] }}</td>
+                    <td class="p-3 font-mono text-slate-600 whitespace-nowrap">{{ r[5] }}</td>
+                    <td class="p-3 font-bold text-slate-900 whitespace-nowrap">{{ r[6] }}</td>
+                    <td class="p-3 text-slate-700 whitespace-nowrap">{{ r[7] }}</td>
+                    <td class="p-3 text-slate-700 whitespace-nowrap">{{ r[8] }}</td>
+                    <td class="p-3 text-slate-700 whitespace-nowrap">{{ r[9] }}</td>
+                    <td class="p-3 font-bold font-mono text-emerald-700 whitespace-nowrap">{{ Number(r[13] || 0).toLocaleString('vi-VN') }}đ</td>
+                    <td class="p-3 font-mono text-slate-700 whitespace-nowrap">{{ r[22] }}</td>
+                    <td class="p-3 text-slate-600 whitespace-nowrap max-w-xs truncate" :title="r[11]">{{ r[11] }}</td>
+                    <td class="p-3 text-slate-600 whitespace-nowrap">{{ r[12] }}</td>
+                    <td class="p-3 text-slate-600 whitespace-nowrap max-w-xs truncate" :title="r[25]">{{ r[25] }}</td>
+                    <td class="p-3 text-[11px] text-slate-600 font-mono whitespace-nowrap max-w-xs truncate" :title="r[35]">{{ r[35] }}</td>
+                    <td class="p-3 font-mono text-slate-600 whitespace-nowrap">{{ r[38] }}</td>
+                    <td class="p-3 font-mono text-slate-600 whitespace-nowrap">{{ r[39] }}</td>
+                    <td class="p-3 font-mono font-bold text-slate-800 whitespace-nowrap">{{ Number(r[42] || 0).toLocaleString('vi-VN') }}</td>
+                    <td class="p-3 font-mono font-bold text-purple-700 whitespace-nowrap">{{ r[43] }}</td>
+                  </tr>
+                  <tr v-if="filteredThuocList.length === 0">
+                    <td colspan="19" class="p-8 text-center text-slate-500">
+                      Không tìm thấy thuốc nào khớp với từ khóa tìm kiếm.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Footer của bảng -->
+            <div class="p-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+              <span>Đang hiển thị <strong>{{ filteredThuocList.length }}</strong> / {{ convertResult.totalRows }} thuốc</span>
+              <span>Định dạng tương thích cổng Dược VNPT HMIS 4.0</span>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </main>
 
@@ -1331,6 +1640,212 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
       </div>
     </div>
 
+    <!-- ================================================================= -->
+    <!-- MODAL CHUYỂN ĐỔI DANH MỤC THUỐC SANG MẪU VNPT HIS (78 CỘT) -->
+    <!-- ================================================================= -->
+    <div v-if="modals.convertThuoc" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl max-w-5xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-150">
+        <!-- Header -->
+        <div class="px-6 py-4 bg-gradient-to-r from-rose-600 via-pink-600 to-indigo-700 text-white flex items-center justify-between shadow-md">
+          <div class="flex items-center space-x-3">
+            <div class="p-2 bg-white/20 rounded-xl backdrop-blur-xs border border-white/20">
+              <i data-lucide="pill" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h2 class="text-base font-bold tracking-wide">Gen File Thuốc - Chuyển Đổi Sang Mẫu Import VNPT HIS</h2>
+              <p class="text-xs text-rose-100 font-normal">Tự động chuẩn hóa 78 cột theo quy chuẩn cổng Dược VNPT HMIS 4.0</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <a href="/api/thuoc/download-template" class="px-3 py-1.5 bg-white/15 hover:bg-white/25 rounded-xl text-xs font-semibold text-white transition-colors flex items-center space-x-1.5 border border-white/20" title="Tải mẫu Excel trống">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Mẫu Excel chuẩn</span>
+            </a>
+            <button @click="modals.convertThuoc = false" class="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div class="p-6 overflow-y-auto space-y-5 flex-1 bg-slate-50/50">
+          
+          <!-- KHU VỰC CHỌN FILE & THIẾT LẬP -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <!-- CỘT 1 & 2: UPLOAD FILE -->
+            <div class="md:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
+              <div class="flex items-center justify-between">
+                <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                  1. Chọn File Dữ Liệu Nguồn (.xlsx, .xls, .csv)
+                </label>
+                <button @click="loadSampleThuocData" :disabled="isConvertingThuoc" class="text-xs text-rose-600 hover:text-rose-700 font-semibold flex items-center space-x-1 underline cursor-pointer">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                  <span>Nạp file 609 thuốc mẫu của đơn vị</span>
+                </button>
+              </div>
+
+              <!-- Drag & Drop Box -->
+              <label class="block border-2 border-dashed border-rose-300 hover:border-rose-500 bg-rose-50/30 hover:bg-rose-50/60 rounded-2xl p-5 text-center transition-all cursor-pointer relative"
+                     @dragover.prevent @drop.prevent="handleThuocDrop">
+                <input type="file" accept=".xlsx,.xls,.csv" @change="handleThuocFileChange" class="hidden">
+                <i data-lucide="upload-cloud" class="w-10 h-10 text-rose-500 mx-auto mb-2"></i>
+                <p class="text-sm font-bold text-slate-700" v-if="!thuocFileName">
+                  Nhấp để duyệt file hoặc kéo thả file dữ liệu vào đây
+                </p>
+                <p class="text-sm font-bold text-rose-700" v-else>
+                  Đã chọn: <span class="underline">{{ thuocFileName }}</span>
+                </p>
+                <p class="text-xs text-slate-500 mt-1">Hỗ trợ định dạng file Excel (.xlsx, .xls) hoặc file CSV</p>
+              </label>
+            </div>
+
+            <!-- CỘT 3: TÙY CHỌN ÁP DỤNG -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
+              <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                2. Thiết Lập Tham Số Áp Dụng
+              </label>
+
+              <!-- Mã CSKCB áp dụng -->
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Mã CSKCB Trạm Y tế:</label>
+                <div class="relative">
+                  <select v-model="thuocOptions.maCskcb" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                    <option value="">Giữ nguyên mã theo từng dòng file nguồn</option>
+                    <option v-for="st in stations" :key="st.id" :value="st.cskcbCode">
+                      {{ st.name }} ({{ st.cskcbCode }})
+                    </option>
+                  </select>
+                </div>
+                <p class="text-[10px] text-slate-500 mt-0.5">Chọn trạm nếu muốn áp dụng 1 mã CSKCB chung cho toàn bộ danh sách</p>
+              </div>
+
+              <!-- Nhóm chi phí BHXH -->
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nhóm chi phí BHXH mặc định:</label>
+                <select v-model="thuocOptions.nhomBhxh" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                  <option :value="4">Nhóm 4 - Thuốc trong danh mục BHYT (Mặc định)</option>
+                  <option :value="5">Nhóm 5 - Thuốc thanh toán theo tỷ lệ</option>
+                  <option :value="10">Nhóm 10 - Vật tư y tế</option>
+                </select>
+              </div>
+
+              <!-- Nguồn chương trình -->
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nguồn chương trình:</label>
+                <input v-model="thuocOptions.nguonCt" type="text" placeholder="74" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none">
+              </div>
+
+              <!-- Nút bấm Chuyển đổi -->
+              <button
+                @click="startConvertThuoc"
+                :disabled="(!thuocFile && !convertResult) || isConvertingThuoc"
+                class="w-full py-2.5 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center space-x-1.5 disabled:opacity-50 cursor-pointer"
+              >
+                <i data-lucide="play" class="w-4 h-4" v-if="!isConvertingThuoc"></i>
+                <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-else></i>
+                <span>{{ isConvertingThuoc ? 'Đang phân tích & chuyển đổi...' : 'Bắt đầu chuyển đổi & Xem trước' }}</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- KẾT QUẢ CHUYỂN ĐỔI & BẢNG XEM TRƯỚC (PREVIEW) -->
+          <div v-if="convertResult" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-sm font-bold text-slate-800 flex items-center space-x-1.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                  <span>Kết quả chuyển đổi:</span>
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200">
+                  Tổng cộng: {{ convertResult.totalRows }} thuốc
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                  Tân dược (TH): {{ convertResult.summary?.thCount || 0 }}
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                  Chế phẩm YHCT (CP): {{ convertResult.summary?.cpCount || 0 }}
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 border border-purple-200">
+                  78 Cột Chuẩn HIS
+                </span>
+              </div>
+
+              <!-- Nút tải file Excel -->
+              <button
+                @click="downloadConvertedExcel"
+                class="inline-flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs rounded-xl shadow-md transition-all hover:scale-102 cursor-pointer"
+              >
+                <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                <span>TẢI VỀ FILE EXCEL (.XLSX) IMPORT VNPT HIS</span>
+              </button>
+            </div>
+
+            <!-- BẢNG PREVIEW -->
+            <div>
+              <p class="text-xs text-slate-500 mb-2 font-medium">Xem trước 15 dòng đầu tiên sau khi chuyển đổi:</p>
+              <div class="border border-slate-200 rounded-xl overflow-x-auto max-h-72">
+                <table class="w-full text-[11px] text-left border-collapse">
+                  <thead class="bg-slate-100 text-slate-700 sticky top-0 shadow-2xs font-bold uppercase">
+                    <tr>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">STT</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Mã Nhóm</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Mã Hoạt Chất</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Hoạt Chất</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Mã Thuốc</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Tên Thuốc</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Hàm Lượng</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">ĐVT</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Đường Dùng</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Giá Thầu</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Số Đăng Ký</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Thầu Ghép</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Từ Ngày</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Đến Ngày</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Số Lượng</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Mã CSKCB</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 font-sans">
+                    <tr v-for="(r, i) in convertResult.previewRows" :key="i" class="hover:bg-rose-50/40 transition-colors">
+                      <td class="p-2 font-mono font-bold text-slate-600">{{ r[0] }}</td>
+                      <td class="p-2 font-bold" :class="r[1] === 'TH' ? 'text-blue-600' : 'text-amber-600'">{{ r[1] }}</td>
+                      <td class="p-2 font-mono text-slate-700">{{ r[3] }}</td>
+                      <td class="p-2 font-medium text-slate-800">{{ r[4] }}</td>
+                      <td class="p-2 font-mono text-slate-600">{{ r[5] }}</td>
+                      <td class="p-2 font-bold text-slate-900">{{ r[6] }}</td>
+                      <td class="p-2 text-slate-700">{{ r[7] }}</td>
+                      <td class="p-2 text-slate-700">{{ r[8] }}</td>
+                      <td class="p-2 text-slate-700">{{ r[9] }}</td>
+                      <td class="p-2 font-bold font-mono text-emerald-700">{{ Number(r[13] || 0).toLocaleString('vi-VN') }}đ</td>
+                      <td class="p-2 font-mono text-slate-700">{{ r[22] }}</td>
+                      <td class="p-2 text-[10px] text-slate-600 font-mono">{{ r[35] }}</td>
+                      <td class="p-2 font-mono text-slate-600">{{ r[38] }}</td>
+                      <td class="p-2 font-mono text-slate-600">{{ r[39] }}</td>
+                      <td class="p-2 font-mono font-bold text-slate-800">{{ Number(r[42] || 0).toLocaleString('vi-VN') }}</td>
+                      <td class="p-2 font-mono font-bold text-purple-700">{{ r[43] }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+          <span class="text-xs text-slate-500">File kết quả tương thích 100% với phân hệ Quản lý Dược cổng VNPT HMIS 4.0.</span>
+          <button @click="modals.convertThuoc = false" class="px-5 py-2.5 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl transition-colors cursor-pointer">
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- TOAST THÔNG BÁO -->
     <div class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none">
       <div v-for="toast in toasts" :key="toast.id" class="pointer-events-auto px-4 py-3 rounded-xl shadow-xl text-xs font-medium text-white flex items-center space-x-2 animate-bounce transition-all"
@@ -1373,8 +1888,49 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           settings: false,
           clearAll: false,
           cauhinh: false,
-          bulkParamEdit: false
+          bulkParamEdit: false,
+          convertThuoc: false
         });
+
+        const thuocFile = ref(null);
+        const thuocFileName = ref('');
+        const thuocOptions = ref({
+          maCskcb: '',
+          nhomBhxh: 4,
+          nguonCt: '74'
+        });
+        const isConvertingThuoc = ref(false);
+        const convertResult = ref(null);
+        const currentMainTab = ref('stations'); // 'stations' | 'thuoc'
+        const thuocSearchQuery = ref('');
+        const thuocFilterNhom = ref('all');
+
+        const filteredThuocList = computed(() => {
+          if (!convertResult.value) return [];
+          const rows = convertResult.value.allRows || convertResult.value.previewRows || [];
+          let list = rows;
+          if (thuocFilterNhom.value !== 'all') {
+            list = list.filter(r => r[1] === thuocFilterNhom.value);
+          }
+          if (thuocSearchQuery.value.trim()) {
+            const q = thuocSearchQuery.value.toLowerCase().trim();
+            list = list.filter(r =>
+              String(r[3] || '').toLowerCase().includes(q) || // MA_HOAT_CHAT
+              String(r[4] || '').toLowerCase().includes(q) || // HOAT_CHAT
+              String(r[5] || '').toLowerCase().includes(q) || // MA_THUOC
+              String(r[6] || '').toLowerCase().includes(q) || // TEN_THUOC
+              String(r[22] || '').toLowerCase().includes(q)   // SO_DANG_KY
+            );
+          }
+          return list;
+        });
+
+        function switchMainTab(tab) {
+          currentMainTab.value = tab;
+          nextTick(() => {
+            refreshIcons();
+          });
+        }
 
         const cauhinhList = ref([]);
         const cauhinhSearch = ref('');
@@ -2337,6 +2893,141 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           }
         }
 
+        // ==========================================
+        // CHỨC NĂNG GEN FILE THUỐC IMPORT VNPT HIS
+        // ==========================================
+        function openConvertThuocModal() {
+          modals.value.convertThuoc = true;
+          refreshIcons();
+        }
+
+        function handleThuocFileChange(e) {
+          const file = e.target.files && e.target.files[0];
+          if (file) {
+            thuocFile.value = file;
+            thuocFileName.value = file.name;
+            showToast(`Đã chọn file: ${file.name}`);
+          }
+        }
+
+        function handleThuocDrop(e) {
+          const files = e.dataTransfer?.files;
+          if (files && files.length > 0) {
+            thuocFile.value = files[0];
+            thuocFileName.value = files[0].name;
+            showToast(`Đã kéo thả file: ${files[0].name}`);
+          }
+        }
+
+        async function loadSampleThuocData() {
+          isConvertingThuoc.value = true;
+          try {
+            const params = new URLSearchParams();
+            if (thuocOptions.value.maCskcb) params.append('maCskcb', thuocOptions.value.maCskcb);
+            if (thuocOptions.value.nhomBhxh) params.append('nhomBhxh', thuocOptions.value.nhomBhxh);
+            if (thuocOptions.value.nguonCt) params.append('nguonCt', thuocOptions.value.nguonCt);
+
+            const res = await axios.get('/api/thuoc/sample-convert?' + params.toString());
+            if (res.data.success) {
+              thuocFileName.value = 'Danh_Muc_609_Thuoc_Chuan.xlsx';
+              convertResult.value = res.data;
+              showToast(`Đã nạp và chuyển đổi thành công ${res.data.totalRows} thuốc mẫu!`, 'success');
+              nextTick(() => {
+                const el = document.getElementById('thuocResultSection');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                refreshIcons();
+              });
+            }
+          } catch (err) {
+            showToast('Lỗi nạp dữ liệu mẫu: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isConvertingThuoc.value = false;
+            refreshIcons();
+          }
+        }
+
+        async function startConvertThuoc() {
+          if (!thuocFile.value && !convertResult.value) {
+            showToast('Vui lòng chọn hoặc kéo thả file dữ liệu thuốc trước', 'error');
+            return;
+          }
+          if (!thuocFile.value && convertResult.value) {
+            await loadSampleThuocData();
+            return;
+          }
+          isConvertingThuoc.value = true;
+          try {
+            const formData = new FormData();
+            formData.append('file', thuocFile.value);
+            if (thuocOptions.value.maCskcb) formData.append('maCskcb', thuocOptions.value.maCskcb);
+            if (thuocOptions.value.nhomBhxh) formData.append('nhomBhxh', thuocOptions.value.nhomBhxh);
+            if (thuocOptions.value.nguonCt) formData.append('nguonCt', thuocOptions.value.nguonCt);
+
+            // Lưu ý: Không truyền explicit Content-Type để Axios và trình duyệt tự thiết lập kèm boundary
+            const res = await axios.post('/api/thuoc/convert', formData);
+            if (res.data.success) {
+              convertResult.value = res.data;
+              showToast(`Chuyển đổi thành công ${res.data.totalRows} thuốc!`, 'success');
+              nextTick(() => {
+                const el = document.getElementById('thuocResultSection');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                refreshIcons();
+              });
+            }
+          } catch (err) {
+            console.error('Lỗi chuyển đổi:', err);
+            showToast('Lỗi chuyển đổi: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isConvertingThuoc.value = false;
+            refreshIcons();
+          }
+        }
+
+        async function downloadConvertedExcel() {
+          try {
+            if (!thuocFile.value) {
+              const params = new URLSearchParams();
+              params.append('download', 'excel');
+              if (thuocOptions.value.maCskcb) params.append('maCskcb', thuocOptions.value.maCskcb);
+              if (thuocOptions.value.nhomBhxh) params.append('nhomBhxh', thuocOptions.value.nhomBhxh);
+              if (thuocOptions.value.nguonCt) params.append('nguonCt', thuocOptions.value.nguonCt);
+
+              const res = await axios.get('/api/thuoc/sample-convert?' + params.toString(), {
+                responseType: 'blob'
+              });
+              const url = window.URL.createObjectURL(new Blob([res.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', 'File_Import_Thuoc_VNPT_HIS_609.xlsx');
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+              showToast('Đang tải file Excel chuẩn về máy...', 'success');
+              return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', thuocFile.value);
+            if (thuocOptions.value.maCskcb) formData.append('maCskcb', thuocOptions.value.maCskcb);
+            if (thuocOptions.value.nhomBhxh) formData.append('nhomBhxh', thuocOptions.value.nhomBhxh);
+            if (thuocOptions.value.nguonCt) formData.append('nguonCt', thuocOptions.value.nguonCt);
+
+            const res = await axios.post('/api/thuoc/convert?download=excel', formData, {
+              responseType: 'blob'
+            });
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'File_Import_Thuoc_VNPT_HIS.xlsx');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast('Đang tải file Excel về máy...', 'success');
+          } catch (err) {
+            showToast('Lỗi tải file: ' + err.message, 'error');
+          }
+        }
+
         onMounted(async () => {
           // Tự động khôi phục mã PIN đã đổi vào server nếu Render vừa restart
           const savedCustomPin = localStorage.getItem('vnpt_hmis_custom_pin');
@@ -2470,7 +3161,23 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           backspacePin,
           submitUnlockPin,
           lockSystem,
-          submitChangePin
+          submitChangePin,
+          openConvertThuocModal,
+          handleThuocFileChange,
+          handleThuocDrop,
+          loadSampleThuocData,
+          startConvertThuoc,
+          downloadConvertedExcel,
+          thuocFile,
+          thuocFileName,
+          thuocOptions,
+          isConvertingThuoc,
+          convertResult,
+          currentMainTab,
+          switchMainTab,
+          thuocSearchQuery,
+          thuocFilterNhom,
+          filteredThuocList
         };
       }
     }).mount('#app');

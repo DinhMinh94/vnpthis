@@ -143,6 +143,7 @@ function parseSheetSmart(sheet) {
     if (stripped.includes('ma cskcb dau thau')) return 'MA_CSKCB_DAU_THAU';
     if (stripped.includes('ma cskcb tbyt')) return 'MA_CSKCB_TBYT';
     if (stripped.includes('thau ghep') || stripped.includes('thaughep')) return 'THAUGHEP';
+    if (stripped.includes('ten thuoc ax') || stripped.includes('ten_thuoc_ax')) return 'TEN_THUOC_AX';
     if (stripped.includes('ma hoat chat')) return 'MA_HOAT_CHAT';
     if (stripped.includes('ma thuoc') || stripped.includes('ma hang') || stripped.includes('ma sp') || stripped.includes('ma duoc') || stripped.includes('ma hieu')) return 'MA_THUOC';
     if (stripped.includes('hoat chat')) return 'TEN_HOAT_CHAT';
@@ -276,8 +277,13 @@ function convertRows(sourceRows, options = {}) {
     const dangBaoChe = d.DANG_BAO_CHE || '';
     const tyleHuHao = d.TLHH_CB || '';
     const congBo = formatDate(d.NGAY_NHAN || d.TU_NGAY);
-    const sttThau = extractNhomThau(d.TT_THAU, d.NHOM_THAU) || stt;
-    const tenGiamDinhBh = tenThuoc;
+    
+    // STT_THAU: để trống theo yêu cầu người dùng
+    const sttThau = '';
+    
+    // TEN_GIAM_DINH_BH: lấy theo cột TEN_THUOC_AX của file mẫu
+    const tenGiamDinhBh = d.TEN_THUOC_AX || d.TEN_THUOC || tenThuoc || '';
+    
     const maThuocBv = d.MA_CSKCB_THUOC || d.MA_THUOC || '';
     const nguonCt = options.nguonCtDefault || '74';
     

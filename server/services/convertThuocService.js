@@ -237,6 +237,8 @@ function convertRows(sourceRows, options = {}) {
     const stt = idx + 1;
     const loaiThuoc = d.LOAI_THUOC || 1;
     const maNhom = d.MA_NHOM || (String(loaiThuoc) === '2' ? 'CP' : 'TH');
+    // MA_LOAI: Nếu MA_NHOM là CP thì MA_LOAI là TD, còn lại là TH
+    const maLoai = String(maNhom).trim().toUpperCase() === 'CP' ? 'TD' : 'TH';
     const maHoatChat = d.MA_HOAT_CHAT_AX || d.MA_HOAT_CHAT || d.MA_THUOC || '';
     const hoatChat = d.HOAT_CHAT_AX || d.TEN_HOAT_CHAT || d.HOAT_CHAT || '';
     
@@ -316,7 +318,7 @@ function convertRows(sourceRows, options = {}) {
     const thanhTienThuoc = '';
 
     const row = [
-      stt, maNhom, '', maHoatChat, hoatChat, maThuoc, tenThuoc, hamLuong,
+      stt, maNhom, maLoai, maHoatChat, hoatChat, maThuoc, tenThuoc, hamLuong,
       donViTinh, duongDung, maDuongDung, hangSx, nuocSx, giaThau, nhomBhxh,
       giaBan, giaDichVu, giaBhyt, giaBhytQuyetToan, bhytChiTra, '', '',
       soDangKy, dongGoi, lieuLuong, nhaCungCap, soGoiThau, dangBaoChe, tyleHuHao,

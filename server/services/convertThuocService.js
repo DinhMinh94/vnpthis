@@ -239,8 +239,12 @@ function convertRows(sourceRows, options = {}) {
     const maHoatChat = d.MA_HOAT_CHAT_AX || d.MA_HOAT_CHAT || d.MA_THUOC || '';
     const hoatChat = d.HOAT_CHAT_AX || d.TEN_HOAT_CHAT || d.HOAT_CHAT || '';
     
-    // MA_THUOC trên HIS: bỏ trống theo yêu cầu người dùng
-    const maThuoc = '';
+    // MA_THUOC trên HIS: nếu nhập prefix thì sinh mã (VD: thuoc -> thuoc001, TH -> TH001), nếu để trống thì giữ rỗng
+    let maThuoc = '';
+    if (options.prefixMaThuoc && String(options.prefixMaThuoc).trim() !== '') {
+      const prefix = String(options.prefixMaThuoc).trim();
+      maThuoc = `${prefix}${String(stt).padStart(3, '0')}`;
+    }
     const tenThuoc = d.TEN_THUOC || d.TEN_THUOC_AX || '';
     const hamLuong = d.HAM_LUONG || '';
     const donViTinh = d.DON_VI_TINH || '';
@@ -250,8 +254,10 @@ function convertRows(sourceRows, options = {}) {
     const nuocSx = d.NUOC_SX || '';
     const giaThau = parseNumberVi(d.DON_GIA || d.DON_GIA_BH || 0);
     
-    // Nhóm BHXH: Thuốc là 4 (hoặc lấy từ MA_NHOM_9324)
-    const nhomBhxh = d.MA_NHOM_9324 || d.MA_NHOM_5937 || options.nhomBhxhDefault || 4;
+    // Nhóm BHXH: Lấy theo tham số cấu hình (9, 10, 11, 14, 15, 16, 17), hoặc lấy từ file nguồn
+    const nhomBhxh = (options.nhomBhxhDefault !== undefined && options.nhomBhxhDefault !== null && options.nhomBhxhDefault !== '')
+      ? Number(options.nhomBhxhDefault)
+      : (d.MA_NHOM_9324 || d.MA_NHOM_5937 || 10);
     const giaBan = giaThau;
     const giaDichVu = giaThau;
     const giaBhyt = parseNumberVi(d.DON_GIA_BH || d.DON_GIA || 0);
@@ -282,7 +288,9 @@ function convertRows(sourceRows, options = {}) {
     const tuNgay = formatDate(d.TU_NGAY) || '01/01/2024';
     const denNgay = formatDate(d.DEN_NGAY || d.DENNGAY) || '31/12/2026';
     const soLuong = parseNumberVi(d.SO_LUONG || 0);
-    const maCskcb = options.maCskcbOverride || d.MA_CSKCB || '';
+    
+    // MA_CSKCB: để mặc định luôn theo file dữ liệu
+    const maCskcb = d.MA_CSKCB || '';
     const loaiThau = d.LOAI_THAU || 4;
     const htThau = d.HT_THAU || 1;
     const maDvkt = d.MA_DVKT || '';

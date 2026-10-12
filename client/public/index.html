@@ -675,25 +675,31 @@
                 <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Cấu Hình Tham Số Áp Dụng</h3>
               </div>
 
-              <!-- Chọn Trạm CSKCB -->
+              <!-- Tiền tố Mã thuốc (cột MA_THUOC) -->
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">Mã CSKCB Cơ sở khám chữa bệnh:</label>
-                <select v-model="thuocOptions.maCskcb" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none">
-                  <option value="">Giữ nguyên mã CSKCB theo từng dòng file nguồn</option>
-                  <option v-for="st in stations" :key="st.id" :value="st.cskcbCode">
-                    {{ st.name }} ({{ st.cskcbCode }})
-                  </option>
-                </select>
-                <p class="text-[11px] text-slate-500 mt-1">Gán 1 mã trạm cụ thể nếu cần import riêng cho trạm đó</p>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Tiền tố Mã thuốc (cột MA_THUOC):</label>
+                <input 
+                  v-model="thuocOptions.prefixMaThuoc" 
+                  type="text" 
+                  placeholder="VD: thuoc, TH... (để trống nếu không sinh mã)" 
+                  class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none"
+                >
+                <p class="text-[11px] text-slate-500 mt-1">
+                  Nhập <span class="font-bold font-mono text-rose-600">thuoc</span> &rarr; <span class="font-mono text-slate-700 font-semibold">thuoc001, thuoc002...</span>; nhập <span class="font-bold font-mono text-rose-600">TH</span> &rarr; <span class="font-mono text-slate-700 font-semibold">TH001, TH002...</span> (để trống nếu muốn bỏ trống cột MA_THUOC)
+                </p>
               </div>
 
               <!-- Nhóm chi phí BHXH -->
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">Nhóm chi phí BHXH mặc định:</label>
                 <select v-model="thuocOptions.nhomBhxh" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none">
-                  <option :value="4">Nhóm 4 - Thuốc trong danh mục BHYT (Mặc định)</option>
-                  <option :value="5">Nhóm 5 - Thuốc thanh toán theo tỷ lệ</option>
-                  <option :value="10">Nhóm 10 - Vật tư y tế</option>
+                  <option :value="9">9 - Thuốc, dịch truyền</option>
+                  <option :value="10">10 - Thuốc</option>
+                  <option :value="11">11 - Thuốc ngoài danh mục</option>
+                  <option :value="14">14 - Vật tư y tế</option>
+                  <option :value="15">15 - Vật tư</option>
+                  <option :value="16">16 - Vật tư trong danh mục thay thế</option>
+                  <option :value="17">17 - Vật tư ngoài danh mục</option>
                 </select>
               </div>
 
@@ -1654,27 +1660,29 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                 2. Thiết Lập Tham Số Áp Dụng
               </label>
 
-              <!-- Mã CSKCB áp dụng -->
+              <!-- Tiền tố Mã thuốc (cột MA_THUOC) -->
               <div>
-                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Mã CSKCB Trạm Y tế:</label>
-                <div class="relative">
-                  <select v-model="thuocOptions.maCskcb" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none">
-                    <option value="">Giữ nguyên mã theo từng dòng file nguồn</option>
-                    <option v-for="st in stations" :key="st.id" :value="st.cskcbCode">
-                      {{ st.name }} ({{ st.cskcbCode }})
-                    </option>
-                  </select>
-                </div>
-                <p class="text-[10px] text-slate-500 mt-0.5">Chọn trạm nếu muốn áp dụng 1 mã CSKCB chung cho toàn bộ danh sách</p>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tiền tố Mã thuốc (cột MA_THUOC):</label>
+                <input 
+                  v-model="thuocOptions.prefixMaThuoc" 
+                  type="text" 
+                  placeholder="VD: thuoc, TH... (để trống nếu không sinh mã)" 
+                  class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none"
+                >
+                <p class="text-[10px] text-slate-500 mt-0.5">Nhập <span class="font-bold text-rose-600 font-mono">thuoc</span> &rarr; thuoc001; nhập <span class="font-bold text-rose-600 font-mono">TH</span> &rarr; TH001 (để trống nếu không sinh mã)</p>
               </div>
 
               <!-- Nhóm chi phí BHXH -->
               <div>
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nhóm chi phí BHXH mặc định:</label>
                 <select v-model="thuocOptions.nhomBhxh" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none">
-                  <option :value="4">Nhóm 4 - Thuốc trong danh mục BHYT (Mặc định)</option>
-                  <option :value="5">Nhóm 5 - Thuốc thanh toán theo tỷ lệ</option>
-                  <option :value="10">Nhóm 10 - Vật tư y tế</option>
+                  <option :value="9">9 - Thuốc, dịch truyền</option>
+                  <option :value="10">10 - Thuốc</option>
+                  <option :value="11">11 - Thuốc ngoài danh mục</option>
+                  <option :value="14">14 - Vật tư y tế</option>
+                  <option :value="15">15 - Vật tư</option>
+                  <option :value="16">16 - Vật tư trong danh mục thay thế</option>
+                  <option :value="17">17 - Vật tư ngoài danh mục</option>
                 </select>
               </div>
 
@@ -2001,9 +2009,9 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const thuocFileName = ref('');
         const thuocFileSize = ref('');
         const thuocOptions = ref({
-          maCskcb: '',
-          nhomBhxh: 4,
-          nguonCt: '74'
+          nhomBhxh: 10,
+          nguonCt: '74',
+          prefixMaThuoc: ''
         });
         const isConvertingThuoc = ref(false);
         const convertStatus = ref(''); // '' | 'converting' | 'success' | 'error'
@@ -3109,9 +3117,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
           try {
             const params = new URLSearchParams();
-            if (thuocOptions.value.maCskcb) params.append('maCskcb', thuocOptions.value.maCskcb);
             if (thuocOptions.value.nhomBhxh) params.append('nhomBhxh', thuocOptions.value.nhomBhxh);
             if (thuocOptions.value.nguonCt) params.append('nguonCt', thuocOptions.value.nguonCt);
+            if (thuocOptions.value.prefixMaThuoc) params.append('prefixMaThuoc', thuocOptions.value.prefixMaThuoc);
 
             const res = await axios.get('/api/thuoc/sample-convert?' + params.toString());
             if (res.data.success) {
@@ -3194,9 +3202,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           try {
             const formData = new FormData();
             formData.append('file', thuocFile.value);
-            if (thuocOptions.value.maCskcb) formData.append('maCskcb', thuocOptions.value.maCskcb);
             if (thuocOptions.value.nhomBhxh) formData.append('nhomBhxh', thuocOptions.value.nhomBhxh);
             if (thuocOptions.value.nguonCt) formData.append('nguonCt', thuocOptions.value.nguonCt);
+            if (thuocOptions.value.prefixMaThuoc) formData.append('prefixMaThuoc', thuocOptions.value.prefixMaThuoc);
 
             const res = await axios.post('/api/thuoc/convert', formData);
             if (res.data.success) {
@@ -3269,9 +3277,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             if (!thuocFile.value) {
               const params = new URLSearchParams();
               params.append('download', 'excel');
-              if (thuocOptions.value.maCskcb) params.append('maCskcb', thuocOptions.value.maCskcb);
               if (thuocOptions.value.nhomBhxh) params.append('nhomBhxh', thuocOptions.value.nhomBhxh);
               if (thuocOptions.value.nguonCt) params.append('nguonCt', thuocOptions.value.nguonCt);
+              if (thuocOptions.value.prefixMaThuoc) params.append('prefixMaThuoc', thuocOptions.value.prefixMaThuoc);
 
               const res = await axios.get('/api/thuoc/sample-convert?' + params.toString(), {
                 responseType: 'blob'
@@ -3289,9 +3297,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
             const formData = new FormData();
             formData.append('file', thuocFile.value);
-            if (thuocOptions.value.maCskcb) formData.append('maCskcb', thuocOptions.value.maCskcb);
             if (thuocOptions.value.nhomBhxh) formData.append('nhomBhxh', thuocOptions.value.nhomBhxh);
             if (thuocOptions.value.nguonCt) formData.append('nguonCt', thuocOptions.value.nguonCt);
+            if (thuocOptions.value.prefixMaThuoc) formData.append('prefixMaThuoc', thuocOptions.value.prefixMaThuoc);
 
             const res = await axios.post('/api/thuoc/convert?download=excel', formData, {
               responseType: 'blob'

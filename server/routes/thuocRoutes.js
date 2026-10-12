@@ -44,8 +44,9 @@ router.post('/convert', upload.single('file'), (req, res) => {
 
     const options = {
       maCskcbOverride: req.body.maCskcb || '',
-      nhomBhxhDefault: req.body.nhomBhxh || 4,
-      nguonCtDefault: req.body.nguonCt || '74'
+      nhomBhxhDefault: req.body.nhomBhxh || '',
+      nguonCtDefault: req.body.nguonCt || '74',
+      prefixMaThuoc: req.body.prefixMaThuoc || ''
     };
 
     const convertedRows = convertService.convertRows(sourceData, options);
@@ -102,8 +103,9 @@ router.get('/convert', (req, res) => {
 
     const options = {
       maCskcbOverride: req.query.maCskcb || '',
-      nhomBhxhDefault: req.query.nhomBhxh ? Number(req.query.nhomBhxh) : 4,
-      nguonCtDefault: req.query.nguonCt || '74'
+      nhomBhxhDefault: req.query.nhomBhxh || '',
+      nguonCtDefault: req.query.nguonCt || '74',
+      prefixMaThuoc: req.query.prefixMaThuoc || ''
     };
 
     const convertedRows = convertService.convertRows(sourceData, options);
@@ -195,8 +197,9 @@ router.get('/sample-convert', (req, res) => {
 
     const options = {
       maCskcbOverride: req.query.maCskcb || '',
-      nhomBhxhDefault: req.query.nhomBhxh || 4,
-      nguonCtDefault: req.query.nguonCt || '74'
+      nhomBhxhDefault: req.query.nhomBhxh || '',
+      nguonCtDefault: req.query.nguonCt || '74',
+      prefixMaThuoc: req.query.prefixMaThuoc || ''
     };
 
     const convertedRows = convertService.convertRows(sourceData, options);

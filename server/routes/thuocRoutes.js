@@ -45,7 +45,7 @@ router.post('/convert', upload.single('file'), (req, res) => {
     const options = {
       maCskcbOverride: req.body.maCskcb || '',
       nhomBhxhDefault: req.body.nhomBhxh || '',
-      nguonCtDefault: req.body.nguonCt || '74',
+      nguonCtDefault: req.body.nguonCt || '1',
       prefixMaThuoc: req.body.prefixMaThuoc || ''
     };
 
@@ -104,7 +104,7 @@ router.get('/convert', (req, res) => {
     const options = {
       maCskcbOverride: req.query.maCskcb || '',
       nhomBhxhDefault: req.query.nhomBhxh || '',
-      nguonCtDefault: req.query.nguonCt || '74',
+      nguonCtDefault: req.query.nguonCt || '1',
       prefixMaThuoc: req.query.prefixMaThuoc || ''
     };
 
@@ -198,7 +198,7 @@ router.get('/sample-convert', (req, res) => {
     const options = {
       maCskcbOverride: req.query.maCskcb || '',
       nhomBhxhDefault: req.query.nhomBhxh || '',
-      nguonCtDefault: req.query.nguonCt || '74',
+      nguonCtDefault: req.query.nguonCt || '1',
       prefixMaThuoc: req.query.prefixMaThuoc || ''
     };
 

@@ -287,7 +287,7 @@ function convertRows(sourceRows, options = {}) {
     const tenGiamDinhBh = d.TEN_THUOC_AX || d.TEN_THUOC || tenThuoc || '';
     
     const maThuocBv = d.MA_CSKCB_THUOC || d.MA_THUOC || '';
-    const nguonCt = options.nguonCtDefault || '74';
+    const nguonCt = options.nguonCtDefault || '1';
     
     // THAUGHEP: lấy theo cột TT_THAU của file dữ liệu
     const thauGhep = d.TT_THAU || d.THAU_GHEP || d.THAUGHEP || '';

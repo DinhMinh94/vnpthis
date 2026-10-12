@@ -62,6 +62,17 @@ function extractNhomThau(ttThau, nhomThau) {
   return '';
 }
 
+function stripVietnamese(str) {
+  if (!str) return '';
+  return String(str)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+    .toLowerCase()
+    .trim();
+}
+
 /**
  * Tự động tìm dòng tiêu đề và chuẩn hóa tên cột cho file Excel/CSV
  */
@@ -71,57 +82,65 @@ function parseSheetSmart(sheet) {
 
   // Tìm dòng header
   let headerIdx = -1;
+  let maxMatches = 0;
   const headerKeywords = [
-    'stt', 'ma_thuoc', 'mã thuốc', 'ten_thuoc', 'tên thuốc', 
-    'hoat_chat', 'hoạt chất', 'ma_hoat_chat', 'don_gia', 'đơn giá', 
-    'so_dang_ky', 'số đăng ký', 'hàm lượng', 'ham_luong'
+    'stt', 'ma thuoc', 'ma_thuoc', 'ten thuoc', 'ten_thuoc', 
+    'hoat chat', 'hoat_chat', 'ma hoat chat', 'don gia', 'don_gia', 
+    'so dang ky', 'so_dang_ky', 'ham luong', 'ham_luong',
+    'ma hang', 'ten hang', 'biet duoc', 'don vi tinh', 'dvt', 'gia thau',
+    'quyet dinh', 'thau'
   ];
 
-  for (let i = 0; i < Math.min(rows.length, 30); i++) {
+  for (let i = 0; i < Math.min(rows.length, 35); i++) {
     const row = rows[i];
     if (!row || !Array.isArray(row)) continue;
-    const matchCount = row.filter(cell => {
-      if (typeof cell !== 'string') return false;
-      const lower = cell.toLowerCase().trim();
-      return headerKeywords.some(k => lower.includes(k));
-    }).length;
+    let matchCount = 0;
+    for (const cell of row) {
+      if (cell === null || cell === undefined || typeof cell === 'boolean') continue;
+      const stripped = stripVietnamese(cell);
+      if (headerKeywords.some(k => stripped.includes(k))) {
+        matchCount++;
+      }
+    }
 
-    if (matchCount >= 2) {
+    if (matchCount > maxMatches) {
+      maxMatches = matchCount;
       headerIdx = i;
-      break;
     }
   }
 
-  if (headerIdx === -1) {
+  if (headerIdx === -1 || maxMatches === 0) {
     headerIdx = 0;
   }
 
   const rawHeader = rows[headerIdx];
 
   function normalizeKey(str) {
-    if (!str || typeof str !== 'string') return '';
-    const clean = str.trim();
-    const upper = clean.toUpperCase();
-    if (upper === 'STT') return 'STT';
-    if (upper.includes('MÃ THUỐC') || upper === 'MA_THUOC') return 'MA_THUOC';
-    if (upper.includes('HOẠT CHẤT') || upper.includes('HOAT_CHAT')) return 'TEN_HOAT_CHAT';
-    if (upper.includes('THUỐC THÀNH PHẨM') || upper.includes('TÊN THUỐC') || upper === 'TEN_THUOC') return 'TEN_THUOC';
-    if (upper.includes('HÀM LƯỢNG') || upper.includes('HAM_LUONG')) return 'HAM_LUONG';
-    if (upper.includes('ĐƠN VỊ TÍNH') || upper === 'ĐVT' || upper === 'DON_VI_TINH') return 'DON_VI_TINH';
-    if (upper.includes('MÃ ĐƯỜNG DÙNG') || upper === 'MA_DUONG_DUNG') return 'MA_DUONG_DUNG';
-    if (upper.includes('ĐƯỜNG DÙNG') || upper === 'DUONG_DUNG') return 'DUONG_DUNG';
-    if (upper.includes('DẠNG BÀO CHẾ') || upper === 'DANG_BAO_CHE') return 'DANG_BAO_CHE';
-    if (upper.includes('ĐĂNG KÝ') || upper.includes('GPNK') || upper === 'SO_DANG_KY') return 'SO_DANG_KY';
-    if (upper.includes('SỐ LƯỢNG') || upper === 'SO_LUONG') return 'SO_LUONG';
-    if (upper.includes('ĐƠN GIÁ') || upper.includes('GIÁ THẦU') || upper === 'DON_GIA') return 'DON_GIA';
-    if (upper.includes('QUY CÁCH') || upper.includes('DONG_GOI')) return 'QUY_CACH';
-    if (upper.includes('HÃNG SX') || upper.includes('NHÀ SX') || upper.includes('NHA_SX')) return 'NHA_SX';
-    if (upper.includes('NƯỚC SX') || upper.includes('NUOC_SX')) return 'NUOC_SX';
-    if (upper.includes('NHÀ THẦU') || upper.includes('NHA_THAU')) return 'NHA_THAU';
-    if (upper.includes('THẦU') || upper.includes('TT_THAU')) return 'TT_THAU';
-    if (upper.includes('TỪ NGÀY') || upper === 'TU_NGAY') return 'TU_NGAY';
-    if (upper.includes('ĐẾN NGÀY') || upper === 'DEN_NGAY' || upper === 'DENNGAY') return 'DEN_NGAY';
-    if (upper.includes('CSKCB') || upper === 'MA_CSKCB') return 'MA_CSKCB';
+    if (!str) return '';
+    const clean = String(str).replace(/\r?\n|\r/g, ' ').trim();
+    const stripped = stripVietnamese(clean);
+
+    if (stripped === 'stt') return 'STT';
+    if (stripped.includes('ma thuoc bv') || stripped.includes('ma_thuoc_bv')) return 'MA_CSKCB_THUOC';
+    if (stripped.includes('ma thuoc') || stripped.includes('ma hang') || stripped.includes('ma sp') || stripped.includes('ma duoc') || stripped.includes('ma hieu')) return 'MA_THUOC';
+    if (stripped.includes('hoat chat')) return 'TEN_HOAT_CHAT';
+    if (stripped.includes('ten thuoc') || stripped.includes('biet duoc') || stripped.includes('thuoc thanh pham') || stripped.includes('ten hang') || stripped.includes('ten thuong mai') || stripped.includes('ten vat tu') || stripped.includes('ten hoa chat') || stripped.includes('ten san pham')) return 'TEN_THUOC';
+    if (stripped.includes('ham luong') || stripped.includes('nong do')) return 'HAM_LUONG';
+    if (stripped.includes('don vi tinh') || stripped === 'dvt' || stripped === 'don vi' || stripped === 'don_vi_tinh') return 'DON_VI_TINH';
+    if (stripped.includes('ma duong dung')) return 'MA_DUONG_DUNG';
+    if (stripped.includes('duong dung')) return 'DUONG_DUNG';
+    if (stripped.includes('dang bao che')) return 'DANG_BAO_CHE';
+    if (stripped.includes('dang ky') || stripped.includes('gpnk') || stripped.includes('sdk') || stripped.includes('gdklh')) return 'SO_DANG_KY';
+    if (stripped.includes('so luong')) return 'SO_LUONG';
+    if (stripped.includes('don gia') || stripped.includes('gia thau') || stripped.includes('gia trung thau') || stripped.includes('gia ban')) return 'DON_GIA';
+    if (stripped.includes('quy cach') || stripped.includes('dong goi')) return 'QUY_CACH';
+    if (stripped.includes('hang sx') || stripped.includes('nha sx') || stripped.includes('san xuat')) return 'NHA_SX';
+    if (stripped.includes('nuoc sx') || stripped.includes('quoc gia')) return 'NUOC_SX';
+    if (stripped.includes('nha thau') || stripped.includes('nha cung cap') || stripped.includes('don vi trung thau') || stripped.includes('cong ty trung thau')) return 'NHA_THAU';
+    if (stripped.includes('thau') || stripped.includes('tt_thau') || stripped.includes('quyet dinh')) return 'TT_THAU';
+    if (stripped.includes('tu ngay')) return 'TU_NGAY';
+    if (stripped.includes('den ngay') || stripped.includes('han dung')) return 'DEN_NGAY';
+    if (stripped.includes('cskcb') || stripped.includes('ma tram')) return 'MA_CSKCB';
     return clean;
   }
 
@@ -145,8 +164,17 @@ function parseSheetSmart(sheet) {
         hasData = true;
       }
     }
-    if (hasData && (item.TEN_THUOC || item.MA_THUOC || item.TEN_HOAT_CHAT)) {
-      result.push(item);
+    if (hasData) {
+      if (item.TEN_THUOC || item.MA_THUOC || item.TEN_HOAT_CHAT) {
+        result.push(item);
+      } else {
+        const nonNullCells = row.filter(c => c !== null && c !== undefined && String(c).trim() !== '');
+        if (nonNullCells.length >= 2) {
+          item.TEN_THUOC = String(nonNullCells[1] || nonNullCells[0]);
+          item.MA_THUOC = `TH_${String(i).padStart(5, '0')}`;
+          result.push(item);
+        }
+      }
     }
   }
 

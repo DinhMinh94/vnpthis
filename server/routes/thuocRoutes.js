@@ -20,8 +20,16 @@ router.post('/convert', upload.single('file'), (req, res) => {
     // Trường hợp 1: Upload file excel / csv
     if (req.file) {
       const wb = xlsx.read(req.file.buffer, { type: 'buffer' });
-      const firstSheetName = wb.SheetNames[0];
-      sourceData = convertService.parseSheetSmart(wb.Sheets[firstSheetName]);
+      for (const sheetName of wb.SheetNames) {
+        const parsed = convertService.parseSheetSmart(wb.Sheets[sheetName]);
+        if (parsed && parsed.length > 0) {
+          sourceData = parsed;
+          break;
+        }
+      }
+      if (sourceData.length === 0 && wb.SheetNames.length > 0) {
+        sourceData = convertService.parseSheetSmart(wb.Sheets[wb.SheetNames[0]]);
+      }
     } 
     // Trường hợp 2: Gửi JSON rows trực tiếp
     else if (req.body && req.body.data) {

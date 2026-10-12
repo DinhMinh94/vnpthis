@@ -593,6 +593,34 @@
           </div>
         </div>
 
+        <!-- BANNER THÔNG BÁO KẾT QUẢ NỔI BẬT NGAY ĐẦU TRANG KHI CHUYỂN ĐỔI XONG -->
+        <div v-if="convertResult" class="p-5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 border-2 border-emerald-400 animate-in fade-in zoom-in-95 duration-200">
+          <div class="flex items-center space-x-4">
+            <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 shadow-inner">
+              <i data-lucide="check-check" class="w-8 h-8 text-white"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2 flex-wrap">
+                <span class="text-base sm:text-lg font-black uppercase tracking-wide">ĐÃ CHUYỂN ĐỔI THÀNH CÔNG {{ convertResult.totalRows }} THUỐC!</span>
+                <span class="bg-white/25 px-2.5 py-0.5 rounded-full text-xs font-extrabold uppercase">78 Cột Chuẩn HIS</span>
+              </div>
+              <p class="text-xs text-emerald-100 mt-1">
+                Toàn bộ dữ liệu thuốc đã được bóc tách và ánh xạ hoàn tất ({{ convertResult.summary?.thCount || 0 }} Tân dược TH, {{ convertResult.summary?.cpCount || 0 }} Thuốc YHCT CP).
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 w-full md:w-auto">
+            <button @click="downloadConvertedExcel" class="flex-1 md:flex-none px-6 py-3.5 bg-white hover:bg-emerald-50 text-emerald-900 font-extrabold text-xs sm:text-sm rounded-2xl shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer active:scale-95">
+              <i data-lucide="download" class="w-5 h-5 text-emerald-700"></i>
+              <span>TẢI FILE EXCEL 78 CỘT VỀ MÁY</span>
+            </button>
+            <button @click="scrollToThuocResult" class="px-4 py-3.5 bg-emerald-800/60 hover:bg-emerald-800 text-white font-bold text-xs rounded-2xl border border-emerald-400/40 transition-colors flex items-center justify-center space-x-1.5 cursor-pointer">
+              <i data-lucide="arrow-down" class="w-4 h-4"></i>
+              <span>Xem bảng chi tiết ↓</span>
+            </button>
+          </div>
+        </div>
+
         <!-- KHU VỰC THAO TÁC UPLOAD & CẤU HÌNH -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
           <!-- CỘT 1 & 2: KHU VỰC TẢI LÊN FILE NGUỒN -->
@@ -3185,15 +3213,20 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         }
 
         function scrollToThuocResult() {
-          thuocModal.value.show = false;
           nextTick(() => {
-            const el = document.getElementById('thuocResultSection');
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            refreshIcons();
+            setTimeout(() => {
+              const el = document.getElementById('thuocResultSection');
+              if (el) {
+                const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+              }
+              refreshIcons();
+            }, 120);
           });
         }
 
         function closeThuocModalAndScroll() {
+          thuocModal.value.show = false;
           scrollToThuocResult();
         }
 
@@ -3227,7 +3260,16 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           isConvertingThuoc.value = true;
           convertStatus.value = 'converting';
           convertStatusMsg.value = 'Đang nạp file thuốc từ Cổng Giám Định và chuẩn hóa sang mẫu 78 cột VNPT HIS...';
-          thuocModal.value.show = false;
+          thuocModal.value = {
+            show: true,
+            mode: 'converting',
+            title: 'Đang Phân Tích & Chuyển Đổi Dữ Liệu Thuốc...',
+            message: 'Hệ thống đang chuẩn hóa sang mẫu 78 cột quy chuẩn cổng Dược VNPT HMIS 4.0',
+            progressStep: 2,
+            totalRows: 0,
+            thCount: 0,
+            cpCount: 0
+          };
           refreshIcons();
 
           try {
@@ -3243,18 +3285,47 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               convertResult.value = res.data;
               convertStatus.value = 'success';
               convertStatusMsg.value = `Đã nạp và chuyển đổi thành công ${res.data.totalRows} thuốc từ Cổng Giám Định (${res.data.summary?.thCount || 0} Tân dược TH, ${res.data.summary?.cpCount || 0} Thuốc YHCT CP) chuẩn 78 cột!`;
-              thuocModal.value.show = false;
               
+              thuocModal.value = {
+                show: true,
+                mode: 'success',
+                title: 'NẠP FILE THUỐC CỔNG GIÁM ĐỊNH THÀNH CÔNG!',
+                message: `Đã nạp và chuẩn hóa thành công ${res.data.totalRows} danh mục thuốc sang định dạng 78 cột chuẩn cổng Dược VNPT HMIS 4.0.`,
+                progressStep: 4,
+                totalRows: res.data.totalRows,
+                thCount: res.data.summary?.thCount || 0,
+                cpCount: res.data.summary?.cpCount || 0
+              };
               scrollToThuocResult();
               showToast(`Đã nạp và hiển thị ${res.data.totalRows} thuốc từ Cổng Giám Định!`, 'success');
             } else {
               convertStatus.value = 'error';
               convertStatusMsg.value = res.data.message || 'Lỗi nạp file mẫu từ cổng giám định';
+              thuocModal.value = {
+                show: true,
+                mode: 'error',
+                title: 'Lỗi Nạp Dữ Liệu',
+                message: convertStatusMsg.value,
+                progressStep: 0,
+                totalRows: 0,
+                thCount: 0,
+                cpCount: 0
+              };
               showToast(convertStatusMsg.value, 'error');
             }
           } catch (err) {
             convertStatus.value = 'error';
             convertStatusMsg.value = 'Lỗi nạp dữ liệu: ' + (err.response?.data?.message || err.message);
+            thuocModal.value = {
+              show: true,
+              mode: 'error',
+              title: 'Lỗi Nạp Dữ Liệu',
+              message: convertStatusMsg.value,
+              progressStep: 0,
+              totalRows: 0,
+              thCount: 0,
+              cpCount: 0
+            };
             showToast(convertStatusMsg.value, 'error');
           } finally {
             isConvertingThuoc.value = false;
@@ -3273,7 +3344,16 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           isConvertingThuoc.value = true;
           convertStatus.value = 'converting';
           convertStatusMsg.value = 'Đang phân tích dữ liệu và chuẩn hóa sang cấu trúc 78 cột VNPT HIS...';
-          thuocModal.value.show = false;
+          thuocModal.value = {
+            show: true,
+            mode: 'converting',
+            title: 'Đang Phân Tích & Chuyển Đổi Dữ Liệu Thuốc...',
+            message: 'Hệ thống đang chuẩn hóa sang mẫu 78 cột quy chuẩn cổng Dược VNPT HMIS 4.0',
+            progressStep: 2,
+            totalRows: 0,
+            thCount: 0,
+            cpCount: 0
+          };
           refreshIcons();
 
           try {
@@ -3288,13 +3368,33 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               convertResult.value = res.data;
               convertStatus.value = 'success';
               convertStatusMsg.value = `Chuyển đổi thành công ${res.data.totalRows} thuốc (${res.data.summary?.thCount || 0} Tân dược TH, ${res.data.summary?.cpCount || 0} Thuốc YHCT CP) chuẩn 78 cột!`;
-              thuocModal.value.show = false;
+              
+              thuocModal.value = {
+                show: true,
+                mode: 'success',
+                title: 'CHUYỂN ĐỔI THÀNH CÔNG!',
+                message: `Đã chuẩn hóa thành công ${res.data.totalRows} danh mục thuốc sang định dạng 78 cột chuẩn cổng Dược VNPT HMIS 4.0.`,
+                progressStep: 4,
+                totalRows: res.data.totalRows,
+                thCount: res.data.summary?.thCount || 0,
+                cpCount: res.data.summary?.cpCount || 0
+              };
 
               scrollToThuocResult();
               showToast(`Chuyển đổi thành công ${res.data.totalRows} thuốc!`, 'success');
             } else {
               convertStatus.value = 'error';
               convertStatusMsg.value = res.data.message || 'Lỗi khi xử lý file';
+              thuocModal.value = {
+                show: true,
+                mode: 'error',
+                title: 'Lỗi Chuyển Đổi Dữ Liệu',
+                message: convertStatusMsg.value,
+                progressStep: 0,
+                totalRows: 0,
+                thCount: 0,
+                cpCount: 0
+              };
               showToast(convertStatusMsg.value, 'error');
             }
           } catch (err) {
@@ -3312,6 +3412,16 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             }
             convertStatus.value = 'error';
             convertStatusMsg.value = 'Lỗi chuyển đổi: ' + msg;
+            thuocModal.value = {
+              show: true,
+              mode: 'error',
+              title: 'Lỗi Chuyển Đổi Dữ Liệu',
+              message: msg,
+              progressStep: 0,
+              totalRows: 0,
+              thCount: 0,
+              cpCount: 0
+            };
             showToast(convertStatusMsg.value, 'error');
           } finally {
             isConvertingThuoc.value = false;

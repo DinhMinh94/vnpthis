@@ -11,7 +11,10 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use((req, res, next) => {
-  console.log(`[${new Date().toLocaleTimeString('vi-VN')}] ${req.method} ${req.url}`);
+  const start = Date.now();
+  res.on('finish', () => {
+    console.log(`[${new Date().toLocaleTimeString('vi-VN')}] ${req.method} ${req.url} -> ${res.statusCode} (${Date.now() - start}ms)`);
+  });
   if (req.url === '/' || req.url.endsWith('.html') || req.url.startsWith('/api/')) {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.setHeader('Pragma', 'no-cache');

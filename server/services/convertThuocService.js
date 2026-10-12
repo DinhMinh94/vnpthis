@@ -118,10 +118,32 @@ function parseSheetSmart(sheet) {
   function normalizeKey(str) {
     if (!str) return '';
     const clean = String(str).replace(/\r?\n|\r/g, ' ').trim();
+    const upperClean = clean.toUpperCase().replace(/\s+/g, '_');
+
+    // Giữ nguyên các cột chuẩn đã đúng tên theo chuẩn Cổng Giám Định BHYT / VNPT HIS
+    const standardKeys = [
+      'STT', 'TT_THAU', 'NHOM_THAU', 'LOAI_THAU', 'HT_THAU', 'QUYET_DINH',
+      'MA_CSKCB_THUOC', 'MA_CSKCB_DAU_THAU', 'MA_THUOC', 'TEN_THUOC', 'TEN_HOAT_CHAT',
+      'MA_HOAT_CHAT', 'DON_VI_TINH', 'HAM_LUONG', 'DUONG_DUNG', 'MA_DUONG_DUNG',
+      'DANG_BAO_CHE', 'SO_DANG_KY', 'SO_LUONG', 'DON_GIA', 'DON_GIA_BH', 'QUY_CACH',
+      'NHA_SX', 'NUOC_SX', 'NHA_THAU', 'TU_NGAY', 'DEN_NGAY', 'DENNGAY', 'MA_CSKCB',
+      'LOAI_THUOC', 'MA_DVKT', 'TCCL', 'BO_PHAN_VT', 'TEN_KHOA_HOC', 'NGUON_GOC',
+      'PP_CHEBIEN', 'TLHH_CB', 'TLHH_BQ', 'MA_HOAT_CHAT_AX', 'HOAT_CHAT_AX',
+      'TEN_THUOC_AX', 'MA_DUONG_DUNG_AX', 'DUONG_DUNG_AX', 'SO_DANG_KY_AX',
+      'TIEU_CHUAN', 'MA_NHOM_9324', 'MA_NHOM_5937', 'MA_CSKCB_TBYT', 'THAUGHEP'
+    ];
+    if (standardKeys.includes(upperClean)) {
+      return upperClean;
+    }
+
     const stripped = stripVietnamese(clean);
 
     if (stripped === 'stt') return 'STT';
-    if (stripped.includes('ma thuoc bv') || stripped.includes('ma_thuoc_bv')) return 'MA_CSKCB_THUOC';
+    if (stripped.includes('ma cskcb thuoc') || stripped.includes('ma thuoc bv') || stripped.includes('ma_thuoc_bv')) return 'MA_CSKCB_THUOC';
+    if (stripped.includes('ma cskcb dau thau')) return 'MA_CSKCB_DAU_THAU';
+    if (stripped.includes('ma cskcb tbyt')) return 'MA_CSKCB_TBYT';
+    if (stripped.includes('thau ghep') || stripped.includes('thaughep')) return 'THAUGHEP';
+    if (stripped.includes('ma hoat chat')) return 'MA_HOAT_CHAT';
     if (stripped.includes('ma thuoc') || stripped.includes('ma hang') || stripped.includes('ma sp') || stripped.includes('ma duoc') || stripped.includes('ma hieu')) return 'MA_THUOC';
     if (stripped.includes('hoat chat')) return 'TEN_HOAT_CHAT';
     if (stripped.includes('ten thuoc') || stripped.includes('biet duoc') || stripped.includes('thuoc thanh pham') || stripped.includes('ten hang') || stripped.includes('ten thuong mai') || stripped.includes('ten vat tu') || stripped.includes('ten hoa chat') || stripped.includes('ten san pham')) return 'TEN_THUOC';
@@ -132,12 +154,17 @@ function parseSheetSmart(sheet) {
     if (stripped.includes('dang bao che')) return 'DANG_BAO_CHE';
     if (stripped.includes('dang ky') || stripped.includes('gpnk') || stripped.includes('sdk') || stripped.includes('gdklh')) return 'SO_DANG_KY';
     if (stripped.includes('so luong')) return 'SO_LUONG';
+    if (stripped.includes('don gia bh') || stripped.includes('gia bh')) return 'DON_GIA_BH';
     if (stripped.includes('don gia') || stripped.includes('gia thau') || stripped.includes('gia trung thau') || stripped.includes('gia ban')) return 'DON_GIA';
     if (stripped.includes('quy cach') || stripped.includes('dong goi')) return 'QUY_CACH';
     if (stripped.includes('hang sx') || stripped.includes('nha sx') || stripped.includes('san xuat')) return 'NHA_SX';
     if (stripped.includes('nuoc sx') || stripped.includes('quoc gia')) return 'NUOC_SX';
     if (stripped.includes('nha thau') || stripped.includes('nha cung cap') || stripped.includes('don vi trung thau') || stripped.includes('cong ty trung thau')) return 'NHA_THAU';
-    if (stripped.includes('thau') || stripped.includes('tt_thau') || stripped.includes('quyet dinh')) return 'TT_THAU';
+    if (stripped.includes('nhom thau') || stripped === 'nhom_thau') return 'NHOM_THAU';
+    if (stripped.includes('loai thau') || stripped === 'loai_thau') return 'LOAI_THAU';
+    if (stripped.includes('hinh thuc thau') || stripped.includes('ht thau') || stripped === 'ht_thau') return 'HT_THAU';
+    if (stripped.includes('tt thau') || stripped.includes('thong tin thau') || stripped === 'tt_thau') return 'TT_THAU';
+    if (stripped.includes('quyet dinh')) return 'QUYET_DINH';
     if (stripped.includes('tu ngay')) return 'TU_NGAY';
     if (stripped.includes('den ngay') || stripped.includes('han dung')) return 'DEN_NGAY';
     if (stripped.includes('cskcb') || stripped.includes('ma tram')) return 'MA_CSKCB';
@@ -247,7 +274,10 @@ function convertRows(sourceRows, options = {}) {
     const tenGiamDinhBh = tenThuoc;
     const maThuocBv = d.MA_CSKCB_THUOC || d.MA_THUOC || '';
     const nguonCt = options.nguonCtDefault || '74';
-    const thauGhep = d.TT_THAU || '';
+    
+    // THAUGHEP: lấy theo cột TT_THAU của file dữ liệu
+    const thauGhep = d.TT_THAU || d.THAU_GHEP || d.THAUGHEP || '';
+    
     const maPpCheBien = d.PP_CHEBIEN || '';
     const tuNgay = formatDate(d.TU_NGAY) || '01/01/2024';
     const denNgay = formatDate(d.DEN_NGAY || d.DENNGAY) || '31/12/2026';
@@ -263,7 +293,10 @@ function convertRows(sourceRows, options = {}) {
     const tinhTrangDuocLieu = '';
     const dmGuiBh = 1;
     const ngayCheckGuiBh = denNgay || '01/04/2027';
-    const maCskcbTbyt = 1;
+    
+    // MA_CSKCB_TBYT: bỏ trống theo yêu cầu người dùng
+    const maCskcbTbyt = '';
+    
     const tlhhCb = d.TLHH_CB || '';
     const tlhhBq = d.TLHH_BQ || '';
     const thanhTienThuoc = '';

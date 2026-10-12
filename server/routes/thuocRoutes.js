@@ -78,6 +78,67 @@ router.post('/convert', upload.single('file'), (req, res) => {
 });
 
 /**
+ * API: Hỗ trợ GET /api/thuoc/convert (tránh lỗi Cannot GET khi người dùng mở URL hoặc client gửi GET)
+ * GET /api/thuoc/convert
+ */
+router.get('/convert', (req, res) => {
+  try {
+    // Nếu người dùng gõ trực tiếp URL trên thanh địa chỉ trình duyệt
+    if (req.accepts('html') && !req.query.download && !req.xhr) {
+      return res.redirect('/#thuoc');
+    }
+
+    const path = require('path');
+    const dataPath = path.join(__dirname, '../../data/Danh_Muc_609_Thuoc_Mau.xlsx');
+    if (!require('fs').existsSync(dataPath)) {
+      return res.status(404).json({ success: false, message: 'Chưa tìm thấy file dữ liệu mẫu' });
+    }
+    const wb = xlsx.readFile(dataPath);
+    const sourceData = convertService.parseSheetSmart(wb.Sheets[wb.SheetNames[0]]);
+
+    const options = {
+      maCskcbOverride: req.query.maCskcb || '',
+      nhomBhxhDefault: req.query.nhomBhxh ? Number(req.query.nhomBhxh) : 4,
+      nguonCtDefault: req.query.nguonCt || '74'
+    };
+
+    const convertedRows = convertService.convertRows(sourceData, options);
+
+    // Nếu yêu cầu tải trực tiếp file Excel
+    if (req.query.download === 'excel') {
+      const newWb = xlsx.utils.book_new();
+      const newWs = xlsx.utils.aoa_to_sheet(convertedRows);
+      xlsx.utils.book_append_sheet(newWb, newWs, 'Mẫu');
+      const buffer = xlsx.write(newWb, { type: 'buffer', bookType: 'xlsx' });
+
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', 'attachment; filename="File_Import_Thuoc_VNPT_HIS.xlsx"');
+      return res.send(buffer);
+    }
+
+    const header = convertedRows[0];
+    const dataRows = convertedRows.slice(1);
+
+    res.json({
+      success: true,
+      totalRows: dataRows.length,
+      columnsCount: header.length,
+      previewHeader: header,
+      previewRows: dataRows.slice(0, 50),
+      allRows: dataRows,
+      summary: {
+        total: dataRows.length,
+        thCount: dataRows.filter(r => r[1] === 'TH').length,
+        cpCount: dataRows.filter(r => r[1] === 'CP').length,
+      }
+    });
+  } catch (error) {
+    console.error('Lỗi GET convert:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+/**
  * API: Tải file Excel mẫu chuẩn VNPT HIS (gồm 78 cột và dữ liệu mẫu)
  * GET /api/thuoc/download-template
  */

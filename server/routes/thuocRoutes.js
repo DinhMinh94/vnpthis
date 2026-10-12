@@ -83,10 +83,6 @@ router.post('/convert', upload.single('file'), (req, res) => {
  */
 router.get('/convert', (req, res) => {
   try {
-    // Nếu người dùng gõ trực tiếp URL trên thanh địa chỉ trình duyệt
-    if (req.accepts('html') && !req.query.download && !req.xhr) {
-      return res.redirect('/#thuoc');
-    }
 
     const path = require('path');
     const dataPath = path.join(__dirname, '../../data/Danh_Muc_609_Thuoc_Mau.xlsx');

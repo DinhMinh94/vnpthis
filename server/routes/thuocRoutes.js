@@ -116,7 +116,7 @@ router.get('/download-template', (req, res) => {
 });
 
 /**
- * API: Nạp & chuyển đổi trực tiếp file 609 thuốc mẫu của đơn vị
+ * API: Nạp & chuyển đổi trực tiếp file thuốc cổng giám định
  * GET /api/thuoc/sample-convert
  */
 router.get('/sample-convert', (req, res) => {
@@ -143,7 +143,7 @@ router.get('/sample-convert', (req, res) => {
       const buffer = xlsx.write(newWb, { type: 'buffer', bookType: 'xlsx' });
 
       res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-      res.setHeader('Content-Disposition', 'attachment; filename="File_Import_Thuoc_VNPT_HIS_609_Mau.xlsx"');
+      res.setHeader('Content-Disposition', 'attachment; filename="File_Import_Thuoc_VNPT_HIS_CongGiamDinh.xlsx"');
       return res.send(buffer);
     }
 
@@ -152,7 +152,7 @@ router.get('/sample-convert', (req, res) => {
 
     res.json({
       success: true,
-      fileName: 'Danh_Muc_609_Thuoc_Mau.xlsx',
+      fileName: 'Danh_Muc_Thuoc_Cong_Giam_Dinh.xlsx',
       totalRows: dataRows.length,
       columnsCount: header.length,
       previewHeader: header,

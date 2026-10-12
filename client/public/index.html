@@ -585,7 +585,7 @@
             </a>
             <button @click="loadSampleThuocData" :disabled="isConvertingThuoc" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white font-bold text-xs rounded-xl shadow-md transition-all hover:scale-102 cursor-pointer disabled:opacity-50">
               <i data-lucide="sparkles" class="w-4 h-4 text-amber-300"></i>
-              <span>Nạp 609 Thuốc Mẫu Của Đơn Vị</span>
+              <span>Nạp File Thuốc Cổng Giám Định</span>
             </button>
           </div>
         </div>
@@ -1681,7 +1681,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                 </label>
                 <button @click="loadSampleThuocData" :disabled="isConvertingThuoc" class="text-xs text-rose-600 hover:text-rose-700 font-semibold flex items-center space-x-1 underline cursor-pointer">
                   <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                  <span>Nạp file 609 thuốc mẫu của đơn vị</span>
+                  <span>Nạp file thuốc cổng giám định</span>
                 </button>
               </div>
 
@@ -2929,9 +2929,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
             const res = await axios.get('/api/thuoc/sample-convert?' + params.toString());
             if (res.data.success) {
-              thuocFileName.value = 'Danh_Muc_609_Thuoc_Chuan.xlsx';
+              thuocFileName.value = 'Danh_Muc_Thuoc_Cong_Giam_Dinh.xlsx';
               convertResult.value = res.data;
-              showToast(`Đã nạp và chuyển đổi thành công ${res.data.totalRows} thuốc mẫu!`, 'success');
+              showToast(`Đã nạp và chuyển đổi thành công ${res.data.totalRows} thuốc từ cổng giám định!`, 'success');
               nextTick(() => {
                 const el = document.getElementById('thuocResultSection');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -2998,7 +2998,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               const url = window.URL.createObjectURL(new Blob([res.data]));
               const link = document.createElement('a');
               link.href = url;
-              link.setAttribute('download', 'File_Import_Thuoc_VNPT_HIS_609.xlsx');
+              link.setAttribute('download', 'File_Import_Thuoc_VNPT_HIS_CongGiamDinh.xlsx');
               document.body.appendChild(link);
               link.click();
               link.remove();

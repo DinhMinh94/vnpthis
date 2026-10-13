@@ -295,7 +295,8 @@ function convertRows(sourceRows, options = {}) {
     const giaBan = giaThau;
     const giaDichVu = giaThau;
     const giaBhyt = parseNumberVi(d.DON_GIA_BH || d.DON_GIA || 0);
-    const giaBhytQuyetToan = giaBhyt;
+    // GIA_BHYT_QUYET_TOAN: Bỏ cột trần bảo hiểm (để trống) theo yêu cầu người dùng
+    const giaBhytQuyetToan = '';
     
     // BHYT_CHI_TRA: mặc định 100 theo yêu cầu người dùng
     const bhytChiTra = 100;

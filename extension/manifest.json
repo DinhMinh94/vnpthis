@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "VNPT HMIS 4.0 - Auto Login Helper",
+  "version": "1.0.0",
+  "description": "Tiện ích tự động điền tài khoản, mật khẩu và đăng nhập cổng Y tế cơ sở VNPT HMIS 4.0",
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://ytcs.hmis.vn/*",
+        "https://*.hmis.vn/*",
+        "https://his-*.vnpt.vn/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

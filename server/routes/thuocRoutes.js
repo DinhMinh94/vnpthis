@@ -42,7 +42,9 @@ router.post('/convert', upload.single('file'), (req, res) => {
       return res.status(400).json({ success: false, message: 'Không tìm thấy dữ liệu thuốc hợp lệ trong file. Vui lòng kiểm tra lại định dạng file.' });
     }
 
+    const isVatTu = req.body.isVatTu === 'true' || req.body.isVatTu === true || req.query.isVatTu === 'true';
     const options = {
+      isVatTu,
       maCskcbOverride: req.body.maCskcb || '',
       nhomBhxhDefault: req.body.nhomBhxh || '',
       nguonCtDefault: req.body.nguonCt || '1',
@@ -58,8 +60,11 @@ router.post('/convert', upload.single('file'), (req, res) => {
       xlsx.utils.book_append_sheet(newWb, newWs, 'Mẫu');
       const buffer = xlsx.write(newWb, { type: 'buffer', bookType: 'xlsx' });
 
+      const isVTYTDetected = isVatTu || Boolean(sourceData[0] && (sourceData[0].MA_VAT_TU || sourceData[0].TEN_VAT_TU));
+      const downloadFileName = isVTYTDetected ? 'File_Import_VTYT_VNPT_HIS.xlsx' : 'File_Import_Thuoc_VNPT_HIS.xlsx';
+
       res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-      res.setHeader('Content-Disposition', 'attachment; filename="File_Import_Thuoc_VNPT_HIS.xlsx"');
+      res.setHeader('Content-Disposition', `attachment; filename="${downloadFileName}"`);
       return res.send(buffer);
     }
 
@@ -230,6 +235,77 @@ router.get('/sample-convert', (req, res) => {
         total: dataRows.length,
         thCount: dataRows.filter(r => r[1] === 'TH').length,
         cpCount: dataRows.filter(r => r[1] === 'CP').length,
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+/**
+ * API: Tải file dữ liệu Vật tư y tế mẫu (.xlsx)
+ * GET /api/thuoc/download-vattu-template
+ */
+router.get('/download-vattu-template', (req, res) => {
+  try {
+    const templatePath = require('path').join(__dirname, '../../data/Danh_Muc_Vat_Tu_Mau.xlsx');
+    if (require('fs').existsSync(templatePath)) {
+      return res.download(templatePath, 'Danh_Muc_Vat_Tu_Mau_Cong_Giam_Dinh.xlsx');
+    }
+    res.status(404).json({ success: false, message: 'Chưa tìm thấy file vật tư mẫu' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+/**
+ * API: Nạp & chuyển đổi trực tiếp file vật tư y tế mẫu
+ * GET /api/thuoc/sample-vattu-convert
+ */
+router.get('/sample-vattu-convert', (req, res) => {
+  try {
+    const dataPath = require('path').join(__dirname, '../../data/Danh_Muc_Vat_Tu_Mau.xlsx');
+    if (!require('fs').existsSync(dataPath)) {
+      return res.status(404).json({ success: false, message: 'Chưa tìm thấy file dữ liệu vật tư mẫu' });
+    }
+    const wb = xlsx.readFile(dataPath);
+    const sourceData = convertService.parseSheetSmart(wb.Sheets[wb.SheetNames[0]]);
+
+    const options = {
+      isVatTu: true,
+      maCskcbOverride: req.query.maCskcb || '',
+      nhomBhxhDefault: req.query.nhomBhxh || '',
+      nguonCtDefault: req.query.nguonCt || '1',
+      prefixMaThuoc: req.query.prefixMaThuoc || ''
+    };
+
+    const convertedRows = convertService.convertRows(sourceData, options);
+
+    if (req.query.download === 'excel') {
+      const newWb = xlsx.utils.book_new();
+      const newWs = xlsx.utils.aoa_to_sheet(convertedRows);
+      xlsx.utils.book_append_sheet(newWb, newWs, 'Mẫu');
+      const buffer = xlsx.write(newWb, { type: 'buffer', bookType: 'xlsx' });
+
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', 'attachment; filename="File_Import_VTYT_VNPT_HIS_CongGiamDinh.xlsx"');
+      return res.send(buffer);
+    }
+
+    const header = convertedRows[0];
+    const dataRows = convertedRows.slice(1);
+
+    res.json({
+      success: true,
+      fileName: 'Danh_Muc_Vat_Tu_Mau.xlsx',
+      totalRows: dataRows.length,
+      columnsCount: header.length,
+      previewHeader: header,
+      previewRows: dataRows.slice(0, 50),
+      allRows: dataRows,
+      summary: {
+        total: dataRows.length,
+        vtCount: dataRows.length
       }
     });
   } catch (error) {

@@ -130,7 +130,9 @@ function parseSheetSmart(sheet) {
       'LOAI_THUOC', 'MA_DVKT', 'TCCL', 'BO_PHAN_VT', 'TEN_KHOA_HOC', 'NGUON_GOC',
       'PP_CHEBIEN', 'TLHH_CB', 'TLHH_BQ', 'MA_HOAT_CHAT_AX', 'HOAT_CHAT_AX',
       'TEN_THUOC_AX', 'MA_DUONG_DUNG_AX', 'DUONG_DUNG_AX', 'SO_DANG_KY_AX',
-      'TIEU_CHUAN', 'MA_NHOM_9324', 'MA_NHOM_5937', 'MA_CSKCB_TBYT', 'THAUGHEP'
+      'TIEU_CHUAN', 'MA_NHOM_9324', 'MA_NHOM_5937', 'MA_CSKCB_TBYT', 'THAUGHEP',
+      'MA_VAT_TU', 'NHOM_VAT_TU', 'TEN_VAT_TU', 'MA_HIEU', 'MA_VTYT_BV', 'TEN_VTYT_BV',
+      'DEN_NGAY_HD', 'TYLE_TT_BH', 'DINH_MUC', 'DON_VI_DAU_THAU'
     ];
     if (standardKeys.includes(upperClean)) {
       return upperClean;
@@ -139,13 +141,21 @@ function parseSheetSmart(sheet) {
     const stripped = stripVietnamese(clean);
 
     if (stripped === 'stt') return 'STT';
+    if (stripped.includes('ma vat tu') || stripped === 'ma_vat_tu') return 'MA_VAT_TU';
+    if (stripped.includes('nhom vat tu') || stripped === 'nhom_vat_tu') return 'NHOM_VAT_TU';
+    if (stripped.includes('ten vat tu') || stripped === 'ten_vat_tu') return 'TEN_VAT_TU';
+    if (stripped.includes('ma vtyt bv') || stripped.includes('ma_vtyt_bv')) return 'MA_VTYT_BV';
+    if (stripped.includes('ten vtyt bv') || stripped.includes('ten_vtyt_bv')) return 'TEN_VTYT_BV';
+    if (stripped.includes('tinh nang kt') || stripped.includes('tinh_nang_kt')) return 'TINH_NANG_KT';
+    if (stripped.includes('den ngay hd') || stripped.includes('den_ngay_hd')) return 'DEN_NGAY_HD';
+    if (stripped.includes('ma hieu') || stripped === 'ma_hieu') return 'MA_HIEU';
     if (stripped.includes('ma cskcb thuoc') || stripped.includes('ma thuoc bv') || stripped.includes('ma_thuoc_bv')) return 'MA_CSKCB_THUOC';
     if (stripped.includes('ma cskcb dau thau')) return 'MA_CSKCB_DAU_THAU';
     if (stripped.includes('ma cskcb tbyt')) return 'MA_CSKCB_TBYT';
     if (stripped.includes('thau ghep') || stripped.includes('thaughep')) return 'THAUGHEP';
     if (stripped.includes('ten thuoc ax') || stripped.includes('ten_thuoc_ax')) return 'TEN_THUOC_AX';
     if (stripped.includes('ma hoat chat')) return 'MA_HOAT_CHAT';
-    if (stripped.includes('ma thuoc') || stripped.includes('ma hang') || stripped.includes('ma sp') || stripped.includes('ma duoc') || stripped.includes('ma hieu')) return 'MA_THUOC';
+    if (stripped.includes('ma thuoc') || stripped.includes('ma hang') || stripped.includes('ma sp') || stripped.includes('ma duoc')) return 'MA_THUOC';
     if (stripped.includes('hoat chat')) return 'TEN_HOAT_CHAT';
     if (stripped.includes('ten thuoc') || stripped.includes('biet duoc') || stripped.includes('thuoc thanh pham') || stripped.includes('ten hang') || stripped.includes('ten thuong mai') || stripped.includes('ten vat tu') || stripped.includes('ten hoa chat') || stripped.includes('ten san pham')) return 'TEN_THUOC';
     if (stripped.includes('ham luong') || stripped.includes('nong do')) return 'HAM_LUONG';
@@ -193,7 +203,7 @@ function parseSheetSmart(sheet) {
       }
     }
     if (hasData) {
-      if (item.TEN_THUOC || item.MA_THUOC || item.TEN_HOAT_CHAT) {
+      if (item.TEN_THUOC || item.MA_THUOC || item.TEN_HOAT_CHAT || item.TEN_VAT_TU || item.MA_VAT_TU || item.NHOM_VAT_TU) {
         result.push(item);
       } else {
         const nonNullCells = row.filter(c => c !== null && c !== undefined && String(c).trim() !== '');
@@ -235,25 +245,46 @@ function convertRows(sourceRows, options = {}) {
 
   sourceRows.forEach((d, idx) => {
     const stt = idx + 1;
-    const loaiThuoc = d.LOAI_THUOC || 1;
-    const maNhom = d.MA_NHOM || (String(loaiThuoc) === '2' ? 'CP' : 'TH');
-    // MA_LOAI: Nếu MA_NHOM là CP thì MA_LOAI là TD, còn lại là TH
-    const maLoai = String(maNhom).trim().toUpperCase() === 'CP' ? 'TD' : 'TH';
-    const maHoatChat = d.MA_HOAT_CHAT_AX || d.MA_HOAT_CHAT || d.MA_THUOC || '';
-    const hoatChat = d.HOAT_CHAT_AX || d.TEN_HOAT_CHAT || d.HOAT_CHAT || '';
-    
+    const isVatTu = Boolean(options.isVatTu || d.MA_VAT_TU || d.TEN_VAT_TU || d.NHOM_VAT_TU);
+
+    let maNhom, maLoai, maHoatChat, hoatChat, tenThuoc, tenGiamDinhBh, maByt;
+
+    if (isVatTu) {
+      // Xử lý Danh mục Vật tư y tế theo yêu cầu:
+      // MA_VAT_TU đổi thành mã hoạt chất và maBYT
+      maHoatChat = d.MA_VAT_TU || d.MA_HOAT_CHAT || '';
+      maByt = d.MA_VAT_TU || d.MA_BYT || '';
+      // NHOM_VAT_TU là tên hoạt chất
+      hoatChat = d.NHOM_VAT_TU || d.HOAT_CHAT || d.TEN_HOAT_CHAT || '';
+      // TEN_VAT_TU fill vào cột tên thuốc BH tên thuốc
+      tenThuoc = d.TEN_VAT_TU || d.TEN_THUOC || '';
+      tenGiamDinhBh = d.TEN_VAT_TU || d.TEN_THUOC_AX || d.TEN_THUOC || '';
+      maNhom = d.MA_NHOM || options.maNhomDefault || 'VT';
+      maLoai = d.MA_LOAI || options.maLoaiDefault || 'VT';
+    } else {
+      // Xử lý Danh mục Thuốc
+      const loaiThuoc = d.LOAI_THUOC || 1;
+      maNhom = d.MA_NHOM || (String(loaiThuoc) === '2' ? 'CP' : 'TH');
+      // MA_LOAI: Nếu MA_NHOM là CP thì MA_LOAI là TD, còn lại là TH
+      maLoai = String(maNhom).trim().toUpperCase() === 'CP' ? 'TD' : 'TH';
+      maHoatChat = d.MA_HOAT_CHAT_AX || d.MA_HOAT_CHAT || d.MA_THUOC || '';
+      hoatChat = d.HOAT_CHAT_AX || d.TEN_HOAT_CHAT || d.HOAT_CHAT || '';
+      tenThuoc = d.TEN_THUOC || d.TEN_THUOC_AX || '';
+      tenGiamDinhBh = d.TEN_THUOC_AX || d.TEN_THUOC || tenThuoc || '';
+      maByt = d.MA_BYT || '';
+    }
+
     // MA_THUOC trên HIS: nếu nhập prefix thì sinh mã (VD: thuoc -> thuoc001, TH -> TH001), nếu để trống thì giữ rỗng
     let maThuoc = '';
     if (options.prefixMaThuoc && String(options.prefixMaThuoc).trim() !== '') {
       const prefix = String(options.prefixMaThuoc).trim();
       maThuoc = `${prefix}${String(stt).padStart(3, '0')}`;
     }
-    const tenThuoc = d.TEN_THUOC || d.TEN_THUOC_AX || '';
-    const hamLuong = d.HAM_LUONG || '';
+    const hamLuong = isVatTu ? '' : (d.HAM_LUONG || '');
     const donViTinh = d.DON_VI_TINH || '';
-    const duongDung = d.DUONG_DUNG || d.DUONG_DUNG_AX || '';
-    const maDuongDung = d.MA_DUONG_DUNG || d.MA_DUONG_DUNG_AX || '';
-    const hangSx = d.NHA_SX || d.HANG_SX || '';
+    const duongDung = isVatTu ? '' : (d.DUONG_DUNG || d.DUONG_DUNG_AX || '');
+    const maDuongDung = isVatTu ? '' : (d.MA_DUONG_DUNG || d.MA_DUONG_DUNG_AX || '');
+    const hangSx = d.HANG_SX || d.NHA_SX || '';
     const nuocSx = d.NUOC_SX || '';
     const giaThau = parseNumberVi(d.DON_GIA || d.DON_GIA_BH || 0);
     
@@ -269,7 +300,7 @@ function convertRows(sourceRows, options = {}) {
     // BHYT_CHI_TRA: mặc định 100 theo yêu cầu người dùng
     const bhytChiTra = 100;
     
-    const soDangKy = d.SO_DANG_KY || d.SO_DANG_KY_AX || '';
+    const soDangKy = d.SO_LUU_HANH || d.SO_DANG_KY || d.SO_DANG_KY_AX || '';
     const dongGoi = d.QUY_CACH || d.DONG_GOI || '';
     const lieuLuong = hamLuong;
     const nhaCungCap = d.NHA_THAU || d.NHA_CUNG_CAP || '';
@@ -283,24 +314,23 @@ function convertRows(sourceRows, options = {}) {
     // STT_THAU: để trống theo yêu cầu người dùng
     const sttThau = '';
     
-    // TEN_GIAM_DINH_BH: lấy theo cột TEN_THUOC_AX của file mẫu
-    const tenGiamDinhBh = d.TEN_THUOC_AX || d.TEN_THUOC || tenThuoc || '';
-    
-    const maThuocBv = d.MA_CSKCB_THUOC || d.MA_THUOC || '';
+    const maThuocBv = isVatTu ? (d.MA_VTYT_BV || d.MA_CSKCB_THUOC || '') : (d.MA_CSKCB_THUOC || d.MA_THUOC || '');
     const nguonCt = options.nguonCtDefault || '1';
     
     // THAUGHEP: lấy theo cột TT_THAU của file dữ liệu
     const thauGhep = d.TT_THAU || d.THAU_GHEP || d.THAUGHEP || '';
     
     const maPpCheBien = d.PP_CHEBIEN || '';
+    const maHieuSp = d.MA_HIEU || '';
     const tuNgay = formatDate(d.TU_NGAY) || '01/01/2024';
-    const denNgay = formatDate(d.DEN_NGAY || d.DENNGAY) || '31/12/2026';
+    const denNgay = formatDate(d.DEN_NGAY_HD || d.DEN_NGAY || d.DENNGAY) || '31/12/2026';
     const soLuong = parseNumberVi(d.SO_LUONG || 0);
     
     // MA_CSKCB: để mặc định luôn theo file dữ liệu
     const maCskcb = d.MA_CSKCB || '';
-    const loaiThau = d.LOAI_THAU || 4;
-    const htThau = d.HT_THAU || 1;
+    const loaiThuoc = d.LOAI_THUOC || '';
+    const loaiThau = d.LOAI_THAU || (isVatTu ? 2 : 4);
+    const htThau = d.HT_THAU || (isVatTu ? 3 : 1);
     const maDvkt = d.MA_DVKT || '';
     const tieuChuanChatLuong = d.TCCL || d.TIEU_CHUAN || '';
     const boPhanSuDung = d.BO_PHAN_VT || '';
@@ -312,6 +342,8 @@ function convertRows(sourceRows, options = {}) {
     
     // MA_CSKCB_TBYT: bỏ trống theo yêu cầu người dùng
     const maCskcbTbyt = '';
+    const tinhNangKt = d.TINH_NANG_KT || '';
+    const soLuuHanh = d.SO_LUU_HANH || '';
     
     const tlhhCb = d.TLHH_CB || '';
     const tlhhBq = d.TLHH_BQ || '';
@@ -320,13 +352,13 @@ function convertRows(sourceRows, options = {}) {
     const row = [
       stt, maNhom, maLoai, maHoatChat, hoatChat, maThuoc, tenThuoc, hamLuong,
       donViTinh, duongDung, maDuongDung, hangSx, nuocSx, giaThau, nhomBhxh,
-      giaBan, giaDichVu, giaBhyt, giaBhytQuyetToan, bhytChiTra, '', '',
+      giaBan, giaDichVu, giaBhyt, giaBhytQuyetToan, bhytChiTra, '', maByt,
       soDangKy, dongGoi, lieuLuong, nhaCungCap, soGoiThau, dangBaoChe, tyleHuHao,
       congBo, sttThau, tenGiamDinhBh, maThuocBv, nguonCt, '', thauGhep,
-      maPpCheBien, '', tuNgay, denNgay, tuNgay, denNgay, soLuong,
+      maPpCheBien, maHieuSp, tuNgay, denNgay, tuNgay, denNgay, soLuong,
       maCskcb, loaiThuoc, loaiThau, htThau, maDvkt, tieuChuanChatLuong, boPhanSuDung,
-      tenKhViThuoc, nguonGoc, tinhTrangDuocLieu, dmGuiBh, ngayCheckGuiBh, '',
-      '', maCskcbTbyt, '', '', tlhhCb, tlhhBq,
+      tenKhViThuoc, nguonGoc, tinhTrangDuocLieu, dmGuiBh, ngayCheckGuiBh, tinhNangKt,
+      soLuuHanh, maCskcbTbyt, '', '', tlhhCb, tlhhBq,
       thanhTienThuoc, '', '', '', '',
       '', '', '', '', '',
       '', '', '', '', '', ''

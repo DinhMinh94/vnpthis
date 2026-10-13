@@ -328,7 +328,10 @@ function convertRows(sourceRows, options = {}) {
     
     // MA_CSKCB: để mặc định luôn theo file dữ liệu
     const maCskcb = d.MA_CSKCB || '';
-    const loaiThuoc = d.LOAI_THUOC || '';
+    // LOAI_THUOC: VTYT để bằng 3 theo quy chuẩn VNPT HIS, Thuốc để 1 (Tân dược) hoặc 2 (YHCT CP)
+    const loaiThuoc = options.loaiThuocDefault !== undefined && options.loaiThuocDefault !== ''
+      ? (Number(options.loaiThuocDefault) || options.loaiThuocDefault)
+      : (isVatTu ? 3 : (d.LOAI_THUOC ? (Number(d.LOAI_THUOC) || d.LOAI_THUOC) : (String(maNhom) === 'CP' ? 2 : 1)));
     const loaiThau = d.LOAI_THAU || (isVatTu ? 2 : 4);
     const htThau = d.HT_THAU || (isVatTu ? 3 : 1);
     const maDvkt = d.MA_DVKT || '';

@@ -5,6 +5,7 @@ const config = require('./config/config');
 const stationRoutes = require('./routes/stationRoutes');
 const settingRoutes = require('./routes/settingRoutes');
 const thuocRoutes = require('./routes/thuocRoutes');
+const nhanVienRoutes = require('./routes/nhanVienRoutes');
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/api/stations', stationRoutes);
 app.use('/api/settings', settingRoutes);
 app.use('/api/thuoc', thuocRoutes);
+app.use('/api/nhanvien', nhanVienRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

@@ -2455,6 +2455,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                     <tr>
                       <th class="p-2 border-b border-slate-200 whitespace-nowrap">STT</th>
                       <th class="p-2 border-b border-slate-200 whitespace-nowrap">Mã Nhóm</th>
+                      <th class="p-2 border-b border-slate-200 whitespace-nowrap">Mã Loại</th>
                       <th class="p-2 border-b border-slate-200 whitespace-nowrap">Mã Hoạt Chất</th>
                       <th class="p-2 border-b border-slate-200 whitespace-nowrap">Hoạt Chất</th>
                       <th class="p-2 border-b border-slate-200 whitespace-nowrap">Mã Thuốc</th>
@@ -2475,6 +2476,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                     <tr v-for="(r, i) in convertResult.previewRows" :key="i" class="hover:bg-rose-50/40 transition-colors">
                       <td class="p-2 font-mono font-bold text-slate-600">{{ r[0] }}</td>
                       <td class="p-2 font-bold" :class="r[1] === 'TH' ? 'text-blue-600' : 'text-amber-600'">{{ r[1] }}</td>
+                      <td class="p-2 font-mono font-bold text-emerald-600">{{ r[2] }}</td>
                       <td class="p-2 font-mono text-slate-700">{{ r[3] }}</td>
                       <td class="p-2 font-medium text-slate-800">{{ r[4] }}</td>
                       <td class="p-2 font-mono text-slate-600">{{ r[5] }}</td>

@@ -1164,19 +1164,8 @@
                 <p class="text-[11px] text-slate-500 mt-1">
                   Cấu trúc: <span class="font-mono text-indigo-700 font-bold">[mã].[họ_đệm_viết_tắt][tên]</span> (VD: <span class="font-mono font-bold text-purple-700">{{ nhanVienOptions.maDonVi || '11055' }}.NVHOANG</span>)
                 </p>
-              </div>
-
-              <!-- Tiền tố Mã nhân viên (OFFICER_CODE) -->
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">Tiền tố Mã nhân viên (OFFICER_CODE):</label>
-                <input 
-                  v-model="nhanVienOptions.prefixOfficerCode" 
-                  type="text" 
-                  placeholder="VD: NV, USER_NAME..." 
-                  class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                >
-                <p class="text-[11px] text-slate-500 mt-1">
-                  Nhập <span class="font-mono font-bold text-indigo-600">NV</span> &rarr; NV001, NV002...; nhập <span class="font-mono font-bold text-indigo-600">USER_NAME</span> &rarr; lấy theo username.
+                <p class="text-[11px] text-emerald-700 font-semibold mt-1">
+                  ✓ Mã nhân viên (OFFICER_CODE) sẽ tự động lấy đồng bộ giống USER_NAME.
                 </p>
               </div>
 
@@ -1299,18 +1288,18 @@
               <tbody class="divide-y divide-slate-100 font-sans">
                 <tr v-for="(r, idx) in convertNhanVienResult.previewRows" :key="idx" class="hover:bg-indigo-50/50 transition-colors">
                   <td class="p-2.5 text-center text-slate-400 font-bold font-mono">{{ idx + 1 }}</td>
-                  <td class="p-2.5 font-mono font-bold text-indigo-700 bg-indigo-50/30">{{ r[0] }}</td>
-                  <td class="p-2.5 font-bold text-slate-900">{{ r[1] }}</td>
+                  <td class="p-2.5 font-mono font-bold text-indigo-700 bg-indigo-50/30">{{ r[1] }}</td>
+                  <td class="p-2.5 font-bold text-slate-900">{{ r[3] }}</td>
                   <td class="p-2.5 font-mono font-semibold text-purple-700">{{ r[2] }}</td>
-                  <td class="p-2.5 font-medium text-slate-700">{{ r[11] || '-' }}</td>
-                  <td class="p-2.5 font-medium text-slate-700">{{ r[12] || '-' }}</td>
+                  <td class="p-2.5 font-medium text-slate-700">{{ r[5] || '-' }}</td>
+                  <td class="p-2.5 font-medium text-slate-700">{{ r[6] || '-' }}</td>
                   <td class="p-2.5 font-mono text-emerald-700 font-semibold">{{ r[7] || '-' }}</td>
                   <td class="p-2.5 font-mono text-slate-600">{{ r[8] || '-' }}</td>
-                  <td class="p-2.5 font-mono text-slate-800">{{ r[17] || '-' }}</td>
-                  <td class="p-2.5 font-mono text-slate-600">{{ r[4] || '-' }}</td>
+                  <td class="p-2.5 font-mono text-slate-800">{{ r[10] || '-' }}</td>
+                  <td class="p-2.5 font-mono text-slate-600">{{ r[13] || '-' }}</td>
                   <td class="p-2.5 font-mono text-amber-800">{{ r[15] || '-' }}</td>
-                  <td class="p-2.5 text-slate-700">{{ r[6] || '-' }}</td>
-                  <td class="p-2.5 font-mono text-slate-600">{{ r[19] || '-' }}</td>
+                  <td class="p-2.5 text-slate-700">{{ r[4] || '-' }}</td>
+                  <td class="p-2.5 font-mono text-slate-600">{{ r[25] || '-' }}</td>
                 </tr>
               </tbody>
             </table>
@@ -2929,7 +2918,6 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const nhanVienFileSize = ref('');
         const nhanVienOptions = ref({
           maDonVi: '11055',
-          prefixOfficerCode: 'NV',
           defaultDeptId: '',
           defaultTgTuan: 'T2T3T4T5T6'
         });
@@ -4573,7 +4561,6 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           try {
             const params = new URLSearchParams();
             if (nhanVienOptions.value.maDonVi) params.append('maDonVi', nhanVienOptions.value.maDonVi);
-            if (nhanVienOptions.value.prefixOfficerCode) params.append('prefixOfficerCode', nhanVienOptions.value.prefixOfficerCode);
             if (nhanVienOptions.value.defaultDeptId) params.append('defaultDeptId', nhanVienOptions.value.defaultDeptId);
             if (nhanVienOptions.value.defaultTgTuan) params.append('defaultTgTuan', nhanVienOptions.value.defaultTgTuan);
 
@@ -4658,7 +4645,6 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             const formData = new FormData();
             formData.append('file', nhanVienFile.value);
             if (nhanVienOptions.value.maDonVi) formData.append('maDonVi', nhanVienOptions.value.maDonVi);
-            if (nhanVienOptions.value.prefixOfficerCode) formData.append('prefixOfficerCode', nhanVienOptions.value.prefixOfficerCode);
             if (nhanVienOptions.value.defaultDeptId) formData.append('defaultDeptId', nhanVienOptions.value.defaultDeptId);
             if (nhanVienOptions.value.defaultTgTuan) formData.append('defaultTgTuan', nhanVienOptions.value.defaultTgTuan);
 
@@ -4734,7 +4720,6 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               const params = new URLSearchParams();
               params.append('download', 'excel');
               if (nhanVienOptions.value.maDonVi) params.append('maDonVi', nhanVienOptions.value.maDonVi);
-              if (nhanVienOptions.value.prefixOfficerCode) params.append('prefixOfficerCode', nhanVienOptions.value.prefixOfficerCode);
               if (nhanVienOptions.value.defaultDeptId) params.append('defaultDeptId', nhanVienOptions.value.defaultDeptId);
               if (nhanVienOptions.value.defaultTgTuan) params.append('defaultTgTuan', nhanVienOptions.value.defaultTgTuan);
 
@@ -4755,7 +4740,6 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             const formData = new FormData();
             formData.append('file', nhanVienFile.value);
             if (nhanVienOptions.value.maDonVi) formData.append('maDonVi', nhanVienOptions.value.maDonVi);
-            if (nhanVienOptions.value.prefixOfficerCode) formData.append('prefixOfficerCode', nhanVienOptions.value.prefixOfficerCode);
             if (nhanVienOptions.value.defaultDeptId) formData.append('defaultDeptId', nhanVienOptions.value.defaultDeptId);
             if (nhanVienOptions.value.defaultTgTuan) formData.append('defaultTgTuan', nhanVienOptions.value.defaultTgTuan);
 

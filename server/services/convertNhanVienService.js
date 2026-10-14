@@ -312,6 +312,55 @@ function mapOfficerType(val) {
 }
 
 /**
+/**
+ * Hàm tìm giá trị linh hoạt từ đối tượng dòng theo danh sách mẫu key
+ */
+function getRowValue(obj, patterns) {
+  if (!obj || typeof obj !== 'object') return '';
+  for (const p of patterns) {
+    if (obj[p] !== undefined && obj[p] !== null && String(obj[p]).trim() !== '') {
+      return String(obj[p]).trim();
+    }
+  }
+  const keys = Object.keys(obj);
+  for (const p of patterns) {
+    const pUpper = p.toUpperCase();
+    for (const k of keys) {
+      if (k.toUpperCase().includes(pUpper)) {
+        if (obj[k] !== undefined && obj[k] !== null && String(obj[k]).trim() !== '') {
+          return String(obj[k]).trim();
+        }
+      }
+    }
+  }
+  return '';
+}
+
+/**
+ * Trích xuất tên nhân viên chính xác từ dòng dữ liệu
+ */
+function extractOfficerName(obj) {
+  if (!obj || typeof obj !== 'object') return '';
+  const primaryPatterns = ['OFFICER_NAME', 'TEN_NHAN_VIEN', 'HO_TEN', 'HOTEN', 'TEN_NV', 'TEN_CAN_BO', 'CAN_BO', 'HO_VA_TEN'];
+  for (const p of primaryPatterns) {
+    for (const k of Object.keys(obj)) {
+      if (k.toUpperCase().includes(p)) {
+        const val = String(obj[k] || '').trim();
+        if (val) return val;
+      }
+    }
+  }
+  for (const k of Object.keys(obj)) {
+    const ku = k.toUpperCase();
+    if (ku.includes('TEN') && !ku.includes('KHOA') && !ku.includes('DON_VI') && !ku.includes('TINH') && !ku.includes('HUYEN') && !ku.includes('XA')) {
+      const val = String(obj[k] || '').trim();
+      if (val) return val;
+    }
+  }
+  return '';
+}
+
+/**
  * Đọc bảng tính linh hoạt (Excel hoặc CSV)
  */
 function parseSheetSmart(sheet) {
@@ -362,8 +411,9 @@ function parseSheetSmart(sheet) {
       }
     }
 
-    // Chỉ nhận dòng có tên hoặc mã nhân viên hoặc CCHN
-    if (hasValue && (obj.OFFICER_NAME || obj.TEN_NHAN_VIEN || obj.TEN || obj.MA_NHAN_VIEN || obj.MA_BAC_SI || obj.CMND || obj.CCCD)) {
+    const name = extractOfficerName(obj);
+    const hasIdentifier = name || getRowValue(obj, ['MA_BAC_SI', 'CCHN', 'CCCD', 'CMND', 'CMT', 'PHONE', 'SO_BHXH']);
+    if (hasValue && hasIdentifier) {
       items.push(obj);
     }
   }
@@ -376,96 +426,73 @@ function parseSheetSmart(sheet) {
  */
 function convertNhanVienRows(sourceRows, options = {}) {
   const maDonVi = (options.maDonVi || options.maCskcb || '11055').toString().trim();
-  const prefixOfficerCode = (options.prefixOfficerCode !== undefined ? options.prefixOfficerCode : 'NV').toString().trim();
   const defaultDeptId = options.defaultDeptId || '';
   const defaultTgTuan = options.defaultTgTuan || 'T2T3T4T5T6';
   const defaultStatus = options.defaultStatus !== undefined ? options.defaultStatus : 1;
 
   const usedUsernames = new Set();
-  const usedCodes = new Set();
-
   const dataRows = [];
 
   sourceRows.forEach((d, idx) => {
     const stt = idx + 1;
 
     // 1. TÊN NHÂN VIÊN
-    const officerName = (d.OFFICER_NAME || d.TEN_NHAN_VIEN || d.HO_TEN || d.HOTEN || d.TEN || '').toString().trim();
+    const officerName = extractOfficerName(d);
 
     // 2. USER_NAME: cấu trúc mã đơn vị.tên nhân viên viết tắt họ, đệm
-    let userName = (d.USER_NAME || '').toString().trim();
+    let userName = getRowValue(d, ['USER_NAME', 'USERNAME', 'TAI_KHOAN']);
     if (!userName && officerName) {
       userName = generateUserName(officerName, maDonVi, usedUsernames);
     } else if (userName) {
       usedUsernames.add(userName.toLowerCase());
     }
 
-    // 3. MÃ NHÂN VIÊN OFFICER_CODE
-    let officerCode = (d.OFFICER_CODE || d.MA_NHAN_VIEN || '').toString().trim();
-    if (!officerCode) {
-      if (prefixOfficerCode.toUpperCase() === 'USER_NAME') {
-        officerCode = userName;
-      } else if (prefixOfficerCode.toUpperCase() === 'SHORT') {
-        const parts = userName.split('.');
-        officerCode = parts[parts.length - 1];
-      } else if (prefixOfficerCode) {
-        officerCode = `${prefixOfficerCode}${String(stt).padStart(3, '0')}`;
-      } else {
-        officerCode = userName || `${maDonVi}_${String(stt).padStart(3, '0')}`;
-      }
-    }
-    // Đảm bảo không trùng mã nhân viên
-    let finalCode = officerCode;
-    let cCounter = 1;
-    while (usedCodes.has(finalCode.toLowerCase())) {
-      finalCode = `${officerCode}_${cCounter}`;
-      cCounter++;
-    }
-    usedCodes.add(finalCode.toLowerCase());
-    officerCode = finalCode;
+    // 3. MÃ NHÂN VIÊN OFFICER_CODE: Lấy giống USER_NAME theo yêu cầu
+    const officerCode = userName || getRowValue(d, ['OFFICER_CODE', 'MA_NHAN_VIEN']) || `NV${String(stt).padStart(3, '0')}`;
 
     // 4. KHOA DEPT_ID
-    const deptId = (d.DEPT_ID || d.KHOA || d.TEN_KHOA || defaultDeptId || '').toString().trim();
+    const deptId = (getRowValue(d, ['DEPT_ID', 'KHOA', 'TEN_KHOA', 'PHONG_BAN', 'BO_PHAN']) || defaultDeptId || '').toString().trim();
 
     // 5. CHỨC DANH ĐẨY CỔNG (Tham chiếu sheet CHUCDANH_NN)
-    const chucDanhVal = d.CHUCDANH_NN || d.CHUC_DANH_NN || d.CHUCDANH || d.CHUC_DANH || '';
+    const chucDanhVal = getRowValue(d, ['CHUCDANH_NN', 'CHUC_DANH_NN', 'CHUCDANH', 'CHUC_DANH', 'CHUC_VU']);
     const chucDanhNn = mapChucDanhNN(chucDanhVal);
 
     // 6. LOẠI NHÂN VIÊN OFFICER_TYPE (Tham chiếu sheet DMC Loại)
-    const loaiVal = d.OFFICER_TYPE || d.LOAI || d.LOAI_NHAN_VIEN || '';
+    const loaiVal = getRowValue(d, ['OFFICER_TYPE', 'LOAI_NHAN_VIEN', 'LOAI_NV', 'LOAI']);
     const officerType = mapOfficerType(loaiVal);
 
     // 7. Mã bác sĩ MA_BAC_SI (CCHN)
-    const maBacSi = (d.MA_BAC_SI || d.CHUNG_CHI_HANH_NGHE || d.CCHN || d.SO_CCHN || '').toString().trim();
+    const maBacSi = getRowValue(d, ['MA_BAC_SI', 'CHUNG_CHI_HANH_NGHE', 'CCHN', 'SO_CCHN', 'GPHN']).toString().trim();
 
     // 8. NGAYCAPCCHN
-    const ngayCapCchn = formatDate(d.NGAYCAPCCHN || d.NGAY_CAP_CCHN || '');
+    const ngayCapCchn = formatDate(getRowValue(d, ['NGAYCAPCCHN', 'NGAY_CAP_CCHN', 'NGAY_CAP']));
 
     // 9. NOICAPCCHN
-    const noiCapCchn = (d.NOICAPCCHN || d.NOI_CAP_CCHN || '').toString().trim();
+    const noiCapCchn = getRowValue(d, ['NOICAPCCHN', 'NOI_CAP_CCHN', 'NOI_CAP']).toString().trim();
 
     // 10. CMT/ CCCD
-    let cccd = (d.CMT_CCCD || d.CCCD || d.CMND || d.CMT || '').toString().trim();
+    let cccd = getRowValue(d, ['CMT_CCCD', 'CCCD', 'CMND', 'CMT', 'CAN_CUOC']).toString().trim();
     if (cccd.length === 11) cccd = '0' + cccd;
 
     // 11. SO_BHYT
-    const soBhyt = (d.SO_BHYT || d.BHYT || '').toString().trim();
+    const soBhyt = getRowValue(d, ['SO_BHYT', 'BHYT', 'MA_THE_BHYT']).toString().trim();
 
     // 12. SO_BHXH
-    let soBhxh = (d.SO_BHXH || d.BHXH || cccd || '').toString().trim();
+    let soBhxh = getRowValue(d, ['SO_BHXH', 'BHXH', 'MA_SO_BHXH', 'CMND', 'CCCD']).toString().trim();
     if (soBhxh.length === 11) soBhxh = '0' + soBhxh;
 
     // 13. NGÀY SINH
-    let ngaySinh = formatDate(d.NGAYSINH || d.NGAY_SINH || '');
+    let ngaySinh = formatDate(getRowValue(d, ['NGAYSINH', 'NGAY_SINH', 'DOB', 'NAMSINH', 'NAM_SINH']));
     if (!ngaySinh && cccd) {
       ngaySinh = extractBirthDateFromCccd(cccd);
     }
 
     // 14. GIỚI TÍNH (1: nam; 2: nữ)
-    let gioiTinh = d.GIOITINH || d.GIOI_TINH || d.GENDER || '';
-    if (gioiTinh === 'Nam' || gioiTinh === 'nam' || String(gioiTinh).trim() === '1') {
+    let gioiTinhRaw = getRowValue(d, ['GIOITINH', 'GIOI_TINH', 'GENDER']);
+    let gioiTinh = 1;
+    if (gioiTinhRaw === 'Nam' || gioiTinhRaw === 'nam' || String(gioiTinhRaw).trim() === '1') {
       gioiTinh = 1;
-    } else if (gioiTinh === 'Nữ' || gioiTinh === 'nu' || String(gioiTinh).trim() === '2') {
+    } else if (gioiTinhRaw === 'Nữ' || gioiTinhRaw === 'nu' || String(gioiTinhRaw).trim() === '2') {
       gioiTinh = 2;
     } else if (cccd && cccd.length === 12) {
       const gDigit = parseInt(cccd[3], 10);
@@ -475,64 +502,66 @@ function convertNhanVienRows(sourceRows, options = {}) {
     }
 
     // 15. PHONE
-    let phone = (d.PHONE || d.DIEN_THOAI || d.SDT || d.SO_DIEN_THOAI || '').toString().trim();
+    let phone = getRowValue(d, ['PHONE', 'DIEN_THOAI', 'SDT', 'SO_DIEN_THOAI', 'TEL']).toString().trim();
     if (phone && !phone.startsWith('0') && phone.length === 9) {
       phone = '0' + phone;
     }
 
     // 16. EMAIL
-    const email = (d.EMAIL || '').toString().trim().replace(/\.$/, '');
+    const email = getRowValue(d, ['EMAIL', 'THU_DIEN_TU', 'MAIL']).toString().trim().replace(/\.$/, '');
 
     // 17. MA_KHOA
-    const maKhoa = (d.MA_KHOA || options.defaultMaKhoa || '').toString().trim();
+    const maKhoa = (getRowValue(d, ['MA_KHOA']) || options.defaultMaKhoa || '').toString().trim();
 
     // 18. VITRICHUYENMON
-    const viTriChuyenMon = d.VITRICHUYENMON || d.VI_TRI_CHUYEN_MON || '';
+    const viTriChuyenMon = getRowValue(d, ['VITRICHUYENMON', 'VI_TRI_CHUYEN_MON']);
 
     // 19. PHAMVI_CHUYENMON
-    const phamViChuyenMon = d.PHAMVI_CHUYENMON || d.PHAM_VI_CHUYEN_MON || '';
+    const phamViChuyenMon = getRowValue(d, ['PHAMVI_CHUYENMON', 'PHAM_VI_CHUYEN_MON']);
 
     // 20. SOQDPHAMVIHANHNGHE
-    const soQdPhamVi = d.SOQDPHAMVIHANHNGHE || d.SO_QD_PHAM_VI || '';
+    const soQdPhamVi = getRowValue(d, ['SOQDPHAMVIHANHNGHE', 'SO_QD_PHAM_VI']);
 
     // 21. DVKTPHANCONGTH
-    const dvktPhanCong = d.DVKTPHANCONGTH || d.DVKT_PHAN_CONG || '';
+    const dvktPhanCong = getRowValue(d, ['DVKTPHANCONGTH', 'DVKT_PHAN_CONG']);
 
     // 22. SOQDDVKTPHANCONGTH
-    const soQdDvkt = d.SOQDDVKTPHANCONGTH || d.SO_QD_DVKT || '';
+    const soQdDvkt = getRowValue(d, ['SOQDDVKTPHANCONGTH', 'SO_QD_DVKT']);
 
     // 23. TGDANGKYHANHNGHE (1: Toàn thời gian; 2: Không toàn thời gian)
-    let tgDangKy = d.TGDANGKYHANHNGHE || d.TG_DANG_KY_HN || '';
+    let tgDangKy = getRowValue(d, ['TGDANGKYHANHNGHE', 'TG_DANG_KY_HN']);
     if (!tgDangKy) {
       tgDangKy = 1;
     }
 
     // 24. TGLAMVIECNGAY
-    const tgLamViecNgay = d.TGLAMVIECNGAY || d.TG_LAM_VIEC_NGAY || '';
+    const tgLamViecNgay = getRowValue(d, ['TGLAMVIECNGAY', 'TG_LAM_VIEC_NGAY']);
 
     // 25. TGLAMVIECTUAN
-    const tgLamViecTuan = d.TGLAMVIECTUAN || d.TG_LAM_VIEC_TUAN || defaultTgTuan;
+    const tgLamViecTuan = getRowValue(d, ['TGLAMVIECTUAN', 'TG_LAM_VIEC_TUAN']) || defaultTgTuan;
 
     // 26. CSLAMVIECKHAC
-    const csLamViecKhac = d.CSLAMVIECKHAC || d.CS_LAM_VIEC_KHAC || '';
+    const csLamViecKhac = getRowValue(d, ['CSLAMVIECKHAC', 'CS_LAM_VIEC_KHAC']);
 
     // 27. QDCHUYENGIAOKT
-    const qdChuyenGiaoKt = d.QDCHUYENGIAOKT || d.QD_CHUYEN_GIAO_KT || '';
+    const qdChuyenGiaoKt = getRowValue(d, ['QDCHUYENGIAOKT', 'QD_CHUYEN_GIAO_KT']);
 
     // 28. TUNGAY
-    const tuNgay = formatDate(d.TUNGAY || d.TU_NGAY || '');
+    const tuNgay = formatDate(getRowValue(d, ['TUNGAY', 'TU_NGAY']));
 
     // 29. DENNGAY
-    const denNgay = formatDate(d.DENNGAY || d.DEN_NGAY || '');
+    const denNgay = formatDate(getRowValue(d, ['DENNGAY', 'DEN_NGAY']));
 
     // 30. DMGUIBH
-    const dmGuiBh = d.DMGUIBH !== undefined && d.DMGUIBH !== '' ? d.DMGUIBH : (maBacSi ? 1 : '');
+    const dmGuiBhVal = getRowValue(d, ['DMGUIBH', 'DM_GUI_BH']);
+    const dmGuiBh = dmGuiBhVal !== undefined && dmGuiBhVal !== '' ? dmGuiBhVal : (maBacSi ? 1 : '');
 
     // 31. NGAYCHECKGUIBH
-    const ngayCheckGuiBh = formatDate(d.NGAYCHECKGUIBH || d.NGAY_CHECK_GUI_BH || '');
+    const ngayCheckGuiBh = formatDate(getRowValue(d, ['NGAYCHECKGUIBH', 'NGAY_CHECK_GUI_BH']));
 
     // 32. STATUS (Mặc định là 1)
-    const status = d.STATUS !== undefined && d.STATUS !== '' ? Number(d.STATUS) : defaultStatus;
+    const statusVal = getRowValue(d, ['STATUS', 'TRANG_THAI']);
+    const status = statusVal !== undefined && statusVal !== '' ? Number(statusVal) : defaultStatus;
 
     const row = [
       stt,               // 1: STT

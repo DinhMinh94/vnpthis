@@ -44,9 +44,10 @@ router.post('/convert', upload.single('file'), (req, res) => {
 
     const options = {
       maDonVi: req.body.maDonVi || req.query.maDonVi || '11055',
-      prefixOfficerCode: req.body.prefixOfficerCode !== undefined ? req.body.prefixOfficerCode : 'NV',
-      defaultDeptId: req.body.defaultDeptId || '',
-      defaultTgTuan: req.body.defaultTgTuan || 'T2T3T4T5T6'
+      defaultDeptId: req.body.defaultDeptId || req.query.defaultDeptId || '',
+      defaultMaKhoa: req.body.defaultMaKhoa || req.query.defaultMaKhoa || '',
+      defaultTgNgay: req.body.defaultTgNgay || req.query.defaultTgNgay || '',
+      defaultTgTuan: req.body.defaultTgTuan || req.query.defaultTgTuan || 'T2T3T4T5T6'
     };
 
     const convertedDataRows = convertService.convertNhanVienRows(sourceData, options);
@@ -98,8 +99,9 @@ router.get('/sample-convert', (req, res) => {
 
     const options = {
       maDonVi: req.query.maDonVi || '11055',
-      prefixOfficerCode: req.query.prefixOfficerCode !== undefined ? req.query.prefixOfficerCode : 'NV',
       defaultDeptId: req.query.defaultDeptId || '',
+      defaultMaKhoa: req.query.defaultMaKhoa || '',
+      defaultTgNgay: req.query.defaultTgNgay || '',
       defaultTgTuan: req.query.defaultTgTuan || 'T2T3T4T5T6'
     };
 

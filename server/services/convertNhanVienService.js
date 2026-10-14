@@ -426,7 +426,11 @@ function parseSheetSmart(sheet) {
  */
 function convertNhanVienRows(sourceRows, options = {}) {
   const maDonVi = (options.maDonVi || options.maCskcb || '11055').toString().trim();
-  const defaultDeptId = options.defaultDeptId || '';
+  const defaultDeptId = (options.defaultDeptId || '').toString().trim();
+  const defaultMaKhoa = (options.defaultMaKhoa || defaultDeptId || '').toString().trim();
+  const defaultTgNgay = options.defaultTgNgay !== undefined && options.defaultTgNgay !== ''
+    ? options.defaultTgNgay
+    : 'T20700-1130;T21330-1700;T30700-1130;T31330-1700;T40700-1130;T41330-1700;T50700-1130;T51330-1700;T60700-1130;T61330-1700';
   const defaultTgTuan = options.defaultTgTuan || 'T2T3T4T5T6';
   const defaultStatus = options.defaultStatus !== undefined ? options.defaultStatus : 1;
 
@@ -450,8 +454,8 @@ function convertNhanVienRows(sourceRows, options = {}) {
     // 3. MÃ NHÂN VIÊN OFFICER_CODE: Lấy giống USER_NAME theo yêu cầu
     const officerCode = userName || getRowValue(d, ['OFFICER_CODE', 'MA_NHAN_VIEN']) || `NV${String(stt).padStart(3, '0')}`;
 
-    // 4. KHOA DEPT_ID
-    const deptId = (getRowValue(d, ['DEPT_ID', 'KHOA', 'TEN_KHOA', 'PHONG_BAN', 'BO_PHAN']) || defaultDeptId || '').toString().trim();
+    // 4. KHOA DEPT_ID: Lấy theo ô nhập ở tab (defaultDeptId) nếu có, fallback 'K01'
+    const deptId = defaultDeptId || getRowValue(d, ['DEPT_ID', 'KHOA', 'TEN_KHOA', 'PHONG_BAN', 'BO_PHAN']) || 'K01';
 
     // 5. CHỨC DANH ĐẨY CỔNG (Tham chiếu sheet CHUCDANH_NN)
     const chucDanhVal = getRowValue(d, ['CHUCDANH_NN', 'CHUC_DANH_NN', 'CHUCDANH', 'CHUC_DANH', 'CHUC_VU']);
@@ -481,11 +485,8 @@ function convertNhanVienRows(sourceRows, options = {}) {
     let soBhxh = getRowValue(d, ['SO_BHXH', 'BHXH', 'MA_SO_BHXH', 'CMND', 'CCCD']).toString().trim();
     if (soBhxh.length === 11) soBhxh = '0' + soBhxh;
 
-    // 13. NGÀY SINH
-    let ngaySinh = formatDate(getRowValue(d, ['NGAYSINH', 'NGAY_SINH', 'DOB', 'NAMSINH', 'NAM_SINH']));
-    if (!ngaySinh && cccd) {
-      ngaySinh = extractBirthDateFromCccd(cccd);
-    }
+    // 13. NGÀY SINH: Người dùng yêu cầu bỏ trống
+    const ngaySinh = '';
 
     // 14. GIỚI TÍNH (1: nam; 2: nữ)
     let gioiTinhRaw = getRowValue(d, ['GIOITINH', 'GIOI_TINH', 'GENDER']);
@@ -510,8 +511,8 @@ function convertNhanVienRows(sourceRows, options = {}) {
     // 16. EMAIL
     const email = getRowValue(d, ['EMAIL', 'THU_DIEN_TU', 'MAIL']).toString().trim().replace(/\.$/, '');
 
-    // 17. MA_KHOA
-    const maKhoa = (getRowValue(d, ['MA_KHOA']) || options.defaultMaKhoa || '').toString().trim();
+    // 17. MA_KHOA: Lấy theo ô nhập ở tab (defaultMaKhoa hoặc defaultDeptId)
+    const maKhoa = defaultMaKhoa || defaultDeptId || getRowValue(d, ['MA_KHOA']) || 'K01';
 
     // 18. VITRICHUYENMON
     const viTriChuyenMon = getRowValue(d, ['VITRICHUYENMON', 'VI_TRI_CHUYEN_MON']);
@@ -534,8 +535,8 @@ function convertNhanVienRows(sourceRows, options = {}) {
       tgDangKy = 1;
     }
 
-    // 24. TGLAMVIECNGAY
-    const tgLamViecNgay = getRowValue(d, ['TGLAMVIECNGAY', 'TG_LAM_VIEC_NGAY']);
+    // 24. TGLAMVIECNGAY: Theo mẫu người dùng cung cấp
+    const tgLamViecNgay = defaultTgNgay || getRowValue(d, ['TGLAMVIECNGAY', 'TG_LAM_VIEC_NGAY']) || 'T20700-1130;T21330-1700;T30700-1130;T31330-1700;T40700-1130;T41330-1700;T50700-1130;T51330-1700;T60700-1130;T61330-1700';
 
     // 25. TGLAMVIECTUAN
     const tgLamViecTuan = getRowValue(d, ['TGLAMVIECTUAN', 'TG_LAM_VIEC_TUAN']) || defaultTgTuan;

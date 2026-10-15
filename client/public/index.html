@@ -285,6 +285,12 @@
             <span>Cấu hình nghiệp vụ HMIS</span>
           </button>
 
+          <!-- Nút Thiết lập Phiếu in & Báo cáo HMIS -->
+          <button @click="openPhieuInModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-sm rounded-xl border border-purple-200 transition-colors shadow-sm cursor-pointer" title="Thiết lập mẫu phiếu in & báo cáo cho tất cả trạm y tế đã tích chọn">
+            <i data-lucide="printer" class="w-4 h-4 text-purple-600"></i>
+            <span>Thiết lập Phiếu in Báo cáo</span>
+          </button>
+
           <!-- Nút Tiện ích Tự động đăng nhập 1-Click -->
           <button @click="modals.autoLoginGuide = true" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm rounded-xl border border-amber-300 transition-colors shadow-sm cursor-pointer" title="Xem hướng dẫn tự động điền & đăng nhập 1-click vào cổng HMIS">
             <i data-lucide="zap" class="w-4 h-4 text-amber-500 fill-amber-500"></i>
@@ -388,6 +394,12 @@
           <button @click="openBulkParamEditModal" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-lg transition-colors shadow" title="Sửa tham số cấu hình đồng loạt cho các trạm đang được chọn">
             <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
             <span>Sửa cấu hình nhanh</span>
+          </button>
+
+          <!-- Thiết lập phiếu in báo cáo cho các trạm đang tích -->
+          <button @click="openPhieuInModal" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold rounded-lg transition-colors shadow cursor-pointer" title="Thiết lập mẫu phiếu in & báo cáo cho các trạm đang được chọn">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>Thiết lập phiếu in</span>
           </button>
 
           <!-- Xóa các trạm đã chọn -->
@@ -2159,6 +2171,328 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
     </div>
 
     <!-- ========================================================================= -->
+    <!-- MODAL 9: THIẾT LẬP PHIẾU IN BÁO CÁO CHO TẤT CẢ TRẠM ĐÃ TÍCH                 -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.phieuin" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-7xl w-full border border-slate-200 overflow-hidden flex flex-col h-[94vh] max-h-[94vh]">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-violet-700 via-purple-700 to-indigo-800 text-white px-6 py-4 flex items-center justify-between shadow-sm">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+              <i data-lucide="printer" class="w-6 h-6 text-purple-200"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-lg font-bold">Thiết Lập Phiếu In Báo Cáo HMIS 4.0</h3>
+                <span class="bg-purple-500/60 border border-purple-300/40 text-[11px] px-2.5 py-0.5 rounded-full font-bold">
+                  {{ phieuInTargetScope === 'selected' ? selectedIds.length : stations.length }} trạm y tế áp dụng
+                </span>
+                <span class="bg-white/20 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                  {{ filteredPhieuInList.length }} / {{ phieuinList.length }} Biểu mẫu
+                </span>
+              </div>
+              <p class="text-xs text-purple-100 mt-0.5">https://ytcs.hmis.vn/new/his/danhmuc/dm-chung/phieuin-baocao — Đồng bộ cấu hình cho tất cả trạm đã tích</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <!-- Nút Cấu hình Endpoint F12 -->
+            <button @click="showApiConfigModal = true" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors" title="Xem hoặc dán đường dẫn API F12 Network">
+              <i data-lucide="link" class="w-4 h-4 text-cyan-300"></i>
+              <span>Cấu hình API Gateway</span>
+            </button>
+            <!-- Nút Tải lại từ HMIS -->
+            <button @click="refreshPhieuInFromHmis" :disabled="isRefreshingPhieuin" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors" title="Kết nối trực tiếp HMIS tải danh sách mới nhất">
+              <i data-lucide="refresh-cw" class="w-4 h-4 text-cyan-300" :class="{ 'animate-spin': isRefreshingPhieuin }"></i>
+              <span>{{ isRefreshingPhieuin ? 'Đang tải...' : 'Làm mới từ HMIS' }}</span>
+            </button>
+            <button @click="modals.phieuin = false" class="text-white/80 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors">
+              <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Thanh thông tin trạm áp dụng & Phạm vi áp dụng -->
+        <div class="bg-purple-50/90 border-b border-purple-100 px-6 py-2.5 flex items-center justify-between text-xs gap-3">
+          <div class="flex items-center space-x-3 overflow-hidden flex-1">
+            <span class="font-bold text-purple-900 whitespace-nowrap">Phạm vi áp dụng:</span>
+            <div class="flex items-center space-x-2">
+              <label class="flex items-center space-x-1 cursor-pointer bg-white px-2.5 py-1 rounded-md border border-purple-200">
+                <input type="radio" value="selected" v-model="phieuInTargetScope" class="text-purple-600 focus:ring-purple-500">
+                <span class="font-semibold text-purple-800">Chỉ các trạm đã tích ({{ selectedIds.length }})</span>
+              </label>
+              <label class="flex items-center space-x-1 cursor-pointer bg-white px-2.5 py-1 rounded-md border border-purple-200">
+                <input type="radio" value="all" v-model="phieuInTargetScope" class="text-purple-600 focus:ring-purple-500">
+                <span class="font-semibold text-purple-800">Tất cả trạm trong hệ thống ({{ stations.length }})</span>
+              </label>
+            </div>
+            <div class="flex items-center space-x-1.5 overflow-x-auto py-0.5 max-w-md">
+              <span v-for="st in targetStationsList" :key="st.id" class="bg-white px-2 py-0.5 rounded text-purple-800 border border-purple-200 font-medium text-[11px] whitespace-nowrap shadow-2xs">
+                {{ st.name }} ({{ st.username }})
+              </span>
+            </div>
+          </div>
+          <div class="text-[11px] text-purple-700 italic">
+            * Chọn biểu mẫu ở cột trái &rarr; Chỉnh sửa bên cột phải &rarr; Bấm Lưu để sửa cho toàn bộ trạm
+          </div>
+        </div>
+
+        <!-- Body: 2 cột chia đôi giống HMIS -->
+        <div class="flex-1 flex overflow-hidden">
+          
+          <!-- CỘT TRÁI: DANH SÁCH BÁO CÁO (58% width) -->
+          <div class="w-7/12 border-r border-slate-200 flex flex-col bg-white">
+            
+            <!-- Bộ lọc bảng -->
+            <div class="p-3 bg-slate-50 border-b border-slate-200 space-y-2">
+              <div class="flex items-center gap-2">
+                <div class="relative flex-1">
+                  <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                  <input v-model="phieuinSearch" type="text" placeholder="Tìm theo tên, mã báo cáo, template code, service..." class="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                </div>
+                <div class="w-44">
+                  <select v-model="phieuinNhomFilter" class="w-full py-1.5 px-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                    <option value="Tất cả">Nhóm: Tất cả</option>
+                    <option v-for="nhom in phieuinUniqueNhoms" :key="nhom" :value="nhom">{{ nhom }}</option>
+                  </select>
+                </div>
+                <div class="w-36">
+                  <select v-model="phieuinTrangThaiFilter" class="w-full py-1.5 px-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                    <option value="Tất cả">Trạng thái: Tất cả</option>
+                    <option value="1">Sử dụng</option>
+                    <option value="0">Không sử dụng</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bảng danh sách phiếu in -->
+            <div class="flex-1 overflow-auto">
+              <table class="w-full text-left text-xs border-collapse">
+                <thead class="sticky top-0 bg-slate-100 z-10 text-[11px] font-bold text-slate-700 uppercase tracking-wider border-b border-slate-200">
+                  <tr>
+                    <th class="p-2.5">Nhóm báo cáo</th>
+                    <th class="p-2.5">Mã báo cáo</th>
+                    <th class="p-2.5">Tên</th>
+                    <th class="p-2.5">Template Code</th>
+                    <th class="p-2.5 text-center">Số ngày</th>
+                    <th class="p-2.5 text-center">Trạng thái</th>
+                    <th class="p-2.5">Service</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr v-if="isLoadingPhieuin">
+                    <td colspan="7" class="py-12 text-center text-slate-400">
+                      <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2 text-purple-600"></i>
+                      <span>Đang tải danh sách phiếu in báo cáo...</span>
+                    </td>
+                  </tr>
+                  <tr v-else-if="filteredPhieuInList.length === 0">
+                    <td colspan="7" class="py-12 text-center text-slate-400">
+                      Không tìm thấy biểu mẫu phiếu in nào khớp với tìm kiếm
+                    </td>
+                  </tr>
+                  <tr
+                    v-for="item in pagedPhieuInList"
+                    :key="item.id || item.maBaoCao"
+                    @click="selectPhieuIn(item)"
+                    class="cursor-pointer transition-colors"
+                    :class="selectedPhieuIn && selectedPhieuIn.maBaoCao === item.maBaoCao ? 'bg-amber-100/80 font-semibold border-l-4 border-l-amber-500' : 'hover:bg-slate-50'"
+                  >
+                    <td class="p-2.5 text-slate-600 font-medium whitespace-nowrap">{{ item.nhomBaoCao || '—' }}</td>
+                    <td class="p-2.5 font-mono text-purple-700 font-bold whitespace-nowrap">{{ item.maBaoCao }}</td>
+                    <td class="p-2.5 text-slate-900 min-w-[180px]">{{ item.ten }}</td>
+                    <td class="p-2.5 font-mono text-[10px] text-slate-600 max-w-[160px] truncate" :title="item.templateCode">{{ item.templateCode }}</td>
+                    <td class="p-2.5 text-center font-mono">{{ item.soNgayXemBc !== undefined ? item.soNgayXemBc : 366 }}</td>
+                    <td class="p-2.5 text-center">
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold" :class="item.trangThai === 1 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500'">
+                        {{ item.trangThai === 1 ? 'Sử dụng' : 'Không sử dụng' }}
+                      </span>
+                    </td>
+                    <td class="p-2.5 text-[11px] text-slate-500 truncate max-w-[120px]" :title="item.service">{{ item.service || '—' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Phân trang bảng -->
+            <div class="p-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-600">
+              <div class="flex items-center space-x-2">
+                <span>Hiển thị</span>
+                <select v-model="phieuinPageSize" class="py-1 px-1.5 bg-white border border-slate-300 rounded text-xs">
+                  <option :value="10">10 / trang</option>
+                  <option :value="25">25 / trang</option>
+                  <option :value="50">50 / trang</option>
+                </select>
+                <span>({{ (phieuinCurrentPage - 1) * phieuinPageSize + 1 }} đến {{ Math.min(phieuinCurrentPage * phieuinPageSize, filteredPhieuInList.length) }} / {{ filteredPhieuInList.length }})</span>
+              </div>
+              <div class="flex items-center space-x-1">
+                <button @click="phieuinCurrentPage = Math.max(1, phieuinCurrentPage - 1)" :disabled="phieuinCurrentPage === 1" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100 disabled:opacity-40">Trước</button>
+                <span class="px-2 font-bold">{{ phieuinCurrentPage }} / {{ phieuinTotalPages || 1 }}</span>
+                <button @click="phieuinCurrentPage = Math.min(phieuinTotalPages, phieuinCurrentPage + 1)" :disabled="phieuinCurrentPage >= phieuinTotalPages" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100 disabled:opacity-40">Sau</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- CỘT PHẢI: THÔNG TIN CHI TIẾT & CHỈNH SỬA HÀNG LOẠT (42% width) -->
+          <div class="w-5/12 flex flex-col bg-slate-50/70 p-5 overflow-y-auto">
+            
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
+              <h4 class="font-bold text-slate-800 text-sm flex items-center space-x-2">
+                <i data-lucide="edit-3" class="w-4 h-4 text-purple-600"></i>
+                <span>THÔNG TIN CHI TIẾT</span>
+              </h4>
+              <div class="flex items-center space-x-2">
+                <button @click="resetPhieuInForm" class="px-3 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700">
+                  Hủy
+                </button>
+                <button
+                  @click="submitBulkPhieuInUpdate"
+                  :disabled="!phieuInForm.maBaoCao || isUpdatingPhieuIn"
+                  class="px-4 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-lg text-xs font-bold shadow flex items-center space-x-1.5 cursor-pointer disabled:opacity-50"
+                >
+                  <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                  <span>{{ isUpdatingPhieuIn ? 'Đang lưu...' : 'Lưu (F4) & Áp dụng' }}</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Form chi tiết phiếu in -->
+            <div class="space-y-3.5 text-xs flex-1">
+              
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Tên <span class="text-rose-500">*</span></label>
+                <input v-model="phieuInForm.ten" type="text" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Mã báo cáo <span class="text-rose-500">*</span></label>
+                <input v-model="phieuInForm.maBaoCao" type="text" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-mono font-bold text-purple-800 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Template Code <span class="text-rose-500">*</span></label>
+                <input v-model="phieuInForm.templateCode" type="text" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-mono text-slate-700 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Service <span class="text-rose-500">*</span></label>
+                <input v-model="phieuInForm.service" type="text" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-mono text-slate-700 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Form Id</label>
+                  <input v-model="phieuInForm.formId" type="text" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-mono text-slate-700 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Số ngày xem BC</label>
+                  <input v-model="phieuInForm.soNgayXemBc" type="number" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-mono text-slate-700 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Nhóm báo cáo <span class="text-rose-500">*</span></label>
+                <input v-model="phieuInForm.nhomBaoCao" type="text" placeholder="Nhóm phiếu in" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-medium text-slate-700 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Ghi chú</label>
+                <input v-model="phieuInForm.ghiChu" type="text" placeholder="VD: VNPTHIS-34117" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-slate-700 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Trạng thái <span class="text-rose-500">*</span></label>
+                  <select v-model="phieuInForm.trangThai" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                    <option :value="1">Sử dụng</option>
+                    <option :value="0">Không sử dụng</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Hệ thống render</label>
+                  <input v-model="phieuInForm.heThongRender" type="text" placeholder="Chọn" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-slate-700 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                </div>
+              </div>
+
+              <!-- Hộp kết quả cập nhật -->
+              <div v-if="phieuInUpdateResults" class="mt-4 p-3 bg-white rounded-xl border border-slate-200 shadow-sm space-y-2">
+                <div class="flex items-center justify-between text-xs font-bold">
+                  <span class="text-slate-800">Tiến trình cập nhật hàng loạt:</span>
+                  <span class="px-2 py-0.5 rounded-full text-[11px]" :class="phieuInUpdateResults.failedCount === 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'">
+                    Thành công {{ phieuInUpdateResults.successCount }}/{{ phieuInUpdateResults.total }}
+                  </span>
+                </div>
+                <div class="max-h-36 overflow-y-auto divide-y divide-slate-100 text-[11px]">
+                  <div v-for="res in phieuInUpdateResults.results" :key="res.id" class="py-1.5 flex items-center justify-between">
+                    <div class="flex items-center space-x-1.5 truncate max-w-[200px]">
+                      <span :class="res.success ? 'text-emerald-500 font-bold' : 'text-rose-500 font-bold'">{{ res.success ? '✓' : '✗' }}</span>
+                      <span class="font-medium text-slate-800">{{ res.name }}</span>
+                    </div>
+                    <span :class="res.success ? 'text-emerald-700' : 'text-rose-600'" class="truncate max-w-[150px] text-[10px] text-right">
+                      {{ res.message }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-3 bg-slate-100 border-t border-slate-200 flex items-center justify-between text-xs">
+          <div class="flex items-center space-x-2 text-slate-500">
+            <i data-lucide="info" class="w-4 h-4 text-purple-600"></i>
+            <span>Đang thiết lập phiếu in trực tiếp qua cổng HMIS cho <strong>{{ targetStationsList.length }} trạm</strong>.</span>
+          </div>
+          <button @click="modals.phieuin = false" class="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 font-semibold rounded-xl border border-slate-300">
+            Đóng
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MODAL CẤU HÌNH API ENDPOINT CHO PHIẾU IN BÁO CÁO -->
+    <div v-if="showApiConfigModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden">
+        <div class="px-5 py-4 bg-purple-700 text-white flex items-center justify-between">
+          <h4 class="font-bold text-sm flex items-center space-x-2">
+            <i data-lucide="link" class="w-4 h-4"></i>
+            <span>Cấu Hình Đường Dẫn API HMIS</span>
+          </h4>
+          <button @click="showApiConfigModal = false" class="text-white/80 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div class="p-5 space-y-4 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Dán URL Request từ F12 Network (Khuyên dùng):</label>
+            <input v-model="apiConfigForm.fullUrl" type="text" placeholder="https://ytcs-gw.hmis.vn/api/.../search?..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono">
+            <p class="text-[11px] text-slate-500 mt-1">Chỉ cần dán link bạn copy từ tab Network của F12, hệ thống sẽ tự phân tích Search Path và Update Path.</p>
+          </div>
+          <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Search Path:</label>
+              <input v-model="apiConfigForm.searchPath" type="text" class="w-full p-2 bg-white border border-slate-300 rounded text-xs font-mono">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Update Path:</label>
+              <input v-model="apiConfigForm.updatePath" type="text" class="w-full p-2 bg-white border border-slate-300 rounded text-xs font-mono">
+            </div>
+          </div>
+        </div>
+        <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 flex justify-end space-x-2">
+          <button @click="showApiConfigModal = false" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-700">Đóng</button>
+          <button @click="saveApiConfig" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-bold">Lưu cấu hình</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
     <!-- MODAL HƯỚNG DẪN TỰ ĐỘNG ĐIỀN & ĐĂNG NHẬP 1-CLICK HMIS                      -->
     <!-- ========================================================================= -->
     <div v-if="modals.autoLoginGuide" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150">
@@ -2900,7 +3234,41 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           cauhinh: false,
           bulkParamEdit: false,
           convertThuoc: false,
-          autoLoginGuide: false
+          autoLoginGuide: false,
+          phieuin: false
+        });
+
+        // Trạng thái cho module Thiết lập Phiếu in Báo cáo
+        const phieuinList = ref([]);
+        const isLoadingPhieuin = ref(false);
+        const isRefreshingPhieuin = ref(false);
+        const phieuinSearch = ref('');
+        const phieuinNhomFilter = ref('Tất cả');
+        const phieuinTrangThaiFilter = ref('Tất cả');
+        const selectedPhieuIn = ref(null);
+        const phieuInForm = ref({
+          id: null,
+          ten: '',
+          maBaoCao: '',
+          templateCode: '',
+          service: '',
+          formId: '-1',
+          nhomBaoCao: 'Nhóm phiếu in',
+          soNgayXemBc: 366,
+          ghiChu: '',
+          trangThai: 1,
+          heThongRender: ''
+        });
+        const isUpdatingPhieuIn = ref(false);
+        const phieuInUpdateResults = ref(null);
+        const phieuinCurrentPage = ref(1);
+        const phieuinPageSize = ref(10);
+        const phieuInTargetScope = ref('selected'); // 'selected' | 'all'
+        const showApiConfigModal = ref(false);
+        const apiConfigForm = ref({
+          fullUrl: '',
+          searchPath: 'common/phieuin-baocao/search',
+          updatePath: 'common/phieuin-baocao/update'
         });
 
         const thuocFile = ref(null);
@@ -4021,6 +4389,194 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         }
 
         // ==========================================
+        // CHỨC NĂNG THIẾT LẬP PHIẾU IN BÁO CÁO HMIS
+        // ==========================================
+        const targetStationsList = computed(() => {
+          if (phieuInTargetScope.value === 'all') {
+            return stations.value;
+          }
+          const sel = stations.value.filter(s => selectedIds.value.includes(s.id));
+          return sel.length > 0 ? sel : stations.value;
+        });
+
+        const phieuinUniqueNhoms = computed(() => {
+          const s = new Set();
+          phieuinList.value.forEach(item => {
+            if (item.nhomBaoCao) s.add(item.nhomBaoCao);
+          });
+          return Array.from(s);
+        });
+
+        const filteredPhieuInList = computed(() => {
+          let list = phieuinList.value || [];
+          if (phieuinNhomFilter.value && phieuinNhomFilter.value !== 'Tất cả') {
+            list = list.filter(item => item.nhomBaoCao === phieuinNhomFilter.value);
+          }
+          if (phieuinTrangThaiFilter.value && phieuinTrangThaiFilter.value !== 'Tất cả') {
+            const st = parseInt(phieuinTrangThaiFilter.value);
+            list = list.filter(item => item.trangThai === st);
+          }
+          if (phieuinSearch.value && phieuinSearch.value.trim()) {
+            const q = phieuinSearch.value.toLowerCase().trim();
+            list = list.filter(item =>
+              (item.ten && item.ten.toLowerCase().includes(q)) ||
+              (item.maBaoCao && item.maBaoCao.toLowerCase().includes(q)) ||
+              (item.templateCode && item.templateCode.toLowerCase().includes(q)) ||
+              (item.service && item.service.toLowerCase().includes(q))
+            );
+          }
+          return list;
+        });
+
+        const phieuinTotalPages = computed(() => {
+          return Math.ceil(filteredPhieuInList.value.length / phieuinPageSize.value) || 1;
+        });
+
+        const pagedPhieuInList = computed(() => {
+          const start = (phieuinCurrentPage.value - 1) * phieuinPageSize.value;
+          return filteredPhieuInList.value.slice(start, start + phieuinPageSize.value);
+        });
+
+        function selectPhieuIn(item) {
+          selectedPhieuIn.value = item;
+          phieuInForm.value = {
+            id: item.id,
+            ten: item.ten || '',
+            maBaoCao: item.maBaoCao || '',
+            templateCode: item.templateCode || '',
+            service: item.service || '',
+            formId: item.formId !== undefined ? item.formId : '-1',
+            nhomBaoCao: item.nhomBaoCao || 'Nhóm phiếu in',
+            soNgayXemBc: item.soNgayXemBc !== undefined ? item.soNgayXemBc : 366,
+            ghiChu: item.ghiChu || '',
+            trangThai: item.trangThai !== undefined ? item.trangThai : 1,
+            heThongRender: item.heThongRender || ''
+          };
+          refreshIcons();
+        }
+
+        function resetPhieuInForm() {
+          if (selectedPhieuIn.value) {
+            selectPhieuIn(selectedPhieuIn.value);
+          } else {
+            phieuInForm.value = {
+              id: null,
+              ten: '',
+              maBaoCao: '',
+              templateCode: '',
+              service: '',
+              formId: '-1',
+              nhomBaoCao: 'Nhóm phiếu in',
+              soNgayXemBc: 366,
+              ghiChu: '',
+              trangThai: 1,
+              heThongRender: ''
+            };
+          }
+        }
+
+        async function openPhieuInModal() {
+          modals.value.phieuin = true;
+          phieuInUpdateResults.value = null;
+          refreshIcons();
+
+          if (phieuinList.value.length === 0) {
+            isLoadingPhieuin.value = true;
+            try {
+              const res = await axios.get('/api/phieuin/list');
+              if (res.data.success && res.data.data) {
+                phieuinList.value = res.data.data;
+                if (res.data.config) {
+                  apiConfigForm.value = { ...apiConfigForm.value, ...res.data.config };
+                }
+                if (phieuinList.value.length > 0) {
+                  selectPhieuIn(phieuinList.value[0]);
+                }
+              }
+            } catch (err) {
+              showToast('Lỗi tải danh mục phiếu in: ' + err.message, 'error');
+            } finally {
+              isLoadingPhieuin.value = false;
+              refreshIcons();
+            }
+          } else if (!selectedPhieuIn.value && phieuinList.value.length > 0) {
+            selectPhieuIn(phieuinList.value[0]);
+          }
+        }
+
+        async function refreshPhieuInFromHmis() {
+          isRefreshingPhieuin.value = true;
+          try {
+            const res = await axios.post('/api/phieuin/refresh', {
+              customSearchPath: apiConfigForm.value.searchPath
+            });
+            if (res.data.success) {
+              phieuinList.value = res.data.data;
+              showToast(res.data.message);
+              if (phieuinList.value.length > 0) {
+                selectPhieuIn(phieuinList.value[0]);
+              }
+            }
+          } catch (err) {
+            showToast('Lỗi kết nối HMIS: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isRefreshingPhieuin.value = false;
+            refreshIcons();
+          }
+        }
+
+        async function saveApiConfig() {
+          try {
+            const res = await axios.post('/api/phieuin/config', apiConfigForm.value);
+            if (res.data.success) {
+              showToast('Đã lưu cấu hình API Gateway!');
+              showApiConfigModal.value = false;
+              refreshPhieuInFromHmis();
+            }
+          } catch (err) {
+            showToast('Lỗi lưu cấu hình API: ' + err.message, 'error');
+          }
+        }
+
+        async function submitBulkPhieuInUpdate() {
+          const targets = targetStationsList.value;
+          if (!targets || targets.length === 0) {
+            showToast('Vui lòng chọn ít nhất 1 trạm y tế áp dụng', 'error');
+            return;
+          }
+          if (!phieuInForm.value.maBaoCao) {
+            showToast('Vui lòng nhập mã báo cáo', 'error');
+            return;
+          }
+
+          isUpdatingPhieuIn.value = true;
+          phieuInUpdateResults.value = null;
+
+          try {
+            const res = await axios.post('/api/phieuin/batch-update', {
+              stationIds: targets.map(s => s.id),
+              reportData: phieuInForm.value
+            });
+
+            if (res.data.success) {
+              phieuInUpdateResults.value = res.data.data;
+              showToast(res.data.message);
+
+              // Cập nhật lại trong danh sách local
+              const idx = phieuinList.value.findIndex(p => p.maBaoCao === phieuInForm.value.maBaoCao);
+              if (idx !== -1) {
+                phieuinList.value[idx] = { ...phieuinList.value[idx], ...phieuInForm.value };
+              }
+            }
+          } catch (err) {
+            showToast('Lỗi cập nhật phiếu in hàng loạt: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isUpdatingPhieuIn.value = false;
+            refreshIcons();
+          }
+        }
+
+        // ==========================================
         // CHỨC NĂNG GEN FILE THUỐC IMPORT VNPT HIS
         // ==========================================
         function openConvertThuocModal() {
@@ -5016,7 +5572,33 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           isConvertingNhanVien,
           convertNhanVienStatus,
           convertNhanVienStatusMsg,
-          convertNhanVienResult
+          convertNhanVienResult,
+          openPhieuInModal,
+          phieuinList,
+          isLoadingPhieuin,
+          isRefreshingPhieuin,
+          phieuinSearch,
+          phieuinNhomFilter,
+          phieuinTrangThaiFilter,
+          selectedPhieuIn,
+          phieuInForm,
+          isUpdatingPhieuIn,
+          phieuInUpdateResults,
+          phieuinCurrentPage,
+          phieuinPageSize,
+          phieuInTargetScope,
+          showApiConfigModal,
+          apiConfigForm,
+          targetStationsList,
+          phieuinUniqueNhoms,
+          filteredPhieuInList,
+          phieuinTotalPages,
+          pagedPhieuInList,
+          selectPhieuIn,
+          resetPhieuInForm,
+          refreshPhieuInFromHmis,
+          saveApiConfig,
+          submitBulkPhieuInUpdate
         };
       }
     }).mount('#app');

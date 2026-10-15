@@ -127,7 +127,7 @@
     }
   }
 
-  // Khởi động
+  // Khởi động AutoLogin
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', executeAutoLogin);
   } else {
@@ -135,4 +135,74 @@
   }
 
   window.addEventListener('hashchange', executeAutoLogin);
+
+  // =========================================================================
+  // BỘ TỰ ĐỘNG BẮT API PHIẾU IN BÁO CÁO KHI TRUY CẬP GIAO DIỆN HMIS
+  // =========================================================================
+  try {
+    const snifferCode = `
+      (function() {
+        // Sniff fetch
+        const origFetch = window.fetch;
+        window.fetch = async function(...args) {
+          const url = args[0] ? (typeof args[0] === 'string' ? args[0] : args[0].url) : '';
+          if (url && (url.includes('/api/') || url.includes('-gw.hmis.vn'))) {
+            if (url.includes('baocao') || url.includes('phieuin') || url.includes('template') || window.location.href.includes('phieuin-baocao')) {
+              window.postMessage({ type: 'HMIS_API_DETECTED', url: url, method: (args[1] && args[1].method) || 'GET' }, '*');
+            }
+          }
+          return origFetch.apply(this, args);
+        };
+
+        // Sniff XMLHttpRequest
+        const origOpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(method, url) {
+          this._url = url;
+          this._method = method;
+          return origOpen.apply(this, arguments);
+        };
+
+        const origSend = XMLHttpRequest.prototype.send;
+        XMLHttpRequest.prototype.send = function() {
+          if (this._url && (this._url.includes('/api/') || this._url.includes('-gw.hmis.vn'))) {
+            if (this._url.includes('baocao') || this._url.includes('phieuin') || this._url.includes('template') || window.location.href.includes('phieuin-baocao')) {
+              window.postMessage({ type: 'HMIS_API_DETECTED', url: this._url, method: this._method || 'GET' }, '*');
+            }
+          }
+          return origSend.apply(this, arguments);
+        };
+      })();
+    `;
+
+    const scriptEl = document.createElement('script');
+    scriptEl.textContent = snifferCode;
+    (document.head || document.documentElement).appendChild(scriptEl);
+    scriptEl.remove();
+
+    let lastDetectedUrl = '';
+    window.addEventListener('message', async (event) => {
+      if (event.data && event.data.type === 'HMIS_API_DETECTED') {
+        const detectedUrl = event.data.url;
+        if (detectedUrl === lastDetectedUrl) return;
+        lastDetectedUrl = detectedUrl;
+        console.log('[VNPT HMIS Extension] ⚡ Bắt được request API:', detectedUrl);
+
+        showHelperToast(`⚡ Đã bắt API Phiếu In: ${detectedUrl.split('?')[0].split('/').slice(-2).join('/')}`, true);
+
+        // Tự động đẩy URL về Tool Quản lý Trạm nếu server đang chạy tại localhost:5000
+        try {
+          await fetch('http://localhost:5000/api/phieuin/config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fullUrl: detectedUrl })
+          });
+          console.log('[VNPT HMIS Extension] Đã tự động đồng bộ API về tool localhost:5000');
+        } catch (postErr) {
+          // Server offline or not accessible
+        }
+      }
+    });
+  } catch (snifferErr) {
+    console.warn('[VNPT HMIS Extension] Không thể kích hoạt bộ bắt API:', snifferErr);
+  }
 })();

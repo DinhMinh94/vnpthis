@@ -291,5 +291,6 @@ async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValu
 module.exports = {
   getCachedCauHinh,
   refreshCauHinhFromHmis,
-  updateParamForStations
+  updateParamForStations,
+  loginToHmis
 };

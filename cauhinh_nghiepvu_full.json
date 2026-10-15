@@ -148,15 +148,15 @@
     "nguoiTao": 22,
     "ngayTao": "07/09/2026 15:56:45",
     "nguoiSua": 22,
-    "ngaySua": "15/09/2026 22:56:24",
+    "ngaySua": "15/10/2026 12:03:39",
     "trangThai": 1,
     "ghiChu": null,
     "phienBan": null,
     "nhomChId": 1,
     "maCauHinh": "KSK_TOANDAN",
     "tenCauHinh": "KSK_TOANDAN",
-    "giaTriMacDinh": "{\"gioiHanTienDichVu\":{\"giatri\":\"1\",\"mota\":\"Ràng buộc tổng tiền của dịch vụ chỉ định bao gồm công khám phải nhỏ hơn hoặc bằng tiền đã cấu hình cho gói khám sức khỏe và đối tượng Hưởng theo chính sách\\n\\n            Giá trị 0: Không kiểm tra\\n            Giá trị 1: kiểm tra (mặc định)\"},\"soTienGioiHan\":{\"giatri\":\"350000\",\"mota\":\"Giá trị (mặc định 350000)\"},\"autoPhanLoaiKSK18T\":{\"giatri\":\"1\",\"mota\":\"Cấu hình cho phép tự động phân loại sức khỏe, ở mục Kết luận chung\"},\"autoMapTTST_KSK18T\":{\"giatri\":\"1\",\"mota\":\"Cấu hình cho phép tự động điền chiều cao, cân nặng… vv từ khám Lâm sàng vào mục khám Thể Lực\\n            0: Cho phép tự động (mặc định)\\n            1: Không cho phép tự động.\"}}",
-    "giaTriThietLap": "{\"gioiHanTienDichVu\":{\"giatri\":\"1\",\"mota\":\"Ràng buộc tổng tiền của dịch vụ chỉ định bao gồm công khám phải nhỏ hơn hoặc bằng tiền đã cấu hình cho gói khám sức khỏe và đối tượng Hưởng theo chính sách\\n\\n            Giá trị 0: Không kiểm tra\\n            Giá trị 1: kiểm tra (mặc định)\"},\"soTienGioiHan\":{\"giatri\":\"350000\",\"mota\":\"Giá trị (mặc định 350000)\"},\"autoPhanLoaiKSK18T\":{\"giatri\":\"1\",\"mota\":\"Cấu hình cho phép tự động phân loại sức khỏe, ở mục Kết luận chung\"},\"autoMapTTST_KSK18T\":{\"giatri\":\"1\",\"mota\":\"Cấu hình cho phép tự động điền chiều cao, cân nặng… vv từ khám Lâm sàng vào mục khám Thể Lực\\n            0: Cho phép tự động (mặc định)\\n            1: Không cho phép tự động.\"}}",
+    "giaTriMacDinh": "{\"gioiHanTienDichVu\":{\"giatri\":\"1\",\"mota\":\"Ràng buộc tổng tiền của dịch vụ chỉ định bao gồm công khám phải nhỏ hơn hoặc bằng tiền đã cấu hình cho gói khám sức khỏe và đối tượng Hưởng theo chính sách\\n\\n            Giá trị 0: Không kiểm tra\\n            Giá trị 1: kiểm tra (mặc định)\"},\"soTienGioiHan\":{\"giatri\":\"350000\",\"mota\":\"Giá trị (mặc định 350000)\"},\"autoPhanLoaiKSK18T\":{\"giatri\":\"1\",\"mota\":\"Cấu hình cho phép tự động phân loại sức khỏe, ở mục Kết luận chung\"},\"autoMapTTST_KSK18T\":{\"giatri\":\"1\",\"mota\":\"Cấu hình cho phép tự động điền chiều cao, cân nặng… vv từ khám Lâm sàng vào mục khám Thể Lực\\n            0: Cho phép tự động (Chỉ tự động phân loại theo chiều cao cân nặng)\\n\\n            1: Không cho phép tự động.\\n            2: Cho phép tự động (tự động phân loại theo chiều cao, cân nặng, huyết áp và mạch)\"}}",
+    "giaTriThietLap": "{\"gioiHanTienDichVu\":{\"giatri\":\"1\",\"mota\":\"Ràng buộc tổng tiền của dịch vụ chỉ định bao gồm công khám phải nhỏ hơn hoặc bằng tiền đã cấu hình cho gói khám sức khỏe và đối tượng Hưởng theo chính sách\\n\\n            Giá trị 0: Không kiểm tra\\n            Giá trị 1: kiểm tra (mặc định)\"},\"soTienGioiHan\":{\"giatri\":\"350000\",\"mota\":\"Giá trị (mặc định 350000)\"},\"autoPhanLoaiKSK18T\":{\"giatri\":\"1\",\"mota\":\"Cấu hình cho phép tự động phân loại sức khỏe, ở mục Kết luận chung\"},\"autoMapTTST_KSK18T\":{\"giatri\":\"1\",\"mota\":\"Cấu hình cho phép tự động điền chiều cao, cân nặng… vv từ khám Lâm sàng vào mục khám Thể Lực\\n            0: Cho phép tự động (Chỉ tự động phân loại theo chiều cao cân nặng)\\n\\n            1: Không cho phép tự động.\\n            2: Cho phép tự động (tự động phân loại theo chiều cao, cân nặng, huyết áp và mạch)\"}}",
     "moTa": null
   },
   {

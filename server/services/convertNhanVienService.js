@@ -237,6 +237,53 @@ function formatDate(val) {
 }
 
 /**
+ * Định dạng ngày YYYYMMDD (yyyymmdd) theo chuẩn cổng VNPT HIS
+ */
+function formatDateYmd(val) {
+  if (val === undefined || val === null) return '';
+  const str = String(val).trim();
+  if (!str) return '';
+
+  if (val instanceof Date && !isNaN(val)) {
+    const y = val.getFullYear();
+    const m = String(val.getMonth() + 1).padStart(2, '0');
+    const d = String(val.getDate()).padStart(2, '0');
+    return `${y}${m}${d}`;
+  }
+
+  const numVal = typeof val === 'number' ? val : parseFloat(str);
+  if (!isNaN(numVal) && numVal > 20000 && numVal < 90000 && !str.includes('-') && !str.includes('/')) {
+    try {
+      const p = xlsx.SSF.parse_date_code(numVal);
+      if (p && p.y && p.m && p.d) {
+        return `${p.y}${String(p.m).padStart(2, '0')}${String(p.d).padStart(2, '0')}`;
+      }
+    } catch (e) {}
+  }
+
+  if (/^\d{8}$/.test(str)) {
+    return str;
+  }
+
+  const mYmd = str.match(/^(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})/);
+  if (mYmd) {
+    return `${mYmd[1]}${mYmd[2].padStart(2, '0')}${mYmd[3].padStart(2, '0')}`;
+  }
+
+  const mDmy = str.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})/);
+  if (mDmy) {
+    return `${mDmy[3]}${mDmy[2].padStart(2, '0')}${mDmy[1].padStart(2, '0')}`;
+  }
+
+  const digits = str.replace(/\D/g, '');
+  if (digits.length === 8) {
+    return digits;
+  }
+
+  return str;
+}
+
+/**
  * Trích xuất năm sinh từ số CCCD 12 số nếu không có ngày sinh
  * Ví dụ: 011185003116 -> Nữ, 1985 -> '1985-01-01'
  */
@@ -425,13 +472,15 @@ function parseSheetSmart(sheet) {
  * Chuyển đổi mảng dữ liệu nhân viên nguồn thành cấu trúc 33 cột chuẩn VNPT HIS (dữ liệu điền từ dòng 4)
  */
 function convertNhanVienRows(sourceRows, options = {}) {
-  const maDonVi = (options.maDonVi || options.maCskcb || '11055').toString().trim();
-  const defaultDeptId = (options.defaultDeptId || '').toString().trim();
-  const defaultMaKhoa = (options.defaultMaKhoa || defaultDeptId || '').toString().trim();
+  const maDonVi = (options.maDonVi || options.maCskcb || '11029').toString().trim();
+  const defaultDeptId = (options.defaultDeptId || 'K01').toString().trim();
+  const defaultMaKhoa = (options.defaultMaKhoa || defaultDeptId || 'K01').toString().trim();
   const defaultTgNgay = options.defaultTgNgay !== undefined && options.defaultTgNgay !== ''
     ? options.defaultTgNgay
     : 'T20700-1130;T21330-1700;T30700-1130;T31330-1700;T40700-1130;T41330-1700;T50700-1130;T51330-1700;T60700-1130;T61330-1700';
   const defaultTgTuan = options.defaultTgTuan || 'T2T3T4T5T6';
+  const defaultTuNgay = options.defaultTuNgay || '20260801';
+  const defaultNgayCheckGuiBh = options.defaultNgayCheckGuiBh || '20260801';
   const defaultStatus = options.defaultStatus !== undefined ? options.defaultStatus : 1;
 
   const usedUsernames = new Set();
@@ -468,8 +517,9 @@ function convertNhanVienRows(sourceRows, options = {}) {
     // 7. Mã bác sĩ MA_BAC_SI (CCHN)
     const maBacSi = getRowValue(d, ['MA_BAC_SI', 'CHUNG_CHI_HANH_NGHE', 'CCHN', 'SO_CCHN', 'GPHN']).toString().trim();
 
-    // 8. NGAYCAPCCHN
-    const ngayCapCchn = formatDate(getRowValue(d, ['NGAYCAPCCHN', 'NGAY_CAP_CCHN', 'NGAY_CAP']));
+    // 8. NGAYCAPCCHN: định dạng yyyymmdd theo yêu cầu
+    const ngayCapCchnRaw = getRowValue(d, ['NGAYCAPCCHN', 'NGAY_CAP_CCHN', 'NGAY_CAP', 'NGAY_CAP_GPHN']);
+    const ngayCapCchn = ngayCapCchnRaw ? formatDateYmd(ngayCapCchnRaw) : '';
 
     // 9. NOICAPCCHN
     const noiCapCchn = getRowValue(d, ['NOICAPCCHN', 'NOI_CAP_CCHN', 'NOI_CAP']).toString().trim();
@@ -547,18 +597,21 @@ function convertNhanVienRows(sourceRows, options = {}) {
     // 27. QDCHUYENGIAOKT
     const qdChuyenGiaoKt = getRowValue(d, ['QDCHUYENGIAOKT', 'QD_CHUYEN_GIAO_KT']);
 
-    // 28. TUNGAY
-    const tuNgay = formatDate(getRowValue(d, ['TUNGAY', 'TU_NGAY']));
+    // 28. TUNGAY: Mặc định 20260801 theo yêu cầu người dùng
+    const tuNgayRaw = getRowValue(d, ['TUNGAY', 'TU_NGAY']);
+    const tuNgay = tuNgayRaw ? (formatDateYmd(tuNgayRaw) || defaultTuNgay) : defaultTuNgay;
 
     // 29. DENNGAY
-    const denNgay = formatDate(getRowValue(d, ['DENNGAY', 'DEN_NGAY']));
+    const denNgayRaw = getRowValue(d, ['DENNGAY', 'DEN_NGAY']);
+    const denNgay = denNgayRaw ? formatDateYmd(denNgayRaw) : '';
 
-    // 30. DMGUIBH
+    // 30. DMGUIBH (Có CCHN/Mã bác sĩ thì để 1, không có CCHN thì để trống)
     const dmGuiBhVal = getRowValue(d, ['DMGUIBH', 'DM_GUI_BH']);
-    const dmGuiBh = dmGuiBhVal !== undefined && dmGuiBhVal !== '' ? dmGuiBhVal : (maBacSi ? 1 : '');
+    const dmGuiBh = dmGuiBhVal !== undefined && dmGuiBhVal !== '' ? (dmGuiBhVal === '0' || dmGuiBhVal === 0 ? '' : dmGuiBhVal) : (maBacSi ? 1 : '');
 
-    // 31. NGAYCHECKGUIBH
-    const ngayCheckGuiBh = formatDate(getRowValue(d, ['NGAYCHECKGUIBH', 'NGAY_CHECK_GUI_BH']));
+    // 31. NGAYCHECKGUIBH: Mặc định 20260801 theo yêu cầu người dùng
+    const ngayCheckGuiBhRaw = getRowValue(d, ['NGAYCHECKGUIBH', 'NGAY_CHECK_GUI_BH']);
+    const ngayCheckGuiBh = ngayCheckGuiBhRaw ? (formatDateYmd(ngayCheckGuiBhRaw) || defaultNgayCheckGuiBh) : defaultNgayCheckGuiBh;
 
     // 32. STATUS (Mặc định là 1)
     const statusVal = getRowValue(d, ['STATUS', 'TRANG_THAI']);
@@ -649,6 +702,7 @@ module.exports = {
   removeVietnameseTones,
   generateUserName,
   formatDate,
+  formatDateYmd,
   extractBirthDateFromCccd,
   parseSheetSmart,
   convertNhanVienRows,

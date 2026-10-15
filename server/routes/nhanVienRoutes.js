@@ -43,9 +43,11 @@ router.post('/convert', upload.single('file'), (req, res) => {
     }
 
     const options = {
-      maDonVi: req.body.maDonVi || req.query.maDonVi || '11055',
-      defaultDeptId: req.body.defaultDeptId || req.query.defaultDeptId || '',
-      defaultMaKhoa: req.body.defaultMaKhoa || req.query.defaultMaKhoa || '',
+      maDonVi: req.body.maDonVi || req.query.maDonVi || '11029',
+      defaultDeptId: req.body.defaultDeptId || req.query.defaultDeptId || 'K01',
+      defaultMaKhoa: req.body.defaultMaKhoa || req.query.defaultMaKhoa || 'K01',
+      defaultTuNgay: req.body.defaultTuNgay || req.query.defaultTuNgay || '20260801',
+      defaultNgayCheckGuiBh: req.body.defaultNgayCheckGuiBh || req.query.defaultNgayCheckGuiBh || '20260801',
       defaultTgNgay: req.body.defaultTgNgay || req.query.defaultTgNgay || '',
       defaultTgTuan: req.body.defaultTgTuan || req.query.defaultTgTuan || 'T2T3T4T5T6'
     };
@@ -98,9 +100,11 @@ router.get('/sample-convert', (req, res) => {
     const sourceData = convertService.parseSheetSmart(wb.Sheets[wb.SheetNames[0]]);
 
     const options = {
-      maDonVi: req.query.maDonVi || '11055',
-      defaultDeptId: req.query.defaultDeptId || '',
-      defaultMaKhoa: req.query.defaultMaKhoa || '',
+      maDonVi: req.query.maDonVi || '11029',
+      defaultDeptId: req.query.defaultDeptId || 'K01',
+      defaultMaKhoa: req.query.defaultMaKhoa || 'K01',
+      defaultTuNgay: req.query.defaultTuNgay || '20260801',
+      defaultNgayCheckGuiBh: req.query.defaultNgayCheckGuiBh || '20260801',
       defaultTgNgay: req.query.defaultTgNgay || '',
       defaultTgTuan: req.query.defaultTgTuan || 'T2T3T4T5T6'
     };

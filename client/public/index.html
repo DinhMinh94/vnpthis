@@ -1193,28 +1193,58 @@
                 </p>
               </div>
 
-              <!-- KHOA DEPT_ID -->
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">Khoa / Bộ phận (KHOA DEPT_ID):</label>
-                <input 
-                  v-model="nhanVienOptions.defaultDeptId" 
-                  type="text" 
-                  placeholder="VD: K01" 
-                  class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                >
-                <p class="text-[11px] text-slate-500 mt-1">Cột 5: Điền trực tiếp mã khoa (VD: <span class="font-mono font-bold text-indigo-700">K01</span>)</p>
+              <!-- GRID: KHOA DEPT_ID & MA_KHOA -->
+              <div class="grid grid-cols-2 gap-3">
+                <!-- KHOA DEPT_ID -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Khoa (DEPT_ID):</label>
+                  <input 
+                    v-model="nhanVienOptions.defaultDeptId" 
+                    type="text" 
+                    placeholder="VD: K01" 
+                    class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  >
+                  <p class="text-[10px] text-slate-500 mt-0.5">Cột 5: <span class="font-mono font-bold text-indigo-700">K01</span></p>
+                </div>
+
+                <!-- MA_KHOA -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Mã Khoa (MA_KHOA):</label>
+                  <input 
+                    v-model="nhanVienOptions.defaultMaKhoa" 
+                    type="text" 
+                    placeholder="VD: K01" 
+                    class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  >
+                  <p class="text-[10px] text-slate-500 mt-0.5">Cột 18: <span class="font-mono font-bold text-emerald-700">K01</span></p>
+                </div>
               </div>
 
-              <!-- MA_KHOA -->
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">Mã Khoa (MA_KHOA):</label>
-                <input 
-                  v-model="nhanVienOptions.defaultMaKhoa" 
-                  type="text" 
-                  placeholder="VD: K01" 
-                  class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                >
-                <p class="text-[11px] text-slate-500 mt-1">Cột 18: Mã khoa TT12 (VD: <span class="font-mono font-bold text-indigo-700">K01</span>)</p>
+              <!-- GRID: TUNGAY & NGAYCHECKGUIBH -->
+              <div class="grid grid-cols-2 gap-3">
+                <!-- TUNGAY -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Từ ngày (TUNGAY):</label>
+                  <input 
+                    v-model="nhanVienOptions.defaultTuNgay" 
+                    type="text" 
+                    placeholder="20260801" 
+                    class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  >
+                  <p class="text-[10px] text-slate-500 mt-0.5">Cột 29 (Mặc định: <span class="font-mono font-bold text-indigo-700">20260801</span>)</p>
+                </div>
+
+                <!-- NGAYCHECKGUIBH -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Check gửi BH:</label>
+                  <input 
+                    v-model="nhanVienOptions.defaultNgayCheckGuiBh" 
+                    type="text" 
+                    placeholder="20260801" 
+                    class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  >
+                  <p class="text-[10px] text-slate-500 mt-0.5">Cột 32 (Mặc định: <span class="font-mono font-bold text-purple-700">20260801</span>)</p>
+                </div>
               </div>
 
               <!-- Thời gian làm việc ngày (TGLAMVIECNGAY) -->
@@ -1329,9 +1359,12 @@
                   <th class="p-2.5">Chức danh NN</th>
                   <th class="p-2.5">DMC Loại</th>
                   <th class="p-2.5 font-mono">Số CCHN</th>
-                  <th class="p-2.5 font-mono">Ngày cấp CCHN</th>
+                  <th class="p-2.5 font-mono text-indigo-700">Ngày cấp CCHN</th>
                   <th class="p-2.5 font-mono">CCCD / CMND</th>
                   <th class="p-2.5 font-mono">Số ĐT</th>
+                  <th class="p-2.5 font-mono text-indigo-700">TUNGAY</th>
+                  <th class="p-2.5 font-mono text-purple-700 text-center">Gửi BH</th>
+                  <th class="p-2.5 font-mono text-slate-700">Check gửi BH</th>
                   <th class="p-2.5 font-mono">TG Ngày (TGLAMVIECNGAY)</th>
                   <th class="p-2.5 font-mono">Lịch tuần</th>
                 </tr>
@@ -1347,9 +1380,12 @@
                   <td class="p-2.5 font-medium text-slate-700">{{ r[5] || '-' }}</td>
                   <td class="p-2.5 font-medium text-slate-700">{{ r[6] || '-' }}</td>
                   <td class="p-2.5 font-mono text-emerald-700 font-semibold">{{ r[7] || '-' }}</td>
-                  <td class="p-2.5 font-mono text-slate-600">{{ r[8] || '-' }}</td>
+                  <td class="p-2.5 font-mono text-indigo-700 font-semibold">{{ r[8] || '-' }}</td>
                   <td class="p-2.5 font-mono text-slate-800">{{ r[10] || '-' }}</td>
                   <td class="p-2.5 font-mono text-amber-800">{{ r[15] || '-' }}</td>
+                  <td class="p-2.5 font-mono text-indigo-700 font-bold bg-indigo-50/30">{{ r[28] || '-' }}</td>
+                  <td class="p-2.5 font-mono text-center font-bold" :class="r[30] === '1' ? 'text-emerald-700 bg-emerald-50/30' : 'text-slate-400'">{{ r[30] || '-' }}</td>
+                  <td class="p-2.5 font-mono text-purple-700 font-bold bg-purple-50/30">{{ r[31] || '-' }}</td>
                   <td class="p-2.5 font-mono text-[11px] text-slate-600 max-w-xs truncate" :title="r[24]">{{ r[24] || '-' }}</td>
                   <td class="p-2.5 font-mono text-slate-600">{{ r[25] || '-' }}</td>
                 </tr>
@@ -3690,9 +3726,11 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const nhanVienFileName = ref('');
         const nhanVienFileSize = ref('');
         const nhanVienOptions = ref({
-          maDonVi: '11055',
+          maDonVi: '11029',
           defaultDeptId: 'K01',
           defaultMaKhoa: 'K01',
+          defaultTuNgay: '20260801',
+          defaultNgayCheckGuiBh: '20260801',
           defaultTgNgay: 'T20700-1130;T21330-1700;T30700-1130;T31330-1700;T40700-1130;T41330-1700;T50700-1130;T51330-1700;T60700-1130;T61330-1700',
           defaultTgTuan: 'T2T3T4T5T6'
         });
@@ -5742,6 +5780,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             if (nhanVienOptions.value.maDonVi) params.append('maDonVi', nhanVienOptions.value.maDonVi);
             if (nhanVienOptions.value.defaultDeptId) params.append('defaultDeptId', nhanVienOptions.value.defaultDeptId);
             if (nhanVienOptions.value.defaultMaKhoa) params.append('defaultMaKhoa', nhanVienOptions.value.defaultMaKhoa);
+            if (nhanVienOptions.value.defaultTuNgay) params.append('defaultTuNgay', nhanVienOptions.value.defaultTuNgay);
+            if (nhanVienOptions.value.defaultNgayCheckGuiBh) params.append('defaultNgayCheckGuiBh', nhanVienOptions.value.defaultNgayCheckGuiBh);
             if (nhanVienOptions.value.defaultTgNgay) params.append('defaultTgNgay', nhanVienOptions.value.defaultTgNgay);
             if (nhanVienOptions.value.defaultTgTuan) params.append('defaultTgTuan', nhanVienOptions.value.defaultTgTuan);
 
@@ -5828,6 +5868,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             if (nhanVienOptions.value.maDonVi) formData.append('maDonVi', nhanVienOptions.value.maDonVi);
             if (nhanVienOptions.value.defaultDeptId) formData.append('defaultDeptId', nhanVienOptions.value.defaultDeptId);
             if (nhanVienOptions.value.defaultMaKhoa) formData.append('defaultMaKhoa', nhanVienOptions.value.defaultMaKhoa);
+            if (nhanVienOptions.value.defaultTuNgay) formData.append('defaultTuNgay', nhanVienOptions.value.defaultTuNgay);
+            if (nhanVienOptions.value.defaultNgayCheckGuiBh) formData.append('defaultNgayCheckGuiBh', nhanVienOptions.value.defaultNgayCheckGuiBh);
             if (nhanVienOptions.value.defaultTgNgay) formData.append('defaultTgNgay', nhanVienOptions.value.defaultTgNgay);
             if (nhanVienOptions.value.defaultTgTuan) formData.append('defaultTgTuan', nhanVienOptions.value.defaultTgTuan);
 
@@ -5905,6 +5947,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               if (nhanVienOptions.value.maDonVi) params.append('maDonVi', nhanVienOptions.value.maDonVi);
               if (nhanVienOptions.value.defaultDeptId) params.append('defaultDeptId', nhanVienOptions.value.defaultDeptId);
               if (nhanVienOptions.value.defaultMaKhoa) params.append('defaultMaKhoa', nhanVienOptions.value.defaultMaKhoa);
+              if (nhanVienOptions.value.defaultTuNgay) params.append('defaultTuNgay', nhanVienOptions.value.defaultTuNgay);
+              if (nhanVienOptions.value.defaultNgayCheckGuiBh) params.append('defaultNgayCheckGuiBh', nhanVienOptions.value.defaultNgayCheckGuiBh);
               if (nhanVienOptions.value.defaultTgNgay) params.append('defaultTgNgay', nhanVienOptions.value.defaultTgNgay);
               if (nhanVienOptions.value.defaultTgTuan) params.append('defaultTgTuan', nhanVienOptions.value.defaultTgTuan);
 
@@ -5927,6 +5971,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             if (nhanVienOptions.value.maDonVi) formData.append('maDonVi', nhanVienOptions.value.maDonVi);
             if (nhanVienOptions.value.defaultDeptId) formData.append('defaultDeptId', nhanVienOptions.value.defaultDeptId);
             if (nhanVienOptions.value.defaultMaKhoa) formData.append('defaultMaKhoa', nhanVienOptions.value.defaultMaKhoa);
+            if (nhanVienOptions.value.defaultTuNgay) formData.append('defaultTuNgay', nhanVienOptions.value.defaultTuNgay);
+            if (nhanVienOptions.value.defaultNgayCheckGuiBh) formData.append('defaultNgayCheckGuiBh', nhanVienOptions.value.defaultNgayCheckGuiBh);
             if (nhanVienOptions.value.defaultTgNgay) formData.append('defaultTgNgay', nhanVienOptions.value.defaultTgNgay);
             if (nhanVienOptions.value.defaultTgTuan) formData.append('defaultTgTuan', nhanVienOptions.value.defaultTgTuan);
 

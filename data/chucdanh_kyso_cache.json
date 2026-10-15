@@ -1,0 +1,672 @@
+[
+  {
+    "id": 19004,
+    "titleCode": "BAC_SI_20",
+    "titleName": "Bác sĩ 20",
+    "description": null,
+    "nguoiTao": 2110,
+    "ngayTao": "26/09/2026 15:12:51",
+    "nguoiSua": 2110,
+    "ngaySua": "26/09/2026 15:12:51"
+  },
+  {
+    "id": 19003,
+    "titleCode": "BAC_SI_19",
+    "titleName": "Bác sĩ 19",
+    "description": null,
+    "nguoiTao": 2110,
+    "ngayTao": "26/09/2026 15:12:51",
+    "nguoiSua": 2110,
+    "ngaySua": "26/09/2026 15:12:51"
+  },
+  {
+    "id": 19002,
+    "titleCode": "BAC_SI_18",
+    "titleName": "Bác sĩ 18",
+    "description": null,
+    "nguoiTao": 2110,
+    "ngayTao": "26/09/2026 15:12:51",
+    "nguoiSua": 2110,
+    "ngaySua": "26/09/2026 15:12:51"
+  },
+  {
+    "id": 19001,
+    "titleCode": "EMR_CONDAU",
+    "titleName": "Con dấu EMR khác",
+    "description": null,
+    "nguoiTao": 2110,
+    "ngayTao": "26/09/2026 15:12:51",
+    "nguoiSua": 2110,
+    "ngaySua": "26/09/2026 15:12:51"
+  },
+  {
+    "id": 18001,
+    "titleCode": "CON_DAU_DV",
+    "titleName": "Con dấu gửi BHXH",
+    "description": "Con dấu ký qui trình riêng để gửi BHXH do BHXH không nhận dấu thời gian và signature image",
+    "nguoiTao": 1,
+    "ngayTao": "09/09/2026 16:30:28",
+    "nguoiSua": 1,
+    "ngaySua": "09/09/2026 16:30:28"
+  },
+  {
+    "id": 13023,
+    "titleCode": "DONG_DAU",
+    "titleName": "Đóng dấu",
+    "description": null,
+    "nguoiTao": 2,
+    "ngayTao": "05/10/2026 22:33:44",
+    "nguoiSua": 2,
+    "ngaySua": "05/10/2026 22:33:44"
+  },
+  {
+    "id": 13022,
+    "titleCode": "NGUOI_TRA_KET_QUA",
+    "titleName": "Người trả kết quả",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "11/06/2026 10:25:09",
+    "nguoiSua": 22,
+    "ngaySua": "11/06/2026 10:25:09"
+  },
+  {
+    "id": 13021,
+    "titleCode": "NGUOI_DOC_KET_QUA",
+    "titleName": "Người đọc kết quả",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "12/06/2026 15:56:07",
+    "nguoiSua": 22,
+    "ngaySua": "12/06/2026 15:56:07"
+  },
+  {
+    "id": 13020,
+    "titleCode": "NGUOI_DUYET_KET_QUA",
+    "titleName": "Người duyệt kết quả",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "12/06/2026 15:59:17",
+    "nguoiSua": 22,
+    "ngaySua": "12/06/2026 15:59:17"
+  },
+  {
+    "id": 12021,
+    "titleCode": "BENH_NHAN_2",
+    "titleName": "Bệnh nhân 2",
+    "description": null,
+    "nguoiTao": 2110,
+    "ngayTao": "29/07/2026 18:24:23",
+    "nguoiSua": 2110,
+    "ngaySua": "29/07/2026 18:36:57"
+  },
+  {
+    "id": 12020,
+    "titleCode": "BENH_NHAN_1",
+    "titleName": "Bệnh nhân 1",
+    "description": null,
+    "nguoiTao": 2110,
+    "ngayTao": "29/07/2026 18:24:09",
+    "nguoiSua": 2110,
+    "ngaySua": "29/07/2026 18:37:06"
+  },
+  {
+    "id": 11020,
+    "titleCode": "NGUOI_CHU_TRI",
+    "titleName": "Người chủ trì",
+    "description": null,
+    "nguoiTao": 2110,
+    "ngayTao": "03/07/2026 08:51:44",
+    "nguoiSua": 2110,
+    "ngaySua": "03/07/2026 08:51:44"
+  },
+  {
+    "id": 11017,
+    "titleCode": "BAC_SI_17",
+    "titleName": "Bác sĩ 17",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 12:01:27",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 12:01:27"
+  },
+  {
+    "id": 11016,
+    "titleCode": "BAC_SI_16",
+    "titleName": "Bác sĩ 16",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 12:01:15",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 12:01:15"
+  },
+  {
+    "id": 11015,
+    "titleCode": "BAC_SI_15",
+    "titleName": "Bác sĩ 15",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 12:01:05",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 12:01:05"
+  },
+  {
+    "id": 11014,
+    "titleCode": "BAC_SI_14",
+    "titleName": "Bác sĩ 14",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 12:00:54",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 12:00:54"
+  },
+  {
+    "id": 11013,
+    "titleCode": "BAC_SI_13",
+    "titleName": "Bác sĩ 13",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 12:00:09",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 12:00:09"
+  },
+  {
+    "id": 11012,
+    "titleCode": "BAC_SI_12",
+    "titleName": "Bác sĩ 12",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:59:45",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 11:59:45"
+  },
+  {
+    "id": 11011,
+    "titleCode": "BAC_SI_11",
+    "titleName": "Bác sĩ 11",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:59:33",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 11:59:33"
+  },
+  {
+    "id": 11010,
+    "titleCode": "BAC_SI_10",
+    "titleName": "Bác sĩ 10",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:59:18",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 11:59:59"
+  },
+  {
+    "id": 11009,
+    "titleCode": "BAC_SI_9",
+    "titleName": "Bác sĩ 9",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:59:04",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 15:09:18"
+  },
+  {
+    "id": 11008,
+    "titleCode": "BAC_SI_8",
+    "titleName": "Bác sĩ 8",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:58:49",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 11:58:49"
+  },
+  {
+    "id": 11007,
+    "titleCode": "BAC_SI_7",
+    "titleName": "Bác sĩ 7",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:58:37",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 11:58:37"
+  },
+  {
+    "id": 11006,
+    "titleCode": "BAC_SI_6",
+    "titleName": "Bác sĩ 6",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:58:24",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 11:58:24"
+  },
+  {
+    "id": 11005,
+    "titleCode": "BAC_SI_5",
+    "titleName": "Bác sĩ 5",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:57:10",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 11:57:10"
+  },
+  {
+    "id": 11004,
+    "titleCode": "BAC_SI_4",
+    "titleName": "Bác sĩ 4",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:56:51",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 11:56:51"
+  },
+  {
+    "id": 11003,
+    "titleCode": "BAC_SI_3",
+    "titleName": "Bác sĩ 3",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:56:40",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 11:56:40"
+  },
+  {
+    "id": 11002,
+    "titleCode": "BAC_SI_2",
+    "titleName": "Bác sĩ 2",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:56:28",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 11:56:28"
+  },
+  {
+    "id": 11001,
+    "titleCode": "BAC_SI_1",
+    "titleName": "Bác sĩ 1",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "27/05/2026 11:56:05",
+    "nguoiSua": 1751,
+    "ngaySua": "27/05/2026 11:56:12"
+  },
+  {
+    "id": 10001,
+    "titleCode": "BACSI_KHAM_1",
+    "titleName": "Bác sĩ khám bệnh 1",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "26/05/2026 10:09:26",
+    "nguoiSua": 1751,
+    "ngaySua": "26/05/2026 10:09:26"
+  },
+  {
+    "id": 9005,
+    "titleCode": "NHAN_VIEN_5",
+    "titleName": "Nhân viên 5",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "22/05/2026 12:00:02",
+    "nguoiSua": 1751,
+    "ngaySua": "22/05/2026 12:00:02"
+  },
+  {
+    "id": 9004,
+    "titleCode": "NHAN_VIEN_4",
+    "titleName": "Nhân viên 4",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "22/05/2026 11:59:49",
+    "nguoiSua": 1751,
+    "ngaySua": "22/05/2026 11:59:49"
+  },
+  {
+    "id": 9003,
+    "titleCode": "NHAN_VIEN_3",
+    "titleName": "Nhân viên 3",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "22/05/2026 11:59:38",
+    "nguoiSua": 1751,
+    "ngaySua": "22/05/2026 11:59:38"
+  },
+  {
+    "id": 9002,
+    "titleCode": "NHAN_VIEN_2",
+    "titleName": "Nhân viên 2",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "22/05/2026 11:59:29",
+    "nguoiSua": 1751,
+    "ngaySua": "22/05/2026 11:59:29"
+  },
+  {
+    "id": 9001,
+    "titleCode": "NHAN_VIEN_1",
+    "titleName": "Nhân viên 1",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "22/05/2026 11:59:16",
+    "nguoiSua": 1751,
+    "ngaySua": "22/05/2026 11:59:16"
+  },
+  {
+    "id": 8001,
+    "titleCode": "NGUOI_LAP_PHIEU",
+    "titleName": "Người lập phiếu",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "20/05/2026 15:10:39",
+    "nguoiSua": 1751,
+    "ngaySua": "20/05/2026 15:10:39"
+  },
+  {
+    "id": 7005,
+    "titleCode": "NGUOI_QLSDKS",
+    "titleName": "Người QLSDKS",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "19/05/2026 16:51:59",
+    "nguoiSua": 1751,
+    "ngaySua": "19/05/2026 16:51:59"
+  },
+  {
+    "id": 7002,
+    "titleCode": "BENH_NHAN",
+    "titleName": "Người hỗ trợ sinh trắc cho bệnh nhân",
+    "description": "Vị trí cho bệnh nhân ký cùng nhân viên cơ sở",
+    "nguoiTao": 22,
+    "ngayTao": "19/05/2026 14:29:00",
+    "nguoiSua": 2110,
+    "ngaySua": "10/08/2026 10:54:59"
+  },
+  {
+    "id": 7001,
+    "titleCode": "GIAM_DINH_BHXH",
+    "titleName": "Giám định BHXH",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "19/05/2026 14:18:22",
+    "nguoiSua": 22,
+    "ngaySua": "19/05/2026 14:18:22"
+  },
+  {
+    "id": 6002,
+    "titleCode": "DIEU_DUONG_VONG_NGOAI",
+    "titleName": "Điều dưỡng vòng ngoài",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "13/05/2026 16:12:42",
+    "nguoiSua": 1751,
+    "ngaySua": "13/05/2026 16:12:42"
+  },
+  {
+    "id": 6001,
+    "titleCode": "DIEU_DUONG_VONG_TRONG",
+    "titleName": "Điều dưỡng vòng trong",
+    "description": null,
+    "nguoiTao": 1751,
+    "ngayTao": "13/05/2026 16:12:28",
+    "nguoiSua": 1751,
+    "ngaySua": "13/05/2026 16:12:28"
+  },
+  {
+    "id": 5002,
+    "titleCode": "THU_TRUONG_DON_VI",
+    "titleName": "Thủ trưởng đơn vị",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "04/05/2026 09:11:00",
+    "nguoiSua": 22,
+    "ngaySua": "04/05/2026 09:11:00"
+  },
+  {
+    "id": 5001,
+    "titleCode": "NGUOI_LAP_BIEU",
+    "titleName": "Người lập biểu",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "04/05/2026 09:10:23",
+    "nguoiSua": 22,
+    "ngaySua": "04/05/2026 09:10:23"
+  },
+  {
+    "id": 4009,
+    "titleCode": "KE_TOAN",
+    "titleName": "Kế toán",
+    "description": null,
+    "nguoiTao": 1063,
+    "ngayTao": "20/04/2026 10:37:51",
+    "nguoiSua": 1063,
+    "ngaySua": "20/04/2026 10:37:51"
+  },
+  {
+    "id": 4008,
+    "titleCode": "EMR_NV_BANGIAO",
+    "titleName": "Nhân viên giao EMR",
+    "description": null,
+    "nguoiTao": 1063,
+    "ngayTao": "20/04/2026 10:37:29",
+    "nguoiSua": 1063,
+    "ngaySua": "20/04/2026 10:37:29"
+  },
+  {
+    "id": 4007,
+    "titleCode": "EMR_NV_DUYETNHAN",
+    "titleName": "Nhân viên nhận EMR",
+    "description": null,
+    "nguoiTao": 1063,
+    "ngayTao": "20/04/2026 10:37:20",
+    "nguoiSua": 1063,
+    "ngaySua": "20/04/2026 10:37:20"
+  },
+  {
+    "id": 4006,
+    "titleCode": "EMR_GIAMDOC",
+    "titleName": "Con dấu EMR",
+    "description": null,
+    "nguoiTao": 1063,
+    "ngayTao": "20/04/2026 10:37:10",
+    "nguoiSua": 1063,
+    "ngaySua": "20/04/2026 10:37:10"
+  },
+  {
+    "id": 4005,
+    "titleCode": "NHAN_VIEN",
+    "titleName": "Nhân viên",
+    "description": null,
+    "nguoiTao": 1063,
+    "ngayTao": "20/04/2026 10:36:59",
+    "nguoiSua": 1063,
+    "ngaySua": "20/04/2026 10:36:59"
+  },
+  {
+    "id": 4004,
+    "titleCode": "KYTHUATVIEN",
+    "titleName": "Kỹ thuật viên",
+    "description": null,
+    "nguoiTao": 1063,
+    "ngayTao": "20/04/2026 10:36:27",
+    "nguoiSua": 1063,
+    "ngaySua": "20/04/2026 10:36:27"
+  },
+  {
+    "id": 4003,
+    "titleCode": "PHAUTHUATVIEN",
+    "titleName": "Phẫu thuật viên",
+    "description": null,
+    "nguoiTao": 1063,
+    "ngayTao": "20/04/2026 10:36:16",
+    "nguoiSua": 1063,
+    "ngaySua": "20/04/2026 10:36:16"
+  },
+  {
+    "id": 4002,
+    "titleCode": "NGUOI_KET_LUAN",
+    "titleName": "Người kết luận",
+    "description": null,
+    "nguoiTao": 1063,
+    "ngayTao": "20/04/2026 10:36:01",
+    "nguoiSua": 1063,
+    "ngaySua": "20/04/2026 10:36:01"
+  },
+  {
+    "id": 4001,
+    "titleCode": "BS_LAP_BENHAN",
+    "titleName": "Bác sĩ lập bệnh án",
+    "description": null,
+    "nguoiTao": 1063,
+    "ngayTao": "20/04/2026 10:32:44",
+    "nguoiSua": 1063,
+    "ngaySua": "20/04/2026 10:32:44"
+  },
+  {
+    "id": 3001,
+    "titleCode": "BAC_SI",
+    "titleName": "Bác sĩ",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "17/04/2026 16:06:37",
+    "nguoiSua": 22,
+    "ngaySua": "17/04/2026 16:06:37"
+  },
+  {
+    "id": 2001,
+    "titleCode": "DAIDIEN_DONVI",
+    "titleName": "Đại diện đơn vị",
+    "description": "Đại diện đơn vị",
+    "nguoiTao": 22,
+    "ngayTao": "02/04/2026 09:47:24",
+    "nguoiSua": 22,
+    "ngaySua": "02/04/2026 09:47:24"
+  },
+  {
+    "id": 1010,
+    "titleCode": "DIEU_DUONG",
+    "titleName": "Điều dưỡng",
+    "description": "Thực hiện y lệnh, chăm sóc người bệnh.",
+    "nguoiTao": 22,
+    "ngayTao": "24/02/2026 16:22:33",
+    "nguoiSua": 22,
+    "ngaySua": "24/02/2026 16:22:33"
+  },
+  {
+    "id": 1009,
+    "titleCode": "BACSI_KHAM",
+    "titleName": "Bác sĩ khám bệnh",
+    "description": "Bác sĩ tại phòng khám, ký phiếu khám, chỉ định cận lâm sàng.",
+    "nguoiTao": 22,
+    "ngayTao": "24/02/2026 16:22:05",
+    "nguoiSua": 22,
+    "ngaySua": "25/03/2026 14:20:13"
+  },
+  {
+    "id": 1008,
+    "titleCode": "BS_DIEU_TRI",
+    "titleName": "Bác sĩ điều trị",
+    "description": "Bác sĩ trực tiếp điều trị, ký y lệnh hàng ngày.",
+    "nguoiTao": 22,
+    "ngayTao": "24/02/2026 16:21:44",
+    "nguoiSua": 22,
+    "ngaySua": "24/02/2026 16:21:44"
+  },
+  {
+    "id": 1007,
+    "titleCode": "TRUONG_KHOA",
+    "titleName": "Trưởng khoa",
+    "description": "Quản lý chuyên môn cấp khoa, duyệt bệnh án ra viện.",
+    "nguoiTao": 22,
+    "ngayTao": "24/02/2026 16:21:31",
+    "nguoiSua": 22,
+    "ngaySua": "24/02/2026 16:21:31"
+  },
+  {
+    "id": 1006,
+    "titleCode": "KE_TOAN_TRUONG",
+    "titleName": "Kế toán trưởng",
+    "description": "Phê duyệt các phiếu thu, chi, công khai thuốc, vật tư.",
+    "nguoiTao": 22,
+    "ngayTao": "24/02/2026 16:21:17",
+    "nguoiSua": 22,
+    "ngaySua": "24/02/2026 16:21:17"
+  },
+  {
+    "id": 1003,
+    "titleCode": "GIAM_DOC",
+    "titleName": "Giám đốc bệnh viện",
+    "description": "Lãnh đạo cao nhất, ký duyệt cuối cùng các hồ sơ quan trọng.",
+    "nguoiTao": 22,
+    "ngayTao": "24/02/2026 15:42:32",
+    "nguoiSua": 22,
+    "ngaySua": "24/02/2026 15:42:32"
+  },
+  {
+    "id": 1002,
+    "titleCode": "CON_DAU",
+    "titleName": "Con dấu",
+    "description": null,
+    "nguoiTao": 1063,
+    "ngayTao": "31/03/2026 20:43:32",
+    "nguoiSua": 1063,
+    "ngaySua": "20/04/2026 10:38:18"
+  },
+  {
+    "id": 1001,
+    "titleCode": "DIEU_DUONG_5",
+    "titleName": "Điều dưỡng 5",
+    "description": "Mô tả Điều dưỡng 5",
+    "nguoiTao": 22,
+    "ngayTao": "24/02/2026 14:26:03",
+    "nguoiSua": 1751,
+    "ngaySua": "22/05/2026 11:58:51"
+  },
+  {
+    "id": 9,
+    "titleCode": "DIEU_DUONG_6",
+    "titleName": "Điều dưỡng 6",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "23/03/2026 15:20:49",
+    "nguoiSua": 1751,
+    "ngaySua": "22/05/2026 12:02:38"
+  },
+  {
+    "id": 5,
+    "titleCode": "DIEU_DUONG_3",
+    "titleName": "Điều dưỡng 3",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "13/02/2026 10:51:19",
+    "nguoiSua": 1751,
+    "ngaySua": "22/05/2026 11:58:42"
+  },
+  {
+    "id": 4,
+    "titleCode": "DIEU_DUONG_4",
+    "titleName": "Điều dưỡng 4",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "12/02/2026 13:49:21",
+    "nguoiSua": 1751,
+    "ngaySua": "22/05/2026 11:58:28"
+  },
+  {
+    "id": 2,
+    "titleCode": "DIEU_DUONG_2",
+    "titleName": "Điều dưỡng 2",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "12/02/2026 11:10:31",
+    "nguoiSua": 1751,
+    "ngaySua": "22/05/2026 11:58:12"
+  },
+  {
+    "id": 1,
+    "titleCode": "DIEU_DUONG_1",
+    "titleName": "Điều dưỡng 1",
+    "description": null,
+    "nguoiTao": 22,
+    "ngayTao": "12/02/2026 11:10:00",
+    "nguoiSua": 1751,
+    "ngaySua": "22/05/2026 11:58:04"
+  }
+]

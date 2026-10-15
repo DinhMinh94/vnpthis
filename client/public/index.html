@@ -291,6 +291,12 @@
             <span>Thiết lập Phiếu in Báo cáo</span>
           </button>
 
+          <!-- Nút Quản lý & Thêm Chức danh ký số HMIS -->
+          <button @click="openChucDanhModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-sm rounded-xl border border-blue-200 transition-colors shadow-sm cursor-pointer" title="Thêm & đồng bộ chức danh ký số cho tất cả các trạm y tế (https://ytcs.hmis.vn/new/his/danhmuc/dm-chung/chucdanh-kyso)">
+            <i data-lucide="file-signature" class="w-4 h-4 text-blue-600"></i>
+            <span>Chức Danh Ký Số HMIS</span>
+          </button>
+
           <!-- Nút Tiện ích Tự động đăng nhập 1-Click -->
           <button @click="modals.autoLoginGuide = true" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm rounded-xl border border-amber-300 transition-colors shadow-sm cursor-pointer" title="Xem hướng dẫn tự động điền & đăng nhập 1-click vào cổng HMIS">
             <i data-lucide="zap" class="w-4 h-4 text-amber-500 fill-amber-500"></i>
@@ -400,6 +406,12 @@
           <button @click="openPhieuInModal" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold rounded-lg transition-colors shadow cursor-pointer" title="Thiết lập mẫu phiếu in & báo cáo cho các trạm đang được chọn">
             <i data-lucide="printer" class="w-3.5 h-3.5"></i>
             <span>Thiết lập phiếu in</span>
+          </button>
+
+          <!-- Thêm chức danh ký số cho các trạm đang tích -->
+          <button @click="openChucDanhModal" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors shadow cursor-pointer" title="Thêm & đồng bộ chức danh ký số cho các trạm đang được chọn">
+            <i data-lucide="file-signature" class="w-3.5 h-3.5"></i>
+            <span>Thêm chức danh ký số</span>
           </button>
 
           <!-- Xóa các trạm đã chọn -->
@@ -2493,6 +2505,342 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
     </div>
 
     <!-- ========================================================================= -->
+    <!-- MODAL QUẢN LÝ & ĐỒNG BỘ CHỨC DANH KÝ SỐ CHO CÁC TRẠM Y TẾ (HMIS)           -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.chucdanh" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-7xl w-full border border-slate-200 overflow-hidden flex flex-col h-[94vh] max-h-[94vh]">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-800 text-white px-6 py-4 flex items-center justify-between shadow-sm">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+              <i data-lucide="file-signature" class="w-6 h-6 text-sky-200"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-lg font-bold">Quản Lý & Thêm Chức Danh Ký Số Cho Các Trạm Y Tế</h3>
+                <span class="bg-blue-500/60 border border-blue-300/40 text-[11px] px-2.5 py-0.5 rounded-full font-bold">
+                  {{ chucDanhTargetScope === 'selected' ? selectedIds.length : stations.length }} trạm y tế áp dụng
+                </span>
+                <span class="bg-white/20 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                  {{ filteredChucDanhList.length }} / {{ chucdanhList.length }} Chức danh
+                </span>
+              </div>
+              <p class="text-xs text-sky-100 mt-0.5">https://ytcs.hmis.vn/new/his/danhmuc/dm-chung/chucdanh-kyso — Thêm và đồng bộ chức danh ký số cho tất cả các trạm</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <!-- Nút Cấu hình Endpoint F12 -->
+            <button @click="showChucDanhApiConfigModal = true" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors" title="Xem hoặc dán đường dẫn API F12 Network">
+              <i data-lucide="link" class="w-4 h-4 text-cyan-300"></i>
+              <span>Cấu hình API Gateway</span>
+            </button>
+            <!-- Nút Tải lại từ HMIS -->
+            <button @click="refreshChucDanhFromHmis" :disabled="isRefreshingChucDanh" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors" title="Kết nối trực tiếp HMIS tải danh sách chức danh mới nhất">
+              <i data-lucide="refresh-cw" class="w-4 h-4 text-cyan-300" :class="{ 'animate-spin': isRefreshingChucDanh }"></i>
+              <span>{{ isRefreshingChucDanh ? 'Đang tải...' : 'Làm mới từ HMIS' }}</span>
+            </button>
+            <button @click="modals.chucdanh = false" class="text-white/80 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors">
+              <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Thanh thông tin phạm vi áp dụng -->
+        <div class="bg-blue-50/90 border-b border-blue-100 px-6 py-2.5 flex items-center justify-between text-xs gap-3">
+          <div class="flex items-center space-x-3 overflow-hidden flex-1">
+            <span class="font-bold text-blue-900 whitespace-nowrap">Phạm vi áp dụng:</span>
+            <div class="flex items-center space-x-2">
+              <label class="flex items-center space-x-1 cursor-pointer bg-white px-2.5 py-1 rounded-md border border-blue-200">
+                <input type="radio" value="all" v-model="chucDanhTargetScope" class="text-blue-600 focus:ring-blue-500">
+                <span class="font-semibold text-blue-800">Tất cả trạm trong hệ thống ({{ stations.length }})</span>
+              </label>
+              <label class="flex items-center space-x-1 cursor-pointer bg-white px-2.5 py-1 rounded-md border border-blue-200">
+                <input type="radio" value="selected" v-model="chucDanhTargetScope" class="text-blue-600 focus:ring-blue-500">
+                <span class="font-semibold text-blue-800">Chỉ các trạm đã tích ({{ selectedIds.length }})</span>
+              </label>
+            </div>
+            <div class="flex items-center space-x-1.5 overflow-x-auto py-0.5 max-w-md">
+              <span v-for="st in chucDanhTargetStationsList" :key="st.id" class="bg-white px-2 py-0.5 rounded text-blue-800 border border-blue-200 font-medium text-[11px] whitespace-nowrap shadow-2xs">
+                {{ st.name }} ({{ st.username }})
+              </span>
+            </div>
+          </div>
+          <div class="text-[11px] text-blue-700 italic">
+            * Chọn chức danh ở bảng bên trái hoặc nhập mới bên phải &rarr; Bấm [Thêm / Đồng bộ] để gửi lên HMIS
+          </div>
+        </div>
+
+        <!-- Body: 2 cột chia đôi giống HMIS -->
+        <div class="flex-1 flex overflow-hidden">
+          
+          <!-- CỘT TRÁI: DANH MỤC CHỨC DANH KÝ SỐ (58% width) -->
+          <div class="w-7/12 border-r border-slate-200 flex flex-col bg-white">
+            
+            <!-- Bộ lọc bảng & tìm kiếm -->
+            <div class="p-3 bg-slate-50 border-b border-slate-200 space-y-2">
+              <div class="flex items-center gap-2">
+                <div class="relative flex-1">
+                  <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                  <input v-model="chucdanhSearch" type="text" placeholder="Tìm theo mã chức danh, tên chức danh hoặc mô tả..." class="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <button v-if="chucdanhSearch" @click="chucdanhSearch = ''" class="px-2 py-1 bg-slate-200 hover:bg-slate-300 rounded text-slate-600 text-xs">
+                  Xóa lọc
+                </button>
+              </div>
+            </div>
+
+            <!-- Bảng danh sách chức danh ký số -->
+            <div class="flex-1 overflow-y-auto">
+              <div v-if="isLoadingChucDanh" class="p-8 text-center text-slate-500">
+                <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-blue-600 mb-2"></i>
+                <span>Đang tải danh mục chức danh ký số...</span>
+              </div>
+              <table v-else class="w-full text-left text-xs border-collapse">
+                <thead class="bg-slate-100 text-slate-700 sticky top-0 border-b border-slate-200 shadow-2xs font-bold uppercase text-[11px]">
+                  <tr>
+                    <th class="p-2.5 w-12 text-center">STT</th>
+                    <th class="p-2.5 whitespace-nowrap">Mã chức danh</th>
+                    <th class="p-2.5 whitespace-nowrap">Tên chức danh</th>
+                    <th class="p-2.5">Mô tả</th>
+                    <th class="p-2.5 w-16 text-center">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-sans">
+                  <tr v-for="(item, idx) in pagedChucDanhList" :key="item.id || item.titleCode"
+                      @click="selectChucDanh(item)"
+                      class="hover:bg-blue-50/60 cursor-pointer transition-colors"
+                      :class="{ 'bg-blue-100/70 font-semibold border-l-4 border-blue-600': selectedChucDanh?.titleCode === item.titleCode }">
+                    <td class="p-2.5 text-center text-slate-400 font-bold font-mono">{{ (chucdanhCurrentPage - 1) * chucdanhPageSize + idx + 1 }}</td>
+                    <td class="p-2.5 font-mono font-bold text-blue-800 whitespace-nowrap">
+                      {{ item.titleCode }}
+                    </td>
+                    <td class="p-2.5 font-medium text-slate-900">
+                      {{ item.titleName }}
+                    </td>
+                    <td class="p-2.5 text-slate-600 text-[11px] max-w-xs truncate" :title="item.description || ''">
+                      {{ item.description || '-' }}
+                    </td>
+                    <td class="p-2.5 text-center">
+                      <button @click.stop="selectChucDanh(item)" class="px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded border border-blue-200 font-bold text-[10px]">
+                        Chọn
+                      </button>
+                    </td>
+                  </tr>
+                  <tr v-if="filteredChucDanhList.length === 0">
+                    <td colspan="5" class="p-8 text-center text-slate-400">
+                      Không tìm thấy chức danh ký số nào khớp với bộ lọc
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Phân trang -->
+            <div class="p-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs">
+              <div class="text-slate-500">
+                Hiển thị <strong>{{ (chucdanhCurrentPage - 1) * chucdanhPageSize + 1 }}</strong> - <strong>{{ Math.min(chucdanhCurrentPage * chucdanhPageSize, filteredChucDanhList.length) }}</strong> / <strong>{{ filteredChucDanhList.length }}</strong>
+              </div>
+              <div class="flex items-center space-x-2">
+                <select v-model="chucdanhPageSize" class="bg-white border border-slate-300 rounded px-2 py-1 text-xs">
+                  <option :value="10">10 / trang</option>
+                  <option :value="15">15 / trang</option>
+                  <option :value="30">30 / trang</option>
+                  <option :value="50">50 / trang</option>
+                  <option :value="100">100 / trang</option>
+                </select>
+                <div class="flex items-center space-x-1">
+                  <button @click="chucdanhCurrentPage = Math.max(1, chucdanhCurrentPage - 1)" :disabled="chucdanhCurrentPage === 1" class="px-2.5 py-1 bg-white border border-slate-300 rounded text-xs disabled:opacity-40">
+                    &lt;
+                  </button>
+                  <span class="px-2 font-bold">{{ chucdanhCurrentPage }} / {{ chucdanhTotalPages }}</span>
+                  <button @click="chucdanhCurrentPage = Math.min(chucdanhTotalPages, chucdanhCurrentPage + 1)" :disabled="chucdanhCurrentPage >= chucdanhTotalPages" class="px-2.5 py-1 bg-white border border-slate-300 rounded text-xs disabled:opacity-40">
+                    &gt;
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- CỘT PHẢI: THÔNG TIN CHI TIẾT & ĐỒNG BỘ CHO CÁC TRẠM (42% width) -->
+          <div class="w-5/12 flex flex-col bg-slate-50 overflow-y-auto">
+            
+            <div class="p-5 space-y-4">
+              
+              <!-- Tiêu đề & thanh công cụ -->
+              <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+                <div>
+                  <h4 class="font-extrabold text-slate-800 text-sm flex items-center space-x-2">
+                    <i data-lucide="edit-3" class="w-4 h-4 text-blue-600"></i>
+                    <span>THÔNG TIN CHI TIẾT</span>
+                  </h4>
+                  <p class="text-[11px] text-slate-500 mt-0.5">Điền thông tin và bấm nút bên dưới để đồng bộ sang các trạm y tế</p>
+                </div>
+                <div class="flex items-center space-x-1.5">
+                  <button @click="resetChucDanhForm" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg border border-slate-300 shadow-2xs transition-colors">
+                    + Thêm mới
+                  </button>
+                </div>
+              </div>
+
+              <!-- Form nhập liệu chuẩn HMIS -->
+              <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3.5">
+                
+                <!-- Mã chức danh -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">
+                    Mã chức danh <span class="text-rose-500">*</span>
+                  </label>
+                  <input v-model="chucDanhForm.titleCode" type="text" placeholder="Ví dụ: BAC_SI_1, CON_DAU_DV, NGUOI_CHU_TRI..."
+                         class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono font-bold text-blue-900 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none uppercase">
+                  <p class="text-[10px] text-slate-400 mt-0.5">Quy ước viết hoa không dấu, ngăn cách bằng dấu gạch dưới (VD: BAC_SI_18, EMR_CONDAU)</p>
+                </div>
+
+                <!-- Tên chức danh -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">
+                    Tên chức danh <span class="text-rose-500">*</span>
+                  </label>
+                  <input v-model="chucDanhForm.titleName" type="text" placeholder="Ví dụ: Bác sĩ 1, Con dấu gửi BHXH, Người chủ trì..."
+                         class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+
+                <!-- Mô tả -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">
+                    Mô tả
+                  </label>
+                  <textarea v-model="chucDanhForm.description" rows="3" placeholder="Nhập mô tả hoặc quy trình ký (không bắt buộc)..."
+                            class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-normal text-slate-700 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+                </div>
+
+                <!-- Checkbox tùy chọn -->
+                <div class="pt-1">
+                  <label class="flex items-center space-x-2 text-xs text-slate-700 cursor-pointer select-none">
+                    <input type="checkbox" v-model="chucDanhForm.updateIfExists" class="rounded text-blue-600 focus:ring-blue-500">
+                    <span class="font-medium">Tự động cập nhật tên &amp; mô tả nếu trạm đã có mã chức danh này</span>
+                  </label>
+                </div>
+
+              </div>
+
+              <!-- Thao tác gửi đồng bộ lên trạm -->
+              <div class="space-y-2">
+                <button @click="submitAddChucDanhToStations"
+                        :disabled="isSubmittingChucDanh"
+                        class="w-full py-3 px-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50">
+                  <i data-lucide="send" class="w-4 h-4" :class="{ 'animate-bounce': !isSubmittingChucDanh }"></i>
+                  <span>{{ isSubmittingChucDanh ? 'ĐANG ĐỒNG BỘ LÊN CÁC TRẠM...' : `THÊM / ĐỒNG BỘ CHO ${chucDanhTargetStationsList.length} TRẠM Y TẾ` }}</span>
+                </button>
+
+                <div class="flex items-center space-x-2">
+                  <button @click="resetChucDanhForm" class="flex-1 py-2 px-3 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg border border-slate-300 transition-colors">
+                    Làm mới ô nhập
+                  </button>
+                  <button @click="submitDeleteChucDanhFromStations"
+                          :disabled="isSubmittingChucDanh || !chucDanhForm.titleCode"
+                          class="py-2 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold rounded-lg border border-rose-300 transition-colors disabled:opacity-40"
+                          title="Xóa chức danh này khỏi toàn bộ trạm áp dụng">
+                    Xóa khỏi các trạm
+                  </button>
+                </div>
+              </div>
+
+              <!-- KẾT QUẢ THỰC THI ĐỒNG BỘ TRÊN CÁC TRẠM -->
+              <div v-if="chucDanhExecutionResults" class="space-y-3 pt-2">
+                <div class="p-3 rounded-xl border flex items-center justify-between text-xs"
+                     :class="chucDanhExecutionResults.failedCount === 0 ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-amber-50 border-amber-200 text-amber-900'">
+                  <div class="flex items-center space-x-2">
+                    <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600" v-if="chucDanhExecutionResults.failedCount === 0"></i>
+                    <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600" v-else></i>
+                    <span class="font-bold">
+                      Thành công: {{ chucDanhExecutionResults.successCount }} / {{ chucDanhExecutionResults.total }} trạm
+                    </span>
+                  </div>
+                  <span v-if="chucDanhExecutionResults.failedCount > 0" class="px-2 py-0.5 bg-rose-100 text-rose-800 rounded font-bold text-[10px]">
+                    Lỗi: {{ chucDanhExecutionResults.failedCount }}
+                  </span>
+                </div>
+
+                <!-- Bảng chi tiết kết quả từng trạm -->
+                <div class="max-h-60 overflow-y-auto border border-slate-200 rounded-xl bg-white shadow-2xs divide-y divide-slate-100 text-xs">
+                  <div v-for="res in chucDanhExecutionResults.results" :key="res.id" class="p-2.5 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                    <div>
+                      <div class="font-bold text-slate-800">{{ res.name }}</div>
+                      <div class="text-[11px] text-slate-400 font-mono">{{ res.username }}</div>
+                    </div>
+                    <div class="text-right">
+                      <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold"
+                            :class="res.success ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'">
+                        {{ res.message }}
+                      </span>
+                      <div class="text-[10px] text-slate-400 font-mono mt-0.5">{{ res.duration }}ms</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-3 bg-slate-100 border-t border-slate-200 flex items-center justify-between text-xs">
+          <div class="flex items-center space-x-2 text-slate-500">
+            <i data-lucide="info" class="w-4 h-4 text-blue-600"></i>
+            <span>Chức danh ký số được gửi trực tiếp qua API chuẩn cổng HMIS (<strong>common/dmcsigntitle</strong>) cho <strong>{{ chucDanhTargetStationsList.length }} trạm</strong>.</span>
+          </div>
+          <button @click="modals.chucdanh = false" class="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 font-semibold rounded-xl border border-slate-300">
+            Đóng
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MODAL CẤU HÌNH API ENDPOINT CHO CHỨC DANH KÝ SỐ -->
+    <div v-if="showChucDanhApiConfigModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden">
+        <div class="px-5 py-4 bg-blue-700 text-white flex items-center justify-between">
+          <h4 class="font-bold text-sm flex items-center space-x-2">
+            <i data-lucide="link" class="w-4 h-4"></i>
+            <span>Cấu Hình Đường Dẫn API Chức Danh Ký Số</span>
+          </h4>
+          <button @click="showChucDanhApiConfigModal = false" class="text-white/80 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div class="p-5 space-y-4 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Dán URL Request từ F12 Network (Khuyên dùng):</label>
+            <input v-model="chucDanhApiConfigForm.fullUrl" type="text" placeholder="https://ytcs-gw.hmis.vn/api/common/dmcsigntitle/search?..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono">
+            <p class="text-[11px] text-slate-500 mt-1">Chỉ cần dán link bạn copy từ tab Network của F12, hệ thống sẽ tự phân tích Search, Create, Update Path.</p>
+          </div>
+          <div class="border-t border-slate-200 pt-3 space-y-2">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Search Path:</label>
+              <input v-model="chucDanhApiConfigForm.searchPath" type="text" class="w-full p-2 bg-white border border-slate-300 rounded text-xs font-mono">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Create Path:</label>
+              <input v-model="chucDanhApiConfigForm.createPath" type="text" class="w-full p-2 bg-white border border-slate-300 rounded text-xs font-mono">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Update Path:</label>
+              <input v-model="chucDanhApiConfigForm.updatePath" type="text" class="w-full p-2 bg-white border border-slate-300 rounded text-xs font-mono">
+            </div>
+          </div>
+        </div>
+        <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 flex justify-end space-x-2">
+          <button @click="showChucDanhApiConfigModal = false" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-700">Đóng</button>
+          <button @click="saveChucDanhApiConfig" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold">Lưu cấu hình</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
     <!-- MODAL HƯỚNG DẪN TỰ ĐỘNG ĐIỀN & ĐĂNG NHẬP 1-CLICK HMIS                      -->
     <!-- ========================================================================= -->
     <div v-if="modals.autoLoginGuide" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150">
@@ -3235,7 +3583,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           bulkParamEdit: false,
           convertThuoc: false,
           autoLoginGuide: false,
-          phieuin: false
+          phieuin: false,
+          chucdanh: false
         });
 
         // Trạng thái cho module Thiết lập Phiếu in Báo cáo
@@ -3269,6 +3618,32 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           fullUrl: '',
           searchPath: 'common/phieuin-baocao/search',
           updatePath: 'common/phieuin-baocao/update'
+        });
+
+        // Trạng thái cho module Quản lý & Thêm Chức danh ký số HMIS
+        const chucdanhList = ref([]);
+        const isLoadingChucDanh = ref(false);
+        const isRefreshingChucDanh = ref(false);
+        const chucdanhSearch = ref('');
+        const selectedChucDanh = ref(null);
+        const chucDanhForm = ref({
+          titleCode: '',
+          titleName: '',
+          description: '',
+          updateIfExists: true
+        });
+        const isSubmittingChucDanh = ref(false);
+        const chucDanhExecutionResults = ref(null);
+        const chucdanhCurrentPage = ref(1);
+        const chucdanhPageSize = ref(15);
+        const chucDanhTargetScope = ref('all'); // 'all' | 'selected'
+        const showChucDanhApiConfigModal = ref(false);
+        const chucDanhApiConfigForm = ref({
+          fullUrl: '',
+          searchPath: 'common/dmcsigntitle/search',
+          createPath: 'common/dmcsigntitle/create',
+          updatePath: 'common/dmcsigntitle/update',
+          deletePath: 'common/dmcsigntitle/delete'
         });
 
         const thuocFile = ref(null);
@@ -4577,6 +4952,222 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         }
 
         // ==========================================
+        // CHỨC NĂNG QUẢN LÝ & ĐỒNG BỘ CHỨC DANH KÝ SỐ HMIS
+        // ==========================================
+        const chucDanhTargetStationsList = computed(() => {
+          if (chucDanhTargetScope.value === 'all') {
+            return stations.value || [];
+          }
+          return stations.value.filter(s => selectedIds.value.includes(s.id));
+        });
+
+        const filteredChucDanhList = computed(() => {
+          let list = chucdanhList.value || [];
+          if (chucdanhSearch.value && chucdanhSearch.value.trim()) {
+            const q = chucdanhSearch.value.toLowerCase().trim();
+            list = list.filter(item =>
+              (item.titleCode && item.titleCode.toLowerCase().includes(q)) ||
+              (item.titleName && item.titleName.toLowerCase().includes(q)) ||
+              (item.description && item.description.toLowerCase().includes(q))
+            );
+          }
+          return list;
+        });
+
+        const chucdanhTotalPages = computed(() => {
+          return Math.ceil(filteredChucDanhList.value.length / chucdanhPageSize.value) || 1;
+        });
+
+        const pagedChucDanhList = computed(() => {
+          const start = (chucdanhCurrentPage.value - 1) * chucdanhPageSize.value;
+          return filteredChucDanhList.value.slice(start, start + chucdanhPageSize.value);
+        });
+
+        function selectChucDanh(item) {
+          selectedChucDanh.value = item;
+          chucDanhForm.value = {
+            titleCode: item.titleCode || '',
+            titleName: item.titleName || '',
+            description: item.description || '',
+            updateIfExists: true
+          };
+          refreshIcons();
+        }
+
+        function resetChucDanhForm() {
+          selectedChucDanh.value = null;
+          chucDanhForm.value = {
+            titleCode: '',
+            titleName: '',
+            description: '',
+            updateIfExists: true
+          };
+          refreshIcons();
+        }
+
+        async function openChucDanhModal() {
+          modals.value.chucdanh = true;
+          chucDanhExecutionResults.value = null;
+          if (selectedIds.value.length > 0) {
+            chucDanhTargetScope.value = 'selected';
+          } else {
+            chucDanhTargetScope.value = 'all';
+          }
+
+          if (chucdanhList.value.length === 0) {
+            isLoadingChucDanh.value = true;
+            try {
+              const res = await axios.get('/api/chucdanh/list');
+              if (res.data && res.data.data) {
+                chucdanhList.value = res.data.data;
+                if (chucdanhList.value.length > 0) {
+                  selectChucDanh(chucdanhList.value[0]);
+                }
+              }
+            } catch (err) {
+              showToast('Lỗi tải danh mục chức danh: ' + err.message, 'error');
+            } finally {
+              isLoadingChucDanh.value = false;
+              refreshIcons();
+            }
+          } else if (!selectedChucDanh.value && chucdanhList.value.length > 0) {
+            selectChucDanh(chucdanhList.value[0]);
+          }
+          refreshIcons();
+        }
+
+        async function refreshChucDanhFromHmis() {
+          isRefreshingChucDanh.value = true;
+          try {
+            const res = await axios.post('/api/chucdanh/refresh');
+            if (res.data && res.data.data) {
+              chucdanhList.value = res.data.data;
+              showToast(res.data.message || 'Đã làm mới danh mục chức danh từ HMIS!', 'success');
+              if (chucdanhList.value.length > 0) {
+                selectChucDanh(chucdanhList.value[0]);
+              }
+            }
+          } catch (err) {
+            showToast('Lỗi làm mới từ HMIS: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isRefreshingChucDanh.value = false;
+            refreshIcons();
+          }
+        }
+
+        async function saveChucDanhApiConfig() {
+          try {
+            const res = await axios.post('/api/chucdanh/config', chucDanhApiConfigForm.value);
+            if (res.data.success) {
+              showToast('Đã lưu cấu hình API Chức danh ký số!');
+              showChucDanhApiConfigModal.value = false;
+              refreshChucDanhFromHmis();
+            }
+          } catch (err) {
+            showToast('Lỗi lưu cấu hình API: ' + err.message, 'error');
+          }
+        }
+
+        async function submitAddChucDanhToStations() {
+          if (!chucDanhForm.value.titleCode || !chucDanhForm.value.titleCode.trim()) {
+            showToast('Vui lòng nhập Mã chức danh!', 'warning');
+            return;
+          }
+          if (!chucDanhForm.value.titleName || !chucDanhForm.value.titleName.trim()) {
+            showToast('Vui lòng nhập Tên chức danh!', 'warning');
+            return;
+          }
+
+          const targetIds = chucDanhTargetScope.value === 'all'
+            ? stations.value.map(s => s.id)
+            : selectedIds.value;
+
+          if (targetIds.length === 0) {
+            showToast('Không có trạm y tế nào được chọn để áp dụng!', 'warning');
+            return;
+          }
+
+          isSubmittingChucDanh.value = true;
+          chucDanhExecutionResults.value = null;
+
+          try {
+            const res = await axios.post('/api/chucdanh/batch-create', {
+              stationIds: targetIds,
+              titleData: {
+                titleCode: chucDanhForm.value.titleCode.trim(),
+                titleName: chucDanhForm.value.titleName.trim(),
+                description: chucDanhForm.value.description ? chucDanhForm.value.description.trim() : null
+              },
+              updateIfExists: chucDanhForm.value.updateIfExists
+            });
+
+            if (res.data && res.data.data) {
+              chucDanhExecutionResults.value = res.data.data;
+              showToast(res.data.message || 'Đã đồng bộ chức danh ký số lên các trạm!', 'success');
+
+              const code = chucDanhForm.value.titleCode.trim();
+              const existingIdx = chucdanhList.value.findIndex(c => c.titleCode === code);
+              if (existingIdx !== -1) {
+                chucdanhList.value[existingIdx].titleName = chucDanhForm.value.titleName.trim();
+                chucdanhList.value[existingIdx].description = chucDanhForm.value.description ? chucDanhForm.value.description.trim() : null;
+              } else {
+                chucdanhList.value.unshift({
+                  id: Date.now(),
+                  titleCode: code,
+                  titleName: chucDanhForm.value.titleName.trim(),
+                  description: chucDanhForm.value.description ? chucDanhForm.value.description.trim() : null
+                });
+              }
+            }
+          } catch (err) {
+            showToast('Lỗi khi thêm chức danh ký số: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isSubmittingChucDanh.value = false;
+            refreshIcons();
+          }
+        }
+
+        async function submitDeleteChucDanhFromStations() {
+          if (!chucDanhForm.value.titleCode) {
+            showToast('Vui lòng chọn hoặc nhập mã chức danh cần xóa!', 'warning');
+            return;
+          }
+
+          const targetIds = chucDanhTargetScope.value === 'all'
+            ? stations.value.map(s => s.id)
+            : selectedIds.value;
+
+          if (targetIds.length === 0) {
+            showToast('Không có trạm nào để xóa!', 'warning');
+            return;
+          }
+
+          if (!confirm(`Bạn có chắc chắn muốn XÓA chức danh "${chucDanhForm.value.titleCode}" khỏi ${targetIds.length} trạm y tế?`)) {
+            return;
+          }
+
+          isSubmittingChucDanh.value = true;
+          chucDanhExecutionResults.value = null;
+
+          try {
+            const res = await axios.post('/api/chucdanh/batch-delete', {
+              stationIds: targetIds,
+              titleCode: chucDanhForm.value.titleCode.trim()
+            });
+
+            if (res.data && res.data.data) {
+              chucDanhExecutionResults.value = res.data.data;
+              showToast(res.data.message || 'Đã xóa chức danh ký số!', 'success');
+            }
+          } catch (err) {
+            showToast('Lỗi khi xóa: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isSubmittingChucDanh.value = false;
+            refreshIcons();
+          }
+        }
+
+        // ==========================================
         // CHỨC NĂNG GEN FILE THUỐC IMPORT VNPT HIS
         // ==========================================
         function openConvertThuocModal() {
@@ -5598,7 +6189,31 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           resetPhieuInForm,
           refreshPhieuInFromHmis,
           saveApiConfig,
-          submitBulkPhieuInUpdate
+          submitBulkPhieuInUpdate,
+          openChucDanhModal,
+          chucdanhList,
+          isLoadingChucDanh,
+          isRefreshingChucDanh,
+          chucdanhSearch,
+          selectedChucDanh,
+          chucDanhForm,
+          isSubmittingChucDanh,
+          chucDanhExecutionResults,
+          chucdanhCurrentPage,
+          chucdanhPageSize,
+          chucDanhTargetScope,
+          showChucDanhApiConfigModal,
+          chucDanhApiConfigForm,
+          chucDanhTargetStationsList,
+          filteredChucDanhList,
+          chucdanhTotalPages,
+          pagedChucDanhList,
+          selectChucDanh,
+          resetChucDanhForm,
+          refreshChucDanhFromHmis,
+          saveChucDanhApiConfig,
+          submitAddChucDanhToStations,
+          submitDeleteChucDanhFromStations
         };
       }
     }).mount('#app');

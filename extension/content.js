@@ -149,6 +149,8 @@
           if (url && (url.includes('/api/') || url.includes('-gw.hmis.vn'))) {
             if (url.includes('baocao') || url.includes('phieuin') || url.includes('template') || window.location.href.includes('phieuin-baocao')) {
               window.postMessage({ type: 'HMIS_API_DETECTED', url: url, method: (args[1] && args[1].method) || 'GET' }, '*');
+            } else if (url.includes('signtitle') || url.includes('chucdanh') || window.location.href.includes('chucdanh-kyso')) {
+              window.postMessage({ type: 'HMIS_CHUCDANH_API_DETECTED', url: url, method: (args[1] && args[1].method) || 'GET' }, '*');
             }
           }
           return origFetch.apply(this, args);
@@ -167,6 +169,8 @@
           if (this._url && (this._url.includes('/api/') || this._url.includes('-gw.hmis.vn'))) {
             if (this._url.includes('baocao') || this._url.includes('phieuin') || this._url.includes('template') || window.location.href.includes('phieuin-baocao')) {
               window.postMessage({ type: 'HMIS_API_DETECTED', url: this._url, method: this._method || 'GET' }, '*');
+            } else if (this._url.includes('signtitle') || this._url.includes('chucdanh') || window.location.href.includes('chucdanh-kyso')) {
+              window.postMessage({ type: 'HMIS_CHUCDANH_API_DETECTED', url: this._url, method: this._method || 'GET' }, '*');
             }
           }
           return origSend.apply(this, arguments);
@@ -185,11 +189,10 @@
         const detectedUrl = event.data.url;
         if (detectedUrl === lastDetectedUrl) return;
         lastDetectedUrl = detectedUrl;
-        console.log('[VNPT HMIS Extension] ⚡ Bắt được request API:', detectedUrl);
+        console.log('[VNPT HMIS Extension] ⚡ Bắt được request API Phiếu In:', detectedUrl);
 
         showHelperToast(`⚡ Đã bắt API Phiếu In: ${detectedUrl.split('?')[0].split('/').slice(-2).join('/')}`, true);
 
-        // Tự động đẩy URL về Tool Quản lý Trạm nếu server đang chạy tại localhost:5000
         try {
           await fetch('http://localhost:5000/api/phieuin/config', {
             method: 'POST',
@@ -197,9 +200,23 @@
             body: JSON.stringify({ fullUrl: detectedUrl })
           });
           console.log('[VNPT HMIS Extension] Đã tự động đồng bộ API về tool localhost:5000');
-        } catch (postErr) {
-          // Server offline or not accessible
-        }
+        } catch (postErr) {}
+      } else if (event.data && event.data.type === 'HMIS_CHUCDANH_API_DETECTED') {
+        const detectedUrl = event.data.url;
+        if (detectedUrl === lastDetectedUrl) return;
+        lastDetectedUrl = detectedUrl;
+        console.log('[VNPT HMIS Extension] ⚡ Bắt được request API Chức Danh Ký Số:', detectedUrl);
+
+        showHelperToast(`⚡ Đã bắt API Chức Danh Ký Số: ${detectedUrl.split('?')[0].split('/').slice(-2).join('/')}`, true);
+
+        try {
+          await fetch('http://localhost:5000/api/chucdanh/config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fullUrl: detectedUrl })
+          });
+          console.log('[VNPT HMIS Extension] Đã đồng bộ API Chức Danh Ký Số về tool localhost:5000');
+        } catch (postErr) {}
       }
     });
   } catch (snifferErr) {

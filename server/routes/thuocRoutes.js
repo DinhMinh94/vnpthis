@@ -49,7 +49,8 @@ router.post('/convert', upload.single('file'), (req, res) => {
       nhomBhxhDefault: req.body.nhomBhxh || '',
       nguonCtDefault: req.body.nguonCt || '1',
       prefixMaThuoc: req.body.prefixMaThuoc || '',
-      loaiThuocDefault: req.body.loaiThuoc || req.query.loaiThuoc || ''
+      loaiThuocDefault: req.body.loaiThuoc || req.query.loaiThuoc || '',
+      maLoaiDefault: req.body.maLoai || req.query.maLoai || 'TH'
     };
 
     const convertedRows = convertService.convertRows(sourceData, options);
@@ -111,7 +112,8 @@ router.get('/convert', (req, res) => {
       maCskcbOverride: req.query.maCskcb || '',
       nhomBhxhDefault: req.query.nhomBhxh || '',
       nguonCtDefault: req.query.nguonCt || '1',
-      prefixMaThuoc: req.query.prefixMaThuoc || ''
+      prefixMaThuoc: req.query.prefixMaThuoc || '',
+      maLoaiDefault: req.query.maLoai || 'TH'
     };
 
     const convertedRows = convertService.convertRows(sourceData, options);
@@ -205,7 +207,8 @@ router.get('/sample-convert', (req, res) => {
       maCskcbOverride: req.query.maCskcb || '',
       nhomBhxhDefault: req.query.nhomBhxh || '',
       nguonCtDefault: req.query.nguonCt || '1',
-      prefixMaThuoc: req.query.prefixMaThuoc || ''
+      prefixMaThuoc: req.query.prefixMaThuoc || '',
+      maLoaiDefault: req.query.maLoai || 'TH'
     };
 
     const convertedRows = convertService.convertRows(sourceData, options);

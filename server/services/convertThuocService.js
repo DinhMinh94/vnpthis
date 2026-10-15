@@ -265,8 +265,8 @@ function convertRows(sourceRows, options = {}) {
       // Xử lý Danh mục Thuốc
       const loaiThuoc = d.LOAI_THUOC || 1;
       maNhom = d.MA_NHOM || (String(loaiThuoc) === '2' ? 'CP' : 'TH');
-      // MA_LOAI: Cột loại để TT hết theo yêu cầu người dùng
-      maLoai = 'TT';
+      // MA_LOAI: Cột loại đổi TT thành TH theo yêu cầu người dùng
+      maLoai = options.maLoaiDefault || 'TH';
       maHoatChat = d.MA_HOAT_CHAT_AX || d.MA_HOAT_CHAT || d.MA_THUOC || '';
       hoatChat = d.HOAT_CHAT_AX || d.TEN_HOAT_CHAT || d.HOAT_CHAT || '';
       tenThuoc = d.TEN_THUOC || d.TEN_THUOC_AX || '';

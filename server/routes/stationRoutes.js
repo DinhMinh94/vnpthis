@@ -73,7 +73,7 @@ router.post('/cauhinh-nghiepvu/refresh', async (req, res) => {
  */
 router.post('/cauhinh-nghiepvu/batch-update-param', async (req, res) => {
   try {
-    const { stationIds, maCauHinh, paramKey, paramValue, tenCauHinh, paramName } = req.body;
+    const { stationIds, maCauHinh, paramKey, paramValue, tenCauHinh, paramName, oldValue } = req.body;
     if (!Array.isArray(stationIds) || stationIds.length === 0) {
       return res.status(400).json({ success: false, message: 'Vui lòng chọn ít nhất 1 trạm y tế' });
     }
@@ -81,7 +81,7 @@ router.post('/cauhinh-nghiepvu/batch-update-param', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Thiếu mã cấu hình hoặc khóa tham số' });
     }
 
-    const result = await cauhinhService.updateParamForStations(stationIds, maCauHinh, paramKey, paramValue, { tenCauHinh, paramName });
+    const result = await cauhinhService.updateParamForStations(stationIds, maCauHinh, paramKey, paramValue, { tenCauHinh, paramName, oldValue });
     res.json({
       success: true,
       message: `Đã cập nhật tham số cho ${result.successCount}/${result.total} trạm thành công`,
@@ -173,21 +173,42 @@ router.post('/batch-update-url', (req, res) => {
 
     let updatedCount = 0;
     const updatedStations = [];
+    const sampleStation = ids.length > 0 ? db.getStationById(ids[0], false) : null;
+    const oldUrl = sampleStation?.url || '';
+
     for (const id of ids) {
+      const currentSt = db.getStationById(id, false);
+      const stOldUrl = currentSt?.url || '';
       const st = db.updateStation(id, { url });
       if (st) {
         updatedCount++;
-        updatedStations.push({ id: st.id, name: st.name, username: st.username, success: true, message: `URL: ${url}` });
+        updatedStations.push({
+          id: st.id,
+          name: st.name,
+          username: st.username,
+          success: true,
+          message: stOldUrl ? `URL: "${stOldUrl}" ➔ "${url}"` : `URL: ${url}`,
+          oldValue: stOldUrl,
+          newValue: url
+        });
       }
     }
 
     try {
       const logService = require('../services/logService');
+      const summaryText = oldUrl
+        ? `Cập nhật URL cổng chung từ "${oldUrl}" ➔ "${url}" cho ${updatedCount} trạm`
+        : `Cập nhật URL cổng chung thành "${url}" cho ${updatedCount} trạm`;
+
       logService.addLog({
         actionType: 'batch_url',
         actionTitle: 'Cập nhật URL cổng chung',
-        summary: `Cập nhật URL cổng chung thành "${url}" cho ${updatedCount} trạm`,
-        details: { url },
+        summary: summaryText,
+        details: {
+          url,
+          oldValue: oldUrl,
+          newValue: url
+        },
         total: updatedCount,
         successCount: updatedCount,
         failedCount: 0,

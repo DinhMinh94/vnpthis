@@ -191,6 +191,7 @@ function exportLogsToExcelBuffer() {
       'Mã cấu hình': details.maCauHinh || details.maBaoCao || details.titleCode || '',
       'Tên cấu hình / Tiêu đề': details.tenCauHinh || details.ten || details.titleName || '',
       'Khóa tham số (Key)': details.paramKey || '',
+      'Giá trị cũ (trước khi sửa)': details.oldValue !== undefined && details.oldValue !== null ? details.oldValue : '',
       'Giá trị thiết lập mới': details.newValue !== undefined ? details.newValue : (details.trangThai || ''),
       'Mô tả tham số': details.paramName || details.ghiChu || '',
       'Tổng số trạm': item.total,
@@ -210,7 +211,8 @@ function exportLogsToExcelBuffer() {
     { wch: 18 }, // Mã cấu hình
     { wch: 28 }, // Tên cấu hình
     { wch: 22 }, // Khóa tham số
-    { wch: 20 }, // Giá trị mới
+    { wch: 24 }, // Giá trị cũ
+    { wch: 24 }, // Giá trị mới
     { wch: 35 }, // Mô tả tham số
     { wch: 12 }, // Tổng số trạm
     { wch: 12 }, // Thành công

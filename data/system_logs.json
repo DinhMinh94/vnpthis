@@ -1,1 +1,138 @@
-[]
+[
+  {
+    "id": "log_1792209425608_br4xq",
+    "timestamp": "2026-10-17T03:57:05.608Z",
+    "formattedTime": "17/10/2026 10:57:05",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [password] từ \"Emr@11010\" ➔ \"d7685c362a5646A*!\" trong cấu hình VNPT_EMR_CLOUD (VNPT_EMR_CLOUD)",
+    "details": {
+      "maCauHinh": "VNPT_EMR_CLOUD",
+      "tenCauHinh": "VNPT_EMR_CLOUD",
+      "paramKey": "password",
+      "paramName": "Mật khẩu tài khoản EMR Cloud",
+      "oldValue": "Emr@11010",
+      "newValue": "d7685c362a5646A*!"
+    },
+    "total": 5,
+    "successCount": 5,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ",
+      "Trạm y tế phường Mường Thanh",
+      "Trạm y tế xã Mường Phăng",
+      "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+      "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật password = \"d7685c362a5646A*!\"",
+        "duration": 594
+      },
+      {
+        "id": "tyt_1791689200931_7fkiu",
+        "name": "Trạm y tế phường Mường Thanh",
+        "username": "11017.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật password = \"d7685c362a5646A*!\"",
+        "duration": 508
+      },
+      {
+        "id": "tyt_1791695109044_1lj0m",
+        "name": "Trạm y tế xã Mường Phăng",
+        "username": "11021.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật password = \"d7685c362a5646A*!\"",
+        "duration": 322
+      },
+      {
+        "id": "tyt_1791695160278_2epf0",
+        "name": "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+        "username": "11121.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật password = \"d7685c362a5646A*!\"",
+        "duration": 320
+      },
+      {
+        "id": "tyt_1791695192777_6fjbv",
+        "name": "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+        "username": "11176.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật password = \"d7685c362a5646A*!\"",
+        "duration": 341
+      }
+    ]
+  },
+  {
+    "id": "log_1792209401959_94xax",
+    "timestamp": "2026-10-17T03:56:41.959Z",
+    "formattedTime": "17/10/2026 10:56:41",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [username] từ \"11010.admin\" ➔ \"84142.admin\" trong cấu hình VNPT_EMR_CLOUD (VNPT_EMR_CLOUD)",
+    "details": {
+      "maCauHinh": "VNPT_EMR_CLOUD",
+      "tenCauHinh": "VNPT_EMR_CLOUD",
+      "paramKey": "username",
+      "paramName": "Tên tài khoản EMR Cloud",
+      "oldValue": "11010.admin",
+      "newValue": "84142.admin"
+    },
+    "total": 5,
+    "successCount": 5,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ",
+      "Trạm y tế phường Mường Thanh",
+      "Trạm y tế xã Mường Phăng",
+      "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+      "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật username = \"84142.admin\"",
+        "duration": 511
+      },
+      {
+        "id": "tyt_1791689200931_7fkiu",
+        "name": "Trạm y tế phường Mường Thanh",
+        "username": "11017.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật username = \"84142.admin\"",
+        "duration": 569
+      },
+      {
+        "id": "tyt_1791695109044_1lj0m",
+        "name": "Trạm y tế xã Mường Phăng",
+        "username": "11021.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật username = \"84142.admin\"",
+        "duration": 432
+      },
+      {
+        "id": "tyt_1791695160278_2epf0",
+        "name": "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+        "username": "11121.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật username = \"84142.admin\"",
+        "duration": 435
+      },
+      {
+        "id": "tyt_1791695192777_6fjbv",
+        "name": "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+        "username": "11176.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật username = \"84142.admin\"",
+        "duration": 418
+      }
+    ]
+  }
+]

@@ -137,6 +137,7 @@ async function fetchPhieuInFromHmis(stationId = null, customSearchPath = null) {
 async function updatePhieuInForStations(stationIds, reportData) {
   const stations = stationIds.map(id => db.getStationById(id, true)).filter(Boolean);
   const results = [];
+  let capturedOldTrangThai;
 
   for (const station of stations) {
     const startTime = Date.now();
@@ -169,6 +170,11 @@ async function updatePhieuInForStations(stationIds, reportData) {
 
       if (!targetItem) {
         throw new Error(`Không tìm thấy mẫu phiếu in "${reportData.maBaoCao}" trên trạm này`);
+      }
+
+      const stationOldTrangThai = targetItem.trangThai === 1 ? 'Bật' : (targetItem.trangThai === 0 ? 'Tắt' : (targetItem.trangThai !== undefined ? String(targetItem.trangThai) : ''));
+      if (capturedOldTrangThai === undefined && stationOldTrangThai) {
+        capturedOldTrangThai = stationOldTrangThai;
       }
 
       // Xác định nhomBcCha nếu người dùng chọn tên nhóm
@@ -217,12 +223,17 @@ async function updatePhieuInForStations(stationIds, reportData) {
 
       if (updateRes.status === 200 && (updateRes.data?.code === 0 || updateRes.data?.code === 200)) {
         const statusText = payload.trangThai === 1 ? 'BẬT' : 'TẮT';
+        const msg = stationOldTrangThai 
+          ? `Đã lưu thành công (Trạng thái: "${stationOldTrangThai}" ➔ "${statusText}")`
+          : `Đã lưu thành công (${statusText})`;
         results.push({
           id: station.id,
           name: station.name,
           username: station.username,
           success: true,
-          message: `Đã lưu thành công (${statusText})`,
+          message: msg,
+          oldValue: stationOldTrangThai,
+          newValue: statusText,
           duration: Date.now() - startTime
         });
       } else {
@@ -247,15 +258,25 @@ async function updatePhieuInForStations(stationIds, reportData) {
   try {
     const logService = require('./logService');
     const trangThaiText = reportData.trangThai === 1 ? 'Bật' : (reportData.trangThai === 0 ? 'Tắt' : '');
+    const oldTrangThaiText = reportData.oldTrangThai !== undefined
+      ? (reportData.oldTrangThai === 1 ? 'Bật' : (reportData.oldTrangThai === 0 ? 'Tắt' : String(reportData.oldTrangThai)))
+      : (capturedOldTrangThai || '');
+
+    const summaryText = oldTrangThaiText && trangThaiText
+      ? `Thiết lập mẫu phiếu in [${reportData.maBaoCao}] "${reportData.ten || ''}" (Trạng thái: "${oldTrangThaiText}" ➔ "${trangThaiText}")`
+      : `Thiết lập mẫu phiếu in [${reportData.maBaoCao}] "${reportData.ten || ''}"${trangThaiText ? ' (' + trangThaiText + ')' : ''}`;
+
     logService.addLog({
       actionType: 'phieuin_baocao',
       actionTitle: 'Thiết lập phiếu in & báo cáo',
-      summary: `Thiết lập mẫu phiếu in [${reportData.maBaoCao}] "${reportData.ten || ''}"${trangThaiText ? ' (' + trangThaiText + ')' : ''}`,
+      summary: summaryText,
       details: {
         maBaoCao: reportData.maBaoCao,
         ten: reportData.ten || '',
         tempCode: reportData.tempCode || reportData.templateCode || '',
         service: reportData.service || '',
+        oldValue: oldTrangThaiText,
+        newValue: trangThaiText,
         trangThai: trangThaiText,
         formId: reportData.formId,
         soNgayXemBc: reportData.soNgayXemBc,

@@ -201,6 +201,7 @@ async function refreshCauHinhFromHmis(stationId = null) {
 async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValue, extraMeta = {}) {
   const stations = stationIds.map(id => db.getStationById(id, true)).filter(Boolean);
   const results = [];
+  let capturedOldValue;
 
   for (const station of stations) {
     const startTime = Date.now();
@@ -232,6 +233,14 @@ async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValu
         thietLap = {};
       }
 
+      const stationOldValue = thietLap[paramKey] && thietLap[paramKey].giatri !== undefined 
+        ? String(thietLap[paramKey].giatri) 
+        : '';
+
+      if (capturedOldValue === undefined && stationOldValue !== '') {
+        capturedOldValue = stationOldValue;
+      }
+
       if (thietLap[paramKey]) {
         thietLap[paramKey].giatri = String(paramValue);
       } else {
@@ -254,12 +263,17 @@ async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValu
       });
 
       if (updateRes.status === 200 && (updateRes.data?.code === 0 || updateRes.data?.code === 200)) {
+        const msg = stationOldValue 
+          ? `Đã cập nhật ${paramKey}: "${stationOldValue}" ➔ "${paramValue}"`
+          : `Đã cập nhật ${paramKey} = "${paramValue}"`;
         results.push({
           id: station.id,
           name: station.name,
           username: station.username,
           success: true,
-          message: `Đã cập nhật ${paramKey} = "${paramValue}"`,
+          message: msg,
+          oldValue: stationOldValue,
+          newValue: String(paramValue),
           duration: Date.now() - startTime
         });
       } else {
@@ -283,15 +297,20 @@ async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValu
   // Tự động tìm thông tin tên cấu hình và mô tả tham số nếu chưa có
   let tenCauHinh = extraMeta?.tenCauHinh || '';
   let paramName = extraMeta?.paramName || '';
+  let oldValue = extraMeta?.oldValue !== undefined && extraMeta?.oldValue !== null && String(extraMeta.oldValue).trim() !== ''
+    ? String(extraMeta.oldValue)
+    : (capturedOldValue !== undefined ? capturedOldValue : '');
+
   try {
     const cached = getCachedCauHinh();
     const group = cached.find(c => c.maCauHinh === maCauHinh);
     if (group) {
       if (!tenCauHinh) tenCauHinh = group.tenCauHinh || '';
-      if (!paramName) {
-        const obj = typeof group.giaTriThietLap === 'string' ? JSON.parse(group.giaTriThietLap) : group.giaTriThietLap;
-        if (obj && obj[paramKey]) {
-          paramName = obj[paramKey].mota || '';
+      const obj = typeof group.giaTriThietLap === 'string' ? JSON.parse(group.giaTriThietLap) : group.giaTriThietLap;
+      if (obj && obj[paramKey]) {
+        if (!paramName) paramName = obj[paramKey].mota || '';
+        if (!oldValue && obj[paramKey].giatri !== undefined) {
+          oldValue = String(obj[paramKey].giatri);
         }
       }
     }
@@ -300,15 +319,20 @@ async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValu
   // Ghi log hệ thống lưu lại đã sửa những gì và thời gian nào
   try {
     const logService = require('./logService');
+    const summaryText = oldValue !== ''
+      ? `Sửa tham số [${paramKey}] từ "${oldValue}" ➔ "${paramValue}" trong cấu hình ${maCauHinh}${tenCauHinh ? ' (' + tenCauHinh + ')' : ''}`
+      : `Sửa tham số [${paramKey}] = "${paramValue}" trong cấu hình ${maCauHinh}${tenCauHinh ? ' (' + tenCauHinh + ')' : ''}`;
+
     logService.addLog({
       actionType: 'cauhinh_thamso',
       actionTitle: 'Sửa tham số cấu hình nhanh',
-      summary: `Sửa tham số [${paramKey}] = "${paramValue}" trong cấu hình ${maCauHinh}${tenCauHinh ? ' (' + tenCauHinh + ')' : ''}`,
+      summary: summaryText,
       details: {
         maCauHinh,
         tenCauHinh,
         paramKey,
         paramName,
+        oldValue,
         newValue: String(paramValue)
       },
       total: results.length,

@@ -1403,8 +1403,8 @@
     <!-- ========================================================================= -->
     <!-- MODAL 1: THIẾT LẬP NHANH 15-20 TRẠM (BULK SETUP MODAL)                    -->
     <!-- ========================================================================= -->
-    <div v-if="modals.batch" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+    <div v-if="modals.batch" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-3 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-[97vw] w-[97vw] border border-slate-200 overflow-hidden flex flex-col h-[96vh] max-h-[96vh]">
         <!-- Header Modal -->
         <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white p-5 flex items-center justify-between">
           <div class="flex items-center space-x-3">
@@ -1469,7 +1469,7 @@
             </div>
 
             <!-- Bảng Grid -->
-            <div class="border border-slate-200 rounded-xl overflow-x-auto max-h-[380px]">
+            <div class="border border-slate-200 rounded-xl overflow-x-auto max-h-[560px]">
               <table class="w-full text-xs text-left">
                 <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200">
                   <tr>
@@ -1829,8 +1829,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
     <!-- ========================================================================= -->
     <!-- MODAL 7: TOÀN BỘ CẤU HÌNH NGHIỆP VỤ HMIS                                 -->
     <!-- ========================================================================= -->
-    <div v-if="modals.cauhinh" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+    <div v-if="modals.cauhinh" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-3 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-[97vw] w-[97vw] border border-slate-200 overflow-hidden flex flex-col h-[96vh] max-h-[96vh]">
         <!-- Header -->
         <div class="bg-gradient-to-r from-indigo-700 via-purple-700 to-blue-800 text-white p-5 flex items-center justify-between">
           <div class="flex items-center space-x-3">
@@ -1905,7 +1905,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               <div class="font-semibold text-slate-700 mb-1.5 flex items-center space-x-1">
                 <span>Chi tiết tham số thiết lập ({{ parseParams(item.giaTriThietLap).length }} tham số):</span>
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 max-h-80 overflow-y-auto">
                 <div v-for="p in parseParams(item.giaTriThietLap)" :key="p.key" class="p-2 bg-white rounded border border-slate-200 text-[11px] transition-all" :class="{ 'ring-2 ring-indigo-500 bg-indigo-50/60 border-indigo-300 font-semibold shadow-sm': cauhinhSearch && (p.key.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()) || (p.mota && p.mota.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()))) }">
                   <div class="flex items-center justify-between text-slate-600 font-mono font-bold">
                     <span>{{ p.key }}</span>
@@ -1931,8 +1931,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
     <!-- ========================================================================= -->
     <!-- MODAL 8: SỬA THAM SỐ CẤU HÌNH NHANH CHO CÁC TRẠM ĐANG TÍCH               -->
     <!-- ========================================================================= -->
-    <div v-if="modals.bulkParamEdit" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full border border-slate-200 overflow-hidden flex flex-col h-[92vh] max-h-[92vh]">
+    <div v-if="modals.bulkParamEdit" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-3 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-[97vw] w-[97vw] border border-slate-200 overflow-hidden flex flex-col h-[96vh] max-h-[96vh]">
         <!-- Header -->
         <div class="bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 text-white px-6 py-4 flex items-center justify-between shadow-sm">
           <div class="flex items-center space-x-3">
@@ -2139,7 +2139,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                 </div>
 
                 <!-- Danh sách tham số trong nhóm (Rộng rãi, hiển thị mô tả rõ ràng) -->
-                <div class="max-h-60 overflow-y-auto border border-slate-200 rounded-xl divide-y divide-slate-100 bg-white shadow-2xs">
+                <div class="max-h-[380px] lg:max-h-[460px] xl:max-h-[520px] overflow-y-auto border border-slate-200 rounded-xl divide-y divide-slate-100 bg-white shadow-2xs">
                   <div
                     v-for="p in filteredGroupParams"
                     :key="p.key"
@@ -2255,8 +2255,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
     <!-- ========================================================================= -->
     <!-- MODAL: NHẬT KÝ CẤU HÌNH & LỊCH SỬ HỆ THỐNG                                -->
     <!-- ========================================================================= -->
-    <div v-if="modals.systemLogs" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-150">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full border border-slate-200 overflow-hidden flex flex-col h-[92vh] max-h-[92vh]">
+    <div v-if="modals.systemLogs" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-3 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-[97vw] w-[97vw] border border-slate-200 overflow-hidden flex flex-col h-[96vh] max-h-[96vh]">
         <!-- Header -->
         <div class="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 text-white px-6 py-4 flex items-center justify-between shadow-sm">
           <div class="flex items-center space-x-3">
@@ -2546,8 +2546,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
     <!-- ========================================================================= -->
     <!-- MODAL 9: THIẾT LẬP PHIẾU IN BÁO CÁO CHO TẤT CẢ TRẠM ĐÃ TÍCH                 -->
     <!-- ========================================================================= -->
-    <div v-if="modals.phieuin" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 animate-in fade-in duration-150">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-7xl w-full border border-slate-200 overflow-hidden flex flex-col h-[94vh] max-h-[94vh]">
+    <div v-if="modals.phieuin" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-3 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-[98vw] w-[98vw] border border-slate-200 overflow-hidden flex flex-col h-[96vh] max-h-[96vh]">
         <!-- Header -->
         <div class="bg-gradient-to-r from-violet-700 via-purple-700 to-indigo-800 text-white px-6 py-4 flex items-center justify-between shadow-sm">
           <div class="flex items-center space-x-3">
@@ -2873,8 +2873,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
     <!-- ========================================================================= -->
     <!-- MODAL QUẢN LÝ & ĐỒNG BỘ CHỨC DANH KÝ SỐ CHO CÁC TRẠM Y TẾ (HMIS)           -->
     <!-- ========================================================================= -->
-    <div v-if="modals.chucdanh" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 animate-in fade-in duration-150">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-7xl w-full border border-slate-200 overflow-hidden flex flex-col h-[94vh] max-h-[94vh]">
+    <div v-if="modals.chucdanh" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-3 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-[98vw] w-[98vw] border border-slate-200 overflow-hidden flex flex-col h-[96vh] max-h-[96vh]">
         <!-- Header -->
         <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-800 text-white px-6 py-4 flex items-center justify-between shadow-sm">
           <div class="flex items-center space-x-3">

@@ -285,22 +285,10 @@
             <span>Cấu hình nghiệp vụ HMIS</span>
           </button>
 
-          <!-- Nút Thiết lập Phiếu in & Báo cáo HMIS -->
-          <button @click="openPhieuInModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-sm rounded-xl border border-purple-200 transition-colors shadow-sm cursor-pointer" title="Thiết lập mẫu phiếu in & báo cáo cho tất cả trạm y tế đã tích chọn">
-            <i data-lucide="printer" class="w-4 h-4 text-purple-600"></i>
-            <span>Thiết lập Phiếu in Báo cáo</span>
-          </button>
-
-          <!-- Nút Quản lý & Thêm Chức danh ký số HMIS -->
-          <button @click="openChucDanhModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-sm rounded-xl border border-blue-200 transition-colors shadow-sm cursor-pointer" title="Thêm & đồng bộ chức danh ký số cho tất cả các trạm y tế (https://ytcs.hmis.vn/new/his/danhmuc/dm-chung/chucdanh-kyso)">
-            <i data-lucide="file-signature" class="w-4 h-4 text-blue-600"></i>
-            <span>Chức Danh Ký Số HMIS</span>
-          </button>
-
-          <!-- Nút Nhật Ký Cấu Hình Hệ Thống -->
+          <!-- Nút Nhật Ký Sửa Cấu Hình Hệ Thống -->
           <button @click="openSystemLogsModal()" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm rounded-xl border border-amber-300 transition-colors shadow-sm cursor-pointer" title="Xem nhật ký & lịch sử các lần sửa cấu hình hàng loạt cho trạm">
             <i data-lucide="history" class="w-4 h-4 text-amber-600"></i>
-            <span>Nhật Ký Cấu Hình</span>
+            <span>Nhật Ký Sửa</span>
             <span v-if="systemLogsCount > 0" class="bg-amber-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
               {{ systemLogsCount }}
             </span>

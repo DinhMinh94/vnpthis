@@ -8,6 +8,7 @@ const thuocRoutes = require('./routes/thuocRoutes');
 const nhanVienRoutes = require('./routes/nhanVienRoutes');
 const phieuInRoutes = require('./routes/phieuInRoutes');
 const chucDanhRoutes = require('./routes/chucDanhRoutes');
+const logRoutes = require('./routes/logRoutes');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/thuoc', thuocRoutes);
 app.use('/api/nhanvien', nhanVienRoutes);
 app.use('/api/phieuin', phieuInRoutes);
 app.use('/api/chucdanh', chucDanhRoutes);
+app.use('/api/logs', logRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

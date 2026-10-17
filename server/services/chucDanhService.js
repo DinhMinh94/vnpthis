@@ -252,6 +252,28 @@ async function createChucDanhForStations(stationIds, titleData, updateIfExists =
   const successCount = results.filter(r => r.success).length;
   const failedCount = results.length - successCount;
 
+  // Ghi log hệ thống lưu lại đã sửa những gì và thời gian nào
+  try {
+    const logService = require('./logService');
+    logService.addLog({
+      actionType: 'chucdanh_kyso',
+      actionTitle: 'Thêm / Cập nhật chức danh ký số',
+      summary: `Đồng bộ chức danh ký số [${code}] "${name}" cho ${results.length} trạm`,
+      details: {
+        titleCode: code,
+        titleName: name,
+        description: desc,
+        updateIfExists
+      },
+      total: results.length,
+      successCount,
+      failedCount,
+      results
+    });
+  } catch (logErr) {
+    console.error('Lỗi ghi log chức danh:', logErr.message);
+  }
+
   return {
     total: results.length,
     successCount,
@@ -344,10 +366,29 @@ async function deleteChucDanhForStations(stationIds, titleCode) {
     }
   }
 
+  const successCount = results.filter(r => r.success).length;
+  const failedCount = results.filter(r => !r.success).length;
+
+  try {
+    const logService = require('./logService');
+    logService.addLog({
+      actionType: 'chucdanh_kyso',
+      actionTitle: 'Xóa chức danh ký số',
+      summary: `Xóa mã chức danh ký số [${code}] trên ${results.length} trạm`,
+      details: {
+        titleCode: code
+      },
+      total: results.length,
+      successCount,
+      failedCount,
+      results
+    });
+  } catch (e) {}
+
   return {
     total: results.length,
-    successCount: results.filter(r => r.success).length,
-    failedCount: results.filter(r => !r.success).length,
+    successCount,
+    failedCount,
     results
   };
 }

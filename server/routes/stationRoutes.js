@@ -73,7 +73,7 @@ router.post('/cauhinh-nghiepvu/refresh', async (req, res) => {
  */
 router.post('/cauhinh-nghiepvu/batch-update-param', async (req, res) => {
   try {
-    const { stationIds, maCauHinh, paramKey, paramValue } = req.body;
+    const { stationIds, maCauHinh, paramKey, paramValue, tenCauHinh, paramName } = req.body;
     if (!Array.isArray(stationIds) || stationIds.length === 0) {
       return res.status(400).json({ success: false, message: 'Vui lòng chọn ít nhất 1 trạm y tế' });
     }
@@ -81,7 +81,7 @@ router.post('/cauhinh-nghiepvu/batch-update-param', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Thiếu mã cấu hình hoặc khóa tham số' });
     }
 
-    const result = await cauhinhService.updateParamForStations(stationIds, maCauHinh, paramKey, paramValue);
+    const result = await cauhinhService.updateParamForStations(stationIds, maCauHinh, paramKey, paramValue, { tenCauHinh, paramName });
     res.json({
       success: true,
       message: `Đã cập nhật tham số cho ${result.successCount}/${result.total} trạm thành công`,
@@ -172,10 +172,28 @@ router.post('/batch-update-url', (req, res) => {
       : db.getStations().map(s => s.id);
 
     let updatedCount = 0;
+    const updatedStations = [];
     for (const id of ids) {
-      db.updateStation(id, { url });
-      updatedCount++;
+      const st = db.updateStation(id, { url });
+      if (st) {
+        updatedCount++;
+        updatedStations.push({ id: st.id, name: st.name, username: st.username, success: true, message: `URL: ${url}` });
+      }
     }
+
+    try {
+      const logService = require('../services/logService');
+      logService.addLog({
+        actionType: 'batch_url',
+        actionTitle: 'Cập nhật URL cổng chung',
+        summary: `Cập nhật URL cổng chung thành "${url}" cho ${updatedCount} trạm`,
+        details: { url },
+        total: updatedCount,
+        successCount: updatedCount,
+        failedCount: 0,
+        results: updatedStations
+      });
+    } catch (e) {}
 
     res.json({ success: true, message: `Đã cập nhật URL cho ${updatedCount} trạm`, updatedCount });
   } catch (error) {

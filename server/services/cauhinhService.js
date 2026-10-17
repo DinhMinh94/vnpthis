@@ -198,7 +198,7 @@ async function refreshCauHinhFromHmis(stationId = null) {
 /**
  * Cập nhật 1 tham số cấu hình cho danh sách các trạm được chọn
  */
-async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValue) {
+async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValue, extraMeta = {}) {
   const stations = stationIds.map(id => db.getStationById(id, true)).filter(Boolean);
   const results = [];
 
@@ -279,6 +279,46 @@ async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValu
 
   const successCount = results.filter(r => r.success).length;
   const failedCount = results.length - successCount;
+
+  // Tự động tìm thông tin tên cấu hình và mô tả tham số nếu chưa có
+  let tenCauHinh = extraMeta?.tenCauHinh || '';
+  let paramName = extraMeta?.paramName || '';
+  try {
+    const cached = getCachedCauHinh();
+    const group = cached.find(c => c.maCauHinh === maCauHinh);
+    if (group) {
+      if (!tenCauHinh) tenCauHinh = group.tenCauHinh || '';
+      if (!paramName) {
+        const obj = typeof group.giaTriThietLap === 'string' ? JSON.parse(group.giaTriThietLap) : group.giaTriThietLap;
+        if (obj && obj[paramKey]) {
+          paramName = obj[paramKey].mota || '';
+        }
+      }
+    }
+  } catch (e) {}
+
+  // Ghi log hệ thống lưu lại đã sửa những gì và thời gian nào
+  try {
+    const logService = require('./logService');
+    logService.addLog({
+      actionType: 'cauhinh_thamso',
+      actionTitle: 'Sửa tham số cấu hình nhanh',
+      summary: `Sửa tham số [${paramKey}] = "${paramValue}" trong cấu hình ${maCauHinh}${tenCauHinh ? ' (' + tenCauHinh + ')' : ''}`,
+      details: {
+        maCauHinh,
+        tenCauHinh,
+        paramKey,
+        paramName,
+        newValue: String(paramValue)
+      },
+      total: results.length,
+      successCount,
+      failedCount,
+      results
+    });
+  } catch (logErr) {
+    console.error('Lỗi khi ghi log cấu hình:', logErr.message);
+  }
 
   return {
     total: results.length,

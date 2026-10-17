@@ -243,6 +243,33 @@ async function updatePhieuInForStations(stationIds, reportData) {
   const successCount = results.filter(r => r.success).length;
   const failedCount = results.length - successCount;
 
+  // Ghi log hệ thống lưu lại đã sửa những gì và thời gian nào
+  try {
+    const logService = require('./logService');
+    const trangThaiText = reportData.trangThai === 1 ? 'Bật' : (reportData.trangThai === 0 ? 'Tắt' : '');
+    logService.addLog({
+      actionType: 'phieuin_baocao',
+      actionTitle: 'Thiết lập phiếu in & báo cáo',
+      summary: `Thiết lập mẫu phiếu in [${reportData.maBaoCao}] "${reportData.ten || ''}"${trangThaiText ? ' (' + trangThaiText + ')' : ''}`,
+      details: {
+        maBaoCao: reportData.maBaoCao,
+        ten: reportData.ten || '',
+        tempCode: reportData.tempCode || reportData.templateCode || '',
+        service: reportData.service || '',
+        trangThai: trangThaiText,
+        formId: reportData.formId,
+        soNgayXemBc: reportData.soNgayXemBc,
+        ghiChu: reportData.ghiChu || ''
+      },
+      total: results.length,
+      successCount,
+      failedCount,
+      results
+    });
+  } catch (logErr) {
+    console.error('Lỗi ghi log phiếu in:', logErr.message);
+  }
+
   return {
     total: results.length,
     successCount,

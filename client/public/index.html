@@ -297,6 +297,15 @@
             <span>Chức Danh Ký Số HMIS</span>
           </button>
 
+          <!-- Nút Nhật Ký Cấu Hình Hệ Thống -->
+          <button @click="openSystemLogsModal()" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm rounded-xl border border-amber-300 transition-colors shadow-sm cursor-pointer" title="Xem nhật ký & lịch sử các lần sửa cấu hình hàng loạt cho trạm">
+            <i data-lucide="history" class="w-4 h-4 text-amber-600"></i>
+            <span>Nhật Ký Cấu Hình</span>
+            <span v-if="systemLogsCount > 0" class="bg-amber-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+              {{ systemLogsCount }}
+            </span>
+          </button>
+
           <!-- Nút Tiện ích Tự động đăng nhập 1-Click -->
           <button @click="modals.autoLoginGuide = true" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm rounded-xl border border-amber-300 transition-colors shadow-sm cursor-pointer" title="Xem hướng dẫn tự động điền & đăng nhập 1-click vào cổng HMIS">
             <i data-lucide="zap" class="w-4 h-4 text-amber-500 fill-amber-500"></i>
@@ -412,6 +421,12 @@
           <button @click="openChucDanhModal" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors shadow cursor-pointer" title="Thêm & đồng bộ chức danh ký số cho các trạm đang được chọn">
             <i data-lucide="file-signature" class="w-3.5 h-3.5"></i>
             <span>Thêm chức danh ký số</span>
+          </button>
+
+          <!-- Nhật ký cấu hình các trạm -->
+          <button @click="openSystemLogsModal('cauhinh_thamso')" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg transition-colors shadow cursor-pointer" title="Xem nhật ký lịch sử đã sửa cấu hình">
+            <i data-lucide="history" class="w-3.5 h-3.5"></i>
+            <span>Nhật ký sửa</span>
           </button>
 
           <!-- Xóa các trạm đã chọn -->
@@ -1946,9 +1961,22 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               <p class="text-xs text-purple-100 mt-0.5">Tìm kiếm theo tên cấu hình, tên tham số hoặc mô tả nghiệp vụ và cập nhật hàng loạt</p>
             </div>
           </div>
-          <button @click="modals.bulkParamEdit = false" class="text-white/80 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors">
-            <i data-lucide="x" class="w-6 h-6"></i>
-          </button>
+          <div class="flex items-center space-x-2">
+            <button
+              @click="openSystemLogsModal('cauhinh_thamso')"
+              class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-xl transition-all border border-white/30 shadow-sm cursor-pointer"
+              title="Xem nhật ký lịch sử đã sửa tham số cho các trạm"
+            >
+              <i data-lucide="history" class="w-4 h-4 text-amber-300"></i>
+              <span>📜 Nhật Ký Đã Sửa</span>
+              <span v-if="systemLogsCount > 0" class="bg-amber-400 text-slate-900 text-[10px] px-1.5 py-0.2 rounded-full font-extrabold ml-0.5">
+                {{ systemLogsCount }}
+              </span>
+            </button>
+            <button @click="modals.bulkParamEdit = false" class="text-white/80 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors">
+              <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+          </div>
         </div>
 
         <!-- Thanh thông tin các trạm áp dụng -->
@@ -2181,8 +2209,17 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               <!-- KẾT QUẢ THỰC THI HÀNG LOẠT (NẾU CÓ) -->
               <div v-if="bulkUpdateResults" class="mt-3 p-4 rounded-xl border shadow-sm" :class="bulkUpdateResults.failedCount === 0 ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-200'">
                 <div class="font-bold mb-2 flex items-center justify-between text-xs">
-                  <span>Kết quả cập nhật:</span>
-                  <span class="text-emerald-700">Thành công: {{ bulkUpdateResults.successCount }} / {{ bulkUpdateResults.total }} trạm</span>
+                  <div class="flex items-center space-x-1.5">
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+                    <span>Kết quả & Đã ghi nhận Nhật ký hệ thống:</span>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <span class="text-emerald-700 font-bold">Thành công: {{ bulkUpdateResults.successCount }} / {{ bulkUpdateResults.total }} trạm</span>
+                    <button @click="openSystemLogsModal('cauhinh_thamso')" class="text-purple-700 hover:text-purple-900 underline font-bold text-[11px] flex items-center space-x-1 cursor-pointer">
+                      <i data-lucide="file-text" class="w-3 h-3"></i>
+                      <span>Xem nhật ký</span>
+                    </button>
+                  </div>
                 </div>
                 <div class="space-y-1.5 max-h-40 overflow-y-auto">
                   <div v-for="res in bulkUpdateResults.results" :key="res.id" class="flex items-center justify-between p-2 rounded-lg text-[11px]" :class="res.success ? 'bg-white text-emerald-800 border border-emerald-100 shadow-2xs' : 'bg-rose-50 text-rose-800 border border-rose-100'">
@@ -2200,7 +2237,16 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
 
         <!-- Footer -->
         <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between shadow-inner">
-          <span class="text-xs text-slate-500">Cập nhật trực tiếp lên cổng HMIS theo tài khoản từng trạm đã tích chọn.</span>
+          <div class="flex items-center space-x-3">
+            <span class="text-xs text-slate-500 hidden sm:inline">Cập nhật trực tiếp lên cổng HMIS theo tài khoản từng trạm đã tích chọn.</span>
+            <button
+              @click="openSystemLogsModal('cauhinh_thamso')"
+              class="inline-flex items-center space-x-1.5 text-xs font-semibold text-purple-700 hover:text-purple-900 bg-purple-100/70 hover:bg-purple-200/70 px-3 py-1.5 rounded-xl border border-purple-200 transition-colors cursor-pointer"
+            >
+              <i data-lucide="history" class="w-3.5 h-3.5"></i>
+              <span>Xem lịch sử đã sửa ({{ systemLogsCount }})</span>
+            </button>
+          </div>
           <div class="flex items-center space-x-3">
             <button @click="modals.bulkParamEdit = false" class="px-5 py-2.5 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl transition-colors">
               Đóng
@@ -2214,6 +2260,297 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               <span>{{ isUpdatingParams ? 'Đang cập nhật...' : 'Cập nhật cho ' + selectedIds.length + ' trạm' }}</span>
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL: NHẬT KÝ CẤU HÌNH & LỊCH SỬ HỆ THỐNG                                -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.systemLogs" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full border border-slate-200 overflow-hidden flex flex-col h-[92vh] max-h-[92vh]">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 text-white px-6 py-4 flex items-center justify-between shadow-sm">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+              <i data-lucide="history" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-lg font-bold">Nhật Ký Cấu Hình & Lịch Sử Hệ Thống</h3>
+                <span class="bg-white/20 border border-white/30 text-white text-[11px] px-2.5 py-0.5 rounded-full font-bold">
+                  {{ filteredSystemLogs.length }} bản ghi
+                </span>
+              </div>
+              <p class="text-xs text-amber-100 mt-0.5">Lưu lại chi tiết nội dung đã sửa cho các trạm và thời gian thực hiện chính xác</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button
+              @click="exportSystemLogsExcel"
+              :disabled="systemLogs.length === 0"
+              class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
+              title="Tải toàn bộ nhật ký ra file Excel"
+            >
+              <i data-lucide="file-down" class="w-4 h-4"></i>
+              <span class="hidden sm:inline">Xuất Excel</span>
+            </button>
+            <button
+              @click="fetchSystemLogs"
+              :disabled="isLoadingLogs"
+              class="p-2 text-white/90 hover:text-white hover:bg-white/10 rounded-xl transition-colors cursor-pointer"
+              title="Làm mới nhật ký"
+            >
+              <i data-lucide="refresh-cw" class="w-5 h-5" :class="{ 'animate-spin': isLoadingLogs }"></i>
+            </button>
+            <button
+              @click="clearAllSystemLogs"
+              :disabled="systemLogs.length === 0"
+              class="p-2 text-white/90 hover:text-rose-200 hover:bg-rose-500/20 rounded-xl transition-colors cursor-pointer"
+              title="Xóa toàn bộ nhật ký"
+            >
+              <i data-lucide="trash-2" class="w-5 h-5"></i>
+            </button>
+            <button
+              @click="modals.systemLogs = false"
+              class="text-white/80 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer ml-2"
+            >
+              <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="bg-slate-50 border-b border-slate-200 px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+          <!-- Filter Tabs -->
+          <div class="flex items-center space-x-1 overflow-x-auto py-1">
+            <button
+              @click="logFilterType = 'all'"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap"
+              :class="logFilterType === 'all' ? 'bg-amber-600 text-white shadow-xs' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'"
+            >
+              Tất cả ({{ systemLogs.length }})
+            </button>
+            <button
+              @click="logFilterType = 'cauhinh_thamso'"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap"
+              :class="logFilterType === 'cauhinh_thamso' ? 'bg-purple-600 text-white shadow-xs' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'"
+            >
+              ⚙️ Tham số cấu hình
+            </button>
+            <button
+              @click="logFilterType = 'phieuin_baocao'"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap"
+              :class="logFilterType === 'phieuin_baocao' ? 'bg-violet-600 text-white shadow-xs' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'"
+            >
+              🖨️ Phiếu in báo cáo
+            </button>
+            <button
+              @click="logFilterType = 'chucdanh_kyso'"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap"
+              :class="logFilterType === 'chucdanh_kyso' ? 'bg-blue-600 text-white shadow-xs' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'"
+            >
+              ✍️ Chức danh ký số
+            </button>
+            <button
+              @click="logFilterType = 'batch_url'"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap"
+              :class="logFilterType === 'batch_url' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'"
+            >
+              🌐 Đổi URL chung
+            </button>
+          </div>
+
+          <!-- Search Input -->
+          <div class="relative w-full sm:w-80">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+            <input
+              v-model="logSearchQuery"
+              type="text"
+              placeholder="Tìm theo mã, tham số, giá trị, trạm, ngày..."
+              class="w-full pl-9 pr-8 py-1.5 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none font-medium shadow-2xs"
+            />
+            <button
+              v-if="logSearchQuery"
+              @click="logSearchQuery = ''"
+              type="button"
+              class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5"
+            >
+              <i data-lucide="x" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Body / Log List -->
+        <div class="p-6 overflow-y-auto flex-1 bg-slate-50/60 divide-y divide-slate-200/80 space-y-4">
+          <!-- Khi chưa có log nào -->
+          <div v-if="filteredSystemLogs.length === 0" class="py-16 text-center text-slate-400 flex flex-col items-center justify-center">
+            <div class="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-3 text-slate-400 border border-slate-200">
+              <i data-lucide="clock" class="w-8 h-8"></i>
+            </div>
+            <h4 class="font-bold text-slate-700 text-sm">Chưa có nhật ký ghi nhận</h4>
+            <p class="text-xs text-slate-400 max-w-sm mt-1">
+              {{ logSearchQuery ? 'Không có bản ghi nào khớp với từ khóa "' + logSearchQuery + '"' : 'Khi bạn thực hiện thao tác sửa cấu hình hàng loạt, thiết lập phiếu in hoặc đồng bộ chức danh, hệ thống sẽ tự động lưu lại ở đây.' }}
+            </p>
+          </div>
+
+          <!-- Danh sách từng thẻ Log -->
+          <div
+            v-for="log in filteredSystemLogs"
+            :key="log.id"
+            class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm transition-all hover:shadow-md hover:border-amber-300"
+          >
+            <!-- Header của thẻ Log -->
+            <div class="flex items-start justify-between gap-3 flex-wrap sm:flex-nowrap">
+              <div class="flex items-start space-x-3">
+                <!-- Icon theo actionType -->
+                <div
+                  class="p-2.5 rounded-xl shrink-0 mt-0.5"
+                  :class="{
+                    'bg-purple-100 text-purple-700': log.actionType === 'cauhinh_thamso',
+                    'bg-violet-100 text-violet-700': log.actionType === 'phieuin_baocao',
+                    'bg-blue-100 text-blue-700': log.actionType === 'chucdanh_kyso',
+                    'bg-indigo-100 text-indigo-700': log.actionType === 'batch_url',
+                    'bg-slate-100 text-slate-700': !['cauhinh_thamso', 'phieuin_baocao', 'chucdanh_kyso', 'batch_url'].includes(log.actionType)
+                  }"
+                >
+                  <i v-if="log.actionType === 'cauhinh_thamso'" data-lucide="sliders" class="w-5 h-5"></i>
+                  <i v-else-if="log.actionType === 'phieuin_baocao'" data-lucide="printer" class="w-5 h-5"></i>
+                  <i v-else-if="log.actionType === 'chucdanh_kyso'" data-lucide="file-signature" class="w-5 h-5"></i>
+                  <i v-else-if="log.actionType === 'batch_url'" data-lucide="globe" class="w-5 h-5"></i>
+                  <i v-else data-lucide="activity" class="w-5 h-5"></i>
+                </div>
+
+                <div>
+                  <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                    <span class="font-bold text-slate-800 text-sm sm:text-base">{{ log.actionTitle }}</span>
+                    <!-- Badge tỷ lệ thành công -->
+                    <span
+                      class="px-2.5 py-0.5 rounded-full text-xs font-bold"
+                      :class="log.failedCount === 0 ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-rose-100 text-rose-800 border border-rose-200'"
+                    >
+                      {{ log.failedCount === 0 ? '✓ ' + log.successCount + '/' + log.total + ' trạm thành công' : '⚠ ' + log.successCount + '/' + log.total + ' trạm (' + log.failedCount + ' trạm lỗi)' }}
+                    </span>
+                  </div>
+
+                  <!-- Tóm tắt thay đổi -->
+                  <p class="text-xs sm:text-sm text-slate-700 font-medium mt-1 leading-relaxed">
+                    {{ log.summary }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Cột thông tin thời gian & Thao tác xóa -->
+              <div class="flex items-center space-x-3 shrink-0 self-start sm:self-auto ml-auto sm:ml-0">
+                <div class="text-right">
+                  <div class="flex items-center space-x-1 text-slate-700 font-mono text-xs font-bold">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-600"></i>
+                    <span>{{ log.formattedTime }}</span>
+                  </div>
+                  <span class="text-[10px] text-slate-400">ID: {{ log.id.slice(-8) }}</span>
+                </div>
+                <button
+                  @click="deleteSingleLog(log.id)"
+                  class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                  title="Xóa bản ghi này"
+                >
+                  <i data-lucide="trash" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Khối chi tiết tham số đã sửa (Màu sắc rõ ràng) -->
+            <div v-if="log.details && Object.keys(log.details).length > 0" class="mt-3.5 pt-3 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 bg-slate-50/80 p-3 rounded-xl border border-slate-200/60">
+              <!-- Mã cấu hình -->
+              <div v-if="log.details.maCauHinh || log.details.maBaoCao || log.details.titleCode">
+                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">Mã cấu hình / biểu mẫu:</span>
+                <span class="font-mono font-bold text-xs text-purple-900 bg-white px-2 py-0.5 rounded border border-purple-200 inline-block mt-0.5">
+                  {{ log.details.maCauHinh || log.details.maBaoCao || log.details.titleCode }}
+                </span>
+              </div>
+
+              <!-- Tên cấu hình -->
+              <div v-if="log.details.tenCauHinh || log.details.ten || log.details.titleName">
+                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">Tên cấu hình / mô tả:</span>
+                <span class="font-bold text-xs text-slate-800 truncate block mt-0.5" :title="log.details.tenCauHinh || log.details.ten || log.details.titleName">
+                  {{ log.details.tenCauHinh || log.details.ten || log.details.titleName }}
+                </span>
+              </div>
+
+              <!-- Khóa tham số (ParamKey) -->
+              <div v-if="log.details.paramKey">
+                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">Khóa tham số (Key):</span>
+                <span class="font-mono font-bold text-xs text-indigo-900 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 inline-block mt-0.5">
+                  {{ log.details.paramKey }}
+                </span>
+                <span v-if="log.details.paramName" class="text-[11px] text-slate-500 block truncate" :title="log.details.paramName">({{ log.details.paramName }})</span>
+              </div>
+
+              <!-- Giá trị mới -->
+              <div v-if="log.details.newValue !== undefined || log.details.trangThai !== undefined || log.details.url">
+                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">Giá trị đã cập nhật:</span>
+                <span class="font-mono font-extrabold text-xs text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 inline-block mt-0.5">
+                  {{ log.details.newValue !== undefined ? log.details.newValue : (log.details.trangThai || log.details.url) }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Nút bật/tắt xem danh sách chi tiết các trạm -->
+            <div class="mt-3 flex items-center justify-between pt-2">
+              <span class="text-xs text-slate-500">
+                Áp dụng cho <strong>{{ log.total }}</strong> trạm y tế
+              </span>
+              <button
+                @click="toggleLogExpand(log.id)"
+                class="inline-flex items-center space-x-1.5 text-xs font-semibold text-amber-700 hover:text-amber-800 hover:underline cursor-pointer"
+              >
+                <span>{{ expandedLogIds.has(log.id) ? 'Thu gọn danh sách trạm' : 'Xem chi tiết phản hồi từng trạm (' + (log.results ? log.results.length : 0) + ')' }}</span>
+                <i :data-lucide="expandedLogIds.has(log.id) ? 'chevron-up' : 'chevron-down'" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+
+            <!-- Danh sách chi tiết phản hồi từng trạm khi mở rộng -->
+            <div v-if="expandedLogIds.has(log.id)" class="mt-3 pt-3 border-t border-slate-100">
+              <div class="max-h-56 overflow-y-auto divide-y divide-slate-100 border border-slate-200 rounded-xl bg-slate-50/50">
+                <div
+                  v-for="r in log.results"
+                  :key="r.id || r.username"
+                  class="p-2.5 px-3 flex items-center justify-between text-xs transition-colors hover:bg-white"
+                  :class="r.success ? 'text-slate-800' : 'text-rose-900 bg-rose-50/50'"
+                >
+                  <div class="flex items-center space-x-2">
+                    <i
+                      :data-lucide="r.success ? 'check-circle' : 'alert-circle'"
+                      class="w-4 h-4 shrink-0"
+                      :class="r.success ? 'text-emerald-600' : 'text-rose-600'"
+                    ></i>
+                    <div>
+                      <span class="font-bold">{{ r.name }}</span>
+                      <span class="text-slate-500 font-mono text-[11px] ml-1">({{ r.username }})</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center space-x-3 text-right">
+                    <span :class="r.success ? 'text-slate-600' : 'text-rose-700 font-semibold'">{{ r.message }}</span>
+                    <span v-if="r.duration" class="text-[10px] text-slate-400 font-mono">({{ r.duration }}ms)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+          <span class="text-xs text-slate-500">
+            Tổng cộng: <strong class="text-slate-700">{{ systemLogs.length }}</strong> lần cấu hình hàng loạt đã được hệ thống lưu lại an toàn.
+          </span>
+          <button
+            @click="modals.systemLogs = false"
+            class="px-5 py-2.5 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl transition-colors cursor-pointer"
+          >
+            Đóng
+          </button>
         </div>
       </div>
     </div>
@@ -2243,6 +2580,11 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
             </div>
           </div>
           <div class="flex items-center space-x-2">
+            <!-- Nút Xem nhật ký phiếu in -->
+            <button @click="openSystemLogsModal('phieuin_baocao')" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors cursor-pointer" title="Xem nhật ký lịch sử đã sửa phiếu in">
+              <i data-lucide="history" class="w-4 h-4 text-amber-300"></i>
+              <span>📜 Nhật Ký Đã Sửa</span>
+            </button>
             <!-- Nút Cấu hình Endpoint F12 -->
             <button @click="showApiConfigModal = true" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors" title="Xem hoặc dán đường dẫn API F12 Network">
               <i data-lucide="link" class="w-4 h-4 text-cyan-300"></i>
@@ -2565,6 +2907,11 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
             </div>
           </div>
           <div class="flex items-center space-x-2">
+            <!-- Nút Xem nhật ký chức danh ký số -->
+            <button @click="openSystemLogsModal('chucdanh_kyso')" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors cursor-pointer" title="Xem nhật ký lịch sử đã sửa chức danh ký số">
+              <i data-lucide="history" class="w-4 h-4 text-amber-300"></i>
+              <span>📜 Nhật Ký Đã Sửa</span>
+            </button>
             <!-- Nút Cấu hình Endpoint F12 -->
             <button @click="showChucDanhApiConfigModal = true" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors" title="Xem hoặc dán đường dẫn API F12 Network">
               <i data-lucide="link" class="w-4 h-4 text-cyan-300"></i>
@@ -3620,8 +3967,17 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           convertThuoc: false,
           autoLoginGuide: false,
           phieuin: false,
-          chucdanh: false
+          chucdanh: false,
+          systemLogs: false
         });
+
+        // Trạng thái cho module Nhật Ký Cấu Hình Hệ Thống
+        const systemLogs = ref([]);
+        const systemLogsCount = ref(0);
+        const isLoadingLogs = ref(false);
+        const logSearchQuery = ref('');
+        const logFilterType = ref('all');
+        const expandedLogIds = ref(new Set());
 
         // Trạng thái cho module Thiết lập Phiếu in Báo cáo
         const phieuinList = ref([]);
@@ -4786,12 +5142,15 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             const res = await axios.post('/api/stations/cauhinh-nghiepvu/batch-update-param', {
               stationIds: selectedIds.value,
               maCauHinh: bulkParamForm.value.maCauHinh,
+              tenCauHinh: selectedGroupObj.value?.tenCauHinh || '',
               paramKey: bulkParamForm.value.paramKey,
+              paramName: selectedParamMeta.value?.mota || '',
               paramValue: bulkParamForm.value.paramValue
             });
             if (res.data.success) {
               bulkUpdateResults.value = res.data.data;
               showToast(res.data.message);
+              fetchSystemLogs();
             }
           } catch (err) {
             showToast('Lỗi cập nhật cấu hình: ' + (err.response?.data?.message || err.message), 'error');
@@ -4974,6 +5333,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             if (res.data.success) {
               phieuInUpdateResults.value = res.data.data;
               showToast(res.data.message);
+              fetchSystemLogs();
 
               // Cập nhật lại trong danh sách local
               const idx = phieuinList.value.findIndex(p => p.maBaoCao === phieuInForm.value.maBaoCao);
@@ -5142,6 +5502,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             if (res.data && res.data.data) {
               chucDanhExecutionResults.value = res.data.data;
               showToast(res.data.message || 'Đã đồng bộ chức danh ký số lên các trạm!', 'success');
+              fetchSystemLogs();
 
               const code = chucDanhForm.value.titleCode.trim();
               const existingIdx = chucdanhList.value.findIndex(c => c.titleCode === code);
@@ -5196,6 +5557,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             if (res.data && res.data.data) {
               chucDanhExecutionResults.value = res.data.data;
               showToast(res.data.message || 'Đã xóa chức danh ký số!', 'success');
+              fetchSystemLogs();
             }
           } catch (err) {
             showToast('Lỗi khi xóa: ' + (err.response?.data?.message || err.message), 'error');
@@ -5204,6 +5566,117 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             refreshIcons();
           }
         }
+
+        // ==========================================
+        // CHỨC NĂNG NHẬT KÝ CẤU HÌNH & HỆ THỐNG
+        // ==========================================
+        async function fetchSystemLogs() {
+          try {
+            isLoadingLogs.value = true;
+            const res = await axios.get('/api/logs?limit=300');
+            if (res.data && res.data.success) {
+              systemLogs.value = res.data.data || [];
+              systemLogsCount.value = res.data.total || (res.data.data ? res.data.data.length : 0);
+            }
+          } catch (err) {
+            console.error('Lỗi tải nhật ký hệ thống:', err);
+          } finally {
+            isLoadingLogs.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function openSystemLogsModal(filterType = 'all') {
+          logFilterType.value = filterType;
+          modals.value.systemLogs = true;
+          fetchSystemLogs();
+          nextTick(() => refreshIcons());
+        }
+
+        function toggleLogExpand(id) {
+          if (expandedLogIds.value.has(id)) {
+            expandedLogIds.value.delete(id);
+          } else {
+            expandedLogIds.value.add(id);
+          }
+          nextTick(() => refreshIcons());
+        }
+
+        async function deleteSingleLog(id) {
+          if (!confirm('Bạn có chắc chắn muốn xóa bản ghi nhật ký này?')) return;
+          try {
+            const res = await axios.delete('/api/logs/' + id);
+            if (res.data && res.data.success) {
+              showToast('Đã xóa bản ghi nhật ký');
+              fetchSystemLogs();
+            }
+          } catch (err) {
+            showToast('Lỗi khi xóa nhật ký: ' + (err.response?.data?.message || err.message), 'error');
+          }
+        }
+
+        async function clearAllSystemLogs() {
+          if (!confirm('Bạn có chắc chắn muốn xóa toàn bộ lịch sử nhật ký hệ thống?')) return;
+          try {
+            const res = await axios.delete('/api/logs');
+            if (res.data && res.data.success) {
+              showToast('Đã xóa toàn bộ nhật ký hệ thống');
+              fetchSystemLogs();
+            }
+          } catch (err) {
+            showToast('Lỗi khi xóa nhật ký: ' + (err.response?.data?.message || err.message), 'error');
+          }
+        }
+
+        function exportSystemLogsExcel() {
+          window.open('/api/logs/export-excel', '_blank');
+        }
+
+        const filteredSystemLogs = computed(() => {
+          let list = systemLogs.value || [];
+          if (logFilterType.value && logFilterType.value !== 'all') {
+            list = list.filter(l => l.actionType === logFilterType.value);
+          }
+          if (logSearchQuery.value && logSearchQuery.value.trim()) {
+            const q = logSearchQuery.value.toLowerCase().trim();
+            list = list.filter(l => {
+              const titleMatch = l.actionTitle && l.actionTitle.toLowerCase().includes(q);
+              const summaryMatch = l.summary && l.summary.toLowerCase().includes(q);
+              const timeMatch = l.formattedTime && l.formattedTime.toLowerCase().includes(q);
+              const detailsMatch = l.details && JSON.stringify(l.details).toLowerCase().includes(q);
+              const stationsMatch = l.stationNames && l.stationNames.some(name => name.toLowerCase().includes(q));
+              return titleMatch || summaryMatch || timeMatch || detailsMatch || stationsMatch;
+            });
+          }
+          return list;
+        });
+
+        const systemLogsStats = computed(() => {
+          const list = systemLogs.value || [];
+          const totalActions = list.length;
+          let totalSuccessStations = 0;
+          let totalFailedStations = 0;
+          let perfectActions = 0;
+          let partialActions = 0;
+
+          list.forEach(l => {
+            totalSuccessStations += (l.successCount || 0);
+            totalFailedStations += (l.failedCount || 0);
+            if (l.failedCount === 0 && l.total > 0) {
+              perfectActions++;
+            } else if (l.failedCount > 0) {
+              partialActions++;
+            }
+          });
+
+          return {
+            totalActions,
+            totalSuccessStations,
+            totalFailedStations,
+            perfectActions,
+            partialActions
+          };
+        });
 
         // ==========================================
         // CHỨC NĂNG GEN FILE THUỐC IMPORT VNPT HIS
@@ -6022,6 +6495,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
           await fetchSettings();
           await fetchStations();
+          fetchSystemLogs();
           refreshIcons();
 
           window.addEventListener('hashchange', () => {
@@ -6259,7 +6733,21 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           refreshChucDanhFromHmis,
           saveChucDanhApiConfig,
           submitAddChucDanhToStations,
-          submitDeleteChucDanhFromStations
+          submitDeleteChucDanhFromStations,
+          systemLogs,
+          systemLogsCount,
+          isLoadingLogs,
+          logSearchQuery,
+          logFilterType,
+          expandedLogIds,
+          fetchSystemLogs,
+          openSystemLogsModal,
+          toggleLogExpand,
+          deleteSingleLog,
+          clearAllSystemLogs,
+          exportSystemLogsExcel,
+          filteredSystemLogs,
+          systemLogsStats
         };
       }
     }).mount('#app');

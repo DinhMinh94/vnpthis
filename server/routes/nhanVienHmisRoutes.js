@@ -66,9 +66,11 @@ router.get('/detail', async (req, res) => {
  */
 router.put('/update', async (req, res) => {
   try {
-    const { stationId, userId, updateData } = req.body;
-    if (!stationId || !userId || !updateData) {
-      return res.status(400).json({ success: false, message: 'Thiếu thông tin cập nhật (stationId, userId, updateData)' });
+    const stationId = req.body.stationId;
+    const userId = req.body.userId;
+    const updateData = req.body.updateData || req.body;
+    if (!stationId || !userId) {
+      return res.status(400).json({ success: false, message: 'Thiếu thông tin cập nhật (stationId, userId)' });
     }
     const result = await nhanVienHmisService.updateUserPhanCong(stationId, userId, updateData);
     res.json(result);

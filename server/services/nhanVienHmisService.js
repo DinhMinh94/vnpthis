@@ -161,9 +161,14 @@ async function updateUserPhanCong(stationId, userId, updateData) {
 
   const base = oldDetail || {};
 
-  // 2. Chuẩn bị payload chuẩn theo form của HMIS
-  const roleIds = Array.isArray(updateData.roleIds) ? updateData.roleIds : [];
-  const signTitleIds = Array.isArray(updateData.signTitleIds) ? updateData.signTitleIds : [];
+  // 2. Chuẩn bị payload chuẩn theo form của HMIS (hỗ trợ cập nhật riêng lẻ độc lập)
+  const roleIds = updateData.roleIds !== undefined
+    ? (Array.isArray(updateData.roleIds) ? updateData.roleIds : [])
+    : (base.nhomNguoiDungs || []).map(r => r.roleId || r.id);
+
+  const signTitleIds = updateData.signTitleIds !== undefined
+    ? (Array.isArray(updateData.signTitleIds) ? updateData.signTitleIds : [])
+    : (base.signTitles || []).map(t => t.id);
 
   const payload = {
     id: Number(userId),
@@ -222,7 +227,8 @@ async function updateUserPhanCong(stationId, userId, updateData) {
     return {
       success: true,
       message: updateRes.data?.message || 'Cập nhật phân công thành công!',
-      data: updateRes.data?.data
+      data: updateRes.data?.data,
+      user: payload
     };
   }
 

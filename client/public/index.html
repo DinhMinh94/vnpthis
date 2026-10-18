@@ -1914,12 +1914,25 @@
                     <div class="flex items-center space-x-1.5">
                       <i data-lucide="shield" class="w-4 h-4 text-purple-600"></i>
                       <label class="font-extrabold text-xs text-slate-800">
-                        Nhóm người dùng * <span class="text-purple-600">({{ editingUserRoleIds.length }} nhóm đã gán)</span>
+                        Nhóm người dùng <span class="text-purple-600 font-bold">({{ editingUserRoleIds.length }} nhóm đã gán)</span>
                       </label>
                     </div>
-                    <span v-if="editingUserRoleIds.length === 0" class="text-[11px] font-bold text-rose-600">
-                      ⚠️ Phải có ít nhất 1 nhóm người dùng!
-                    </span>
+                    <div class="flex items-center space-x-2">
+                      <span class="text-[11px] text-slate-400 font-medium">
+                        (Tùy chọn - không bắt buộc)
+                      </span>
+                      <button 
+                        v-if="isEditingHmisUser"
+                        type="button" 
+                        @click="saveHmisUserPhanCong('roles')"
+                        :disabled="isSavingHmisUser"
+                        class="px-2.5 py-1 bg-purple-600 hover:bg-purple-700 text-white font-bold text-[10px] rounded-lg shadow-2xs transition-colors flex items-center space-x-1 cursor-pointer disabled:opacity-50"
+                        title="Lưu riêng độc lập danh sách nhóm người dùng này"
+                      >
+                        <i data-lucide="save" class="w-3 h-3"></i>
+                        <span>Lưu riêng nhóm</span>
+                      </button>
+                    </div>
                   </div>
 
                   <!-- Danh sách nhóm người dùng hiện có dạng thẻ (Tags) -->
@@ -1996,12 +2009,25 @@
                     <div class="flex items-center space-x-1.5">
                       <i data-lucide="file-signature" class="w-4 h-4 text-teal-600"></i>
                       <label class="font-extrabold text-xs text-slate-800">
-                        Chức danh ký số <span class="text-teal-700">({{ editingUserTitleIds.length }} chức danh đã gán)</span>
+                        Chức danh ký số <span class="text-teal-700 font-bold">({{ editingUserTitleIds.length }} chức danh đã gán)</span>
                       </label>
                     </div>
-                    <span class="text-[11px] text-slate-500">
-                      (Tổng trạm có {{ hmisSignTitles.length }} chức danh ký số)
-                    </span>
+                    <div class="flex items-center space-x-2">
+                      <span class="text-[11px] text-slate-400 font-medium">
+                        (Tùy chọn - không bắt buộc)
+                      </span>
+                      <button 
+                        v-if="isEditingHmisUser"
+                        type="button" 
+                        @click="saveHmisUserPhanCong('titles')"
+                        :disabled="isSavingHmisUser"
+                        class="px-2.5 py-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-[10px] rounded-lg shadow-2xs transition-colors flex items-center space-x-1 cursor-pointer disabled:opacity-50"
+                        title="Lưu riêng độc lập danh sách chức danh ký số này"
+                      >
+                        <i data-lucide="save" class="w-3 h-3"></i>
+                        <span>Lưu riêng chức danh</span>
+                      </button>
+                    </div>
                   </div>
 
                   <!-- Danh sách chức danh hiện có dạng thẻ (Tags) -->
@@ -7759,14 +7785,10 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           nextTick(() => refreshIcons());
         }
 
-        async function saveHmisUserPhanCong() {
+        async function saveHmisUserPhanCong(specificPart = 'all') {
           if (!isEditingHmisUser.value) return;
           if (!editingUser.value.id) {
             showToast('Chưa chọn tài khoản để cập nhật!', 'warning');
-            return;
-          }
-          if (editingUserRoleIds.value.length === 0) {
-            showToast('Tài khoản bắt buộc phải có ít nhất 1 nhóm người dùng (quyền)!', 'warning');
             return;
           }
 
@@ -7791,7 +7813,12 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
             const res = await axios.put('/api/nhanvien-hmis/update', payload);
             if (res.data?.success) {
-              showToast('Cập nhật phân công tài khoản ' + editingUser.value.username + ' thành công!', 'success');
+              const successMsg = specificPart === 'roles' 
+                ? 'Đã lưu danh sách nhóm người dùng cho ' + editingUser.value.username + ' thành công!'
+                : (specificPart === 'titles' 
+                    ? 'Đã lưu danh sách chức danh ký số cho ' + editingUser.value.username + ' thành công!'
+                    : 'Cập nhật phân công tài khoản ' + editingUser.value.username + ' thành công!');
+              showToast(successMsg, 'success');
               isEditingHmisUser.value = false;
               editingUser.value.userPwd = '';
               fetchSystemLogs();
@@ -7800,7 +7827,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               if (idx !== -1) {
                 hmisUsers.value[idx] = {
                   ...hmisUsers.value[idx],
-                  ...res.data.user,
+                  ...(res.data.user || {}),
                   nhomNguoiDungs: editingUserRoleIds.value.map(rid => hmisRoles.value.find(r => r.roleId === rid) || { roleId: rid }),
                   signTitles: editingUserTitleIds.value.map(tid => hmisSignTitles.value.find(t => t.id === tid) || { id: tid })
                 };

@@ -81,6 +81,27 @@ router.put('/update', async (req, res) => {
 });
 
 /**
+ * Cập nhật phân công đồng thời cho nhiều tài khoản đã tích chọn
+ * PUT /api/nhanvien-hmis/update-multiple
+ */
+router.put('/update-multiple', async (req, res) => {
+  try {
+    const stationId = req.body.stationId;
+    const userIds = req.body.userIds;
+    const updateData = req.body.updateData || req.body;
+    const specificPart = req.body.specificPart || 'all';
+    if (!stationId || !Array.isArray(userIds) || userIds.length === 0) {
+      return res.status(400).json({ success: false, message: 'Thiếu thông tin cập nhật (stationId, userIds)' });
+    }
+    const result = await nhanVienHmisService.updateMultipleUsersPhanCong(stationId, userIds, updateData, specificPart);
+    res.json(result);
+  } catch (error) {
+    console.error('Lỗi cập nhật nhiều người dùng:', error.message);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+/**
  * Phân công hàng loạt chức danh và nhóm quyền cho nhiều trạm hoặc nhiều người dùng
  * POST /api/nhanvien-hmis/batch-assign
  */

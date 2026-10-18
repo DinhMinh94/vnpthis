@@ -405,9 +405,168 @@ async function batchAssignNhanVien(batchParams) {
   };
 }
 
+/**
+ * Cập nhật phân công (vai trò, chức danh, quyền truy cập...) đồng thời cho nhiều tài khoản đã tích
+ * @param {string} stationId
+ * @param {Array<number|string>} userIds
+ * @param {Object} updateData
+ * @param {string} [specificPart] - 'all' | 'roles' | 'titles'
+ */
+async function updateMultipleUsersPhanCong(stationId, userIds, updateData = {}, specificPart = 'all') {
+  const station = db.getStationById(stationId, true);
+  if (!station) {
+    throw new Error('Không tìm thấy trạm y tế');
+  }
+
+  if (!Array.isArray(userIds) || userIds.length === 0) {
+    throw new Error('Không có tài khoản nào được chọn để cập nhật');
+  }
+
+  const auth = await cauhinhService.loginToHmis(station);
+  const headers = {
+    'Authorization': `Bearer ${auth.token}`,
+    'region-code': auth.region,
+    'Origin': auth.targetUrl.replace(/\/$/, ''),
+    'Referer': auth.targetUrl,
+    'Content-Type': 'application/json'
+  };
+
+  const results = [];
+  let successCount = 0;
+  let failCount = 0;
+
+  for (const uId of userIds) {
+    const numUserId = Number(uId);
+    try {
+      // 1. Lấy chi tiết user hiện tại để bảo toàn thông tin gốc của user đó
+      let userDetail = null;
+      try {
+        const detailRes = await axios.get(`${auth.gateway}common/admuser/detail?id=${numUserId}`, {
+          headers,
+          timeout: 10000,
+          validateStatus: () => true
+        });
+        if (detailRes.status === 200 && detailRes.data?.data) {
+          userDetail = detailRes.data.data;
+        }
+      } catch (e) {}
+
+      const base = userDetail || {};
+
+      // 2. Xác định danh sách Nhóm người dùng
+      let finalRoleIds;
+      if (specificPart === 'titles') {
+        // Giữ nguyên roles của chính user này
+        finalRoleIds = (base.nhomNguoiDungs || []).map(r => r.roleId || r.id);
+      } else {
+        // Áp dụng danh sách roles đã chọn
+        finalRoleIds = Array.isArray(updateData.roleIds)
+          ? updateData.roleIds
+          : (base.nhomNguoiDungs || []).map(r => r.roleId || r.id);
+      }
+
+      // 3. Xác định danh sách Chức danh ký số
+      let finalSignTitleIds;
+      if (specificPart === 'roles') {
+        // Giữ nguyên chức danh ký số của chính user này
+        finalSignTitleIds = (base.signTitles || []).map(t => t.id);
+      } else {
+        // Áp dụng danh sách chức danh đã chọn
+        finalSignTitleIds = Array.isArray(updateData.signTitleIds)
+          ? updateData.signTitleIds
+          : (base.signTitles || []).map(t => t.id);
+      }
+
+      const payload = {
+        id: numUserId,
+        username: base.username || updateData.username,
+        userPwd: (updateData.userPwd && updateData.userPwd.trim()) ? updateData.userPwd.trim() : '',
+        officer: { id: base.officer?.id || updateData.officerId },
+        fullName: base.fullName || base.officer?.officerName || updateData.fullName || '',
+        userLevel: (specificPart === 'all' && updateData.userLevel !== undefined)
+          ? Number(updateData.userLevel)
+          : (base.userLevel ?? 4),
+        userType: (specificPart === 'all' && updateData.userType !== undefined)
+          ? Number(updateData.userType)
+          : (base.userType ?? 0),
+        status: (specificPart === 'all' && updateData.status !== undefined)
+          ? (updateData.status ? 1 : 0)
+          : (base.status ?? 1),
+        callOnl: (specificPart === 'all' && updateData.callOnl !== undefined)
+          ? (updateData.callOnl ? 1 : 0)
+          : (base.callOnl ?? 0),
+        auth2FA: (specificPart === 'all' && updateData.auth2FA !== undefined)
+          ? (updateData.auth2FA ? 1 : 0)
+          : (base.auth2FA ?? 0),
+        type2fa: base.type2fa || updateData.type2fa || null,
+        company: { id: base.company?.id || updateData.companyId || 1 },
+        nhomNguoiDungs: finalRoleIds.map(rId => ({ roleId: Number(rId) })),
+        signTitles: finalSignTitleIds.map(tId => ({ id: Number(tId) })),
+        adminRegion: 0
+      };
+
+      const updateRes = await axios.put(`${auth.gateway}common/admuser/capnhat?id=${numUserId}`, payload, {
+        headers,
+        timeout: 20000,
+        validateStatus: () => true
+      });
+
+      if (updateRes.status === 200 && (updateRes.data?.code === 0 || updateRes.data?.code === 200 || updateRes.data?.data)) {
+        successCount++;
+        results.push({
+          userId: numUserId,
+          username: payload.username,
+          status: 'success',
+          user: payload
+        });
+      } else {
+        failCount++;
+        results.push({
+          userId: numUserId,
+          username: payload.username,
+          status: 'failed',
+          error: updateRes.data?.message || `HTTP ${updateRes.status}`
+        });
+      }
+    } catch (errUser) {
+      failCount++;
+      results.push({
+        userId: numUserId,
+        status: 'failed',
+        error: errUser.message
+      });
+    }
+  }
+
+  // Ghi log hệ thống
+  const partTitle = specificPart === 'roles'
+    ? 'Nhóm người dùng'
+    : (specificPart === 'titles' ? 'Chức danh ký số' : 'Thông tin phân công');
+  logService.logAction({
+    actionType: 'phancong_nhanvien_multiple',
+    actionTitle: `Cập nhật ${partTitle} cho ${userIds.length} tài khoản (${station.name})`,
+    summary: `Đã cập nhật ${partTitle} cho ${successCount}/${userIds.length} tài khoản thành công tại trạm ${station.name}`,
+    sourceType: 'user_action',
+    totalStations: 1,
+    successCount,
+    failedCount: failCount,
+    newValue: `Nhóm quyền: [${(updateData.roleIds || []).join(', ')}] | Chức danh: [${(updateData.signTitleIds || []).join(', ')}]`,
+    details: results
+  });
+
+  return {
+    success: successCount > 0,
+    total: userIds.length,
+    successCount,
+    failCount,
+    results
+  };
+}
+
 module.exports = {
   getStationNhanVienData,
   getUserDetail,
   updateUserPhanCong,
+  updateMultipleUsersPhanCong,
   batchAssignNhanVien
 };

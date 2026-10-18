@@ -230,6 +230,17 @@
               Mới
             </span>
           </button>
+
+          <!-- Tab 5: Quản lý & Phân công Nhân viên HMIS -->
+          <button @click="switchMainTab('nhanvien_hmis')"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative"
+                  :class="currentMainTab === 'nhanvien_hmis' ? 'bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 text-white border-teal-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
+            <i data-lucide="shield-check" class="w-4 h-4" :class="currentMainTab === 'nhanvien_hmis' ? 'text-white' : 'text-teal-600'"></i>
+            <span>5. Phân Công & Quản Lý Nhân Viên (HMIS)</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-emerald-400 text-emerald-950 shadow-2xs">
+              Live Portal
+            </span>
+          </button>
         </div>
       </div>
     </nav>
@@ -298,6 +309,12 @@
           <button @click="modals.autoLoginGuide = true" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm rounded-xl border border-amber-300 transition-colors shadow-sm cursor-pointer" title="Xem hướng dẫn tự động điền & đăng nhập 1-click vào cổng HMIS">
             <i data-lucide="zap" class="w-4 h-4 text-amber-500 fill-amber-500"></i>
             <span>⚡ Tiện ích Đăng nhập 1-Click</span>
+          </button>
+
+          <!-- Nút Phân công nhân viên HMIS -->
+          <button @click="openNhanVienHmisTab(null)" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-teal-50 hover:bg-teal-100 text-teal-800 font-bold text-sm rounded-xl border border-teal-300 transition-colors shadow-sm cursor-pointer" title="Phân công nhóm quyền và chức danh trực tiếp trên cổng HMIS">
+            <i data-lucide="user-check" class="w-4 h-4 text-teal-600"></i>
+            <span>Phân công nhân viên HMIS</span>
           </button>
 
           <!-- Nút Thêm Xã / Phường -->
@@ -585,6 +602,9 @@
                   <div class="flex items-center justify-end space-x-0.5">
                     <button @click="testSingleStation(station)" :disabled="station.status === 'testing'" class="p-1 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors" title="Thử kết nối ngay">
                       <i data-lucide="play" class="w-4 h-4"></i>
+                    </button>
+                    <button @click="openNhanVienHmisTab(station)" class="p-1 text-teal-600 hover:bg-teal-50 rounded-lg transition-colors cursor-pointer" title="Phân công nhóm quyền & chức danh HMIS">
+                      <i data-lucide="user-check" class="w-4 h-4"></i>
                     </button>
                     <button @click="openEditModal(station)" class="p-1 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors" title="Chỉnh sửa">
                       <i data-lucide="edit-3" class="w-4 h-4"></i>
@@ -1395,6 +1415,812 @@
               </tbody>
             </table>
           </div>
+        </div>
+
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- TAB 5: PHÂN CÔNG & QUẢN LÝ NHÂN VIÊN - NGƯỜI DÙNG HMIS       -->
+      <!-- ============================================================== -->
+      <div v-show="currentMainTab === 'nhanvien_hmis'" class="space-y-6">
+
+        <!-- BANNER HEADER & ĐIỀU KHIỂN CHỌN TRẠM -->
+        <div class="bg-gradient-to-r from-teal-800 via-cyan-800 to-blue-900 rounded-3xl p-6 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-5 border border-teal-500/30">
+          <div class="flex items-start sm:items-center space-x-4">
+            <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-md flex-shrink-0">
+              <i data-lucide="shield-check" class="w-8 h-8 text-teal-300"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2.5 flex-wrap">
+                <h2 class="text-xl sm:text-2xl font-black uppercase tracking-wide">QUẢN LÝ &amp; PHÂN CÔNG NHÂN VIÊN HMIS</h2>
+                <span class="bg-emerald-400 text-emerald-950 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs">Live Portal</span>
+              </div>
+              <p class="text-xs sm:text-sm text-teal-100 mt-1 max-w-2xl">
+                Đồng bộ trực tiếp cổng quản trị hệ thống VNPT HMIS 4.0 (<span class="font-mono text-cyan-200">quantri-hethong/quanly-nhanvien</span>). Load danh sách nhân viên, tài khoản, gán nhóm quyền và chức danh ký số nhanh chóng.
+              </p>
+            </div>
+          </div>
+
+          <!-- BỘ CHỌN TRẠM & CÁC NÚT TÁC VỤ -->
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- Dropdown chọn trạm -->
+            <div class="flex flex-col">
+              <label class="text-[10px] font-bold uppercase tracking-wider text-teal-200 mb-1">Chọn Trạm Y tế thao tác:</label>
+              <select 
+                v-model="selectedHmisStationId" 
+                @change="loadHmisStationNhanVienData(selectedHmisStationId)"
+                class="bg-white text-slate-800 font-bold text-xs sm:text-sm rounded-xl px-3.5 py-2.5 border border-teal-300 shadow-md focus:ring-2 focus:ring-teal-400 focus:outline-none cursor-pointer max-w-xs"
+              >
+                <option v-for="s in stations" :key="s.id" :value="s.id">
+                  {{ s.code ? '[' + s.code + '] ' : '' }}{{ s.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Nút Làm mới -->
+            <button 
+              type="button" 
+              @click="loadHmisStationNhanVienData(selectedHmisStationId)"
+              :disabled="isLoadingHmisData"
+              class="px-4 py-2.5 bg-teal-600/80 hover:bg-teal-600 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center space-x-2 cursor-pointer border border-teal-400/50 mt-4 active:scale-95"
+              title="Tải lại danh sách nhân viên, nhóm quyền và chức danh từ HMIS"
+            >
+              <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingHmisData }"></i>
+              <span>{{ isLoadingHmisData ? 'ĐANG TẢI...' : 'LÀM MỚI' }}</span>
+            </button>
+
+            <!-- Nút Phân công hàng loạt -->
+            <button 
+              type="button" 
+              @click="openBatchAssignHmisModal"
+              class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-extrabold text-xs rounded-xl shadow-lg transition-all flex items-center space-x-2 cursor-pointer mt-4 active:scale-95"
+              title="Phân công nhóm quyền và chức danh ký số cho nhiều trạm hoặc nhiều tài khoản cùng lúc"
+            >
+              <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
+              <span>PHÂN CÔNG HÀNG LOẠT</span>
+            </button>
+
+            <!-- Link mở cổng HMIS trực tiếp -->
+            <a 
+              href="https://ytcs.hmis.vn/new/his/quantri-hethong/quanly-nhanvien" 
+              target="_blank"
+              class="p-2.5 bg-white/15 hover:bg-white/25 text-white rounded-xl transition-colors mt-4" 
+              title="Mở trang Quản lý nhân viên trên cổng HMIS trong tab mới"
+            >
+              <i data-lucide="external-link" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- THỐNG KÊ NHANH DỮ LIỆU ĐÃ TẢI CỦA TRẠM -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Nhân viên trạm</p>
+              <p class="text-2xl font-black text-slate-800 mt-0.5">{{ hmisOfficers.length }}</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
+              <i data-lucide="users" class="w-5 h-5"></i>
+            </div>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Tài khoản người dùng</p>
+              <p class="text-2xl font-black text-blue-600 mt-0.5">{{ hmisUsers.length }}</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+              <i data-lucide="user-check" class="w-5 h-5"></i>
+            </div>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Nhóm người dùng (Quyền)</p>
+              <p class="text-2xl font-black text-purple-600 mt-0.5">{{ hmisRoles.length }}</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+              <i data-lucide="shield" class="w-5 h-5"></i>
+            </div>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Chức danh ký số</p>
+              <p class="text-2xl font-black text-amber-600 mt-0.5">{{ hmisSignTitles.length }}</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <i data-lucide="file-signature" class="w-5 h-5"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- MÀN HÌNH LOADING KHI ĐANG TẢI DỮ LIỆU HMIS -->
+        <div v-if="isLoadingHmisData" class="bg-white rounded-3xl p-12 border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center space-y-4">
+          <div class="w-16 h-16 rounded-full bg-teal-50 border-2 border-teal-200 flex items-center justify-center text-teal-600 shadow-sm">
+            <i data-lucide="loader-2" class="w-8 h-8 animate-spin"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-800">Đang kết nối &amp; tải dữ liệu nhân viên từ cổng HMIS...</h3>
+            <p class="text-xs text-slate-500 mt-1">Hệ thống đang truy xuất đồng thời danh sách nhân viên, tài khoản, nhóm quyền và chức danh ký số của trạm.</p>
+          </div>
+        </div>
+
+        <!-- NỘI DUNG CHÍNH (GIAO DIỆN CHIA ĐÔI CHUẨN HMIS THEO ẢNH 1 & ẢNH 2) -->
+        <div v-else class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+          <!-- ============================================================== -->
+          <!-- CỘT BÊN TRÁI (DANH SÁCH NHÂN VIÊN)                             -->
+          <!-- ============================================================== -->
+          <div class="lg:col-span-5 bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center space-x-2">
+                <i data-lucide="contact" class="w-5 h-5 text-teal-600"></i>
+                <h3 class="font-extrabold text-sm sm:text-base text-slate-800 uppercase tracking-wide">DANH SÁCH NHÂN VIÊN</h3>
+              </div>
+              <span class="bg-teal-50 text-teal-800 text-xs font-bold px-2.5 py-0.5 rounded-full border border-teal-200">
+                {{ filteredHmisOfficers.length }} / {{ hmisOfficers.length }} NV
+              </span>
+            </div>
+
+            <!-- Ô tìm kiếm nhân viên -->
+            <div class="relative">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+              <input 
+                v-model="hmisOfficerSearch" 
+                type="text" 
+                placeholder="Tìm theo tên, mã nhân viên, mã bác sĩ CCHN..."
+                class="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-800 focus:ring-2 focus:ring-teal-500 focus:outline-none"
+              >
+            </div>
+
+            <!-- Lọc loại nhân viên -->
+            <div class="flex flex-wrap gap-1.5 text-[11px]">
+              <button 
+                type="button" 
+                @click="hmisOfficerTypeFilter = 'all'"
+                class="px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer border"
+                :class="hmisOfficerTypeFilter === 'all' ? 'bg-teal-600 text-white border-teal-600' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'"
+              >
+                Tất cả ({{ hmisOfficers.length }})
+              </button>
+              <button 
+                type="button" 
+                @click="hmisOfficerTypeFilter = 'bac_si'"
+                class="px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer border"
+                :class="hmisOfficerTypeFilter === 'bac_si' ? 'bg-blue-600 text-white border-blue-600' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'"
+              >
+                Bác sỹ
+              </button>
+              <button 
+                type="button" 
+                @click="hmisOfficerTypeFilter = 'dieu_duong'"
+                class="px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer border"
+                :class="hmisOfficerTypeFilter === 'dieu_duong' ? 'bg-purple-600 text-white border-purple-600' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'"
+              >
+                Điều dưỡng / Y sĩ
+              </button>
+              <button 
+                type="button" 
+                @click="hmisOfficerTypeFilter = 'kho_thuoc'"
+                class="px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer border"
+                :class="hmisOfficerTypeFilter === 'kho_thuoc' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'"
+              >
+                Kho thuốc / Dược
+              </button>
+            </div>
+
+            <!-- Bảng danh sách nhân viên (chuẩn HMIS) -->
+            <div class="border border-slate-200 rounded-2xl overflow-hidden max-h-[550px] overflow-y-auto">
+              <table class="w-full text-xs text-left">
+                <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200">
+                  <tr>
+                    <th class="p-2.5 w-10 text-center">STT</th>
+                    <th class="p-2.5 font-mono">Mã NV</th>
+                    <th class="p-2.5 font-mono">Mã bác sĩ</th>
+                    <th class="p-2.5">Tên nhân viên</th>
+                    <th class="p-2.5">Loại NV</th>
+                    <th class="p-2.5 text-center">TK</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr 
+                    v-for="(off, idx) in filteredHmisOfficers" 
+                    :key="off.id"
+                    @click="selectHmisOfficer(off)"
+                    class="cursor-pointer transition-colors"
+                    :class="selectedHmisOfficer && selectedHmisOfficer.id === off.id ? 'bg-amber-100/90 font-bold border-l-4 border-l-amber-500 shadow-xs' : 'hover:bg-slate-50'"
+                  >
+                    <td class="p-2 text-center text-slate-400 font-mono">{{ idx + 1 }}</td>
+                    <td class="p-2 font-mono text-slate-700 font-semibold truncate max-w-[90px]" :title="off.officerCode">{{ off.officerCode }}</td>
+                    <td class="p-2 font-mono text-indigo-700 truncate max-w-[100px]" :title="off.maBacSi">{{ off.maBacSi || '-' }}</td>
+                    <td class="p-2 text-slate-900 font-bold">
+                      <div class="flex items-center space-x-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full" :class="off.accountsCount > 0 ? 'bg-emerald-500' : 'bg-slate-300'"></span>
+                        <span class="truncate max-w-[120px]" :title="off.officerName">{{ off.officerName }}</span>
+                      </div>
+                    </td>
+                    <td class="p-2 text-slate-600 truncate max-w-[90px]" :title="off.officerType?.name">{{ off.officerType?.name || 'Khác' }}</td>
+                    <td class="p-2 text-center">
+                      <span 
+                        class="px-1.5 py-0.5 rounded-full text-[10px] font-extrabold"
+                        :class="off.accountsCount > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-400'"
+                      >
+                        {{ off.accountsCount }}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr v-if="filteredHmisOfficers.length === 0">
+                    <td colspan="6" class="p-6 text-center text-slate-400">
+                      Không tìm thấy nhân viên phù hợp
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-[11px] text-slate-400 italic">💡 Bấm vào một nhân viên để xem và sửa thông tin phân công ở khung bên phải.</p>
+          </div>
+
+          <!-- ============================================================== -->
+          <!-- CỘT BÊN PHẢI (TAB NGƯỜI DÙNG & PHÂN CÔNG CHỨC DANH / NHÓM)      -->
+          <!-- ============================================================== -->
+          <div class="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-5">
+            
+            <!-- HEADER TABS BÊN PHẢI -->
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+              <div class="flex items-center space-x-2">
+                <button 
+                  type="button" 
+                  @click="rightTabMode = 'info'"
+                  class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border"
+                  :class="rightTabMode === 'info' ? 'bg-teal-600 text-white border-teal-600 shadow-xs' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'"
+                >
+                  Thông tin nhân viên
+                </button>
+                <button 
+                  type="button" 
+                  @click="rightTabMode = 'user'"
+                  class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border flex items-center space-x-1.5"
+                  :class="rightTabMode === 'user' ? 'bg-teal-600 text-white border-teal-600 shadow-xs' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'"
+                >
+                  <i data-lucide="user-cog" class="w-3.5 h-3.5"></i>
+                  <span>Người dùng &amp; Phân công</span>
+                  <span class="px-1.5 py-0.2 rounded-full text-[10px] font-extrabold" :class="rightTabMode === 'user' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
+                    {{ currentOfficerAccounts.length }} TK
+                  </span>
+                </button>
+              </div>
+
+              <!-- Trạng thái chỉnh sửa -->
+              <div v-if="rightTabMode === 'user' && editingUser.id" class="flex items-center space-x-2">
+                <span 
+                  class="px-2.5 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider"
+                  :class="isEditingHmisUser ? 'bg-amber-100 text-amber-900 border border-amber-300 animate-pulse' : 'bg-slate-100 text-slate-600 border border-slate-200'"
+                >
+                  {{ isEditingHmisUser ? '✏️ Đang sửa phân công' : '👁️ Đang xem' }}
+                </span>
+              </div>
+            </div>
+
+            <!-- NỘI DUNG TAB 1: THÔNG TIN NHÂN VIÊN -->
+            <div v-if="rightTabMode === 'info'" class="space-y-4">
+              <div v-if="selectedHmisOfficer" class="space-y-3">
+                <div class="p-4 bg-teal-50/60 border border-teal-200 rounded-2xl flex items-center space-x-3">
+                  <div class="w-12 h-12 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold text-lg">
+                    {{ (selectedHmisOfficer.officerName || 'NV').charAt(0) }}
+                  </div>
+                  <div>
+                    <h4 class="font-extrabold text-base text-slate-800">{{ selectedHmisOfficer.officerName }}</h4>
+                    <p class="text-xs text-slate-600 mt-0.5">
+                      Mã: <span class="font-mono font-bold text-indigo-700">{{ selectedHmisOfficer.officerCode }}</span> | 
+                      Loại: <span class="font-bold text-teal-800">{{ selectedHmisOfficer.officerType?.name || 'Chưa xác định' }}</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                  <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <span class="text-slate-400 block text-[10px] uppercase font-bold">Số CCHN / Mã Bác sĩ:</span>
+                    <span class="font-mono font-bold text-slate-800">{{ selectedHmisOfficer.maBacSi || 'Chưa có' }}</span>
+                  </div>
+                  <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <span class="text-slate-400 block text-[10px] uppercase font-bold">Số điện thoại:</span>
+                    <span class="font-mono font-bold text-slate-800">{{ selectedHmisOfficer.phone || 'Chưa có' }}</span>
+                  </div>
+                  <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <span class="text-slate-400 block text-[10px] uppercase font-bold">CCCD / CMND:</span>
+                    <span class="font-mono font-bold text-slate-800">{{ selectedHmisOfficer.cmnd || 'Chưa có' }}</span>
+                  </div>
+                  <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <span class="text-slate-400 block text-[10px] uppercase font-bold">Khoa phòng:</span>
+                    <span class="font-bold text-slate-800">{{ selectedHmisOfficer.khoa?.name || 'Khoa khám bệnh (K01)' }}</span>
+                  </div>
+                  <div class="col-span-2 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <span class="text-slate-400 block text-[10px] uppercase font-bold">Thời gian làm việc tuần:</span>
+                    <span class="font-mono text-slate-800">{{ selectedHmisOfficer.tgLamViecTuan || 'T2T3T4T5T6' }}</span>
+                  </div>
+                </div>
+              </div>
+              <div v-else class="p-8 text-center text-slate-400 text-xs">
+                Vui lòng chọn một nhân viên bên danh sách bên trái.
+              </div>
+            </div>
+
+            <!-- NỘI DUNG TAB 2: NGƯỜI DÙNG & PHÂN CÔNG (TRỌNG TÂM YÊU CẦU CỦA USER) -->
+            <div v-else class="space-y-5">
+
+              <!-- NẾU CHƯA CHỌN TÀI KHOẢN -->
+              <div v-if="!editingUser.id" class="p-6 bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl text-center space-y-2">
+                <i data-lucide="user-x" class="w-8 h-8 text-slate-400 mx-auto"></i>
+                <h4 class="text-xs sm:text-sm font-bold text-slate-700">Chưa chọn tài khoản người dùng</h4>
+                <p class="text-xs text-slate-500 max-w-md mx-auto">
+                  Nhân viên <span class="font-bold text-slate-800">{{ selectedHmisOfficer?.officerName || 'được chọn' }}</span> chưa được chọn tài khoản nào. Vui lòng bấm vào 1 tài khoản trong bảng bên dưới để xem hoặc sửa phân công.
+                </p>
+              </div>
+
+              <!-- FORM PHÂN CÔNG TÀI KHOẢN (GIAO DIỆN CHUẨN THEO ẢNH 1 & 2) -->
+              <div v-else class="border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-4 bg-white shadow-xs">
+                
+                <!-- TOP BAR CỦA FORM PHÂN CÔNG -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                  <div class="flex items-center space-x-2">
+                    <span class="text-xs font-bold text-slate-500 uppercase">Tài khoản:</span>
+                    <span class="font-mono font-black text-sm text-teal-800 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200">
+                      {{ editingUser.username }}
+                    </span>
+                    <span class="text-xs text-slate-600 font-semibold">({{ editingUser.fullName }})</span>
+                  </div>
+
+                  <!-- CÁC NÚT THAO TÁC SỬA / LƯU (F4) / HỦY -->
+                  <div class="flex items-center space-x-2">
+                    <button 
+                      v-if="!isEditingHmisUser"
+                      type="button"
+                      @click="startEditHmisUser()"
+                      class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95"
+                    >
+                      <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                      <span>Sửa phân công</span>
+                    </button>
+
+                    <template v-else>
+                      <button 
+                        type="button"
+                        @click="saveHmisUserPhanCong"
+                        :disabled="isSavingHmisUser"
+                        class="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-black text-xs rounded-xl shadow-lg transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95 disabled:opacity-50"
+                        title="Lưu cập nhật nhóm người dùng và chức danh lên cổng HMIS (Phím tắt F4)"
+                      >
+                        <i data-lucide="save" class="w-4 h-4" v-if="!isSavingHmisUser"></i>
+                        <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-else></i>
+                        <span>{{ isSavingHmisUser ? 'ĐANG LƯU...' : 'Lưu (F4)' }}</span>
+                      </button>
+
+                      <button 
+                        type="button"
+                        @click="cancelEditHmisUser"
+                        :disabled="isSavingHmisUser"
+                        class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl border border-slate-300 transition-colors cursor-pointer"
+                      >
+                        Hủy
+                      </button>
+                    </template>
+                  </div>
+                </div>
+
+                <!-- CÁC TRƯỜNG THÔNG TIN CƠ BẢN -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1">Tên người dùng *</label>
+                    <input 
+                      type="text" 
+                      :value="editingUser.username" 
+                      disabled 
+                      class="w-full px-3 py-2 bg-slate-100 border border-slate-300 rounded-xl font-mono font-bold text-slate-800 cursor-not-allowed"
+                    >
+                  </div>
+
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1">Mật khẩu *</label>
+                    <input 
+                      type="password" 
+                      v-model="editingUser.userPwd" 
+                      :disabled="!isEditingHmisUser"
+                      placeholder="Để trống nếu giữ nguyên mật khẩu cũ"
+                      class="w-full px-3 py-2 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                      :class="!isEditingHmisUser ? 'bg-slate-50 cursor-not-allowed' : 'bg-white'"
+                    >
+                  </div>
+
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1">Nhân viên *</label>
+                    <input 
+                      type="text" 
+                      :value="editingUser.fullName" 
+                      disabled 
+                      class="w-full px-3 py-2 bg-slate-100 border border-slate-300 rounded-xl font-bold text-slate-800 cursor-not-allowed"
+                    >
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="block font-bold text-slate-700 mb-1">Mức truy cập *</label>
+                      <select 
+                        v-model="editingUser.userLevel" 
+                        :disabled="!isEditingHmisUser"
+                        class="w-full px-2.5 py-2 border border-slate-300 rounded-xl font-medium text-slate-800 focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                        :class="!isEditingHmisUser ? 'bg-slate-50 cursor-not-allowed' : 'bg-white cursor-pointer'"
+                      >
+                        <option :value="4">Nghiệp vụ</option>
+                        <option :value="1">Quản trị hệ thống</option>
+                        <option :value="2">Quản trị tỉnh mức 2</option>
+                        <option :value="3">Quản lý trạm</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="block font-bold text-slate-700 mb-1">Loại tài khoản *</label>
+                      <select 
+                        v-model="editingUser.userType" 
+                        :disabled="!isEditingHmisUser"
+                        class="w-full px-2.5 py-2 border border-slate-300 rounded-xl font-medium text-slate-800 focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                        :class="!isEditingHmisUser ? 'bg-slate-50 cursor-not-allowed' : 'bg-white cursor-pointer'"
+                      >
+                        <option :value="0">Người dùng</option>
+                        <option :value="1">Quản trị viên</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Checkboxes -->
+                  <div class="sm:col-span-2 flex flex-wrap items-center gap-4 pt-1">
+                    <label class="inline-flex items-center space-x-1.5 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        v-model="editingUser.status" 
+                        :disabled="!isEditingHmisUser"
+                        class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
+                      >
+                      <span class="font-bold text-slate-700">Hoạt động</span>
+                    </label>
+
+                    <label class="inline-flex items-center space-x-1.5 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        v-model="editingUser.callOnl" 
+                        :disabled="!isEditingHmisUser"
+                        class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
+                      >
+                      <span class="text-slate-600">Khám Online</span>
+                    </label>
+
+                    <label class="inline-flex items-center space-x-1.5 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        v-model="editingUser.auth2FA" 
+                        :disabled="!isEditingHmisUser"
+                        class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
+                      >
+                      <span class="text-slate-600">Xác thực 2 yếu tố</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- ============================================================== -->
+                <!-- PHẦN 1: NHÓM NGƯỜI DÙNG * (NHÓM QUYỀN TRẠM)                   -->
+                <!-- ============================================================== -->
+                <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2.5">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-1.5">
+                      <i data-lucide="shield" class="w-4 h-4 text-purple-600"></i>
+                      <label class="font-extrabold text-xs text-slate-800">
+                        Nhóm người dùng * <span class="text-purple-600">({{ editingUserRoleIds.length }} nhóm đã gán)</span>
+                      </label>
+                    </div>
+                    <span v-if="editingUserRoleIds.length === 0" class="text-[11px] font-bold text-rose-600">
+                      ⚠️ Phải có ít nhất 1 nhóm người dùng!
+                    </span>
+                  </div>
+
+                  <!-- Danh sách nhóm người dùng hiện có dạng thẻ (Tags) -->
+                  <div class="flex flex-wrap gap-2 min-h-[32px] items-center">
+                    <span 
+                      v-for="rId in editingUserRoleIds" 
+                      :key="rId"
+                      class="inline-flex items-center space-x-1.5 px-3 py-1 bg-purple-100/90 text-purple-900 border border-purple-300 rounded-xl text-xs font-bold shadow-2xs"
+                    >
+                      <i data-lucide="shield-check" class="w-3.5 h-3.5 text-purple-600"></i>
+                      <span>{{ hmisRoles.find(r => r.roleId === rId)?.roleName || ('Mã quyền #' + rId) }}</span>
+                      <button 
+                        v-if="isEditingHmisUser"
+                        type="button" 
+                        @click="removeRoleFromEditingUser(rId)"
+                        class="ml-1 text-purple-500 hover:text-rose-600 p-0.5 rounded-full hover:bg-white/50 transition-colors cursor-pointer"
+                        title="Bỏ nhóm người dùng này"
+                      >
+                        <i data-lucide="x" class="w-3 h-3"></i>
+                      </button>
+                    </span>
+
+                    <span v-if="editingUserRoleIds.length === 0" class="text-xs text-slate-400 italic">
+                      Chưa gán nhóm người dùng nào
+                    </span>
+                  </div>
+
+                  <!-- Bộ chọn thêm nhóm người dùng (Chỉ hiện khi Đang Sửa) -->
+                  <div v-if="isEditingHmisUser" class="pt-2 border-t border-slate-200 space-y-2">
+                    <div class="flex items-center space-x-2">
+                      <select 
+                        v-model="selectedNewRoleId" 
+                        class="flex-1 px-3 py-2 border border-purple-300 rounded-xl text-xs text-slate-800 bg-white focus:ring-2 focus:ring-purple-400 focus:outline-none cursor-pointer"
+                      >
+                        <option value="">-- Chọn nhóm người dùng của trạm để thêm --</option>
+                        <option v-for="r in unassignedRoles" :key="r.roleId" :value="r.roleId">
+                          {{ r.roleName }} ({{ r.roleCode }})
+                        </option>
+                      </select>
+                      <button 
+                        type="button" 
+                        @click="addRoleToEditingUser(selectedNewRoleId)"
+                        :disabled="!selectedNewRoleId"
+                        class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer disabled:opacity-50 flex items-center space-x-1"
+                      >
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                        <span>Thêm nhóm</span>
+                      </button>
+                    </div>
+
+                    <!-- Gợi ý nhanh các nhóm phổ biến -->
+                    <div class="flex flex-wrap items-center gap-1.5 text-[10px]">
+                      <span class="text-slate-500 font-bold">Thêm nhanh:</span>
+                      <button 
+                        v-for="r in hmisRoles.slice(0, 5)" 
+                        :key="'quick-role-' + r.roleId"
+                        type="button"
+                        @click="addRoleToEditingUser(r.roleId)"
+                        :disabled="editingUserRoleIds.includes(r.roleId)"
+                        class="px-2 py-0.5 rounded-md font-semibold border transition-all cursor-pointer"
+                        :class="editingUserRoleIds.includes(r.roleId) ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white hover:bg-purple-50 text-purple-700 border-purple-200 shadow-2xs'"
+                      >
+                        + {{ r.roleName }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ============================================================== -->
+                <!-- PHẦN 2: CHỨC DANH KÝ SỐ CỦA TRẠM                              -->
+                <!-- ============================================================== -->
+                <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2.5">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-1.5">
+                      <i data-lucide="file-signature" class="w-4 h-4 text-teal-600"></i>
+                      <label class="font-extrabold text-xs text-slate-800">
+                        Chức danh ký số <span class="text-teal-700">({{ editingUserTitleIds.length }} chức danh đã gán)</span>
+                      </label>
+                    </div>
+                    <span class="text-[11px] text-slate-500">
+                      (Tổng trạm có {{ hmisSignTitles.length }} chức danh ký số)
+                    </span>
+                  </div>
+
+                  <!-- Danh sách chức danh hiện có dạng thẻ (Tags) -->
+                  <div class="flex flex-wrap gap-2 min-h-[32px] items-center">
+                    <span 
+                      v-for="tId in editingUserTitleIds" 
+                      :key="tId"
+                      class="inline-flex items-center space-x-1.5 px-3 py-1 bg-teal-100/90 text-teal-900 border border-teal-300 rounded-xl text-xs font-bold shadow-2xs"
+                    >
+                      <i data-lucide="award" class="w-3.5 h-3.5 text-teal-600"></i>
+                      <span>
+                        {{ hmisSignTitles.find(t => t.id === tId)?.titleName || ('Chức danh #' + tId) }}
+                        <span class="text-[10px] text-teal-700 font-mono">({{ hmisSignTitles.find(t => t.id === tId)?.titleCode }})</span>
+                      </span>
+                      <button 
+                        v-if="isEditingHmisUser"
+                        type="button" 
+                        @click="removeTitleFromEditingUser(tId)"
+                        class="ml-1 text-teal-600 hover:text-rose-600 p-0.5 rounded-full hover:bg-white/50 transition-colors cursor-pointer"
+                        title="Bỏ chức danh này"
+                      >
+                        <i data-lucide="x" class="w-3 h-3"></i>
+                      </button>
+                    </span>
+
+                    <span v-if="editingUserTitleIds.length === 0" class="text-xs text-slate-400 italic">
+                      Chưa gán chức danh ký số nào
+                    </span>
+                  </div>
+
+                  <!-- Bộ chọn thêm chức danh (Chỉ hiện khi Đang Sửa) -->
+                  <div v-if="isEditingHmisUser" class="pt-2 border-t border-slate-200 space-y-2">
+                    <div class="flex items-center space-x-2">
+                      <select 
+                        v-model="selectedNewTitleId" 
+                        class="flex-1 px-3 py-2 border border-teal-300 rounded-xl text-xs text-slate-800 bg-white focus:ring-2 focus:ring-teal-400 focus:outline-none cursor-pointer"
+                      >
+                        <option value="">-- Chọn chức danh ký số của trạm để thêm ({{ unassignedSignTitles.length }} chức danh) --</option>
+                        <option v-for="t in unassignedSignTitles" :key="t.id" :value="t.id">
+                          {{ t.titleCode }} - {{ t.titleName }}
+                        </option>
+                      </select>
+                      <button 
+                        type="button" 
+                        @click="addTitleToEditingUser(selectedNewTitleId)"
+                        :disabled="!selectedNewTitleId"
+                        class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer disabled:opacity-50 flex items-center space-x-1"
+                      >
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                        <span>Thêm chức danh</span>
+                      </button>
+                    </div>
+
+                    <!-- Gợi ý nhanh các chức danh quan trọng (Con dấu BHXH, EMR, Bác sĩ 19, 20...) -->
+                    <div class="flex flex-wrap items-center gap-1.5 text-[10px]">
+                      <span class="text-slate-500 font-bold">Gán nhanh chức danh:</span>
+                      
+                      <!-- Con dấu gửi BHXH -->
+                      <button 
+                        v-if="hmisSignTitles.find(t => t.titleCode === 'CON_DAU_DV')"
+                        type="button"
+                        @click="addTitleToEditingUser(hmisSignTitles.find(t => t.titleCode === 'CON_DAU_DV').id)"
+                        :disabled="editingUserTitleIds.includes(hmisSignTitles.find(t => t.titleCode === 'CON_DAU_DV').id)"
+                        class="px-2 py-0.5 rounded-md font-bold border transition-all cursor-pointer"
+                        :class="editingUserTitleIds.includes(hmisSignTitles.find(t => t.titleCode === 'CON_DAU_DV').id) ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white hover:bg-emerald-50 text-emerald-700 border-emerald-300 shadow-2xs'"
+                      >
+                        + Con dấu gửi BHXH
+                      </button>
+
+                      <!-- Con dấu EMR khác -->
+                      <button 
+                        v-if="hmisSignTitles.find(t => t.titleCode === 'EMR_CONDAU')"
+                        type="button"
+                        @click="addTitleToEditingUser(hmisSignTitles.find(t => t.titleCode === 'EMR_CONDAU').id)"
+                        :disabled="editingUserTitleIds.includes(hmisSignTitles.find(t => t.titleCode === 'EMR_CONDAU').id)"
+                        class="px-2 py-0.5 rounded-md font-bold border transition-all cursor-pointer"
+                        :class="editingUserTitleIds.includes(hmisSignTitles.find(t => t.titleCode === 'EMR_CONDAU').id) ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white hover:bg-teal-50 text-teal-700 border-teal-300 shadow-2xs'"
+                      >
+                        + Con dấu EMR khác
+                      </button>
+
+                      <!-- Bác sĩ 19 -->
+                      <button 
+                        v-if="hmisSignTitles.find(t => t.titleCode === 'BAC_SI_19')"
+                        type="button"
+                        @click="addTitleToEditingUser(hmisSignTitles.find(t => t.titleCode === 'BAC_SI_19').id)"
+                        :disabled="editingUserTitleIds.includes(hmisSignTitles.find(t => t.titleCode === 'BAC_SI_19').id)"
+                        class="px-2 py-0.5 rounded-md font-bold border transition-all cursor-pointer"
+                        :class="editingUserTitleIds.includes(hmisSignTitles.find(t => t.titleCode === 'BAC_SI_19').id) ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white hover:bg-blue-50 text-blue-700 border-blue-300 shadow-2xs'"
+                      >
+                        + Bác sĩ 19
+                      </button>
+
+                      <!-- Bác sĩ 20 -->
+                      <button 
+                        v-if="hmisSignTitles.find(t => t.titleCode === 'BAC_SI_20')"
+                        type="button"
+                        @click="addTitleToEditingUser(hmisSignTitles.find(t => t.titleCode === 'BAC_SI_20').id)"
+                        :disabled="editingUserTitleIds.includes(hmisSignTitles.find(t => t.titleCode === 'BAC_SI_20').id)"
+                        class="px-2 py-0.5 rounded-md font-bold border transition-all cursor-pointer"
+                        :class="editingUserTitleIds.includes(hmisSignTitles.find(t => t.titleCode === 'BAC_SI_20').id) ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white hover:bg-blue-50 text-blue-700 border-blue-300 shadow-2xs'"
+                      >
+                        + Bác sĩ 20
+                      </button>
+
+                      <!-- Người trả kết quả -->
+                      <button 
+                        v-if="hmisSignTitles.find(t => t.titleCode === 'NGUOI_TRA_KET_QUA')"
+                        type="button"
+                        @click="addTitleToEditingUser(hmisSignTitles.find(t => t.titleCode === 'NGUOI_TRA_KET_QUA').id)"
+                        :disabled="editingUserTitleIds.includes(hmisSignTitles.find(t => t.titleCode === 'NGUOI_TRA_KET_QUA').id)"
+                        class="px-2 py-0.5 rounded-md font-bold border transition-all cursor-pointer"
+                        :class="editingUserTitleIds.includes(hmisSignTitles.find(t => t.titleCode === 'NGUOI_TRA_KET_QUA').id) ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white hover:bg-amber-50 text-amber-700 border-amber-300 shadow-2xs'"
+                      >
+                        + Người trả KQ
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- ============================================================== -->
+              <!-- BẢNG DANH SÁCH TÀI KHOẢN NGƯỜI DÙNG PHÍA DƯỚI (CHUẨN ẢNH 1 & 2) -->
+              <!-- ============================================================== -->
+              <div class="space-y-3 pt-2">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div class="flex items-center space-x-2">
+                    <i data-lucide="users" class="w-4 h-4 text-slate-600"></i>
+                    <h4 class="font-extrabold text-xs uppercase tracking-wide text-slate-700">
+                      DANH SÁCH TÀI KHOẢN ({{ displayHmisUsers.length }} TÀI KHOẢN)
+                    </h4>
+                  </div>
+
+                  <!-- Chuyển đổi phạm vi xem (Chỉ nhân viên này vs Toàn trạm) -->
+                  <div class="flex items-center space-x-2">
+                    <button 
+                      type="button" 
+                      @click="hmisUserScope = 'officer'"
+                      class="px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer border"
+                      :class="hmisUserScope === 'officer' ? 'bg-teal-600 text-white border-teal-600' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'"
+                    >
+                      Của NV này ({{ currentOfficerAccounts.length }})
+                    </button>
+                    <button 
+                      type="button" 
+                      @click="hmisUserScope = 'all'"
+                      class="px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer border"
+                      :class="hmisUserScope === 'all' ? 'bg-teal-600 text-white border-teal-600' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'"
+                    >
+                      Tất cả trạm ({{ hmisUsers.length }})
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Bảng tài khoản -->
+                <div class="border border-slate-200 rounded-2xl overflow-hidden overflow-x-auto max-h-[300px]">
+                  <table class="w-full text-xs text-left">
+                    <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200">
+                      <tr>
+                        <th class="p-2.5 w-10 text-center">STT</th>
+                        <th class="p-2.5 font-mono">Tài khoản</th>
+                        <th class="p-2.5">Nhân viên</th>
+                        <th class="p-2.5">Mức truy cập</th>
+                        <th class="p-2.5">Loại tài khoản</th>
+                        <th class="p-2.5 text-center">Trạng thái</th>
+                        <th class="p-2.5 text-right">Thao tác</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                      <tr 
+                        v-for="(u, idx) in displayHmisUsers" 
+                        :key="u.id"
+                        @click="selectHmisUser(u)"
+                        class="cursor-pointer transition-colors"
+                        :class="editingUser.id === u.id ? 'bg-teal-50 font-bold border-l-4 border-l-teal-600' : 'hover:bg-slate-50'"
+                      >
+                        <td class="p-2 text-center text-slate-400 font-mono">{{ idx + 1 }}</td>
+                        <td class="p-2 font-mono font-bold text-teal-800">{{ u.username }}</td>
+                        <td class="p-2 font-medium text-slate-800">{{ u.fullName || u.officer?.officerName || '-' }}</td>
+                        <td class="p-2 text-slate-600">
+                          <span class="bg-slate-100 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                            {{ u.userLevel === 1 ? 'Quản trị HT' : 'Nghiệp vụ' }}
+                          </span>
+                        </td>
+                        <td class="p-2 text-slate-600">
+                          {{ u.userType === 1 ? 'Quản trị' : 'Người dùng' }}
+                        </td>
+                        <td class="p-2 text-center">
+                          <span v-if="u.status === 1" class="text-emerald-600" title="Đang hoạt động">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 inline-block"></i>
+                          </span>
+                          <span v-else class="text-slate-400" title="Khóa">
+                            <i data-lucide="lock" class="w-4 h-4 inline-block"></i>
+                          </span>
+                        </td>
+                        <td class="p-2 text-right">
+                          <button 
+                            type="button" 
+                            @click.stop="startEditHmisUser(u)"
+                            class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 font-bold rounded-lg border border-teal-200 transition-colors cursor-pointer text-[11px]"
+                          >
+                            Sửa
+                          </button>
+                        </td>
+                      </tr>
+                      <tr v-if="displayHmisUsers.length === 0">
+                        <td colspan="7" class="p-6 text-center text-slate-400">
+                          Chưa có tài khoản nào được hiển thị
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -3921,6 +4747,175 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
       </div>
     </div>
 
+    <!-- ========================================================================= -->
+    <!-- MODAL: PHÂN CÔNG HÀNG LOẠT NHÓM QUYỀN & CHỨC DANH CHO CÁC TRẠM (HMIS)      -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.batchAssignHmis" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-in fade-in duration-150">
+      <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-teal-700 via-cyan-800 to-blue-900 text-white p-5 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+              <i data-lucide="zap" class="w-6 h-6 text-amber-300"></i>
+            </div>
+            <div>
+              <h3 class="text-base sm:text-lg font-black uppercase">Phân công nhóm quyền &amp; chức danh hàng loạt</h3>
+              <p class="text-xs text-teal-100">Gán nhanh nhóm người dùng và chức danh ký số cho nhiều trạm hoặc nhiều tài khoản</p>
+            </div>
+          </div>
+          <button @click="modals.batchAssignHmis = false" class="text-white/80 hover:text-white p-1 rounded-lg cursor-pointer">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="p-5 sm:p-6 overflow-y-auto space-y-5 text-xs">
+          <!-- Bước 1: Chọn trạm áp dụng -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="font-extrabold text-slate-800 text-xs uppercase flex items-center space-x-1.5">
+                <span>1. Chọn các trạm Y tế áp dụng</span>
+                <span class="text-teal-700">({{ batchAssignParams.stationIds.length }} / {{ stations.length }} trạm đã chọn)</span>
+              </label>
+              <div class="space-x-2">
+                <button 
+                  type="button" 
+                  @click="batchAssignParams.stationIds = stations.map(s => s.id)"
+                  class="text-[11px] font-bold text-teal-700 hover:underline cursor-pointer"
+                >
+                  Chọn tất cả
+                </button>
+                <button 
+                  type="button" 
+                  @click="batchAssignParams.stationIds = []"
+                  class="text-[11px] font-bold text-slate-500 hover:underline cursor-pointer"
+                >
+                  Bỏ chọn
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 bg-slate-50 border border-slate-200 rounded-2xl max-h-36 overflow-y-auto">
+              <label 
+                v-for="s in stations" 
+                :key="'batch-s-' + s.id"
+                class="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-white transition-colors cursor-pointer"
+              >
+                <input 
+                  type="checkbox" 
+                  :value="s.id" 
+                  v-model="batchAssignParams.stationIds"
+                  class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
+                >
+                <span class="truncate font-medium text-slate-800">{{ s.code ? '[' + s.code + '] ' : '' }}{{ s.name }}</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Bước 2: Đối tượng nhân viên -->
+          <div class="space-y-2">
+            <label class="font-extrabold text-slate-800 text-xs uppercase">2. Đối tượng tài khoản được phân công</label>
+            <div class="grid grid-cols-3 gap-3">
+              <label 
+                class="p-3 rounded-2xl border-2 flex items-center space-x-2 cursor-pointer transition-all"
+                :class="batchAssignParams.officerFilter === 'all' ? 'border-teal-600 bg-teal-50/50 text-teal-900 font-bold' : 'border-slate-200 hover:bg-slate-50 text-slate-700'"
+              >
+                <input type="radio" value="all" v-model="batchAssignParams.officerFilter" class="text-teal-600">
+                <span>Tất cả tài khoản</span>
+              </label>
+              <label 
+                class="p-3 rounded-2xl border-2 flex items-center space-x-2 cursor-pointer transition-all"
+                :class="batchAssignParams.officerFilter === 'bac_si' ? 'border-blue-600 bg-blue-50/50 text-blue-900 font-bold' : 'border-slate-200 hover:bg-slate-50 text-slate-700'"
+              >
+                <input type="radio" value="bac_si" v-model="batchAssignParams.officerFilter" class="text-blue-600">
+                <span>Chỉ Bác sĩ</span>
+              </label>
+              <label 
+                class="p-3 rounded-2xl border-2 flex items-center space-x-2 cursor-pointer transition-all"
+                :class="batchAssignParams.officerFilter === 'dieu_duong' ? 'border-purple-600 bg-purple-50/50 text-purple-900 font-bold' : 'border-slate-200 hover:bg-slate-50 text-slate-700'"
+              >
+                <input type="radio" value="dieu_duong" v-model="batchAssignParams.officerFilter" class="text-purple-600">
+                <span>Chỉ Điều dưỡng / Y sĩ</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Bước 3: Nhóm người dùng (Quyền) cần gán thêm -->
+          <div class="space-y-2">
+            <label class="font-extrabold text-slate-800 text-xs uppercase">3. Nhóm người dùng cần gán thêm (Chọn để thêm vào quyền hiện có)</label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 bg-purple-50/50 border border-purple-200 rounded-2xl max-h-40 overflow-y-auto">
+              <label 
+                v-for="r in hmisRoles" 
+                :key="'batch-role-' + r.roleId"
+                class="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-white transition-colors cursor-pointer"
+              >
+                <input 
+                  type="checkbox" 
+                  :value="r.roleId" 
+                  v-model="batchAssignParams.roleIdsToAdd"
+                  class="rounded text-purple-600 focus:ring-purple-500 w-4 h-4 cursor-pointer"
+                >
+                <span class="truncate font-medium text-slate-800" :title="r.roleName">{{ r.roleName }}</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Bước 4: Chức danh ký số cần gán thêm -->
+          <div class="space-y-2">
+            <label class="font-extrabold text-slate-800 text-xs uppercase">4. Chức danh ký số cần gán thêm (Chọn để thêm vào chức danh hiện có)</label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 bg-teal-50/50 border border-teal-200 rounded-2xl max-h-44 overflow-y-auto">
+              <label 
+                v-for="t in hmisSignTitles" 
+                :key="'batch-title-' + t.id"
+                class="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-white transition-colors cursor-pointer"
+              >
+                <input 
+                  type="checkbox" 
+                  :value="t.id" 
+                  v-model="batchAssignParams.signTitleIdsToAdd"
+                  class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
+                >
+                <span class="truncate font-medium text-slate-800" :title="t.titleName + ' (' + t.titleCode + ')'">
+                  {{ t.titleCode }} - {{ t.titleName }}
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Kết quả phân công -->
+          <div v-if="batchAssignResults" class="p-4 bg-emerald-50 border-2 border-emerald-400 rounded-2xl space-y-2 animate-in fade-in">
+            <div class="flex items-center justify-between font-bold text-emerald-900">
+              <span>ĐÃ PHÂN CÔNG THÀNH CÔNG CHO {{ batchAssignResults.totalUpdated }} TÀI KHOẢN!</span>
+              <span v-if="batchAssignResults.totalErrors > 0" class="text-rose-600 text-xs">({{ batchAssignResults.totalErrors }} lỗi)</span>
+            </div>
+            <p class="text-xs text-emerald-800">Dữ liệu đã được cập nhật trực tiếp lên cổng HMIS và lưu vào nhật ký sửa hệ thống.</p>
+          </div>
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+          <button 
+            type="button" 
+            @click="modals.batchAssignHmis = false"
+            class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition-colors cursor-pointer"
+          >
+            Đóng
+          </button>
+
+          <button 
+            type="button" 
+            @click="executeBatchAssignHmis"
+            :disabled="isExecutingBatchAssign || batchAssignParams.stationIds.length === 0 || (batchAssignParams.roleIdsToAdd.length === 0 && batchAssignParams.signTitleIdsToAdd.length === 0)"
+            class="px-6 py-2.5 bg-gradient-to-r from-teal-600 to-cyan-700 hover:from-teal-700 hover:to-cyan-800 text-white font-black text-xs rounded-xl shadow-lg transition-all flex items-center space-x-2 cursor-pointer active:scale-95 disabled:opacity-50"
+          >
+            <i data-lucide="play" class="w-4 h-4 fill-current" v-if="!isExecutingBatchAssign"></i>
+            <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-else></i>
+            <span>{{ isExecutingBatchAssign ? 'ĐANG TIẾN HÀNH PHÂN CÔNG...' : 'BẮT ĐẦU PHÂN CÔNG HÀNG LOẠT' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- TOAST THÔNG BÁO NỔI BẬT GÓC TRÊN BÊN PHẢI -->
     <div class="fixed top-5 right-5 z-[9999] flex flex-col space-y-2.5 pointer-events-none max-w-md w-full">
       <div v-for="toast in toasts" :key="toast.id" class="pointer-events-auto px-4 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-bold text-white flex items-center space-x-3 transition-all border border-white/20 animate-in slide-in-from-top-3 fade-in duration-150"
@@ -3970,7 +4965,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           autoLoginGuide: false,
           phieuin: false,
           chucdanh: false,
-          systemLogs: false
+          systemLogs: false,
+          batchAssignHmis: false
         });
 
         // Trạng thái cho module Nhật Ký Cấu Hình Hệ Thống
@@ -4053,10 +5049,11 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const convertStatusMsg = ref('');
         const convertResult = ref(null);
         const currentMainTab = ref(
-          window.location.hash === '#nhanvien' ? 'nhanvien' :
+          window.location.hash === '#nhanvien_hmis' ? 'nhanvien_hmis' :
+          (window.location.hash === '#nhanvien' ? 'nhanvien' :
           (window.location.hash === '#vattu' ? 'vattu' :
-          (window.location.hash === '#thuoc' ? 'thuoc' : 'stations'))
-        ); // 'stations' | 'thuoc' | 'vattu' | 'nhanvien'
+          (window.location.hash === '#thuoc' ? 'thuoc' : 'stations')))
+        ); // 'stations' | 'thuoc' | 'vattu' | 'nhanvien' | 'nhanvien_hmis'
         const vattuFile = ref(null);
         const vattuFileName = ref('');
         const vattuFileSize = ref('');
@@ -4107,6 +5104,50 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           withPhone: 0
         });
 
+        // TRẠNG THÁI CHO QUẢN LÝ & PHÂN CÔNG NHÂN VIÊN HMIS
+        const selectedHmisStationId = ref('');
+        const isLoadingHmisData = ref(false);
+        const hmisStationInfo = ref(null);
+        const hmisOfficers = ref([]);
+        const hmisRoles = ref([]);
+        const hmisSignTitles = ref([]);
+        const hmisUsers = ref([]);
+        const selectedHmisOfficer = ref(null);
+        const selectedHmisUser = ref(null);
+        const isEditingHmisUser = ref(false);
+        const isSavingHmisUser = ref(false);
+        const editingUser = ref({
+          id: null,
+          username: '',
+          userPwd: '',
+          officerId: null,
+          fullName: '',
+          userLevel: 4,
+          userType: 0,
+          status: 1,
+          callOnl: 0,
+          auth2FA: 0,
+          type2fa: null,
+          companyId: null
+        });
+        const editingUserRoleIds = ref([]);
+        const editingUserTitleIds = ref([]);
+        const selectedNewRoleId = ref('');
+        const selectedNewTitleId = ref('');
+        const hmisOfficerSearch = ref('');
+        const hmisOfficerTypeFilter = ref('all');
+        const hmisUserScope = ref('officer'); // 'officer' | 'all'
+        const hmisUserSearch = ref('');
+        const rightTabMode = ref('user'); // 'info' | 'user'
+        const batchAssignParams = ref({
+          stationIds: [],
+          roleIdsToAdd: [],
+          signTitleIdsToAdd: [],
+          officerFilter: 'all'
+        });
+        const isExecutingBatchAssign = ref(false);
+        const batchAssignResults = ref(null);
+
         const thuocSearchQuery = ref('');
         const thuocFilterNhom = ref('all');
         const thuocModal = ref({
@@ -4142,7 +5183,14 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
 
         function switchMainTab(tab) {
           currentMainTab.value = tab;
-          if (tab === 'nhanvien') {
+          if (tab === 'nhanvien_hmis') {
+            if (window.location.hash !== '#nhanvien_hmis') {
+              history.replaceState(null, '', '#nhanvien_hmis');
+            }
+            if (!selectedHmisStationId.value || hmisOfficers.value.length === 0) {
+              loadHmisStationNhanVienData();
+            }
+          } else if (tab === 'nhanvien') {
             if (window.location.hash !== '#nhanvien') {
               history.replaceState(null, '', '#nhanvien');
             }
@@ -4155,7 +5203,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               history.replaceState(null, '', '#vattu');
             }
           } else {
-            if (window.location.hash === '#thuoc' || window.location.hash === '#vattu' || window.location.hash === '#nhanvien') {
+            if (window.location.hash === '#thuoc' || window.location.hash === '#vattu' || window.location.hash === '#nhanvien' || window.location.hash === '#nhanvien_hmis') {
               history.replaceState(null, '', window.location.pathname + window.location.search);
             }
           }
@@ -6471,6 +7519,361 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           }
         }
 
+        // =========================================================================
+        // COMPUTED & METHODS CHO QUẢN LÝ & PHÂN CÔNG NHÂN VIÊN HMIS (TAB 5)
+        // =========================================================================
+        const filteredHmisOfficers = computed(() => {
+          let list = hmisOfficers.value || [];
+          if (hmisOfficerTypeFilter.value !== 'all') {
+            const type = hmisOfficerTypeFilter.value;
+            list = list.filter(off => {
+              const title = (off.titleName || off.chucDanh || off.jobTitle || off.officerType?.name || '').toLowerCase();
+              const role = (off.roleName || '').toLowerCase();
+              const name = (off.officerName || off.name || '').toLowerCase();
+              if (type === 'bac_si') {
+                return title.includes('bác sĩ') || title.includes('bac si') || title.includes('bs') || role.includes('bác sĩ');
+              } else if (type === 'dieu_duong') {
+                return title.includes('điều dưỡng') || title.includes('dieu duong') || title.includes('y sĩ') || title.includes('y si') || title.includes('hộ sinh');
+              } else if (type === 'kho_thuoc') {
+                return title.includes('dược') || title.includes('duoc') || title.includes('kho') || role.includes('kho') || role.includes('dược');
+              }
+              return true;
+            });
+          }
+          if (hmisOfficerSearch.value && hmisOfficerSearch.value.trim()) {
+            const q = hmisOfficerSearch.value.trim().toLowerCase();
+            list = list.filter(off => 
+              (off.officerName || '').toLowerCase().includes(q) ||
+              (off.officerCode || '').toLowerCase().includes(q) ||
+              (off.phone || '').toLowerCase().includes(q) ||
+              (off.cchn || off.maBacSi || '').toLowerCase().includes(q) ||
+              (off.username || '').toLowerCase().includes(q)
+            );
+          }
+          return list;
+        });
+
+        const currentOfficerAccounts = computed(() => {
+          if (!selectedHmisOfficer.value) return [];
+          const offId = selectedHmisOfficer.value.id;
+          return (hmisUsers.value || []).filter(u => u.officer?.id === offId || u.officerId === offId);
+        });
+
+        const displayHmisUsers = computed(() => {
+          let list = hmisUserScope.value === 'officer' 
+            ? currentOfficerAccounts.value 
+            : (hmisUsers.value || []);
+          if (hmisUserSearch.value && hmisUserSearch.value.trim()) {
+            const q = hmisUserSearch.value.trim().toLowerCase();
+            list = list.filter(u => 
+              (u.username || '').toLowerCase().includes(q) ||
+              (u.fullName || '').toLowerCase().includes(q)
+            );
+          }
+          return list;
+        });
+
+        const unassignedRoles = computed(() => {
+          const assigned = editingUserRoleIds.value || [];
+          return (hmisRoles.value || []).filter(r => !assigned.includes(r.roleId));
+        });
+
+        const unassignedSignTitles = computed(() => {
+          const assigned = editingUserTitleIds.value || [];
+          return (hmisSignTitles.value || []).filter(t => !assigned.includes(t.id));
+        });
+
+        function resetEditingUserForm() {
+          isEditingHmisUser.value = false;
+          editingUser.value = {
+            id: null,
+            username: '',
+            userPwd: '',
+            officerId: selectedHmisOfficer.value ? selectedHmisOfficer.value.id : null,
+            fullName: selectedHmisOfficer.value ? selectedHmisOfficer.value.officerName : '',
+            userLevel: 4,
+            userType: 0,
+            status: 1,
+            callOnl: 0,
+            auth2FA: 0,
+            type2fa: null,
+            companyId: null
+          };
+          editingUserRoleIds.value = [];
+          editingUserTitleIds.value = [];
+          selectedNewRoleId.value = '';
+          selectedNewTitleId.value = '';
+        }
+
+        async function loadHmisStationNhanVienData(stationId) {
+          if (!stationId) {
+            if (selectedHmisStationId.value) {
+              stationId = selectedHmisStationId.value;
+            } else if (stations.value && stations.value.length > 0) {
+              stationId = stations.value[0].id;
+              selectedHmisStationId.value = stationId;
+            } else {
+              return;
+            }
+          } else {
+            selectedHmisStationId.value = stationId;
+          }
+
+          isLoadingHmisData.value = true;
+          try {
+            const res = await axios.get('/api/nhanvien-hmis/data?stationId=' + stationId);
+            if (res.data?.success) {
+              hmisStationInfo.value = res.data.station;
+              hmisOfficers.value = res.data.officers || [];
+              hmisRoles.value = res.data.roles || [];
+              hmisSignTitles.value = res.data.signTitles || [];
+              hmisUsers.value = res.data.users || [];
+
+              // Tự động chọn nhân viên đầu tiên nếu có
+              if (hmisOfficers.value.length > 0) {
+                selectHmisOfficer(hmisOfficers.value[0]);
+              } else {
+                selectedHmisOfficer.value = null;
+                selectedHmisUser.value = null;
+                resetEditingUserForm();
+              }
+              showToast(`Đã nạp xong: ${hmisOfficers.value.length} nhân viên, ${hmisUsers.value.length} tài khoản`, 'success');
+            } else {
+              showToast(res.data?.message || 'Không thể tải dữ liệu trạm từ HMIS', 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi tải dữ liệu trạm HMIS:', err);
+            showToast('Lỗi tải dữ liệu trạm: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isLoadingHmisData.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function selectHmisOfficer(off) {
+          selectedHmisOfficer.value = off;
+          // Tìm tài khoản đầu tiên thuộc nhân viên này
+          const accounts = (hmisUsers.value || []).filter(u => u.officer?.id === off.id || u.officerId === off.id);
+          if (accounts.length > 0) {
+            selectHmisUser(accounts[0]);
+          } else {
+            selectedHmisUser.value = null;
+            resetEditingUserForm();
+          }
+          nextTick(() => refreshIcons());
+        }
+
+        async function selectHmisUser(u) {
+          if (!u) return;
+          selectedHmisUser.value = u;
+          isEditingHmisUser.value = false;
+          editingUser.value = {
+            id: u.id,
+            username: u.username || '',
+            userPwd: '',
+            officerId: u.officer?.id || u.officerId || (selectedHmisOfficer.value ? selectedHmisOfficer.value.id : null),
+            fullName: u.fullName || (selectedHmisOfficer.value ? selectedHmisOfficer.value.officerName : ''),
+            userLevel: u.userLevel ?? 4,
+            userType: u.userType ?? 0,
+            status: u.status ?? 1,
+            callOnl: u.callOnl ?? 0,
+            auth2FA: u.auth2FA ?? 0,
+            type2fa: u.type2fa || null,
+            companyId: u.company?.id || (hmisStationInfo.value ? hmisStationInfo.value.id : null)
+          };
+
+          // Lấy chi tiết user từ API để có danh sách nhóm quyền và chức danh đầy đủ nhất
+          try {
+            const res = await axios.get(`/api/nhanvien-hmis/detail?stationId=${selectedHmisStationId.value}&userId=${u.id}`);
+            if (res.data?.success && res.data.user) {
+              const detail = res.data.user;
+              editingUserRoleIds.value = (detail.nhomNguoiDungs || []).map(r => r.roleId || r.id);
+              editingUserTitleIds.value = (detail.signTitles || []).map(t => t.id);
+            } else {
+              editingUserRoleIds.value = (u.nhomNguoiDungs || []).map(r => r.roleId || r.id);
+              editingUserTitleIds.value = (u.signTitles || []).map(t => t.id);
+            }
+          } catch (e) {
+            editingUserRoleIds.value = (u.nhomNguoiDungs || []).map(r => r.roleId || r.id);
+            editingUserTitleIds.value = (u.signTitles || []).map(t => t.id);
+          }
+          nextTick(() => refreshIcons());
+        }
+
+        function startEditHmisUser(u) {
+          if (u && (!selectedHmisUser.value || selectedHmisUser.value.id !== u.id)) {
+            selectHmisUser(u).then(() => {
+              isEditingHmisUser.value = true;
+              rightTabMode.value = 'user';
+              nextTick(() => refreshIcons());
+            });
+            return;
+          }
+          if (!selectedHmisUser.value && (!u || !u.id)) {
+            showToast('Vui lòng chọn một tài khoản để sửa phân công!', 'warning');
+            return;
+          }
+          isEditingHmisUser.value = true;
+          rightTabMode.value = 'user';
+          nextTick(() => refreshIcons());
+        }
+
+        function cancelEditHmisUser() {
+          isEditingHmisUser.value = false;
+          if (selectedHmisUser.value) {
+            selectHmisUser(selectedHmisUser.value);
+          } else {
+            resetEditingUserForm();
+          }
+        }
+
+        function addRoleToEditingUser(roleId) {
+          if (!roleId) return;
+          if (!isEditingHmisUser.value) isEditingHmisUser.value = true;
+          if (!editingUserRoleIds.value.includes(roleId)) {
+            editingUserRoleIds.value.push(roleId);
+          }
+          selectedNewRoleId.value = '';
+          nextTick(() => refreshIcons());
+        }
+
+        function removeRoleFromEditingUser(roleId) {
+          if (!isEditingHmisUser.value) isEditingHmisUser.value = true;
+          editingUserRoleIds.value = editingUserRoleIds.value.filter(id => id !== roleId);
+          nextTick(() => refreshIcons());
+        }
+
+        function addTitleToEditingUser(titleId) {
+          if (!titleId) return;
+          if (!isEditingHmisUser.value) isEditingHmisUser.value = true;
+          if (!editingUserTitleIds.value.includes(titleId)) {
+            editingUserTitleIds.value.push(titleId);
+          }
+          selectedNewTitleId.value = '';
+          nextTick(() => refreshIcons());
+        }
+
+        function removeTitleFromEditingUser(titleId) {
+          if (!isEditingHmisUser.value) isEditingHmisUser.value = true;
+          editingUserTitleIds.value = editingUserTitleIds.value.filter(id => id !== titleId);
+          nextTick(() => refreshIcons());
+        }
+
+        async function saveHmisUserPhanCong() {
+          if (!isEditingHmisUser.value) return;
+          if (!editingUser.value.id) {
+            showToast('Chưa chọn tài khoản để cập nhật!', 'warning');
+            return;
+          }
+          if (editingUserRoleIds.value.length === 0) {
+            showToast('Tài khoản bắt buộc phải có ít nhất 1 nhóm người dùng (quyền)!', 'warning');
+            return;
+          }
+
+          isSavingHmisUser.value = true;
+          try {
+            const payload = {
+              stationId: selectedHmisStationId.value,
+              userId: editingUser.value.id,
+              username: editingUser.value.username,
+              userPwd: editingUser.value.userPwd || '',
+              officerId: editingUser.value.officerId,
+              fullName: editingUser.value.fullName,
+              userLevel: editingUser.value.userLevel,
+              userType: editingUser.value.userType,
+              status: editingUser.value.status,
+              callOnl: editingUser.value.callOnl,
+              auth2FA: editingUser.value.auth2FA,
+              type2fa: editingUser.value.type2fa,
+              roleIds: editingUserRoleIds.value,
+              signTitleIds: editingUserTitleIds.value
+            };
+
+            const res = await axios.put('/api/nhanvien-hmis/update', payload);
+            if (res.data?.success) {
+              showToast('Cập nhật phân công tài khoản ' + editingUser.value.username + ' thành công!', 'success');
+              isEditingHmisUser.value = false;
+              editingUser.value.userPwd = '';
+              fetchSystemLogs();
+              // Cập nhật lại trong danh sách local
+              const idx = hmisUsers.value.findIndex(u => u.id === editingUser.value.id);
+              if (idx !== -1) {
+                hmisUsers.value[idx] = {
+                  ...hmisUsers.value[idx],
+                  ...res.data.user,
+                  nhomNguoiDungs: editingUserRoleIds.value.map(rid => hmisRoles.value.find(r => r.roleId === rid) || { roleId: rid }),
+                  signTitles: editingUserTitleIds.value.map(tid => hmisSignTitles.value.find(t => t.id === tid) || { id: tid })
+                };
+                selectedHmisUser.value = hmisUsers.value[idx];
+              }
+            } else {
+              showToast('Lỗi cập nhật: ' + (res.data?.message || 'Không thể lưu'), 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi lưu phân công user HMIS:', err);
+            showToast('Lỗi lưu phân công: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isSavingHmisUser.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function openNhanVienHmisTab(st) {
+          const stationId = (st && typeof st === 'object') ? st.id : st;
+          if (stationId) {
+            selectedHmisStationId.value = stationId;
+          }
+          switchMainTab('nhanvien_hmis');
+          if (stationId) {
+            loadHmisStationNhanVienData(stationId);
+          }
+        }
+
+        function openBatchAssignHmisModal() {
+          batchAssignParams.value = {
+            stationIds: selectedHmisStationId.value ? [selectedHmisStationId.value] : stations.value.map(s => s.id),
+            roleIdsToAdd: [],
+            signTitleIdsToAdd: [],
+            officerFilter: 'all'
+          };
+          batchAssignResults.value = null;
+          modals.value.batchAssignHmis = true;
+          nextTick(() => refreshIcons());
+        }
+
+        async function executeBatchAssignHmis() {
+          if (batchAssignParams.value.stationIds.length === 0) {
+            showToast('Vui lòng chọn ít nhất 1 trạm y tế!', 'warning');
+            return;
+          }
+          if (batchAssignParams.value.roleIdsToAdd.length === 0 && batchAssignParams.value.signTitleIdsToAdd.length === 0) {
+            showToast('Vui lòng chọn ít nhất 1 nhóm người dùng hoặc 1 chức danh ký số để gán thêm!', 'warning');
+            return;
+          }
+
+          isExecutingBatchAssign.value = true;
+          batchAssignResults.value = null;
+          try {
+            const res = await axios.post('/api/nhanvien-hmis/batch-assign', batchAssignParams.value);
+            if (res.data?.success) {
+              batchAssignResults.value = res.data;
+              showToast(`Đã gán thành công cho ${res.data.totalUpdated} tài khoản!`, 'success');
+              fetchSystemLogs();
+              if (selectedHmisStationId.value) {
+                loadHmisStationNhanVienData(selectedHmisStationId.value);
+              }
+            } else {
+              showToast(res.data?.message || 'Có lỗi xảy ra khi phân công hàng loạt', 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi phân công hàng loạt:', err);
+            showToast('Lỗi phân công hàng loạt: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isExecutingBatchAssign.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
         onMounted(async () => {
           // Tự động khôi phục mã PIN đã đổi vào server nếu Render vừa restart
           const savedCustomPin = localStorage.getItem('vnpt_hmis_custom_pin');
@@ -6490,8 +7893,10 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             isLocked.value = false;
           }
 
-          // Kiểm tra hash URL để mở đúng Tab (ví dụ #thuoc, #vattu, #nhanvien)
-          if (window.location.hash === '#nhanvien') {
+          // Kiểm tra hash URL để mở đúng Tab (ví dụ #thuoc, #vattu, #nhanvien, #nhanvien_hmis)
+          if (window.location.hash === '#nhanvien_hmis') {
+            currentMainTab.value = 'nhanvien_hmis';
+          } else if (window.location.hash === '#nhanvien') {
             currentMainTab.value = 'nhanvien';
           } else if (window.location.hash === '#vattu') {
             currentMainTab.value = 'vattu';
@@ -6501,11 +7906,19 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
           await fetchSettings();
           await fetchStations();
+          if (currentMainTab.value === 'nhanvien_hmis') {
+            loadHmisStationNhanVienData();
+          }
           fetchSystemLogs();
           refreshIcons();
 
           window.addEventListener('hashchange', () => {
-            if (window.location.hash === '#nhanvien') {
+            if (window.location.hash === '#nhanvien_hmis') {
+              currentMainTab.value = 'nhanvien_hmis';
+              if (!selectedHmisStationId.value || hmisOfficers.value.length === 0) {
+                loadHmisStationNhanVienData();
+              }
+            } else if (window.location.hash === '#nhanvien') {
               currentMainTab.value = 'nhanvien';
             } else if (window.location.hash === '#vattu') {
               currentMainTab.value = 'vattu';
@@ -6518,6 +7931,13 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           });
 
           window.addEventListener('keydown', (e) => {
+            // Phím tắt F4 lưu phân công nhân viên HMIS
+            if (e.key === 'F4' && currentMainTab.value === 'nhanvien_hmis' && isEditingHmisUser.value) {
+              e.preventDefault();
+              saveHmisUserPhanCong();
+              return;
+            }
+
             if (isLocked.value && currentMainTab.value === 'stations') {
               if (e.key >= '0' && e.key <= '9') {
                 pressPinDigit(e.key);
@@ -6753,7 +8173,50 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           clearAllSystemLogs,
           exportSystemLogsExcel,
           filteredSystemLogs,
-          systemLogsStats
+          systemLogsStats,
+          selectedHmisStationId,
+          isLoadingHmisData,
+          hmisStationInfo,
+          hmisOfficers,
+          hmisRoles,
+          hmisSignTitles,
+          hmisUsers,
+          selectedHmisOfficer,
+          selectedHmisUser,
+          isEditingHmisUser,
+          isSavingHmisUser,
+          editingUser,
+          editingUserRoleIds,
+          editingUserTitleIds,
+          selectedNewRoleId,
+          selectedNewTitleId,
+          hmisOfficerSearch,
+          hmisOfficerTypeFilter,
+          hmisUserScope,
+          hmisUserSearch,
+          rightTabMode,
+          batchAssignParams,
+          isExecutingBatchAssign,
+          batchAssignResults,
+          filteredHmisOfficers,
+          currentOfficerAccounts,
+          displayHmisUsers,
+          unassignedRoles,
+          unassignedSignTitles,
+          resetEditingUserForm,
+          loadHmisStationNhanVienData,
+          selectHmisOfficer,
+          selectHmisUser,
+          startEditHmisUser,
+          cancelEditHmisUser,
+          addRoleToEditingUser,
+          removeRoleFromEditingUser,
+          addTitleToEditingUser,
+          removeTitleFromEditingUser,
+          saveHmisUserPhanCong,
+          openNhanVienHmisTab,
+          openBatchAssignHmisModal,
+          executeBatchAssignHmis
         };
       }
     }).mount('#app');

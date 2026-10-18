@@ -260,7 +260,7 @@ function convertRows(sourceRows, options = {}) {
       tenThuoc = d.TEN_VAT_TU || d.TEN_THUOC || '';
       tenGiamDinhBh = d.TEN_VAT_TU || d.TEN_THUOC_AX || d.TEN_THUOC || '';
       maNhom = d.MA_NHOM || options.maNhomDefault || 'VT';
-      maLoai = d.MA_LOAI || options.maLoaiDefault || 'VT';
+      maLoai = d.MA_LOAI || (options.maLoaiDefault && options.maLoaiDefault !== 'TH' ? options.maLoaiDefault : 'VT');
     } else {
       // Xử lý Danh mục Thuốc
       const loaiThuoc = d.LOAI_THUOC || 1;
@@ -284,18 +284,11 @@ function convertRows(sourceRows, options = {}) {
     const donViTinh = d.DON_VI_TINH || '';
 
     // ĐƯỜNG DÙNG & MÃ ĐƯỜNG DÙNG:
-    // Vật tư y tế: Mặc định MA_DUONG_DUNG = '3.05', DUONG_DUNG = 'dùng ngoài' theo yêu cầu người dùng
-    let duongDung = d.DUONG_DUNG || d.DUONG_DUNG_AX || '';
+    let duongDung = isVatTu ? '' : (d.DUONG_DUNG || d.DUONG_DUNG_AX || '');
     if (typeof duongDung === 'string') duongDung = duongDung.trim();
-    if (isVatTu && !duongDung) {
-      duongDung = options.duongDungDefault || 'dùng ngoài';
-    }
 
-    let maDuongDung = d.MA_DUONG_DUNG || d.MA_DUONG_DUNG_AX || d.MA_DUONG_D || '';
+    let maDuongDung = isVatTu ? '' : (d.MA_DUONG_DUNG || d.MA_DUONG_DUNG_AX || d.MA_DUONG_D || '');
     if (typeof maDuongDung === 'string') maDuongDung = maDuongDung.trim();
-    if (isVatTu && !maDuongDung) {
-      maDuongDung = options.maDuongDungDefault || '3.05';
-    }
 
     const hangSx = d.HANG_SX || d.NHA_SX || '';
     const nuocSx = d.NUOC_SX || '';

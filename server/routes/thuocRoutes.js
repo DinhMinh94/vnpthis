@@ -50,7 +50,7 @@ router.post('/convert', upload.single('file'), (req, res) => {
       nguonCtDefault: req.body.nguonCt || '1',
       prefixMaThuoc: req.body.prefixMaThuoc || '',
       loaiThuocDefault: req.body.loaiThuoc || req.query.loaiThuoc || '',
-      maLoaiDefault: req.body.maLoai || req.query.maLoai || 'TH'
+      maLoaiDefault: req.body.maLoai || req.query.maLoai || (isVatTu ? 'VT' : 'TH')
     };
 
     const convertedRows = convertService.convertRows(sourceData, options);
@@ -281,7 +281,8 @@ router.get('/sample-vattu-convert', (req, res) => {
       nhomBhxhDefault: req.query.nhomBhxh || '',
       nguonCtDefault: req.query.nguonCt || '1',
       prefixMaThuoc: req.query.prefixMaThuoc || '',
-      loaiThuocDefault: req.query.loaiThuoc || 3
+      loaiThuocDefault: req.query.loaiThuoc || 3,
+      maLoaiDefault: req.query.maLoai || 'VT'
     };
 
     const convertedRows = convertService.convertRows(sourceData, options);

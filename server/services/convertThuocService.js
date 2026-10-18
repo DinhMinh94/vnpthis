@@ -160,7 +160,7 @@ function parseSheetSmart(sheet) {
     if (stripped.includes('ten thuoc') || stripped.includes('biet duoc') || stripped.includes('thuoc thanh pham') || stripped.includes('ten hang') || stripped.includes('ten thuong mai') || stripped.includes('ten vat tu') || stripped.includes('ten hoa chat') || stripped.includes('ten san pham')) return 'TEN_THUOC';
     if (stripped.includes('ham luong') || stripped.includes('nong do')) return 'HAM_LUONG';
     if (stripped.includes('don vi tinh') || stripped === 'dvt' || stripped === 'don vi' || stripped === 'don_vi_tinh') return 'DON_VI_TINH';
-    if (stripped.includes('ma duong dung')) return 'MA_DUONG_DUNG';
+    if (upperClean === 'MA_DUONG_D' || stripped.includes('ma duong dung') || stripped === 'ma_duong_d' || stripped.includes('ma duong d')) return 'MA_DUONG_DUNG';
     if (stripped.includes('duong dung')) return 'DUONG_DUNG';
     if (stripped.includes('dang bao che')) return 'DANG_BAO_CHE';
     if (stripped.includes('dang ky') || stripped.includes('gpnk') || stripped.includes('sdk') || stripped.includes('gdklh')) return 'SO_DANG_KY';
@@ -282,8 +282,21 @@ function convertRows(sourceRows, options = {}) {
     }
     const hamLuong = isVatTu ? '' : (d.HAM_LUONG || '');
     const donViTinh = d.DON_VI_TINH || '';
-    const duongDung = isVatTu ? '' : (d.DUONG_DUNG || d.DUONG_DUNG_AX || '');
-    const maDuongDung = isVatTu ? '' : (d.MA_DUONG_DUNG || d.MA_DUONG_DUNG_AX || '');
+
+    // ĐƯỜNG DÙNG & MÃ ĐƯỜNG DÙNG:
+    // Vật tư y tế: Mặc định MA_DUONG_DUNG = '3.05', DUONG_DUNG = 'dùng ngoài' theo yêu cầu người dùng
+    let duongDung = d.DUONG_DUNG || d.DUONG_DUNG_AX || '';
+    if (typeof duongDung === 'string') duongDung = duongDung.trim();
+    if (isVatTu && !duongDung) {
+      duongDung = options.duongDungDefault || 'dùng ngoài';
+    }
+
+    let maDuongDung = d.MA_DUONG_DUNG || d.MA_DUONG_DUNG_AX || d.MA_DUONG_D || '';
+    if (typeof maDuongDung === 'string') maDuongDung = maDuongDung.trim();
+    if (isVatTu && !maDuongDung) {
+      maDuongDung = options.maDuongDungDefault || '3.05';
+    }
+
     const hangSx = d.HANG_SX || d.NHA_SX || '';
     const nuocSx = d.NUOC_SX || '';
     const giaThau = parseNumberVi(d.DON_GIA || d.DON_GIA_BH || 0);

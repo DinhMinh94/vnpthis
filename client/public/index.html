@@ -1442,19 +1442,107 @@
           </div>
 
           <!-- BỘ CHỌN TRẠM & CÁC NÚT TÁC VỤ -->
-          <div class="flex flex-wrap items-center gap-3">
-            <!-- Dropdown chọn trạm -->
-            <div class="flex flex-col">
-              <label class="text-[10px] font-bold uppercase tracking-wider text-teal-200 mb-1">Chọn Trạm Y tế thao tác:</label>
-              <select 
-                v-model="selectedHmisStationId" 
-                @change="loadHmisStationNhanVienData(selectedHmisStationId)"
-                class="bg-white text-slate-800 font-bold text-xs sm:text-sm rounded-xl px-3.5 py-2.5 border border-teal-300 shadow-md focus:ring-2 focus:ring-teal-400 focus:outline-none cursor-pointer max-w-xs"
+          <div class="flex flex-wrap items-end gap-2.5">
+            <!-- Bộ chọn trạm có tìm kiếm (Combobox) -->
+            <div class="flex flex-col relative w-full sm:w-80" id="hmis-station-combobox">
+              <label class="text-[10px] font-bold uppercase tracking-wider text-teal-200 mb-1 flex items-center justify-between">
+                <span>Chọn Trạm Y tế thao tác:</span>
+                <span class="text-[10px] text-teal-300 font-semibold">({{ stations.length }} trạm)</span>
+              </label>
+
+              <!-- Backdrop trong suốt đóng dropdown khi click ra ngoài -->
+              <div 
+                v-if="isHmisStationDropdownOpen" 
+                class="fixed inset-0 z-40" 
+                @click="isHmisStationDropdownOpen = false"
+              ></div>
+
+              <!-- Ô hiển thị trạm đang chọn & click để mở tìm kiếm -->
+              <div 
+                @click="isHmisStationDropdownOpen = !isHmisStationDropdownOpen; if(isHmisStationDropdownOpen) nextTick(() => { refreshIcons(); $refs.stationSearchInput?.focus(); })"
+                class="bg-white text-slate-800 font-bold text-xs sm:text-sm rounded-xl px-3.5 py-2.5 border border-teal-300 shadow-md flex items-center justify-between cursor-pointer hover:border-teal-400 select-none transition-all group z-40"
               >
-                <option v-for="s in stations" :key="s.id" :value="s.id">
-                  {{ s.code ? '[' + s.code + '] ' : '' }}{{ s.name }}
-                </option>
-              </select>
+                <div class="flex items-center space-x-2 truncate">
+                  <i data-lucide="building-2" class="w-4 h-4 text-teal-600 shrink-0"></i>
+                  <span class="truncate" :title="currentSelectedStationObj ? (currentSelectedStationObj.code ? '[' + currentSelectedStationObj.code + '] ' : '') + currentSelectedStationObj.name : 'Chọn trạm y tế...'">
+                    <span v-if="currentSelectedStationObj" class="text-teal-900">
+                      <span v-if="currentSelectedStationObj.code" class="font-mono text-teal-700">[{{ currentSelectedStationObj.code }}]</span>
+                      {{ currentSelectedStationObj.name }}
+                    </span>
+                    <span v-else class="text-slate-400 font-normal italic">
+                      -- Chọn hoặc gõ tìm trạm y tế --
+                    </span>
+                  </span>
+                </div>
+                <div class="flex items-center space-x-1 pl-1.5 shrink-0 text-slate-400 group-hover:text-teal-600">
+                  <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': isHmisStationDropdownOpen }"></i>
+                </div>
+              </div>
+
+              <!-- Floating Dropdown Panel tìm kiếm trạm -->
+              <div 
+                v-if="isHmisStationDropdownOpen" 
+                class="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-100 text-slate-800"
+                @click.stop
+              >
+                <!-- Thanh tìm kiếm trong dropdown -->
+                <div class="p-2.5 bg-slate-50 border-b border-slate-200">
+                  <div class="relative">
+                    <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5"></i>
+                    <input 
+                      type="text" 
+                      ref="stationSearchInput"
+                      v-model="hmisStationSearchQuery"
+                      placeholder="Tìm theo tên hoặc mã trạm (vd: 11010, Điện Biên...)" 
+                      class="w-full pl-8 pr-7 py-1.5 text-xs bg-white border border-teal-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none font-medium text-slate-800"
+                      @keydown.esc="isHmisStationDropdownOpen = false"
+                    >
+                    <button 
+                      v-if="hmisStationSearchQuery" 
+                      @click="hmisStationSearchQuery = ''" 
+                      class="absolute right-2.5 top-1.5 text-slate-400 hover:text-slate-600 text-xs cursor-pointer font-bold"
+                    >✕</button>
+                  </div>
+                  <div class="flex items-center justify-between mt-1.5 px-1 text-[10px] text-slate-500 font-semibold">
+                    <span>Tìm thấy: <strong class="text-teal-700">{{ filteredHmisSelectorStations.length }}</strong> / {{ stations.length }} trạm</span>
+                    <span class="text-slate-400 italic">Nhấp vào trạm để chọn</span>
+                  </div>
+                </div>
+
+                <!-- Danh sách kết quả trạm -->
+                <div class="max-h-64 overflow-y-auto divide-y divide-slate-100">
+                  <div 
+                    v-for="s in filteredHmisSelectorStations" 
+                    :key="'station-item-' + s.id"
+                    @click="selectHmisStationFromSearch(s)"
+                    class="px-3.5 py-2 text-xs flex items-center justify-between hover:bg-teal-50 cursor-pointer transition-colors"
+                    :class="s.id === selectedHmisStationId ? 'bg-teal-50/90 text-teal-900 font-bold border-l-4 border-l-teal-600' : 'text-slate-700'"
+                  >
+                    <div class="flex items-center space-x-2 min-w-0">
+                      <span class="font-mono text-[11px] px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 text-teal-700 shrink-0 font-bold">
+                        {{ s.code || 'N/A' }}
+                      </span>
+                      <span class="truncate">{{ s.name }}</span>
+                    </div>
+                    <i v-if="s.id === selectedHmisStationId" data-lucide="check" class="w-4 h-4 text-teal-600 shrink-0 ml-2"></i>
+                  </div>
+                  <div v-if="filteredHmisSelectorStations.length === 0" class="p-6 text-center text-slate-400 text-xs italic">
+                    Không tìm thấy trạm y tế nào khớp với từ khóa "{{ hmisStationSearchQuery }}"
+                  </div>
+                </div>
+
+                <!-- Footer của dropdown -->
+                <div class="p-2 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500">
+                  <span>Nhấn ESC để đóng</span>
+                  <button 
+                    type="button" 
+                    @click="isHmisStationDropdownOpen = false" 
+                    class="px-2 py-0.5 text-xs text-slate-600 hover:text-slate-800 font-bold cursor-pointer"
+                  >
+                    Đóng
+                  </button>
+                </div>
+              </div>
             </div>
 
             <!-- Nút Làm mới -->
@@ -1462,7 +1550,7 @@
               type="button" 
               @click="loadHmisStationNhanVienData(selectedHmisStationId)"
               :disabled="isLoadingHmisData"
-              class="px-4 py-2.5 bg-teal-600/80 hover:bg-teal-600 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center space-x-2 cursor-pointer border border-teal-400/50 mt-4 active:scale-95"
+              class="px-3.5 py-2.5 bg-teal-600/90 hover:bg-teal-600 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center space-x-1.5 cursor-pointer border border-teal-400/50 shrink-0"
               title="Tải lại danh sách nhân viên, nhóm quyền và chức danh từ HMIS"
             >
               <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingHmisData }"></i>
@@ -1473,10 +1561,10 @@
             <button 
               type="button" 
               @click="openBatchAssignHmisModal"
-              class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-extrabold text-xs rounded-xl shadow-lg transition-all flex items-center space-x-2 cursor-pointer mt-4 active:scale-95"
+              class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 active:scale-95 text-white font-black text-xs rounded-xl shadow-lg transition-all flex items-center space-x-1.5 cursor-pointer border border-amber-300/40 shrink-0"
               title="Phân công nhóm quyền và chức danh ký số cho nhiều trạm hoặc nhiều tài khoản cùng lúc"
             >
-              <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
+              <i data-lucide="zap" class="w-4 h-4 fill-current text-amber-200"></i>
               <span>PHÂN CÔNG HÀNG LOẠT</span>
             </button>
 
@@ -1484,7 +1572,7 @@
             <a 
               href="https://ytcs.hmis.vn/new/his/quantri-hethong/quanly-nhanvien" 
               target="_blank"
-              class="p-2.5 bg-white/15 hover:bg-white/25 text-white rounded-xl transition-colors mt-4" 
+              class="p-2.5 bg-white/15 hover:bg-white/25 text-white rounded-xl transition-colors shrink-0" 
               title="Mở trang Quản lý nhân viên trên cổng HMIS trong tab mới"
             >
               <i data-lucide="external-link" class="w-4 h-4"></i>
@@ -4877,34 +4965,60 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         <div class="p-5 sm:p-6 overflow-y-auto space-y-5 text-xs">
           <!-- Bước 1: Chọn trạm áp dụng -->
           <div class="space-y-2">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <label class="font-extrabold text-slate-800 text-xs uppercase flex items-center space-x-1.5">
+                <i data-lucide="building-2" class="w-4 h-4 text-teal-600"></i>
                 <span>1. Chọn các trạm Y tế áp dụng</span>
                 <span class="text-teal-700">({{ batchAssignParams.stationIds.length }} / {{ stations.length }} trạm đã chọn)</span>
               </label>
-              <div class="space-x-2">
+              <div class="flex items-center space-x-2">
+                <button 
+                  v-if="batchStationSearchQuery && filteredBatchStations.length > 0"
+                  type="button" 
+                  @click="selectAllFilteredBatchStations"
+                  class="text-[11px] font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200 px-2.5 py-0.5 rounded-lg cursor-pointer transition-colors"
+                >
+                  + Tích {{ filteredBatchStations.length }} trạm tìm thấy
+                </button>
                 <button 
                   type="button" 
                   @click="batchAssignParams.stationIds = stations.map(s => s.id)"
                   class="text-[11px] font-bold text-teal-700 hover:underline cursor-pointer"
                 >
-                  Chọn tất cả
+                  Chọn tất cả ({{ stations.length }})
                 </button>
                 <button 
                   type="button" 
                   @click="batchAssignParams.stationIds = []"
-                  class="text-[11px] font-bold text-slate-500 hover:underline cursor-pointer"
+                  class="text-[11px] font-bold text-rose-600 hover:underline cursor-pointer"
                 >
                   Bỏ chọn
                 </button>
               </div>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 bg-slate-50 border border-slate-200 rounded-2xl max-h-36 overflow-y-auto">
+            <!-- Ô tìm kiếm trạm trong modal phân công hàng loạt -->
+            <div class="relative">
+              <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5"></i>
+              <input 
+                type="text" 
+                v-model="batchStationSearchQuery" 
+                placeholder="🔍 Tìm kiếm theo tên hoặc mã trạm y tế (vd: 11010, Điện Biên, Mường Lạn...)" 
+                class="w-full pl-8 pr-7 py-2 text-xs bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none font-medium text-slate-800"
+              >
+              <button 
+                v-if="batchStationSearchQuery" 
+                @click="batchStationSearchQuery = ''" 
+                class="absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
+              >✕</button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-3 bg-slate-50 border border-slate-200 rounded-2xl max-h-48 overflow-y-auto">
               <label 
-                v-for="s in stations" 
+                v-for="s in filteredBatchStations" 
                 :key="'batch-s-' + s.id"
-                class="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-white transition-colors cursor-pointer"
+                class="flex items-center space-x-2 p-2 rounded-xl border transition-all cursor-pointer"
+                :class="batchAssignParams.stationIds.includes(s.id) ? 'bg-teal-50/90 border-teal-300 text-teal-950 font-bold shadow-2xs' : 'bg-white hover:bg-slate-100 border-slate-200 text-slate-800'"
               >
                 <input 
                   type="checkbox" 
@@ -4912,8 +5026,15 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                   v-model="batchAssignParams.stationIds"
                   class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
                 >
-                <span class="truncate font-medium text-slate-800">{{ s.code ? '[' + s.code + '] ' : '' }}{{ s.name }}</span>
+                <span class="truncate font-medium text-xs">
+                  <span v-if="s.code" class="font-mono text-teal-700">[{{ s.code }}]</span> 
+                  {{ s.name }}
+                </span>
               </label>
+
+              <div v-if="filteredBatchStations.length === 0" class="col-span-full p-4 text-center text-slate-400 italic">
+                Không có trạm y tế nào khớp với từ khóa tìm kiếm "{{ batchStationSearchQuery }}"
+              </div>
             </div>
           </div>
 
@@ -5222,6 +5343,9 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
 
         // TRẠNG THÁI CHO QUẢN LÝ & PHÂN CÔNG NHÂN VIÊN HMIS
         const selectedHmisStationId = ref('');
+        const hmisStationSearchQuery = ref('');
+        const isHmisStationDropdownOpen = ref(false);
+        const batchStationSearchQuery = ref('');
         const isLoadingHmisData = ref(false);
         const hmisStationInfo = ref(null);
         const hmisOfficers = ref([]);
@@ -7700,6 +7824,54 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           return (hmisSignTitles.value || []).filter(t => !assigned.includes(t.id));
         });
 
+        const filteredHmisSelectorStations = computed(() => {
+          const list = stations.value || [];
+          if (!hmisStationSearchQuery.value || !hmisStationSearchQuery.value.trim()) {
+            return list;
+          }
+          const q = hmisStationSearchQuery.value.trim().toLowerCase();
+          return list.filter(s => 
+            (s.name || '').toLowerCase().includes(q) ||
+            (s.code || '').toLowerCase().includes(q) ||
+            (s.username || '').toLowerCase().includes(q)
+          );
+        });
+
+        const currentSelectedStationObj = computed(() => {
+          return (stations.value || []).find(s => s.id === selectedHmisStationId.value);
+        });
+
+        function selectHmisStationFromSearch(s) {
+          selectedHmisStationId.value = s.id;
+          isHmisStationDropdownOpen.value = false;
+          hmisStationSearchQuery.value = '';
+          loadHmisStationNhanVienData(s.id);
+        }
+
+        const filteredBatchStations = computed(() => {
+          const list = stations.value || [];
+          if (!batchStationSearchQuery.value || !batchStationSearchQuery.value.trim()) {
+            return list;
+          }
+          const q = batchStationSearchQuery.value.trim().toLowerCase();
+          return list.filter(s => 
+            (s.name || '').toLowerCase().includes(q) ||
+            (s.code || '').toLowerCase().includes(q) ||
+            (s.username || '').toLowerCase().includes(q)
+          );
+        });
+
+        function selectAllFilteredBatchStations() {
+          const current = new Set(batchAssignParams.value.stationIds || []);
+          filteredBatchStations.value.forEach(s => current.add(s.id));
+          batchAssignParams.value.stationIds = Array.from(current);
+        }
+
+        function deselectAllFilteredBatchStations() {
+          const filteredIds = new Set(filteredBatchStations.value.map(s => s.id));
+          batchAssignParams.value.stationIds = (batchAssignParams.value.stationIds || []).filter(id => !filteredIds.has(id));
+        }
+
         const isAllHmisUsersSelected = computed(() => {
           if (!displayHmisUsers.value || displayHmisUsers.value.length === 0) return false;
           return displayHmisUsers.value.every(u => selectedHmisUserIds.value.includes(u.id));
@@ -8118,6 +8290,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         }
 
         function openBatchAssignHmisModal() {
+          batchStationSearchQuery.value = '';
           batchAssignParams.value = {
             stationIds: selectedHmisStationId.value ? [selectedHmisStationId.value] : stations.value.map(s => s.id),
             roleIdsToAdd: [],
@@ -8463,6 +8636,15 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           filteredSystemLogs,
           systemLogsStats,
           selectedHmisStationId,
+          hmisStationSearchQuery,
+          isHmisStationDropdownOpen,
+          filteredHmisSelectorStations,
+          currentSelectedStationObj,
+          selectHmisStationFromSearch,
+          batchStationSearchQuery,
+          filteredBatchStations,
+          selectAllFilteredBatchStations,
+          deselectAllFilteredBatchStations,
           isLoadingHmisData,
           hmisStationInfo,
           hmisOfficers,

@@ -2081,9 +2081,44 @@
                       </button>
                     </div>
 
+                    <!-- NÚT NHÓM CHỨC DANH (BỘ 13 CHỨC DANH CHUẨN) -->
+                    <div class="p-2.5 bg-gradient-to-r from-teal-50 via-emerald-50 to-cyan-50 border border-teal-200 rounded-xl space-y-1.5 shadow-2xs">
+                      <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center space-x-1.5 text-teal-900 font-extrabold text-xs">
+                          <i data-lucide="layers" class="w-4 h-4 text-teal-600"></i>
+                          <span>Nhóm chức danh chuẩn:</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                          <button 
+                            type="button"
+                            @click="addStandard13SignTitles"
+                            class="px-3 py-1.5 bg-gradient-to-r from-teal-600 via-emerald-600 to-cyan-700 hover:from-teal-700 hover:to-cyan-800 active:scale-95 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center space-x-1.5 cursor-pointer"
+                            title="Thêm nhanh toàn bộ 13 chức danh: Bác sĩ, Lập phiếu, Lập biểu, Kết luận, Bệnh án, Kế toán, Điều trị, Khám bệnh, Nhân viên, Sinh trắc, Trả/Đọc/Duyệt KQ"
+                          >
+                            <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-300 fill-current"></i>
+                            <span>⚡ Thêm nhanh 13 chức danh này</span>
+                          </button>
+
+                          <button 
+                            v-if="editingUserTitleIds.length > 0"
+                            type="button"
+                            @click="clearAllSignTitlesFromEditingUser"
+                            class="px-2 py-1.5 bg-white hover:bg-rose-50 text-slate-600 hover:text-rose-700 border border-slate-300 hover:border-rose-300 font-bold text-[10px] rounded-xl transition-colors flex items-center space-x-1 cursor-pointer"
+                            title="Xóa trắng tất cả chức danh đã gán cho tài khoản này"
+                          >
+                            <i data-lucide="trash-2" class="w-3 h-3"></i>
+                            <span>Xóa hết</span>
+                          </button>
+                        </div>
+                      </div>
+                      <p class="text-[10px] text-teal-800 leading-tight">
+                        Bao gồm: <span class="font-semibold">Bác sĩ (BAC_SI), Người lập phiếu, Người lập biểu, Người kết luận, BS lập bệnh án, Kế toán, BS điều trị, BS khám bệnh, Nhân viên, Sinh trắc (BENH_NHAN), Người trả KQ, Người đọc KQ, Người duyệt KQ</span>.
+                      </p>
+                    </div>
+
                     <!-- Gợi ý nhanh các chức danh quan trọng (Con dấu BHXH, EMR, Bác sĩ 19, 20...) -->
                     <div class="flex flex-wrap items-center gap-1.5 text-[10px]">
-                      <span class="text-slate-500 font-bold">Gán nhanh chức danh:</span>
+                      <span class="text-slate-500 font-bold">Gán lẻ thêm:</span>
                       
                       <!-- Con dấu gửi BHXH -->
                       <button 
@@ -4888,7 +4923,18 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
 
           <!-- Bước 4: Chức danh ký số cần gán thêm -->
           <div class="space-y-2">
-            <label class="font-extrabold text-slate-800 text-xs uppercase">4. Chức danh ký số cần gán thêm (Chọn để thêm vào chức danh hiện có)</label>
+            <div class="flex items-center justify-between">
+              <label class="font-extrabold text-slate-800 text-xs uppercase">4. Chức danh ký số cần gán thêm (Chọn để thêm vào chức danh hiện có)</label>
+              <button 
+                type="button" 
+                @click="selectBatchStandard13Titles"
+                class="px-2.5 py-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-[11px] rounded-lg shadow-2xs transition-colors flex items-center space-x-1 cursor-pointer"
+                title="Chọn nhanh toàn bộ 13 chức danh chuẩn trong danh sách"
+              >
+                <i data-lucide="zap" class="w-3 h-3 text-amber-300"></i>
+                <span>⚡ Chọn nhóm 13 chức danh chuẩn</span>
+              </button>
+            </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 bg-teal-50/50 border border-teal-200 rounded-2xl max-h-44 overflow-y-auto">
               <label 
                 v-for="t in hmisSignTitles" 
@@ -7785,6 +7831,75 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           nextTick(() => refreshIcons());
         }
 
+        // BỘ 13 CHỨC DANH KÝ SỐ CHUẨN CỦA TRẠM Y TẾ (THEO YÊU CẦU NGƯỜI DÙNG)
+        const STANDARD_13_SIGN_TITLES = [
+          'BAC_SI',
+          'NGUOI_LAP_PHIEU',
+          'NGUOI_LAP_BIEU',
+          'NGUOI_KET_LUAN',
+          'BS_LAP_BENHAN',
+          'KE_TOAN',
+          'BS_DIEU_TRI',
+          'BACSI_KHAM',
+          'NHAN_VIEN',
+          'BENH_NHAN',
+          'NGUOI_TRA_KET_QUA',
+          'NGUOI_DOC_KET_QUA',
+          'NGUOI_DUYET_KET_QUA'
+        ];
+
+        function isTitleInStandard13(title) {
+          if (!title) return false;
+          const code = String(title.titleCode || '').toUpperCase().trim();
+          if (STANDARD_13_SIGN_TITLES.includes(code)) return true;
+          const name = String(title.titleName || '').toLowerCase().trim();
+          if (name.includes('bác sĩ lập bệnh án') || name.includes('bác sĩ điều trị') || name.includes('bác sĩ khám bệnh')) return true;
+          if (name === 'bác sĩ' || name === 'người lập phiếu' || name === 'người lập biểu' || name === 'người kết luận') return true;
+          if (name === 'kế toán' || name === 'nhân viên' || name.includes('sinh trắc') || name.includes('trả kết quả') || name.includes('đọc kết quả') || name.includes('duyệt kết quả')) return true;
+          return false;
+        }
+
+        function addStandard13SignTitles() {
+          if (!isEditingHmisUser.value) {
+            isEditingHmisUser.value = true;
+          }
+          let addedCount = 0;
+          (hmisSignTitles.value || []).forEach(t => {
+            if (isTitleInStandard13(t)) {
+              if (!editingUserTitleIds.value.includes(t.id)) {
+                editingUserTitleIds.value.push(t.id);
+                addedCount++;
+              }
+            }
+          });
+          if (addedCount > 0) {
+            showToast(`Đã thêm nhanh ${addedCount} chức danh trong nhóm 13 chức danh chuẩn!`, 'success');
+          } else {
+            showToast('Tài khoản đã có đầy đủ 13 chức danh trong nhóm chuẩn này rồi!', 'info');
+          }
+          nextTick(() => refreshIcons());
+        }
+
+        function clearAllSignTitlesFromEditingUser() {
+          if (!isEditingHmisUser.value) {
+            isEditingHmisUser.value = true;
+          }
+          editingUserTitleIds.value = [];
+          showToast('Đã xóa hết chức danh ký số của tài khoản (nhấn Lưu để cập nhật lên cổng)!', 'info');
+          nextTick(() => refreshIcons());
+        }
+
+        function selectBatchStandard13Titles() {
+          const current = batchAssignParams.value.signTitleIdsToAdd || [];
+          const matched = (hmisSignTitles.value || [])
+            .filter(t => isTitleInStandard13(t))
+            .map(t => t.id);
+
+          batchAssignParams.value.signTitleIdsToAdd = [...new Set([...current, ...matched])];
+          showToast(`Đã chọn nhanh ${matched.length} chức danh chuẩn trong danh sách!`, 'success');
+          nextTick(() => refreshIcons());
+        }
+
         async function saveHmisUserPhanCong(specificPart = 'all') {
           if (!isEditingHmisUser.value) return;
           if (!editingUser.value.id) {
@@ -8240,6 +8355,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           removeRoleFromEditingUser,
           addTitleToEditingUser,
           removeTitleFromEditingUser,
+          addStandard13SignTitles,
+          clearAllSignTitlesFromEditingUser,
+          selectBatchStandard13Titles,
           saveHmisUserPhanCong,
           openNhanVienHmisTab,
           openBatchAssignHmisModal,

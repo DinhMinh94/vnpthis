@@ -46,7 +46,7 @@ async function getStationNhanVienData(stationId) {
       timeout: 20000,
       validateStatus: () => true
     }),
-    axios.get(`${auth.gateway}common/admuser/search?filter=id!=0&page=0&size=500&sort=id,desc`, {
+    axios.get(`${auth.gateway}common/admuser/search?filter=id!=0&page=0&size=500&sort=id,asc`, {
       headers,
       timeout: 20000,
       validateStatus: () => true
@@ -61,11 +61,26 @@ async function getStationNhanVienData(stationId) {
   // Ghép tài khoản vào nhân viên tương ứng
   const userMap = {};
   rawUsers.forEach(u => {
-    const offId = u.officer?.id;
+    const offId = u.officer?.id || u.officerId;
     if (offId) {
       if (!userMap[offId]) userMap[offId] = [];
       userMap[offId].push(u);
     }
+  });
+
+  // Bản đồ thứ tự nhân viên để sắp xếp tài khoản theo đúng 1:1 với danh sách nhân viên
+  const officerOrderMap = new Map();
+  officers.forEach((o, index) => {
+    officerOrderMap.set(o.id, index);
+  });
+
+  rawUsers.sort((a, b) => {
+    const offIdA = a.officer?.id || a.officerId;
+    const offIdB = b.officer?.id || b.officerId;
+    const orderA = offIdA && officerOrderMap.has(offIdA) ? officerOrderMap.get(offIdA) : 9999;
+    const orderB = offIdB && officerOrderMap.has(offIdB) ? officerOrderMap.get(offIdB) : 9999;
+    if (orderA !== orderB) return orderA - orderB;
+    return (a.id || 0) - (b.id || 0);
   });
 
   const enrichedOfficers = officers.map(o => ({
@@ -201,28 +216,32 @@ async function updateUserPhanCong(stationId, userId, updateData) {
     const newRolesCount = roleIds.length;
     const newTitlesCount = signTitleIds.length;
 
-    logService.logAction({
-      actionType: 'phancong_nhanvien',
-      actionTitle: `Phân công tài khoản ${payload.username} (${station.name})`,
-      summary: `Đã cập nhật phân công cho tài khoản ${payload.username}: ${newRolesCount} nhóm quyền, ${newTitlesCount} chức danh ký số`,
-      sourceType: 'user_action',
-      totalStations: 1,
-      successCount: 1,
-      failedCount: 0,
-      oldValue: `Nhóm quyền cũ: [${oldRolesStr}] | Chức danh cũ: [${oldTitlesStr}]`,
-      newValue: `Nhóm quyền mới: [${roleIds.join(', ')}] | Chức danh mới: [${signTitleIds.join(', ')}]`,
-      details: [
-        {
-          stationId: station.id,
-          stationCode: station.code,
-          stationName: station.name,
-          username: payload.username,
-          officerName: payload.fullName,
-          status: 'success',
-          message: updateRes.data?.message || 'Cập nhật thành công!'
-        }
-      ]
-    });
+    try {
+      logService.logAction({
+        actionType: 'phancong_nhanvien',
+        actionTitle: `Phân công tài khoản ${payload.username} (${station.name})`,
+        summary: `Đã cập nhật phân công cho tài khoản ${payload.username}: ${newRolesCount} nhóm quyền, ${newTitlesCount} chức danh ký số`,
+        sourceType: 'user_action',
+        totalStations: 1,
+        successCount: 1,
+        failedCount: 0,
+        oldValue: `Nhóm quyền cũ: [${oldRolesStr}] | Chức danh cũ: [${oldTitlesStr}]`,
+        newValue: `Nhóm quyền mới: [${roleIds.join(', ')}] | Chức danh mới: [${signTitleIds.join(', ')}]`,
+        details: [
+          {
+            stationId: station.id,
+            stationCode: station.code,
+            stationName: station.name,
+            username: payload.username,
+            officerName: payload.fullName,
+            status: 'success',
+            message: updateRes.data?.message || 'Cập nhật thành công!'
+          }
+        ]
+      });
+    } catch (errLog) {
+      console.warn('Lỗi ghi log phân công:', errLog.message);
+    }
 
     return {
       success: true,
@@ -384,18 +403,22 @@ async function batchAssignNhanVien(batchParams) {
   }
 
   // Ghi log hệ thống
-  logService.logAction({
-    actionType: 'phancong_nhanvien_batch',
-    actionTitle: `Phân công hàng loạt cho ${stationIds.length} trạm (${totalUpdated} tài khoản thành công)`,
-    summary: `Đã phân công ${roleIdsToAdd.length} nhóm quyền và ${signTitleIdsToAdd.length} chức danh ký số cho ${totalUpdated} tài khoản trên ${stationIds.length} trạm`,
-    sourceType: 'user_action',
-    totalStations: stationIds.length,
-    successCount: totalUpdated,
-    failedCount: totalErrors,
-    oldValue: 'Phân công cũ',
-    newValue: `Gán thêm nhóm: [${roleIdsToAdd.join(', ')}] | Gán thêm chức danh: [${signTitleIdsToAdd.join(', ')}]`,
-    details: results
-  });
+  try {
+    logService.logAction({
+      actionType: 'phancong_nhanvien_batch',
+      actionTitle: `Phân công hàng loạt cho ${stationIds.length} trạm (${totalUpdated} tài khoản thành công)`,
+      summary: `Đã phân công ${roleIdsToAdd.length} nhóm quyền và ${signTitleIdsToAdd.length} chức danh ký số cho ${totalUpdated} tài khoản trên ${stationIds.length} trạm`,
+      sourceType: 'user_action',
+      totalStations: stationIds.length,
+      successCount: totalUpdated,
+      failedCount: totalErrors,
+      oldValue: 'Phân công cũ',
+      newValue: `Gán thêm nhóm: [${roleIdsToAdd.join(', ')}] | Gán thêm chức danh: [${signTitleIdsToAdd.join(', ')}]`,
+      details: results
+    });
+  } catch (errLog) {
+    console.warn('Lỗi ghi log phân công hàng loạt:', errLog.message);
+  }
 
   return {
     success: true,
@@ -542,17 +565,21 @@ async function updateMultipleUsersPhanCong(stationId, userIds, updateData = {}, 
   const partTitle = specificPart === 'roles'
     ? 'Nhóm người dùng'
     : (specificPart === 'titles' ? 'Chức danh ký số' : 'Thông tin phân công');
-  logService.logAction({
-    actionType: 'phancong_nhanvien_multiple',
-    actionTitle: `Cập nhật ${partTitle} cho ${userIds.length} tài khoản (${station.name})`,
-    summary: `Đã cập nhật ${partTitle} cho ${successCount}/${userIds.length} tài khoản thành công tại trạm ${station.name}`,
-    sourceType: 'user_action',
-    totalStations: 1,
-    successCount,
-    failedCount: failCount,
-    newValue: `Nhóm quyền: [${(updateData.roleIds || []).join(', ')}] | Chức danh: [${(updateData.signTitleIds || []).join(', ')}]`,
-    details: results
-  });
+  try {
+    logService.logAction({
+      actionType: 'phancong_nhanvien_multiple',
+      actionTitle: `Cập nhật ${partTitle} cho ${userIds.length} tài khoản (${station.name})`,
+      summary: `Đã cập nhật ${partTitle} cho ${successCount}/${userIds.length} tài khoản thành công tại trạm ${station.name}`,
+      sourceType: 'user_action',
+      totalStations: 1,
+      successCount,
+      failedCount: failCount,
+      newValue: `Nhóm quyền: [${(updateData.roleIds || []).join(', ')}] | Chức danh: [${(updateData.signTitleIds || []).join(', ')}]`,
+      details: results
+    });
+  } catch (errLog) {
+    console.warn('Lỗi ghi log cập nhật nhiều tài khoản:', errLog.message);
+  }
 
   return {
     success: successCount > 0,

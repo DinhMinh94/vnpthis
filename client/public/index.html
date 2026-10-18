@@ -1646,9 +1646,27 @@
                 <i data-lucide="contact" class="w-5 h-5 text-teal-600"></i>
                 <h3 class="font-extrabold text-sm sm:text-base text-slate-800 uppercase tracking-wide">DANH SÁCH NHÂN VIÊN</h3>
               </div>
-              <span class="bg-teal-50 text-teal-800 text-xs font-bold px-2.5 py-0.5 rounded-full border border-teal-200">
-                {{ filteredHmisOfficers.length }} / {{ hmisOfficers.length }} NV
-              </span>
+              <div class="flex items-center space-x-2">
+                <!-- Badge số lượng nhân viên đã tích -->
+                <span 
+                  v-if="selectedHmisOfficerIds.length > 0"
+                  class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[11px] font-extrabold rounded-md border border-amber-300 shadow-2xs"
+                >
+                  Đã tích: {{ selectedHmisOfficerIds.length }} NV
+                </span>
+                <button 
+                  v-if="selectedHmisOfficerIds.length > 0"
+                  type="button" 
+                  @click="selectedHmisOfficerIds = []; selectedHmisUserIds = []; isEditingHmisUser = false;"
+                  class="px-2 py-0.5 bg-white hover:bg-rose-50 text-rose-600 hover:text-rose-700 border border-slate-300 hover:border-rose-300 rounded text-[11px] font-semibold cursor-pointer transition-colors"
+                  title="Bỏ tích chọn tất cả nhân viên"
+                >
+                  Bỏ tích
+                </button>
+                <span class="bg-teal-50 text-teal-800 text-xs font-bold px-2.5 py-0.5 rounded-full border border-teal-200">
+                  {{ filteredHmisOfficers.length }} / {{ hmisOfficers.length }} NV
+                </span>
+              </div>
             </div>
 
             <!-- Ô tìm kiếm nhân viên -->
@@ -1662,8 +1680,8 @@
               >
             </div>
 
-            <!-- Lọc loại nhân viên -->
-            <div class="flex flex-wrap gap-1.5 text-[11px]">
+            <!-- Lọc loại nhân viên & Nút tích chọn nhanh -->
+            <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
               <button 
                 type="button" 
                 @click="hmisOfficerTypeFilter = 'all'"
@@ -1696,13 +1714,33 @@
               >
                 Kho thuốc / Dược
               </button>
+              <button 
+                v-if="filteredHmisOfficers.length > 0"
+                type="button" 
+                @click="toggleSelectFilteredHmisOfficers"
+                class="px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer border shadow-2xs ml-auto"
+                :class="isAllHmisOfficersSelected ? 'bg-amber-500 text-white border-amber-600' : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border-amber-300'"
+                :title="isAllHmisOfficersSelected ? 'Bỏ tích toàn bộ danh sách này' : 'Tích chọn tất cả ' + filteredHmisOfficers.length + ' nhân viên đang lọc'"
+              >
+                {{ isAllHmisOfficersSelected ? '✓ Đã tích (' + filteredHmisOfficers.length + ')' : '+ Tích DS này (' + filteredHmisOfficers.length + ')' }}
+              </button>
             </div>
 
-            <!-- Bảng danh sách nhân viên (chuẩn HMIS) -->
+            <!-- Bảng danh sách nhân viên (chuẩn HMIS) có tích chọn -->
             <div class="border border-slate-200 rounded-2xl overflow-hidden max-h-[550px] overflow-y-auto">
               <table class="w-full text-xs text-left">
                 <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200">
                   <tr>
+                    <th class="p-2.5 w-10 text-center">
+                      <label class="inline-flex items-center justify-center cursor-pointer select-none" title="Tích chọn tất cả nhân viên">
+                        <input 
+                          type="checkbox" 
+                          :checked="isAllHmisOfficersSelected" 
+                          @change="toggleSelectAllHmisOfficers"
+                          class="rounded text-amber-600 focus:ring-amber-500 w-4 h-4 cursor-pointer"
+                        >
+                      </label>
+                    </th>
                     <th class="p-2.5 w-10 text-center">STT</th>
                     <th class="p-2.5 font-mono">Mã NV</th>
                     <th class="p-2.5 font-mono">Mã bác sĩ</th>
@@ -1717,8 +1755,17 @@
                     :key="off.id"
                     @click="selectHmisOfficer(off)"
                     class="cursor-pointer transition-colors"
-                    :class="selectedHmisOfficer && selectedHmisOfficer.id === off.id ? 'bg-amber-100/90 font-bold border-l-4 border-l-amber-500 shadow-xs' : 'hover:bg-slate-50'"
+                    :class="selectedHmisOfficerIds.includes(off.id) ? 'bg-amber-100/90 font-bold border-l-4 border-l-amber-500 shadow-xs' : (selectedHmisOfficer && selectedHmisOfficer.id === off.id ? 'bg-amber-50/70 font-bold border-l-2 border-l-amber-400' : 'hover:bg-slate-50')"
                   >
+                    <td class="p-2 text-center" @click.stop>
+                      <input 
+                        type="checkbox" 
+                        :checked="selectedHmisOfficerIds.includes(off.id)" 
+                        @change="toggleSelectHmisOfficer(off)"
+                        class="rounded text-amber-600 focus:ring-amber-500 w-4 h-4 cursor-pointer"
+                        :title="selectedHmisOfficerIds.includes(off.id) ? 'Bỏ tích nhân viên ' + off.officerName : 'Tích chọn nhân viên ' + off.officerName"
+                      >
+                    </td>
                     <td class="p-2 text-center text-slate-400 font-mono">{{ idx + 1 }}</td>
                     <td class="p-2 font-mono text-slate-700 font-semibold truncate max-w-[90px]" :title="off.officerCode">{{ off.officerCode }}</td>
                     <td class="p-2 font-mono text-indigo-700 truncate max-w-[100px]" :title="off.maBacSi">{{ off.maBacSi || '-' }}</td>
@@ -1739,7 +1786,7 @@
                     </td>
                   </tr>
                   <tr v-if="filteredHmisOfficers.length === 0">
-                    <td colspan="6" class="p-6 text-center text-slate-400">
+                    <td colspan="7" class="p-6 text-center text-slate-400">
                       Không tìm thấy nhân viên phù hợp
                     </td>
                   </tr>
@@ -2340,8 +2387,19 @@
                   </div>
                 </div>
 
-                <!-- Bảng tài khoản -->
-                <div class="border border-slate-200 rounded-2xl overflow-hidden overflow-x-auto max-h-[300px]">
+                <!-- Ô tìm kiếm tài khoản / nhân viên trong bảng tài khoản -->
+                <div class="relative">
+                  <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5"></i>
+                  <input 
+                    v-model="hmisUserSearch" 
+                    type="text" 
+                    placeholder="Tìm kiếm theo tài khoản hoặc tên nhân viên trong bảng..."
+                    class="w-full pl-8 pr-3 py-1.5 border border-slate-200 rounded-xl text-xs text-slate-800 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50/60 focus:bg-white"
+                  >
+                </div>
+
+                <!-- Bảng tài khoản (chiều cao 550px đồng bộ với bảng nhân viên) -->
+                <div class="border border-slate-200 rounded-2xl overflow-hidden overflow-x-auto max-h-[550px] overflow-y-auto">
                   <table class="w-full text-xs text-left">
                     <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200">
                       <tr>
@@ -2368,23 +2426,35 @@
                       <tr 
                         v-for="(u, idx) in displayHmisUsers" 
                         :key="u.id"
+                        :id="'hmis-user-row-' + u.id"
                         @click="onHmisUserRowClick(u)"
                         class="cursor-pointer transition-colors"
-                        :class="selectedHmisUserIds.includes(u.id) ? 'bg-teal-50/90 font-bold border-l-4 border-l-teal-600' : (editingUser.id === u.id ? 'bg-slate-100 font-bold' : 'hover:bg-slate-50')"
+                        :class="[
+                          selectedHmisUserIds.includes(u.id) ? 'bg-teal-50/90 font-bold border-l-4 border-l-teal-600' : (editingUser.id === u.id ? 'bg-amber-50/90 font-bold border-l-4 border-l-amber-500' : 'hover:bg-slate-50'),
+                          u.noAccount ? 'opacity-80 bg-slate-50/70' : ''
+                        ]"
                       >
                         <td class="p-2 text-center text-slate-400 font-mono">{{ idx + 1 }}</td>
-                        <td class="p-2 font-mono font-bold text-teal-800">{{ u.username }}</td>
+                        <td class="p-2 font-mono font-bold text-teal-800">
+                          <span v-if="!u.noAccount">{{ u.username }}</span>
+                          <span v-else class="text-slate-400 italic font-normal text-[11px]">(Chưa tạo tài khoản)</span>
+                        </td>
                         <td class="p-2 font-medium text-slate-800">{{ u.fullName || u.officer?.officerName || '-' }}</td>
                         <td class="p-2 text-slate-600">
-                          <span class="bg-slate-100 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                          <span v-if="!u.noAccount" class="bg-slate-100 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
                             {{ u.userLevel === 1 ? 'Quản trị HT' : 'Nghiệp vụ' }}
                           </span>
+                          <span v-else class="text-slate-400">-</span>
                         </td>
                         <td class="p-2 text-slate-600">
-                          {{ u.userType === 1 ? 'Quản trị' : 'Người dùng' }}
+                          <span v-if="!u.noAccount">{{ u.userType === 1 ? 'Quản trị' : 'Người dùng' }}</span>
+                          <span v-else class="text-slate-400">-</span>
                         </td>
                         <td class="p-2 text-center">
-                          <span v-if="u.status === 1" class="text-emerald-600" title="Đang hoạt động">
+                          <span v-if="u.noAccount" class="px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-semibold" title="Nhân viên chưa có tài khoản trên HMIS">
+                            Chưa có TK
+                          </span>
+                          <span v-else-if="u.status === 1" class="text-emerald-600" title="Đang hoạt động">
                             <i data-lucide="check-circle-2" class="w-4 h-4 inline-block"></i>
                           </span>
                           <span v-else class="text-slate-400" title="Khóa">
@@ -2393,12 +2463,14 @@
                         </td>
                         <td class="p-2 text-center" @click.stop>
                           <input 
+                            v-if="!u.noAccount"
                             type="checkbox" 
                             :checked="selectedHmisUserIds.includes(u.id)"
                             @change="toggleSelectHmisUser(u)"
                             class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
                             :title="selectedHmisUserIds.includes(u.id) ? 'Bỏ tích tài khoản ' + u.username : 'Tích chọn để sửa tài khoản ' + u.username"
                           >
+                          <span v-else class="text-slate-300 text-xs select-none" title="Nhân viên chưa có tài khoản trên HMIS">-</span>
                         </td>
                       </tr>
                       <tr v-if="displayHmisUsers.length === 0">
@@ -5353,6 +5425,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const hmisSignTitles = ref([]);
         const hmisUsers = ref([]);
         const selectedHmisUserIds = ref([]);
+        const selectedHmisOfficerIds = ref([]);
         const selectedHmisOfficer = ref(null);
         const selectedHmisUser = ref(null);
         const isEditingHmisUser = ref(false);
@@ -7801,14 +7874,72 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         });
 
         const displayHmisUsers = computed(() => {
-          let list = hmisUserScope.value === 'officer' 
-            ? currentOfficerAccounts.value 
-            : (hmisUsers.value || []);
+          // Xây dựng bản đồ thứ tự theo danh sách nhân viên để hiển thị đồng bộ 1:1
+          const officerIndexMap = new Map();
+          (hmisOfficers.value || []).forEach((off, idx) => {
+            officerIndexMap.set(off.id, idx);
+            if (off.officerCode) officerIndexMap.set(off.officerCode, idx);
+          });
+
+          let list = [];
+          if (hmisUserScope.value === 'officer') {
+            list = [...currentOfficerAccounts.value];
+            // Nếu nhân viên đang chọn chưa có tài khoản, hiển thị thông tin để không bị thiếu nhân viên
+            if (list.length === 0 && selectedHmisOfficer.value) {
+              list.push({
+                id: 'no_acc_' + selectedHmisOfficer.value.id,
+                username: '(Chưa tạo tài khoản)',
+                fullName: selectedHmisOfficer.value.officerName,
+                officer: selectedHmisOfficer.value,
+                officerId: selectedHmisOfficer.value.id,
+                noAccount: true,
+                status: 0
+              });
+            }
+          } else {
+            // Hiển thị tất cả: Đảm bảo không thiếu bất kỳ nhân viên nào trong trạm
+            const existingUserOfficerIds = new Set();
+            (hmisUsers.value || []).forEach(u => {
+              const offId = u.officer?.id || u.officerId;
+              if (offId) existingUserOfficerIds.add(offId);
+            });
+
+            list = [...(hmisUsers.value || [])];
+
+            // Bổ sung các nhân viên chưa có tài khoản để đảm bảo đầy đủ 100% nhân sự trạm
+            (hmisOfficers.value || []).forEach(off => {
+              if (!existingUserOfficerIds.has(off.id) && off.accountsCount === 0) {
+                list.push({
+                  id: 'no_acc_' + off.id,
+                  username: '(Chưa tạo tài khoản)',
+                  fullName: off.officerName,
+                  officer: off,
+                  officerId: off.id,
+                  noAccount: true,
+                  status: 0
+                });
+              }
+            });
+
+            // Sắp xếp thứ tự danh sách tài khoản theo đúng 1:1 thứ tự của bảng nhân viên bên trái
+            list.sort((a, b) => {
+              const offIdA = a.officer?.id || a.officerId;
+              const offIdB = b.officer?.id || b.officerId;
+              const idxA = offIdA && officerIndexMap.has(offIdA) ? officerIndexMap.get(offIdA) : 9999;
+              const idxB = offIdB && officerIndexMap.has(offIdB) ? officerIndexMap.get(offIdB) : 9999;
+              if (idxA !== idxB) return idxA - idxB;
+              return (a.username || '').localeCompare(b.username || '');
+            });
+          }
+
+          // Lọc theo ô tìm kiếm tài khoản / tên nhân viên
           if (hmisUserSearch.value && hmisUserSearch.value.trim()) {
             const q = hmisUserSearch.value.trim().toLowerCase();
             list = list.filter(u => 
               (u.username || '').toLowerCase().includes(q) ||
-              (u.fullName || '').toLowerCase().includes(q)
+              (u.fullName || '').toLowerCase().includes(q) ||
+              (u.officer?.officerName || '').toLowerCase().includes(q) ||
+              (u.officer?.officerCode || '').toLowerCase().includes(q)
             );
           }
           return list;
@@ -7872,20 +8003,131 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           batchAssignParams.value.stationIds = (batchAssignParams.value.stationIds || []).filter(id => !filteredIds.has(id));
         }
 
+        // =========================================================================
+        // TÍCH CHỌN NHÂN VIÊN & TÀI KHOẢN (ĐỒNG BỘ 2 CHIỀU)
+        // =========================================================================
+        const isAllHmisOfficersSelected = computed(() => {
+          if (!filteredHmisOfficers.value || filteredHmisOfficers.value.length === 0) return false;
+          return filteredHmisOfficers.value.every(off => selectedHmisOfficerIds.value.includes(off.id));
+        });
+
+        function toggleSelectFilteredHmisOfficers() {
+          const allFilteredSelected = filteredHmisOfficers.value.length > 0 && 
+            filteredHmisOfficers.value.every(off => selectedHmisOfficerIds.value.includes(off.id));
+          
+          if (allFilteredSelected) {
+            // Bỏ chọn các nhân viên đang hiển thị
+            const filteredIds = new Set(filteredHmisOfficers.value.map(o => o.id));
+            selectedHmisOfficerIds.value = selectedHmisOfficerIds.value.filter(id => !filteredIds.has(id));
+            
+            // Bỏ chọn các tài khoản tương ứng
+            const userIdsToRemove = new Set();
+            filteredHmisOfficers.value.forEach(off => {
+              (off.accounts || []).forEach(a => userIdsToRemove.add(a.id));
+              (hmisUsers.value || []).filter(u => u.officer?.id === off.id || u.officerId === off.id).forEach(u => userIdsToRemove.add(u.id));
+            });
+            selectedHmisUserIds.value = selectedHmisUserIds.value.filter(id => !userIdsToRemove.has(id));
+            if (selectedHmisUserIds.value.length === 0) {
+              isEditingHmisUser.value = false;
+            }
+          } else {
+            // Tích chọn toàn bộ nhân viên đang lọc
+            const offIds = new Set(selectedHmisOfficerIds.value);
+            const userIds = new Set(selectedHmisUserIds.value);
+            let firstUser = null;
+
+            filteredHmisOfficers.value.forEach(off => {
+              offIds.add(off.id);
+              const accs = (off.accounts || []).concat((hmisUsers.value || []).filter(u => u.officer?.id === off.id || u.officerId === off.id));
+              accs.forEach(a => {
+                if (a.id && !a.noAccount) {
+                  userIds.add(a.id);
+                  if (!firstUser) firstUser = a;
+                }
+              });
+            });
+
+            selectedHmisOfficerIds.value = Array.from(offIds);
+            selectedHmisUserIds.value = Array.from(userIds);
+            if (userIds.size > 0) {
+              isEditingHmisUser.value = true;
+              if (firstUser) {
+                selectHmisUser(firstUser).then(() => {
+                  isEditingHmisUser.value = true;
+                });
+              }
+            }
+          }
+          nextTick(() => refreshIcons());
+        }
+
+        function toggleSelectAllHmisOfficers() {
+          toggleSelectFilteredHmisOfficers();
+        }
+
+        function toggleSelectHmisOfficer(off) {
+          if (!off || !off.id) return;
+          const offIdx = selectedHmisOfficerIds.value.indexOf(off.id);
+          const accs = (off.accounts || []).concat((hmisUsers.value || []).filter(u => u.officer?.id === off.id || u.officerId === off.id));
+          const validAccs = accs.filter(a => a.id && !a.noAccount);
+          const uniqueAccIds = Array.from(new Set(validAccs.map(a => a.id)));
+
+          if (offIdx > -1) {
+            // Bỏ tích nhân viên
+            selectedHmisOfficerIds.value.splice(offIdx, 1);
+            // Bỏ tích các tài khoản của nhân viên này
+            selectedHmisUserIds.value = selectedHmisUserIds.value.filter(id => !uniqueAccIds.includes(id));
+            if (selectedHmisUserIds.value.length === 0) {
+              isEditingHmisUser.value = false;
+            }
+          } else {
+            // Tích chọn nhân viên
+            selectedHmisOfficerIds.value.push(off.id);
+            selectedHmisOfficer.value = off;
+            // Tích chọn luôn các tài khoản của nhân viên này
+            uniqueAccIds.forEach(id => {
+              if (!selectedHmisUserIds.value.includes(id)) {
+                selectedHmisUserIds.value.push(id);
+              }
+            });
+
+            if (validAccs.length > 0) {
+              selectHmisUser(validAccs[0]).then(() => {
+                isEditingHmisUser.value = true;
+              });
+            } else {
+              showToast(`Nhân viên ${off.officerName} chưa có tài khoản trên HMIS`, 'info');
+            }
+          }
+          nextTick(() => refreshIcons());
+        }
+
         const isAllHmisUsersSelected = computed(() => {
-          if (!displayHmisUsers.value || displayHmisUsers.value.length === 0) return false;
-          return displayHmisUsers.value.every(u => selectedHmisUserIds.value.includes(u.id));
+          const validUsers = (displayHmisUsers.value || []).filter(u => !u.noAccount && u.id);
+          if (validUsers.length === 0) return false;
+          return validUsers.every(u => selectedHmisUserIds.value.includes(u.id));
         });
 
         function toggleSelectAllHmisUsers() {
           if (isAllHmisUsersSelected.value) {
             selectedHmisUserIds.value = [];
+            selectedHmisOfficerIds.value = [];
             isEditingHmisUser.value = false;
           } else {
-            selectedHmisUserIds.value = displayHmisUsers.value.map(u => u.id);
+            const validUsers = displayHmisUsers.value.filter(u => !u.noAccount && u.id);
+            selectedHmisUserIds.value = validUsers.map(u => u.id);
+            
+            // Đồng bộ sang các nhân viên tương ứng
+            const offIds = new Set();
+            validUsers.forEach(u => {
+              const offId = u.officer?.id || u.officerId;
+              if (offId) offIds.add(offId);
+            });
+            selectedHmisOfficerIds.value = Array.from(offIds);
+
             isEditingHmisUser.value = true;
-            if (displayHmisUsers.value.length > 0 && (!editingUser.value.id || !selectedHmisUserIds.value.includes(editingUser.value.id))) {
-              selectHmisUser(displayHmisUsers.value[0]).then(() => {
+            if (validUsers.length > 0 && (!editingUser.value.id || !selectedHmisUserIds.value.includes(editingUser.value.id))) {
+              selectHmisUser(validUsers[0]).then(() => {
                 isEditingHmisUser.value = true;
               });
             }
@@ -7894,14 +8136,32 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         }
 
         function toggleSelectHmisUser(u) {
+          if (!u || !u.id || u.noAccount) return;
           const idx = selectedHmisUserIds.value.indexOf(u.id);
+          const offId = u.officer?.id || u.officerId;
+
           if (idx > -1) {
             selectedHmisUserIds.value.splice(idx, 1);
+            if (offId) {
+              // Kiểm tra xem còn tài khoản nào của nhân viên này được tích không
+              const remainingForOfficer = selectedHmisUserIds.value.some(id => {
+                const other = (hmisUsers.value || []).find(x => x.id === id);
+                return other && (other.officer?.id === offId || other.officerId === offId);
+              });
+              if (!remainingForOfficer) {
+                selectedHmisOfficerIds.value = selectedHmisOfficerIds.value.filter(id => id !== offId);
+              }
+            }
             if (selectedHmisUserIds.value.length === 0) {
               isEditingHmisUser.value = false;
             }
           } else {
             selectedHmisUserIds.value.push(u.id);
+            if (offId && !selectedHmisOfficerIds.value.includes(offId)) {
+              selectedHmisOfficerIds.value.push(offId);
+              const matchedOff = (hmisOfficers.value || []).find(o => o.id === offId);
+              if (matchedOff) selectedHmisOfficer.value = matchedOff;
+            }
             if (!isEditingHmisUser.value || selectedHmisUserIds.value.length === 1) {
               selectHmisUser(u).then(() => {
                 isEditingHmisUser.value = true;
@@ -7912,9 +8172,17 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         }
 
         function onHmisUserRowClick(u) {
+          if (u.noAccount) {
+            showToast(`Nhân viên ${u.fullName} chưa có tài khoản trên cổng HMIS.`, 'info');
+            return;
+          }
           selectHmisUser(u);
           if (selectedHmisUserIds.value.length === 0) {
             selectedHmisUserIds.value = [u.id];
+            const offId = u.officer?.id || u.officerId;
+            if (offId && !selectedHmisOfficerIds.value.includes(offId)) {
+              selectedHmisOfficerIds.value.push(offId);
+            }
             isEditingHmisUser.value = true;
           }
         }
@@ -7922,6 +8190,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         function resetEditingUserForm() {
           isEditingHmisUser.value = false;
           selectedHmisUserIds.value = [];
+          selectedHmisOfficerIds.value = [];
           editingUser.value = {
             id: null,
             username: '',
@@ -7958,6 +8227,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
           isLoadingHmisData.value = true;
           selectedHmisUserIds.value = [];
+          selectedHmisOfficerIds.value = [];
           try {
             const res = await axios.get('/api/nhanvien-hmis/data?stationId=' + stationId);
             if (res.data?.success) {
@@ -7994,9 +8264,18 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           const accounts = (hmisUsers.value || []).filter(u => u.officer?.id === off.id || u.officerId === off.id);
           if (accounts.length > 0) {
             selectHmisUser(accounts[0]);
+            // Tự động cuộn đến tài khoản này trong bảng bên phải
+            nextTick(() => {
+              const rowEl = document.getElementById('hmis-user-row-' + accounts[0].id);
+              if (rowEl) {
+                rowEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }
+            });
           } else {
             selectedHmisUser.value = null;
             resetEditingUserForm();
+            editingUser.value.fullName = off.officerName;
+            editingUser.value.officerId = off.id;
           }
           nextTick(() => refreshIcons());
         }
@@ -8057,6 +8336,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         function cancelEditHmisUser() {
           isEditingHmisUser.value = false;
           selectedHmisUserIds.value = [];
+          selectedHmisOfficerIds.value = [];
           if (selectedHmisUser.value) {
             selectHmisUser(selectedHmisUser.value);
           } else {
@@ -8652,7 +8932,12 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           hmisSignTitles,
           hmisUsers,
           selectedHmisUserIds,
+          selectedHmisOfficerIds,
           isAllHmisUsersSelected,
+          isAllHmisOfficersSelected,
+          toggleSelectAllHmisOfficers,
+          toggleSelectFilteredHmisOfficers,
+          toggleSelectHmisOfficer,
           selectedHmisOfficer,
           selectedHmisUser,
           isEditingHmisUser,

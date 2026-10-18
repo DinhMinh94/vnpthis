@@ -228,6 +228,7 @@ function exportLogsToExcelBuffer() {
 
 module.exports = {
   addLog,
+  logAction: addLog,
   getLogs,
   deleteLog,
   clearLogs,

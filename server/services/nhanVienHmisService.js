@@ -145,8 +145,9 @@ async function getUserDetail(stationId, userId) {
  * @param {string} stationId
  * @param {number|string} userId
  * @param {Object} updateData
+ * @param {string} [specificPart] - 'all' | 'roles' | 'titles'
  */
-async function updateUserPhanCong(stationId, userId, updateData) {
+async function updateUserPhanCong(stationId, userId, updateData = {}, specificPart = 'all') {
   const station = db.getStationById(stationId, true);
   if (!station) {
     throw new Error('Không tìm thấy trạm y tế');
@@ -176,13 +177,14 @@ async function updateUserPhanCong(stationId, userId, updateData) {
 
   const base = oldDetail || {};
   const mergeMode = updateData.mergeMode !== undefined ? Boolean(updateData.mergeMode) : true;
+  const part = specificPart || updateData.specificPart || 'all';
 
   const existingRoleIds = (base.nhomNguoiDungs || []).map(r => Number(r.roleId || r.id)).filter(Boolean);
   const existingTitleIds = (base.signTitles || []).map(t => Number(t.id)).filter(Boolean);
 
   // 2. Xác định danh sách Nhóm người dùng (Bảo vệ không bị mất nếu không điền)
   let roleIds;
-  if (specificPart === 'titles') {
+  if (part === 'titles') {
     // Chỉ cập nhật chức danh ký số, giữ nguyên 100% nhóm người dùng cũ
     roleIds = existingRoleIds;
   } else {
@@ -202,7 +204,7 @@ async function updateUserPhanCong(stationId, userId, updateData) {
 
   // 3. Xác định danh sách Chức danh ký số (Bảo vệ không bị mất nếu không điền)
   let signTitleIds;
-  if (specificPart === 'roles') {
+  if (part === 'roles') {
     // Chỉ cập nhật nhóm người dùng, giữ nguyên 100% chức danh ký số cũ
     signTitleIds = existingTitleIds;
   } else {
@@ -226,11 +228,11 @@ async function updateUserPhanCong(stationId, userId, updateData) {
     userPwd: (updateData.userPwd && updateData.userPwd.trim()) ? updateData.userPwd.trim() : '',
     officer: { id: updateData.officerId || base.officer?.id },
     fullName: updateData.fullName || base.fullName || base.officer?.officerName || '',
-    userLevel: updateData.userLevel !== undefined ? Number(updateData.userLevel) : (base.userLevel ?? 4),
-    userType: updateData.userType !== undefined ? Number(updateData.userType) : (base.userType ?? 0),
-    status: updateData.status !== undefined ? (updateData.status ? 1 : 0) : (base.status ?? 1),
-    callOnl: updateData.callOnl !== undefined ? (updateData.callOnl ? 1 : 0) : (base.callOnl ?? 0),
-    auth2FA: updateData.auth2FA !== undefined ? (updateData.auth2FA ? 1 : 0) : (base.auth2FA ?? 0),
+    userLevel: (part === 'all' && updateData.userLevel !== undefined) ? Number(updateData.userLevel) : (base.userLevel ?? 4),
+    userType: (part === 'all' && updateData.userType !== undefined) ? Number(updateData.userType) : (base.userType ?? 0),
+    status: (part === 'all' && updateData.status !== undefined) ? (updateData.status ? 1 : 0) : (base.status ?? 1),
+    callOnl: (part === 'all' && updateData.callOnl !== undefined) ? (updateData.callOnl ? 1 : 0) : (base.callOnl ?? 0),
+    auth2FA: (part === 'all' && updateData.auth2FA !== undefined) ? (updateData.auth2FA ? 1 : 0) : (base.auth2FA ?? 0),
     type2fa: updateData.type2fa || base.type2fa || null,
     company: { id: updateData.companyId || base.company?.id || 1 },
     nhomNguoiDungs: roleIds.map(rId => ({ roleId: Number(rId) })),

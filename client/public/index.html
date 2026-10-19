@@ -195,6 +195,7 @@
         <div class="flex items-center space-x-3 py-2.5">
           <!-- Tab 1: Cấu hình Trạm Y Tế -->
           <button @click="switchMainTab('stations')"
+                  type="button"
                   class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border"
                   :class="currentMainTab === 'stations' ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
             <i data-lucide="building-2" class="w-4 h-4"></i>
@@ -206,6 +207,7 @@
 
           <!-- Tab 2: Gen File Thuốc HIS (78 Cột) -->
           <button @click="switchMainTab('thuoc')"
+                  type="button"
                   class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative"
                   :class="currentMainTab === 'thuoc' ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white border-rose-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
             <i data-lucide="pill" class="w-4 h-4" :class="currentMainTab === 'thuoc' ? 'text-white' : 'text-rose-600'"></i>
@@ -214,6 +216,7 @@
 
           <!-- Tab 3: Gen File Vật Tư Y Tế HIS (78 Cột) -->
           <button @click="switchMainTab('vattu')"
+                  type="button"
                   class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative"
                   :class="currentMainTab === 'vattu' ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border-emerald-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
             <i data-lucide="package" class="w-4 h-4" :class="currentMainTab === 'vattu' ? 'text-white' : 'text-emerald-600'"></i>
@@ -222,6 +225,7 @@
 
           <!-- Tab 4: Gen File Nhân Viên HIS (33 Cột) -->
           <button @click="switchMainTab('nhanvien')"
+                  type="button"
                   class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative"
                   :class="currentMainTab === 'nhanvien' ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white border-indigo-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
             <i data-lucide="users" class="w-4 h-4" :class="currentMainTab === 'nhanvien' ? 'text-white' : 'text-indigo-600'"></i>
@@ -233,6 +237,7 @@
 
           <!-- Tab 5: Quản lý & Phân công Nhân viên HMIS -->
           <button @click="switchMainTab('nhanvien_hmis')"
+                  type="button"
                   class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative"
                   :class="currentMainTab === 'nhanvien_hmis' ? 'bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 text-white border-teal-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
             <i data-lucide="shield-check" class="w-4 h-4" :class="currentMainTab === 'nhanvien_hmis' ? 'text-white' : 'text-teal-600'"></i>
@@ -743,10 +748,15 @@
                   </p>
                   <p class="text-xs text-slate-500 mt-0.5" v-if="thuocFileSize">Dung lượng: {{ thuocFileSize }}</p>
                 </div>
-                <div class="pt-1 flex items-center justify-center space-x-2">
+                <div class="pt-1 flex flex-wrap items-center justify-center gap-3">
                   <span class="text-xs text-blue-600 hover:text-blue-800 font-semibold underline">
                     Nhấp vào đây nếu muốn chọn file khác
                   </span>
+                  <span class="text-slate-300">|</span>
+                  <button type="button" @click.stop.prevent="clearThuocData" class="text-xs text-rose-600 hover:text-rose-800 font-semibold underline flex items-center space-x-1 cursor-pointer">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    <span>Xóa file &amp; làm mới</span>
+                  </button>
                 </div>
               </div>
             </label>
@@ -962,10 +972,15 @@
                   </p>
                   <p class="text-xs text-slate-500 mt-0.5" v-if="vattuFileSize">Dung lượng: {{ vattuFileSize }}</p>
                 </div>
-                <div class="pt-1 flex items-center justify-center space-x-2">
+                <div class="pt-1 flex flex-wrap items-center justify-center gap-3">
                   <span class="text-xs text-emerald-600 hover:text-emerald-800 font-semibold underline">
                     Nhấp vào đây nếu muốn chọn file khác
                   </span>
+                  <span class="text-slate-300">|</span>
+                  <button type="button" @click.stop.prevent="clearVattuData" class="text-xs text-rose-600 hover:text-rose-800 font-semibold underline flex items-center space-x-1 cursor-pointer">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    <span>Xóa file &amp; làm mới</span>
+                  </button>
                 </div>
               </div>
             </label>
@@ -1182,10 +1197,15 @@
                   </p>
                   <p class="text-xs text-slate-500 mt-0.5" v-if="nhanVienFileSize">Dung lượng: {{ nhanVienFileSize }}</p>
                 </div>
-                <div class="pt-1 flex items-center justify-center space-x-2">
+                <div class="pt-1 flex flex-wrap items-center justify-center gap-3">
                   <span class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold underline">
                     Nhấp vào đây nếu muốn chọn file khác
                   </span>
+                  <span class="text-slate-300">|</span>
+                  <button type="button" @click.stop.prevent="clearNhanVienData" class="text-xs text-rose-600 hover:text-rose-800 font-semibold underline flex items-center space-x-1 cursor-pointer">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    <span>Xóa file &amp; làm mới</span>
+                  </button>
                 </div>
               </div>
             </label>
@@ -5397,6 +5417,18 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
 
         function switchMainTab(tab) {
           toasts.value = []; // Tự động xóa thông báo khi chuyển tab để không bị treo sang tab khác
+          
+          // Khi chuyển sang tab khác: Tự động làm mới (xóa file và kết quả đã gen) ở tab cũ để sẵn sàng nạp file mới
+          if (currentMainTab.value !== tab) {
+            if (currentMainTab.value === 'thuoc') {
+              clearThuocData(false);
+            } else if (currentMainTab.value === 'vattu') {
+              clearVattuData(false);
+            } else if (currentMainTab.value === 'nhanvien') {
+              clearNhanVienData(false);
+            }
+          }
+
           currentMainTab.value = tab;
           if (tab === 'nhanvien_hmis') {
             if (window.location.hash !== '#nhanvien_hmis') {
@@ -6996,6 +7028,21 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           scrollToThuocResult();
         }
 
+        function clearThuocData(notify = true) {
+          thuocFile.value = null;
+          thuocFileName.value = '';
+          thuocFileSize.value = '';
+          convertResult.value = null;
+          convertStatus.value = '';
+          convertStatusMsg.value = '';
+          const el = document.getElementById('thuocFileInput');
+          if (el) el.value = '';
+          if (notify) {
+            showToast('Đã làm mới dữ liệu thuốc, sẵn sàng nạp file mới', 'info');
+          }
+          nextTick(() => refreshIcons());
+        }
+
         function handleThuocFileChange(e) {
           const file = e.target.files && e.target.files[0];
           if (file) {
@@ -7243,6 +7290,21 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         // ==========================================
         // CHỨC NĂNG GEN FILE VẬT TƯ Y TẾ IMPORT HIS
         // ==========================================
+        function clearVattuData(notify = true) {
+          vattuFile.value = null;
+          vattuFileName.value = '';
+          vattuFileSize.value = '';
+          convertVattuResult.value = null;
+          convertVattuStatus.value = '';
+          convertVattuStatusMsg.value = '';
+          const el = document.getElementById('vattuFileInput');
+          if (el) el.value = '';
+          if (notify) {
+            showToast('Đã làm mới dữ liệu vật tư y tế, sẵn sàng nạp file mới', 'info');
+          }
+          nextTick(() => refreshIcons());
+        }
+
         function handleVattuFileChange(e) {
           const file = e.target.files && e.target.files[0];
           if (file) {
@@ -7483,6 +7545,21 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         // ==========================================
         // CHỨC NĂNG GEN FILE NHÂN VIÊN 33 CỘT VNPT HIS
         // ==========================================
+        function clearNhanVienData(notify = true) {
+          nhanVienFile.value = null;
+          nhanVienFileName.value = '';
+          nhanVienFileSize.value = '';
+          convertNhanVienResult.value = null;
+          convertNhanVienStatus.value = '';
+          convertNhanVienStatusMsg.value = '';
+          const el = document.getElementById('nhanVienFileInput');
+          if (el) el.value = '';
+          if (notify) {
+            showToast('Đã làm mới dữ liệu nhân viên, sẵn sàng nạp file mới', 'info');
+          }
+          nextTick(() => refreshIcons());
+        }
+
         function handleNhanVienFileChange(e) {
           const file = e.target.files && e.target.files[0];
           if (file) {
@@ -8619,21 +8696,17 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           refreshIcons();
 
           window.addEventListener('hashchange', () => {
+            let targetTab = 'stations';
             if (window.location.hash === '#nhanvien_hmis') {
-              currentMainTab.value = 'nhanvien_hmis';
-              if (!selectedHmisStationId.value || hmisOfficers.value.length === 0) {
-                loadHmisStationNhanVienData();
-              }
+              targetTab = 'nhanvien_hmis';
             } else if (window.location.hash === '#nhanvien') {
-              currentMainTab.value = 'nhanvien';
+              targetTab = 'nhanvien';
             } else if (window.location.hash === '#vattu') {
-              currentMainTab.value = 'vattu';
+              targetTab = 'vattu';
             } else if (window.location.hash === '#thuoc') {
-              currentMainTab.value = 'thuoc';
-            } else {
-              currentMainTab.value = 'stations';
+              targetTab = 'thuoc';
             }
-            nextTick(() => refreshIcons());
+            switchMainTab(targetTab);
           });
 
           window.addEventListener('keydown', (e) => {
@@ -8764,6 +8837,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           lockSystem,
           submitChangePin,
           openConvertThuocModal,
+          clearThuocData,
           handleThuocFileChange,
           handleThuocDrop,
           loadSampleThuocData,
@@ -8781,6 +8855,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           convertStatus,
           convertStatusMsg,
           convertResult,
+          clearVattuData,
           handleVattuFileChange,
           handleVattuDrop,
           loadSampleVattuData,
@@ -8803,6 +8878,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           getAutoLoginUrl,
           handleAutoLoginClick,
           bookmarkletCode,
+          clearNhanVienData,
           handleNhanVienFileChange,
           handleNhanVienDrop,
           loadSampleNhanVienData,

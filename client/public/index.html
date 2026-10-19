@@ -5120,12 +5120,18 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
 
     <!-- TOAST THÔNG BÁO NỔI BẬT GÓC TRÊN BÊN PHẢI -->
     <div class="fixed top-5 right-5 z-[9999] flex flex-col space-y-2.5 pointer-events-none max-w-md w-full">
-      <div v-for="toast in toasts" :key="toast.id" class="pointer-events-auto px-4 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-bold text-white flex items-center space-x-3 transition-all border border-white/20 animate-in slide-in-from-top-3 fade-in duration-150"
-           :class="toast.type === 'success' ? 'bg-emerald-600/95 backdrop-blur-md shadow-emerald-600/30' : toast.type === 'error' ? 'bg-rose-600/95 backdrop-blur-md shadow-rose-600/30' : 'bg-slate-900/95 backdrop-blur-md shadow-slate-900/30'">
+      <div v-for="toast in toasts" :key="toast.id" 
+           @click="removeToast(toast.id)"
+           class="pointer-events-auto px-4 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-bold text-white flex items-center space-x-3 transition-all border border-white/20 animate-in slide-in-from-top-3 fade-in duration-150 cursor-pointer select-none"
+           :class="toast.type === 'success' ? 'bg-emerald-600/95 backdrop-blur-md shadow-emerald-600/30' : toast.type === 'error' ? 'bg-rose-600/95 backdrop-blur-md shadow-rose-600/30' : 'bg-slate-900/95 backdrop-blur-md shadow-slate-900/30'"
+           title="Bấm để tắt thông báo">
         <div class="p-1.5 rounded-xl bg-white/20 flex-shrink-0">
           <i :data-lucide="toast.type === 'success' ? 'check-circle' : toast.type === 'error' ? 'alert-circle' : 'info'" class="w-4 h-4"></i>
         </div>
         <span class="flex-1 leading-snug">{{ toast.message }}</span>
+        <button type="button" @click.stop="removeToast(toast.id)" class="text-white/70 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors cursor-pointer" title="Đóng">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
       </div>
     </div>
 
@@ -5390,6 +5396,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         });
 
         function switchMainTab(tab) {
+          toasts.value = []; // Tự động xóa thông báo khi chuyển tab để không bị treo sang tab khác
           currentMainTab.value = tab;
           if (tab === 'nhanvien_hmis') {
             if (window.location.hash !== '#nhanvien_hmis') {
@@ -5620,13 +5627,21 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           });
         }
 
+        function removeToast(id) {
+          toasts.value = toasts.value.filter(t => t.id !== id);
+        }
+
         function showToast(message, type = 'success') {
           const id = Date.now() + Math.random();
+          // Chỉ giữ tối đa 2 thông báo mới nhất để tránh tràn màn hình
+          if (toasts.value.length >= 2) {
+            toasts.value.shift();
+          }
           toasts.value.push({ id, message, type });
           refreshIcons();
           setTimeout(() => {
-            toasts.value = toasts.value.filter(t => t.id !== id);
-          }, 3500);
+            removeToast(id);
+          }, 2500);
         }
 
         async function fetchStations() {
@@ -8357,9 +8372,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             }
           });
           if (addedCount > 0) {
-            showToast(`Đã thêm nhanh ${addedCount} chức danh trong nhóm 13 chức danh chuẩn!`, 'success');
+            showToast(`Đã thêm nhanh ${addedCount} chức danh chuẩn!`, 'success');
           } else {
-            showToast('Tài khoản đã có đầy đủ 13 chức danh trong nhóm chuẩn này rồi!', 'info');
+            showToast('Tài khoản đã có đầy đủ các chức danh trong nhóm chuẩn này rồi!', 'info');
           }
           nextTick(() => refreshIcons());
         }
@@ -8663,6 +8678,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           currentStation,
           settingsForm,
           toasts,
+          removeToast,
           filteredStations,
           countSuccess,
           countFailed,

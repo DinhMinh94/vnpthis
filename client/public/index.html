@@ -1643,39 +1643,39 @@
           <div class="lg:col-span-5 bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
               <div class="flex items-center space-x-2">
-                <i data-lucide="contact" class="w-5 h-5 text-teal-600"></i>
-                <h3 class="font-extrabold text-sm sm:text-base text-slate-800 uppercase tracking-wide">DANH SÁCH NHÂN VIÊN</h3>
+                <i data-lucide="users" class="w-5 h-5 text-teal-600"></i>
+                <h3 class="font-extrabold text-sm sm:text-base text-slate-800 uppercase tracking-wide">DANH SÁCH TÀI KHOẢN &amp; NHÂN VIÊN</h3>
               </div>
               <div class="flex items-center space-x-2">
-                <!-- Badge số lượng nhân viên đã tích -->
+                <!-- Badge số lượng tài khoản đã tích -->
                 <span 
                   v-if="selectedHmisOfficerIds.length > 0"
-                  class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[11px] font-extrabold rounded-md border border-amber-300 shadow-2xs"
+                  class="px-2 py-0.5 bg-teal-100 text-teal-800 text-[11px] font-extrabold rounded-md border border-teal-300 shadow-2xs"
                 >
-                  Đã tích: {{ selectedHmisOfficerIds.length }} NV
+                  Đã tích: {{ selectedHmisOfficerIds.length }} TK
                 </span>
                 <button 
                   v-if="selectedHmisOfficerIds.length > 0"
                   type="button" 
-                  @click="selectedHmisOfficerIds = []; selectedHmisUserIds = []; isEditingHmisUser = false;"
+                  @click="cancelEditHmisUser"
                   class="px-2 py-0.5 bg-white hover:bg-rose-50 text-rose-600 hover:text-rose-700 border border-slate-300 hover:border-rose-300 rounded text-[11px] font-semibold cursor-pointer transition-colors"
-                  title="Bỏ tích chọn tất cả nhân viên"
+                  title="Bỏ tích chọn tất cả"
                 >
                   Bỏ tích
                 </button>
                 <span class="bg-teal-50 text-teal-800 text-xs font-bold px-2.5 py-0.5 rounded-full border border-teal-200">
-                  {{ filteredHmisOfficers.length }} / {{ hmisOfficers.length }} NV
+                  {{ filteredHmisOfficers.length }} / {{ hmisOfficers.length }} TK
                 </span>
               </div>
             </div>
 
-            <!-- Ô tìm kiếm nhân viên -->
+            <!-- Ô tìm kiếm nhân viên / tài khoản -->
             <div class="relative">
               <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
               <input 
                 v-model="hmisOfficerSearch" 
                 type="text" 
-                placeholder="Tìm theo tên, mã nhân viên, mã bác sĩ CCHN..."
+                placeholder="Tìm theo tài khoản, tên nhân viên, CCHN, mã NV..."
                 class="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-800 focus:ring-2 focus:ring-teal-500 focus:outline-none"
               >
             </div>
@@ -1719,34 +1719,33 @@
                 type="button" 
                 @click="toggleSelectFilteredHmisOfficers"
                 class="px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer border shadow-2xs ml-auto"
-                :class="isAllHmisOfficersSelected ? 'bg-amber-500 text-white border-amber-600' : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border-amber-300'"
-                :title="isAllHmisOfficersSelected ? 'Bỏ tích toàn bộ danh sách này' : 'Tích chọn tất cả ' + filteredHmisOfficers.length + ' nhân viên đang lọc'"
+                :class="isAllHmisOfficersSelected ? 'bg-teal-600 text-white border-teal-700' : 'bg-teal-50 text-teal-800 hover:bg-teal-100 border-teal-300'"
+                :title="isAllHmisOfficersSelected ? 'Bỏ tích toàn bộ danh sách này' : 'Tích chọn tất cả để sửa'"
               >
                 {{ isAllHmisOfficersSelected ? '✓ Đã tích (' + filteredHmisOfficers.length + ')' : '+ Tích DS này (' + filteredHmisOfficers.length + ')' }}
               </button>
             </div>
 
-            <!-- Bảng danh sách nhân viên (chuẩn HMIS) có tích chọn -->
-            <div class="border border-slate-200 rounded-2xl overflow-hidden max-h-[550px] overflow-y-auto">
+            <!-- Bảng danh sách tài khoản & nhân viên có tích chọn để sửa trực tiếp -->
+            <div class="border border-slate-200 rounded-2xl overflow-hidden overflow-x-auto max-h-[620px] overflow-y-auto">
               <table class="w-full text-xs text-left">
                 <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200">
                   <tr>
                     <th class="p-2.5 w-10 text-center">
-                      <label class="inline-flex items-center justify-center cursor-pointer select-none" title="Tích chọn tất cả nhân viên">
+                      <label class="inline-flex items-center justify-center cursor-pointer select-none" title="Tích chọn tất cả để sửa">
                         <input 
                           type="checkbox" 
                           :checked="isAllHmisOfficersSelected" 
                           @change="toggleSelectAllHmisOfficers"
-                          class="rounded text-amber-600 focus:ring-amber-500 w-4 h-4 cursor-pointer"
+                          class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
                         >
                       </label>
                     </th>
-                    <th class="p-2.5 w-10 text-center">STT</th>
-                    <th class="p-2.5 font-mono">Mã NV</th>
-                    <th class="p-2.5 font-mono">Mã bác sĩ</th>
-                    <th class="p-2.5">Tên nhân viên</th>
-                    <th class="p-2.5">Loại NV</th>
-                    <th class="p-2.5 text-center">TK</th>
+                    <th class="p-2.5 w-8 text-center">STT</th>
+                    <th class="p-2.5 font-mono">Tài khoản</th>
+                    <th class="p-2.5">Nhân viên</th>
+                    <th class="p-2.5">Loại NV / CCHN</th>
+                    <th class="p-2.5 text-center">Trạng thái</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -1755,45 +1754,69 @@
                     :key="off.id"
                     @click="selectHmisOfficer(off)"
                     class="cursor-pointer transition-colors"
-                    :class="selectedHmisOfficerIds.includes(off.id) ? 'bg-amber-100/90 font-bold border-l-4 border-l-amber-500 shadow-xs' : (selectedHmisOfficer && selectedHmisOfficer.id === off.id ? 'bg-amber-50/70 font-bold border-l-2 border-l-amber-400' : 'hover:bg-slate-50')"
+                    :class="[
+                      selectedHmisOfficerIds.includes(off.id) 
+                        ? 'bg-teal-50/90 font-bold border-l-4 border-l-teal-600 shadow-2xs' 
+                        : (selectedHmisOfficer && selectedHmisOfficer.id === off.id ? 'bg-amber-50/80 font-bold border-l-4 border-l-amber-500' : 'hover:bg-slate-50'),
+                      !getOfficerUsername(off) ? 'opacity-80 bg-slate-50/60' : ''
+                    ]"
                   >
+                    <!-- Cột Checkbox tích chọn để sửa -->
                     <td class="p-2 text-center" @click.stop>
                       <input 
+                        v-if="getOfficerUsername(off)"
                         type="checkbox" 
                         :checked="selectedHmisOfficerIds.includes(off.id)" 
                         @change="toggleSelectHmisOfficer(off)"
-                        class="rounded text-amber-600 focus:ring-amber-500 w-4 h-4 cursor-pointer"
-                        :title="selectedHmisOfficerIds.includes(off.id) ? 'Bỏ tích nhân viên ' + off.officerName : 'Tích chọn nhân viên ' + off.officerName"
+                        class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
+                        :title="selectedHmisOfficerIds.includes(off.id) ? 'Bỏ tích ' + getOfficerUsername(off) : 'Tích chọn để sửa tài khoản ' + getOfficerUsername(off)"
                       >
+                      <span v-else class="text-slate-300 text-xs select-none" title="Nhân viên chưa có tài khoản trên HMIS">-</span>
                     </td>
+
+                    <!-- STT -->
                     <td class="p-2 text-center text-slate-400 font-mono">{{ idx + 1 }}</td>
-                    <td class="p-2 font-mono text-slate-700 font-semibold truncate max-w-[90px]" :title="off.officerCode">{{ off.officerCode }}</td>
-                    <td class="p-2 font-mono text-indigo-700 truncate max-w-[100px]" :title="off.maBacSi">{{ off.maBacSi || '-' }}</td>
-                    <td class="p-2 text-slate-900 font-bold">
+
+                    <!-- Tài khoản -->
+                    <td class="p-2 font-mono font-bold text-teal-800 truncate max-w-[130px]" :title="getOfficerUsername(off)">
+                      <span v-if="getOfficerUsername(off)">{{ getOfficerUsername(off) }}</span>
+                      <span v-else class="text-slate-400 font-normal italic text-[11px]">(Chưa có TK)</span>
+                    </td>
+
+                    <!-- Tên nhân viên -->
+                    <td class="p-2 text-slate-900 font-bold truncate max-w-[140px]" :title="off.officerName">
                       <div class="flex items-center space-x-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full" :class="off.accountsCount > 0 ? 'bg-emerald-500' : 'bg-slate-300'"></span>
-                        <span class="truncate max-w-[120px]" :title="off.officerName">{{ off.officerName }}</span>
+                        <span class="w-1.5 h-1.5 rounded-full shrink-0" :class="getOfficerUsername(off) ? 'bg-emerald-500' : 'bg-slate-300'"></span>
+                        <span class="truncate">{{ off.officerName }}</span>
                       </div>
                     </td>
-                    <td class="p-2 text-slate-600 truncate max-w-[90px]" :title="off.officerType?.name">{{ off.officerType?.name || 'Khác' }}</td>
+
+                    <!-- Loại NV / Mã BS -->
+                    <td class="p-2 text-slate-600 truncate max-w-[120px]" :title="(off.officerType?.name || 'Khác') + (off.maBacSi ? ' - Mã BS: ' + off.maBacSi : '')">
+                      <span class="font-medium text-slate-700 block truncate">{{ off.officerType?.name || 'Khác' }}</span>
+                      <span v-if="off.maBacSi" class="font-mono text-[10px] text-indigo-700 font-semibold block truncate">BS: {{ off.maBacSi }}</span>
+                    </td>
+
+                    <!-- Trạng thái -->
                     <td class="p-2 text-center">
-                      <span 
-                        class="px-1.5 py-0.5 rounded-full text-[10px] font-extrabold"
-                        :class="off.accountsCount > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-400'"
-                      >
-                        {{ off.accountsCount }}
+                      <span v-if="!getOfficerUsername(off)" class="px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-semibold" title="Nhân viên chưa có tài khoản trên HMIS">
+                        Chưa có TK
+                      </span>
+                      <span v-else class="text-emerald-600" title="Đang hoạt động trên HMIS">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 inline-block"></i>
                       </span>
                     </td>
                   </tr>
+
                   <tr v-if="filteredHmisOfficers.length === 0">
-                    <td colspan="7" class="p-6 text-center text-slate-400">
-                      Không tìm thấy nhân viên phù hợp
+                    <td colspan="6" class="p-6 text-center text-slate-400">
+                      Không tìm thấy nhân viên / tài khoản phù hợp
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p class="text-[11px] text-slate-400 italic">💡 Bấm vào một nhân viên để xem và sửa thông tin phân công ở khung bên phải.</p>
+            <p class="text-[11px] text-slate-500 italic">💡 Tích chọn các ô vuông để sửa đồng thời nhiều tài khoản, hoặc bấm vào dòng để sửa riêng tài khoản đó ở khung bên phải.</p>
           </div>
 
           <!-- ============================================================== -->
@@ -1889,7 +1912,7 @@
                 <i data-lucide="user-x" class="w-8 h-8 text-slate-400 mx-auto"></i>
                 <h4 class="text-xs sm:text-sm font-bold text-slate-700">Chưa chọn tài khoản người dùng</h4>
                 <p class="text-xs text-slate-500 max-w-md mx-auto">
-                  Nhân viên <span class="font-bold text-slate-800">{{ selectedHmisOfficer?.officerName || 'được chọn' }}</span> chưa được chọn tài khoản nào. Vui lòng bấm vào 1 tài khoản trong bảng bên dưới để xem hoặc sửa phân công.
+                  Nhân viên <span class="font-bold text-slate-800">{{ selectedHmisOfficer?.officerName || 'được chọn' }}</span> chưa được chọn tài khoản nào. Vui lòng tích chọn hoặc bấm vào 1 tài khoản trong danh sách bên trái để xem hoặc sửa phân công.
                 </p>
               </div>
 
@@ -2351,151 +2374,6 @@
                   </div>
                 </div>
 
-              </div>
-
-              <!-- ============================================================== -->
-              <!-- BẢNG DANH SÁCH TÀI KHOẢN NGƯỜI DÙNG PHÍA DƯỚI (CHUẨN ẢNH 1 & 2) -->
-              <!-- ============================================================== -->
-              <div class="space-y-3 pt-2">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div class="flex items-center space-x-2">
-                    <i data-lucide="users" class="w-4 h-4 text-slate-600"></i>
-                    <h4 class="font-extrabold text-xs uppercase tracking-wide text-slate-700">
-                      DANH SÁCH TÀI KHOẢN ({{ displayHmisUsers.length }} TÀI KHOẢN)
-                    </h4>
-                    <!-- Badge số lượng tài khoản đã tích -->
-                    <span 
-                      v-if="selectedHmisUserIds.length > 0"
-                      class="px-2 py-0.5 bg-teal-100 text-teal-800 text-[11px] font-extrabold rounded-md border border-teal-300 shadow-2xs"
-                    >
-                      Đã tích: {{ selectedHmisUserIds.length }} TK
-                    </span>
-                  </div>
-
-                  <!-- Chuyển đổi phạm vi xem & Bỏ tích -->
-                  <div class="flex items-center space-x-2">
-                    <button 
-                      v-if="selectedHmisUserIds.length > 0"
-                      type="button" 
-                      @click="selectedHmisUserIds = []; isEditingHmisUser = false;"
-                      class="px-2 py-1 bg-white hover:bg-rose-50 text-rose-600 hover:text-rose-700 border border-slate-300 hover:border-rose-300 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
-                      title="Bỏ tích chọn tất cả"
-                    >
-                      Bỏ tích hết
-                    </button>
-                    <button 
-                      type="button" 
-                      @click="hmisUserScope = 'officer'"
-                      class="px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer border"
-                      :class="hmisUserScope === 'officer' ? 'bg-teal-600 text-white border-teal-600' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'"
-                    >
-                      Của NV này ({{ currentOfficerAccounts.length }})
-                    </button>
-                    <button 
-                      type="button" 
-                      @click="hmisUserScope = 'all'"
-                      class="px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer border"
-                      :class="hmisUserScope === 'all' ? 'bg-teal-600 text-white border-teal-600' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'"
-                    >
-                      Tất cả trạm ({{ hmisUsers.length }})
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Ô tìm kiếm tài khoản / nhân viên trong bảng tài khoản -->
-                <div class="relative">
-                  <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5"></i>
-                  <input 
-                    v-model="hmisUserSearch" 
-                    type="text" 
-                    placeholder="Tìm kiếm theo tài khoản hoặc tên nhân viên trong bảng..."
-                    class="w-full pl-8 pr-3 py-1.5 border border-slate-200 rounded-xl text-xs text-slate-800 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50/60 focus:bg-white"
-                  >
-                </div>
-
-                <!-- Bảng tài khoản (chiều cao 550px đồng bộ với bảng nhân viên) -->
-                <div class="border border-slate-200 rounded-2xl overflow-hidden overflow-x-auto max-h-[550px] overflow-y-auto">
-                  <table class="w-full text-xs text-left">
-                    <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200">
-                      <tr>
-                        <th class="p-2.5 w-10 text-center">STT</th>
-                        <th class="p-2.5 font-mono">Tài khoản</th>
-                        <th class="p-2.5">Nhân viên</th>
-                        <th class="p-2.5">Mức truy cập</th>
-                        <th class="p-2.5">Loại tài khoản</th>
-                        <th class="p-2.5 text-center">Trạng thái</th>
-                        <th class="p-2.5 text-center w-20">
-                          <label class="inline-flex items-center justify-center space-x-1 cursor-pointer select-none" title="Tích chọn tất cả để sửa">
-                            <input 
-                              type="checkbox" 
-                              :checked="isAllHmisUsersSelected" 
-                              @change="toggleSelectAllHmisUsers"
-                              class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
-                            >
-                            <span class="text-[11px] font-bold text-slate-700">Tất cả</span>
-                          </label>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                      <tr 
-                        v-for="(u, idx) in displayHmisUsers" 
-                        :key="u.id"
-                        :id="'hmis-user-row-' + u.id"
-                        @click="onHmisUserRowClick(u)"
-                        class="cursor-pointer transition-colors"
-                        :class="[
-                          selectedHmisUserIds.includes(u.id) ? 'bg-teal-50/90 font-bold border-l-4 border-l-teal-600' : (editingUser.id === u.id ? 'bg-amber-50/90 font-bold border-l-4 border-l-amber-500' : 'hover:bg-slate-50'),
-                          u.noAccount ? 'opacity-80 bg-slate-50/70' : ''
-                        ]"
-                      >
-                        <td class="p-2 text-center text-slate-400 font-mono">{{ idx + 1 }}</td>
-                        <td class="p-2 font-mono font-bold text-teal-800">
-                          <span v-if="!u.noAccount">{{ u.username }}</span>
-                          <span v-else class="text-slate-400 italic font-normal text-[11px]">(Chưa tạo tài khoản)</span>
-                        </td>
-                        <td class="p-2 font-medium text-slate-800">{{ u.fullName || u.officer?.officerName || '-' }}</td>
-                        <td class="p-2 text-slate-600">
-                          <span v-if="!u.noAccount" class="bg-slate-100 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
-                            {{ u.userLevel === 1 ? 'Quản trị HT' : 'Nghiệp vụ' }}
-                          </span>
-                          <span v-else class="text-slate-400">-</span>
-                        </td>
-                        <td class="p-2 text-slate-600">
-                          <span v-if="!u.noAccount">{{ u.userType === 1 ? 'Quản trị' : 'Người dùng' }}</span>
-                          <span v-else class="text-slate-400">-</span>
-                        </td>
-                        <td class="p-2 text-center">
-                          <span v-if="u.noAccount" class="px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-semibold" title="Nhân viên chưa có tài khoản trên HMIS">
-                            Chưa có TK
-                          </span>
-                          <span v-else-if="u.status === 1" class="text-emerald-600" title="Đang hoạt động">
-                            <i data-lucide="check-circle-2" class="w-4 h-4 inline-block"></i>
-                          </span>
-                          <span v-else class="text-slate-400" title="Khóa">
-                            <i data-lucide="lock" class="w-4 h-4 inline-block"></i>
-                          </span>
-                        </td>
-                        <td class="p-2 text-center" @click.stop>
-                          <input 
-                            v-if="!u.noAccount"
-                            type="checkbox" 
-                            :checked="selectedHmisUserIds.includes(u.id)"
-                            @change="toggleSelectHmisUser(u)"
-                            class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
-                            :title="selectedHmisUserIds.includes(u.id) ? 'Bỏ tích tài khoản ' + u.username : 'Tích chọn để sửa tài khoản ' + u.username"
-                          >
-                          <span v-else class="text-slate-300 text-xs select-none" title="Nhân viên chưa có tài khoản trên HMIS">-</span>
-                        </td>
-                      </tr>
-                      <tr v-if="displayHmisUsers.length === 0">
-                        <td colspan="7" class="p-6 text-center text-slate-400">
-                          Chưa có tài khoản nào được hiển thị
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
               </div>
 
             </div>
@@ -7852,6 +7730,19 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         // =========================================================================
         // COMPUTED & METHODS CHO QUẢN LÝ & PHÂN CÔNG NHÂN VIÊN HMIS (TAB 5)
         // =========================================================================
+        function getOfficerAccount(off) {
+          if (!off) return null;
+          if (off.accounts && off.accounts.length > 0) {
+            return off.accounts[0];
+          }
+          return (hmisUsers.value || []).find(u => u.officer?.id === off.id || u.officerId === off.id) || null;
+        }
+
+        function getOfficerUsername(off) {
+          const acc = getOfficerAccount(off);
+          return acc ? (acc.username || '') : (off.username || '');
+        }
+
         const filteredHmisOfficers = computed(() => {
           let list = hmisOfficers.value || [];
           if (hmisOfficerTypeFilter.value !== 'all') {
@@ -7872,13 +7763,14 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           }
           if (hmisOfficerSearch.value && hmisOfficerSearch.value.trim()) {
             const q = hmisOfficerSearch.value.trim().toLowerCase();
-            list = list.filter(off => 
-              (off.officerName || '').toLowerCase().includes(q) ||
-              (off.officerCode || '').toLowerCase().includes(q) ||
-              (off.phone || '').toLowerCase().includes(q) ||
-              (off.cchn || off.maBacSi || '').toLowerCase().includes(q) ||
-              (off.username || '').toLowerCase().includes(q)
-            );
+            list = list.filter(off => {
+              const uName = getOfficerUsername(off).toLowerCase();
+              const oName = (off.officerName || '').toLowerCase();
+              const oCode = (off.officerCode || '').toLowerCase();
+              const phone = (off.phone || '').toLowerCase();
+              const cchn = (off.cchn || off.maBacSi || '').toLowerCase();
+              return uName.includes(q) || oName.includes(q) || oCode.includes(q) || phone.includes(q) || cchn.includes(q);
+            });
           }
           return list;
         });
@@ -8024,12 +7916,22 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         // =========================================================================
         const isAllHmisOfficersSelected = computed(() => {
           if (!filteredHmisOfficers.value || filteredHmisOfficers.value.length === 0) return false;
-          return filteredHmisOfficers.value.every(off => selectedHmisOfficerIds.value.includes(off.id));
+          const validOfficers = (filteredHmisOfficers.value || []).filter(off => {
+            const acc = getOfficerAccount(off);
+            return acc && acc.id && !acc.noAccount;
+          });
+          if (validOfficers.length === 0) return false;
+          return validOfficers.every(off => selectedHmisOfficerIds.value.includes(off.id));
         });
 
         function toggleSelectFilteredHmisOfficers() {
-          const allFilteredSelected = filteredHmisOfficers.value.length > 0 && 
-            filteredHmisOfficers.value.every(off => selectedHmisOfficerIds.value.includes(off.id));
+          const validOfficers = (filteredHmisOfficers.value || []).filter(off => {
+            const acc = getOfficerAccount(off);
+            return acc && acc.id && !acc.noAccount;
+          });
+
+          const allFilteredSelected = validOfficers.length > 0 && 
+            validOfficers.every(off => selectedHmisOfficerIds.value.includes(off.id));
           
           if (allFilteredSelected) {
             // Bỏ chọn các nhân viên đang hiển thị
@@ -8039,6 +7941,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             // Bỏ chọn các tài khoản tương ứng
             const userIdsToRemove = new Set();
             filteredHmisOfficers.value.forEach(off => {
+              const acc = getOfficerAccount(off);
+              if (acc && acc.id) userIdsToRemove.add(acc.id);
               (off.accounts || []).forEach(a => userIdsToRemove.add(a.id));
               (hmisUsers.value || []).filter(u => u.officer?.id === off.id || u.officerId === off.id).forEach(u => userIdsToRemove.add(u.id));
             });
@@ -8047,16 +7951,21 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               isEditingHmisUser.value = false;
             }
           } else {
-            // Tích chọn toàn bộ nhân viên đang lọc
+            // Tích chọn toàn bộ nhân viên có tài khoản đang lọc
             const offIds = new Set(selectedHmisOfficerIds.value);
             const userIds = new Set(selectedHmisUserIds.value);
             let firstUser = null;
 
-            filteredHmisOfficers.value.forEach(off => {
+            validOfficers.forEach(off => {
               offIds.add(off.id);
+              const acc = getOfficerAccount(off);
+              if (acc && acc.id && !acc.noAccount) {
+                userIds.add(acc.id);
+                if (!firstUser) firstUser = acc;
+              }
               const accs = (off.accounts || []).concat((hmisUsers.value || []).filter(u => u.officer?.id === off.id || u.officerId === off.id));
               accs.forEach(a => {
-                if (a.id && !a.noAccount) {
+                if (a && a.id && !a.noAccount) {
                   userIds.add(a.id);
                   if (!firstUser) firstUser = a;
                 }
@@ -8066,6 +7975,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             selectedHmisOfficerIds.value = Array.from(offIds);
             selectedHmisUserIds.value = Array.from(userIds);
             if (userIds.size > 0) {
+              rightTabMode.value = 'user';
               isEditingHmisUser.value = true;
               if (firstUser) {
                 selectHmisUser(firstUser).then(() => {
@@ -8084,8 +7994,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         function toggleSelectHmisOfficer(off) {
           if (!off || !off.id) return;
           const offIdx = selectedHmisOfficerIds.value.indexOf(off.id);
-          const accs = (off.accounts || []).concat((hmisUsers.value || []).filter(u => u.officer?.id === off.id || u.officerId === off.id));
-          const validAccs = accs.filter(a => a.id && !a.noAccount);
+          const acc = getOfficerAccount(off);
+          const accs = (off.accounts || []).concat(acc ? [acc] : []).concat((hmisUsers.value || []).filter(u => u.officer?.id === off.id || u.officerId === off.id));
+          const validAccs = accs.filter(a => a && a.id && !a.noAccount);
           const uniqueAccIds = Array.from(new Set(validAccs.map(a => a.id)));
 
           if (offIdx > -1) {
@@ -8095,6 +8006,13 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             selectedHmisUserIds.value = selectedHmisUserIds.value.filter(id => !uniqueAccIds.includes(id));
             if (selectedHmisUserIds.value.length === 0) {
               isEditingHmisUser.value = false;
+            } else if (selectedHmisUserIds.value.length === 1) {
+              const remainingUser = (hmisUsers.value || []).find(u => u.id === selectedHmisUserIds.value[0]);
+              if (remainingUser) {
+                selectHmisUser(remainingUser).then(() => {
+                  isEditingHmisUser.value = true;
+                });
+              }
             }
           } else {
             // Tích chọn nhân viên
@@ -8108,6 +8026,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             });
 
             if (validAccs.length > 0) {
+              rightTabMode.value = 'user';
               selectHmisUser(validAccs[0]).then(() => {
                 isEditingHmisUser.value = true;
               });
@@ -8275,16 +8194,18 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         }
 
         function selectHmisOfficer(off) {
+          if (!off) return;
           selectedHmisOfficer.value = off;
-          // Tìm tài khoản đầu tiên thuộc nhân viên này
-          const accounts = (hmisUsers.value || []).filter(u => u.officer?.id === off.id || u.officerId === off.id);
-          if (accounts.length > 0) {
-            selectHmisUser(accounts[0]);
-            // Tự động cuộn đến tài khoản này trong bảng bên phải
-            nextTick(() => {
-              const rowEl = document.getElementById('hmis-user-row-' + accounts[0].id);
-              if (rowEl) {
-                rowEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          rightTabMode.value = 'user';
+          const acc = getOfficerAccount(off);
+          const accounts = (off.accounts || []).concat(acc ? [acc] : []).concat((hmisUsers.value || []).filter(u => u.officer?.id === off.id || u.officerId === off.id));
+          const validAccs = accounts.filter(a => a && a.id && !a.noAccount);
+          if (validAccs.length > 0) {
+            selectHmisUser(validAccs[0]).then(() => {
+              if (selectedHmisOfficerIds.value.length <= 1) {
+                selectedHmisOfficerIds.value = [off.id];
+                selectedHmisUserIds.value = [validAccs[0].id];
+                isEditingHmisUser.value = true;
               }
             });
           } else {
@@ -8292,6 +8213,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             resetEditingUserForm();
             editingUser.value.fullName = off.officerName;
             editingUser.value.officerId = off.id;
+            editingUser.value.username = '(Chưa có tài khoản)';
+            showToast(`Nhân viên ${off.officerName} chưa có tài khoản trên HMIS.`, 'info');
           }
           nextTick(() => refreshIcons());
         }
@@ -8985,6 +8908,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           batchAssignResults,
           filteredHmisOfficers,
           currentOfficerAccounts,
+          getOfficerAccount,
+          getOfficerUsername,
           displayHmisUsers,
           unassignedRoles,
           unassignedSignTitles,

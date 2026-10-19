@@ -1798,8 +1798,27 @@
                     <td class="p-2 text-center text-slate-400 font-mono">{{ idx + 1 }}</td>
 
                     <!-- Tài khoản -->
-                    <td class="p-2 font-mono font-bold text-teal-800 truncate max-w-[130px]" :title="getOfficerUsername(off)">
-                      <span v-if="getOfficerUsername(off)">{{ getOfficerUsername(off) }}</span>
+                    <td class="p-2 font-mono truncate max-w-[145px]" :title="getOfficerUsername(off)">
+                      <div v-if="getOfficerUsername(off)">
+                        <span class="font-bold text-teal-800 block truncate">{{ getOfficerUsername(off) }}</span>
+                        <!-- Nhãn số lượng nhóm quyền & chức danh -->
+                        <div class="flex items-center space-x-1 mt-0.5">
+                          <span 
+                            class="px-1.5 py-0.2 rounded text-[10px] font-semibold border"
+                            :class="getOfficerRolesCount(off) > 0 ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-rose-50 text-rose-600 border-rose-200'"
+                            :title="'Nhóm người dùng: ' + (getOfficerRolesText(off) || 'Chưa gán nhóm')"
+                          >
+                            🛡️ {{ getOfficerRolesCount(off) }} nhóm
+                          </span>
+                          <span 
+                            class="px-1.5 py-0.2 rounded text-[10px] font-semibold border"
+                            :class="getOfficerTitlesCount(off) > 0 ? 'bg-teal-50 text-teal-700 border-teal-200' : 'bg-slate-50 text-slate-500 border-slate-200'"
+                            :title="'Chức danh ký số: ' + (getOfficerTitlesText(off) || 'Chưa gán chức danh')"
+                          >
+                            ✍️ {{ getOfficerTitlesCount(off) }} CD
+                          </span>
+                        </div>
+                      </div>
                       <span v-else class="text-slate-400 font-normal italic text-[11px]">(Chưa có TK)</span>
                     </td>
 
@@ -2154,7 +2173,10 @@
                       class="inline-flex items-center space-x-1.5 px-3 py-1 bg-purple-100/90 text-purple-900 border border-purple-300 rounded-xl text-xs font-bold shadow-2xs"
                     >
                       <i data-lucide="shield-check" class="w-3.5 h-3.5 text-purple-600"></i>
-                      <span>{{ hmisRoles.find(r => r.roleId === rId)?.roleName || ('Mã quyền #' + rId) }}</span>
+                      <span>
+                        {{ hmisRoles.find(r => Number(r.roleId) === Number(rId))?.roleName || ('Mã quyền #' + rId) }}
+                        <span class="text-[10px] text-purple-700 font-mono">({{ hmisRoles.find(r => Number(r.roleId) === Number(rId))?.roleCode }})</span>
+                      </span>
                       <button 
                         v-if="isEditingHmisUser"
                         type="button" 
@@ -2178,7 +2200,7 @@
                         v-model="selectedNewRoleId" 
                         class="flex-1 px-3 py-2 border border-purple-300 rounded-xl text-xs text-slate-800 bg-white focus:ring-2 focus:ring-purple-400 focus:outline-none cursor-pointer"
                       >
-                        <option value="">-- Chọn nhóm người dùng của trạm để thêm --</option>
+                        <option value="">-- Chọn nhóm người dùng của trạm để thêm ({{ unassignedRoles.length }} nhóm) --</option>
                         <option v-for="r in unassignedRoles" :key="r.roleId" :value="r.roleId">
                           {{ r.roleName }} ({{ r.roleCode }})
                         </option>
@@ -2194,20 +2216,76 @@
                       </button>
                     </div>
 
-                    <!-- Gợi ý nhanh các nhóm phổ biến -->
+                    <!-- NÚT GÁN NHANH CÁC NHÓM QUYỀN CHUẨN TRẠM Y TẾ -->
+                    <div class="p-2.5 bg-gradient-to-r from-purple-50 via-indigo-50 to-pink-50 border border-purple-200 rounded-xl space-y-1.5 shadow-2xs">
+                      <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center space-x-1.5 text-purple-900 font-extrabold text-xs">
+                          <i data-lucide="layers" class="w-4 h-4 text-purple-600"></i>
+                          <span>Nhóm quyền chuẩn trạm:</span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-1.5">
+                          <button 
+                            type="button"
+                            @click="addStandardRolesPackage('bac_si')"
+                            class="px-2.5 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 active:scale-95 text-white font-black text-[11px] rounded-xl shadow-xs transition-all flex items-center space-x-1 cursor-pointer"
+                            title="Gán nhóm quyền cho Bác sỹ: Bác sỹ, Khám ngoại trú, Điều trị ngoại trú, Tiếp nhận, Dược"
+                          >
+                            <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-300 fill-current"></i>
+                            <span>⚡ Nhóm Bác sỹ (5 quyền)</span>
+                          </button>
+
+                          <button 
+                            type="button"
+                            @click="addStandardRolesPackage('dieu_duong')"
+                            class="px-2.5 py-1.5 bg-gradient-to-r from-indigo-600 to-blue-700 hover:from-indigo-700 hover:to-blue-800 active:scale-95 text-white font-black text-[11px] rounded-xl shadow-xs transition-all flex items-center space-x-1 cursor-pointer"
+                            title="Gán nhóm quyền cho Điều dưỡng: Điều dưỡng, Khám ngoại trú, Điều trị ngoại trú, Tiếp nhận, Dược"
+                          >
+                            <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-300 fill-current"></i>
+                            <span>⚡ Nhóm Điều dưỡng (5 quyền)</span>
+                          </button>
+
+                          <button 
+                            type="button"
+                            @click="addStandardRolesPackage('full_tram')"
+                            class="px-2.5 py-1.5 bg-gradient-to-r from-purple-700 via-pink-600 to-rose-600 hover:from-purple-800 hover:to-rose-700 active:scale-95 text-white font-black text-[11px] rounded-xl shadow-xs transition-all flex items-center space-x-1 cursor-pointer"
+                            title="Gán toàn bộ các nhóm quyền nghiệp vụ Trạm Y tế"
+                          >
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-300"></i>
+                            <span>⚡ Full quyền trạm (10 quyền)</span>
+                          </button>
+
+                          <button 
+                            v-if="editingUserRoleIds.length > 0"
+                            type="button"
+                            @click="clearAllRolesFromEditingUser"
+                            class="px-2 py-1.5 bg-white hover:bg-rose-50 text-slate-600 hover:text-rose-700 border border-slate-300 hover:border-rose-300 font-bold text-[10px] rounded-xl transition-colors flex items-center space-x-1 cursor-pointer"
+                            title="Xóa trắng tất cả nhóm người dùng đã gán cho tài khoản này"
+                          >
+                            <i data-lucide="trash-2" class="w-3 h-3"></i>
+                            <span>Xóa hết</span>
+                          </button>
+                        </div>
+                      </div>
+                      <p class="text-[10px] text-purple-800 leading-tight">
+                        Bao gồm: <span class="font-semibold">Bác sỹ / Điều dưỡng, Khám bệnh ngoại trú, Điều trị ngoại trú, Hành chính đón tiếp, Dược, Kế toán, Bảo hiểm</span>.
+                      </p>
+                    </div>
+
+                    <!-- Gợi ý nhanh các nhóm phổ biến của trạm y tế -->
                     <div class="flex flex-wrap items-center gap-1.5 text-[10px]">
-                      <span class="text-slate-500 font-bold">Thêm nhanh:</span>
-                      <button 
-                        v-for="r in hmisRoles.slice(0, 5)" 
-                        :key="'quick-role-' + r.roleId"
-                        type="button"
-                        @click="addRoleToEditingUser(r.roleId)"
-                        :disabled="editingUserRoleIds.includes(r.roleId)"
-                        class="px-2 py-0.5 rounded-md font-semibold border transition-all cursor-pointer"
-                        :class="editingUserRoleIds.includes(r.roleId) ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white hover:bg-purple-50 text-purple-700 border-purple-200 shadow-2xs'"
-                      >
-                        + {{ r.roleName }}
-                      </button>
+                      <span class="text-slate-500 font-bold">Gán lẻ thêm:</span>
+                      <template v-for="roleCode in ['BAC_SY', 'KHAM_BENH_NGOAI_TRU', 'DIEU_TRI_NGOAI_TRU', 'DIEU_DUONG', 'DUOC', 'TIEP_NHAN', 'VPI_BAOHIEM', 'TAICHINH_KETOAN', 'CDHA_TDCN', 'XET_NGHIEM', 'QTHT']" :key="roleCode">
+                        <button 
+                          v-if="getRoleByCode(roleCode)"
+                          type="button"
+                          @click="addRoleToEditingUser(getRoleByCode(roleCode).roleId)"
+                          :disabled="editingUserRoleIds.map(Number).includes(Number(getRoleByCode(roleCode).roleId))"
+                          class="px-2 py-0.5 rounded-md font-bold border transition-all cursor-pointer"
+                          :class="editingUserRoleIds.map(Number).includes(Number(getRoleByCode(roleCode).roleId)) ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white hover:bg-purple-50 text-purple-700 border-purple-200 shadow-2xs'"
+                        >
+                          + {{ getRoleByCode(roleCode).roleName }}
+                        </button>
+                      </template>
                     </div>
                   </div>
                 </div>
@@ -5053,7 +5131,47 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
 
           <!-- Bước 3: Nhóm người dùng (Quyền) cần gán thêm -->
           <div class="space-y-2">
-            <label class="font-extrabold text-slate-800 text-xs uppercase">3. Nhóm người dùng cần gán thêm (Chọn để thêm vào quyền hiện có)</label>
+            <div class="flex items-center justify-between">
+              <label class="font-extrabold text-slate-800 text-xs uppercase">3. Nhóm người dùng cần gán thêm (Chọn để thêm vào quyền hiện có)</label>
+              <div class="flex items-center space-x-1.5">
+                <button 
+                  type="button" 
+                  @click="selectBatchStandardRoles('bac_si')"
+                  class="px-2 py-0.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-[10px] rounded-lg shadow-2xs transition-colors flex items-center space-x-1 cursor-pointer"
+                  title="Chọn nhanh các nhóm quyền cho Bác sỹ"
+                >
+                  <i data-lucide="zap" class="w-3 h-3 text-amber-300"></i>
+                  <span>⚡ Nhóm Bác sỹ</span>
+                </button>
+                <button 
+                  type="button" 
+                  @click="selectBatchStandardRoles('dieu_duong')"
+                  class="px-2 py-0.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] rounded-lg shadow-2xs transition-colors flex items-center space-x-1 cursor-pointer"
+                  title="Chọn nhanh các nhóm quyền cho Điều dưỡng"
+                >
+                  <i data-lucide="zap" class="w-3 h-3 text-amber-300"></i>
+                  <span>⚡ Nhóm Điều dưỡng</span>
+                </button>
+                <button 
+                  type="button" 
+                  @click="selectBatchStandardRoles('full_tram')"
+                  class="px-2 py-0.5 bg-pink-600 hover:bg-pink-700 text-white font-bold text-[10px] rounded-lg shadow-2xs transition-colors flex items-center space-x-1 cursor-pointer"
+                  title="Chọn toàn bộ quyền nghiệp vụ Trạm Y tế"
+                >
+                  <i data-lucide="sparkles" class="w-3 h-3 text-amber-300"></i>
+                  <span>⚡ Full quyền</span>
+                </button>
+                <button 
+                  v-if="batchAssignParams.roleIdsToAdd.length > 0"
+                  type="button" 
+                  @click="batchAssignParams.roleIdsToAdd = []"
+                  class="px-1.5 py-0.5 bg-slate-200 hover:bg-rose-100 text-slate-600 hover:text-rose-700 text-[10px] font-bold rounded-lg transition-colors cursor-pointer"
+                  title="Bỏ chọn tất cả nhóm quyền"
+                >
+                  Bỏ chọn
+                </button>
+              </div>
+            </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 bg-purple-50/50 border border-purple-200 rounded-2xl max-h-40 overflow-y-auto">
               <label 
                 v-for="r in hmisRoles" 
@@ -5066,7 +5184,9 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                   v-model="batchAssignParams.roleIdsToAdd"
                   class="rounded text-purple-600 focus:ring-purple-500 w-4 h-4 cursor-pointer"
                 >
-                <span class="truncate font-medium text-slate-800" :title="r.roleName">{{ r.roleName }}</span>
+                <span class="truncate font-medium text-slate-800" :title="r.roleName + ' (' + r.roleCode + ')'">
+                  {{ r.roleName }} <span class="text-[10px] text-purple-600 font-mono">({{ r.roleCode }})</span>
+                </span>
               </label>
             </div>
           </div>
@@ -7835,6 +7955,30 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           return acc ? (acc.username || '') : (off.username || '');
         }
 
+        function getOfficerRolesCount(off) {
+          const acc = getOfficerAccount(off);
+          if (!acc) return 0;
+          return (acc.nhomNguoiDungs || []).length;
+        }
+
+        function getOfficerRolesText(off) {
+          const acc = getOfficerAccount(off);
+          if (!acc || !acc.nhomNguoiDungs || acc.nhomNguoiDungs.length === 0) return '';
+          return acc.nhomNguoiDungs.map(r => r.roleName || r.roleCode || ('#' + (r.roleId || r.id))).join(', ');
+        }
+
+        function getOfficerTitlesCount(off) {
+          const acc = getOfficerAccount(off);
+          if (!acc) return 0;
+          return (acc.signTitles || []).length;
+        }
+
+        function getOfficerTitlesText(off) {
+          const acc = getOfficerAccount(off);
+          if (!acc || !acc.signTitles || acc.signTitles.length === 0) return '';
+          return acc.signTitles.map(t => t.titleName || t.titleCode || ('#' + t.id)).join(', ');
+        }
+
         const filteredHmisOfficers = computed(() => {
           let list = hmisOfficers.value || [];
           if (hmisOfficerTypeFilter.value !== 'all') {
@@ -7946,13 +8090,13 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         });
 
         const unassignedRoles = computed(() => {
-          const assigned = editingUserRoleIds.value || [];
-          return (hmisRoles.value || []).filter(r => !assigned.includes(r.roleId));
+          const assigned = (editingUserRoleIds.value || []).map(Number);
+          return (hmisRoles.value || []).filter(r => !assigned.includes(Number(r.roleId)));
         });
 
         const unassignedSignTitles = computed(() => {
-          const assigned = editingUserTitleIds.value || [];
-          return (hmisSignTitles.value || []).filter(t => !assigned.includes(t.id));
+          const assigned = (editingUserTitleIds.value || []).map(Number);
+          return (hmisSignTitles.value || []).filter(t => !assigned.includes(Number(t.id)));
         });
 
         const filteredHmisSelectorStations = computed(() => {
@@ -8333,17 +8477,24 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           // Lấy chi tiết user từ API để có danh sách nhóm quyền và chức danh đầy đủ nhất
           try {
             const res = await axios.get(`/api/nhanvien-hmis/detail?stationId=${selectedHmisStationId.value}&userId=${u.id}`);
-            if (res.data?.success && res.data.user) {
-              const detail = res.data.user;
-              editingUserRoleIds.value = (detail.nhomNguoiDungs || []).map(r => r.roleId || r.id);
-              editingUserTitleIds.value = (detail.signTitles || []).map(t => t.id);
+            const detail = res.data?.user || res.data?.data;
+            if (detail) {
+              editingUserRoleIds.value = (detail.nhomNguoiDungs || []).map(r => Number(r.roleId || r.id)).filter(Boolean);
+              editingUserTitleIds.value = (detail.signTitles || []).map(t => Number(t.id)).filter(Boolean);
+              u.nhomNguoiDungs = detail.nhomNguoiDungs || [];
+              u.signTitles = detail.signTitles || [];
+              const uIdx = (hmisUsers.value || []).findIndex(usr => usr.id === u.id);
+              if (uIdx !== -1) {
+                hmisUsers.value[uIdx].nhomNguoiDungs = detail.nhomNguoiDungs || [];
+                hmisUsers.value[uIdx].signTitles = detail.signTitles || [];
+              }
             } else {
-              editingUserRoleIds.value = (u.nhomNguoiDungs || []).map(r => r.roleId || r.id);
-              editingUserTitleIds.value = (u.signTitles || []).map(t => t.id);
+              editingUserRoleIds.value = (u.nhomNguoiDungs || []).map(r => Number(r.roleId || r.id)).filter(Boolean);
+              editingUserTitleIds.value = (u.signTitles || []).map(t => Number(t.id)).filter(Boolean);
             }
           } catch (e) {
-            editingUserRoleIds.value = (u.nhomNguoiDungs || []).map(r => r.roleId || r.id);
-            editingUserTitleIds.value = (u.signTitles || []).map(t => t.id);
+            editingUserRoleIds.value = (u.nhomNguoiDungs || []).map(r => Number(r.roleId || r.id)).filter(Boolean);
+            editingUserTitleIds.value = (u.signTitles || []).map(t => Number(t.id)).filter(Boolean);
           }
           nextTick(() => refreshIcons());
         }
@@ -8375,35 +8526,103 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           }
         }
 
+        function getRoleByCode(code) {
+          if (!code) return null;
+          const target = String(code).toUpperCase().trim();
+          return (hmisRoles.value || []).find(r => String(r.roleCode || '').toUpperCase().trim() === target);
+        }
+
+        const STANDARD_ROLE_PACKAGES = {
+          bac_si: ['BAC_SY', 'KHAM_BENH_NGOAI_TRU', 'DIEU_TRI_NGOAI_TRU', 'TIEP_NHAN', 'DUOC'],
+          dieu_duong: ['DIEU_DUONG', 'KHAM_BENH_NGOAI_TRU', 'DIEU_TRI_NGOAI_TRU', 'TIEP_NHAN', 'DUOC'],
+          duoc: ['DUOC', 'TIEP_NHAN', 'VPI_BAOHIEM'],
+          full_tram: [
+            'BAC_SY', 'DIEU_DUONG', 'KHAM_BENH_NGOAI_TRU', 'DIEU_TRI_NGOAI_TRU', 
+            'DUOC', 'TIEP_NHAN', 'TAICHINH_KETOAN', 'CDHA_TDCN', 'XET_NGHIEM', 'VPI_BAOHIEM'
+          ]
+        };
+
+        function addStandardRolesPackage(pkgType = 'bac_si') {
+          if (!isEditingHmisUser.value) {
+            isEditingHmisUser.value = true;
+          }
+          const codes = STANDARD_ROLE_PACKAGES[pkgType] || STANDARD_ROLE_PACKAGES.bac_si;
+          let addedCount = 0;
+          (hmisRoles.value || []).forEach(r => {
+            const rCode = String(r.roleCode || '').toUpperCase().trim();
+            if (codes.includes(rCode)) {
+              const numId = Number(r.roleId);
+              if (numId && !editingUserRoleIds.value.map(Number).includes(numId)) {
+                editingUserRoleIds.value.push(numId);
+                addedCount++;
+              }
+            }
+          });
+          const pkgName = pkgType === 'bac_si' ? 'Bác sỹ' : (pkgType === 'dieu_duong' ? 'Điều dưỡng' : (pkgType === 'duoc' ? 'Dược' : 'Full quyền trạm'));
+          if (addedCount > 0) {
+            showToast(`Đã thêm nhanh ${addedCount} nhóm quyền [${pkgName}]!`, 'success');
+          } else {
+            showToast(`Tài khoản đã có đầy đủ các nhóm quyền [${pkgName}]!`, 'info');
+          }
+          nextTick(() => refreshIcons());
+        }
+
+        function clearAllRolesFromEditingUser() {
+          if (!isEditingHmisUser.value) {
+            isEditingHmisUser.value = true;
+          }
+          editingUserRoleIds.value = [];
+          showToast('Đã xóa hết nhóm người dùng của tài khoản (nhấn Lưu để cập nhật lên cổng)!', 'info');
+          nextTick(() => refreshIcons());
+        }
+
+        function selectBatchStandardRoles(pkgType = 'bac_si') {
+          const codes = STANDARD_ROLE_PACKAGES[pkgType] || STANDARD_ROLE_PACKAGES.bac_si;
+          const current = (batchAssignParams.value.roleIdsToAdd || []).map(Number);
+          const matched = (hmisRoles.value || [])
+            .filter(r => codes.includes(String(r.roleCode || '').toUpperCase().trim()))
+            .map(r => Number(r.roleId));
+          batchAssignParams.value.roleIdsToAdd = [...new Set([...current, ...matched])];
+          const pkgName = pkgType === 'bac_si' ? 'Bác sỹ' : (pkgType === 'dieu_duong' ? 'Điều dưỡng' : 'Full quyền trạm');
+          showToast(`Đã chọn nhanh các nhóm quyền [${pkgName}]!`, 'success');
+          nextTick(() => refreshIcons());
+        }
+
         function addRoleToEditingUser(roleId) {
           if (!roleId) return;
+          const numId = Number(roleId);
+          if (!numId) return;
           if (!isEditingHmisUser.value) isEditingHmisUser.value = true;
-          if (!editingUserRoleIds.value.includes(roleId)) {
-            editingUserRoleIds.value.push(roleId);
+          if (!editingUserRoleIds.value.map(Number).includes(numId)) {
+            editingUserRoleIds.value.push(numId);
           }
           selectedNewRoleId.value = '';
           nextTick(() => refreshIcons());
         }
 
         function removeRoleFromEditingUser(roleId) {
+          const numId = Number(roleId);
           if (!isEditingHmisUser.value) isEditingHmisUser.value = true;
-          editingUserRoleIds.value = editingUserRoleIds.value.filter(id => id !== roleId);
+          editingUserRoleIds.value = editingUserRoleIds.value.filter(id => Number(id) !== numId);
           nextTick(() => refreshIcons());
         }
 
         function addTitleToEditingUser(titleId) {
           if (!titleId) return;
+          const numId = Number(titleId);
+          if (!numId) return;
           if (!isEditingHmisUser.value) isEditingHmisUser.value = true;
-          if (!editingUserTitleIds.value.includes(titleId)) {
-            editingUserTitleIds.value.push(titleId);
+          if (!editingUserTitleIds.value.map(Number).includes(numId)) {
+            editingUserTitleIds.value.push(numId);
           }
           selectedNewTitleId.value = '';
           nextTick(() => refreshIcons());
         }
 
         function removeTitleFromEditingUser(titleId) {
+          const numId = Number(titleId);
           if (!isEditingHmisUser.value) isEditingHmisUser.value = true;
-          editingUserTitleIds.value = editingUserTitleIds.value.filter(id => id !== titleId);
+          editingUserTitleIds.value = editingUserTitleIds.value.filter(id => Number(id) !== numId);
           nextTick(() => refreshIcons());
         }
 
@@ -8491,8 +8710,10 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           isSavingHmisUser.value = true;
           try {
             const updatePayload = {
-              roleIds: editingUserRoleIds.value,
-              signTitleIds: editingUserTitleIds.value,
+              roleIds: editingUserRoleIds.value.map(Number),
+              signTitleIds: editingUserTitleIds.value.map(Number),
+              clearRoles: specificPart === 'roles' && editingUserRoleIds.value.length === 0,
+              clearTitles: specificPart === 'titles' && editingUserTitleIds.value.length === 0,
               userLevel: editingUser.value.userLevel,
               userType: editingUser.value.userType,
               status: editingUser.value.status,
@@ -8531,15 +8752,15 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                 // Cập nhật lại trong danh sách local
                 const idx = hmisUsers.value.findIndex(u => u.id === targetIds[0]);
                 if (idx !== -1) {
-                  const finalRIds = res.data.finalRoleIds || editingUserRoleIds.value;
-                  const finalTIds = res.data.finalSignTitleIds || editingUserTitleIds.value;
+                  const finalRIds = (res.data.finalRoleIds || editingUserRoleIds.value).map(Number);
+                  const finalTIds = (res.data.finalSignTitleIds || editingUserTitleIds.value).map(Number);
                   editingUserRoleIds.value = finalRIds;
                   editingUserTitleIds.value = finalTIds;
                   hmisUsers.value[idx] = {
                     ...hmisUsers.value[idx],
                     ...(res.data.user || {}),
-                    nhomNguoiDungs: finalRIds.map(rid => hmisRoles.value.find(r => r.roleId === rid) || { roleId: rid }),
-                    signTitles: finalTIds.map(tid => hmisSignTitles.value.find(t => t.id === tid) || { id: tid })
+                    nhomNguoiDungs: finalRIds.map(rid => hmisRoles.value.find(r => Number(r.roleId) === rid) || { roleId: rid }),
+                    signTitles: finalTIds.map(tid => hmisSignTitles.value.find(t => Number(t.id) === tid) || { id: tid })
                   };
                   selectedHmisUser.value = hmisUsers.value[idx];
                 }
@@ -8572,11 +8793,11 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                     if (idx !== -1) {
                       const prev = hmisUsers.value[idx];
                       const userRoles = r.finalRoleIds
-                        ? r.finalRoleIds.map(rid => hmisRoles.value.find(rl => rl.roleId === rid) || { roleId: rid })
-                        : (specificPart === 'titles' ? prev.nhomNguoiDungs : (editingUserRoleIds.value.length > 0 ? editingUserRoleIds.value.map(rid => hmisRoles.value.find(rl => rl.roleId === rid) || { roleId: rid }) : prev.nhomNguoiDungs));
+                        ? r.finalRoleIds.map(Number).map(rid => hmisRoles.value.find(rl => Number(rl.roleId) === rid) || { roleId: rid })
+                        : (specificPart === 'titles' ? prev.nhomNguoiDungs : (editingUserRoleIds.value.length > 0 ? editingUserRoleIds.value.map(Number).map(rid => hmisRoles.value.find(rl => Number(rl.roleId) === rid) || { roleId: rid }) : prev.nhomNguoiDungs));
                       const userTitles = r.finalSignTitleIds
-                        ? r.finalSignTitleIds.map(tid => hmisSignTitles.value.find(t => t.id === tid) || { id: tid })
-                        : (specificPart === 'roles' ? prev.signTitles : (editingUserTitleIds.value.length > 0 ? editingUserTitleIds.value.map(tid => hmisSignTitles.value.find(t => t.id === tid) || { id: tid }) : prev.signTitles));
+                        ? r.finalSignTitleIds.map(Number).map(tid => hmisSignTitles.value.find(t => Number(t.id) === tid) || { id: tid })
+                        : (specificPart === 'roles' ? prev.signTitles : (editingUserTitleIds.value.length > 0 ? editingUserTitleIds.value.map(Number).map(tid => hmisSignTitles.value.find(t => Number(t.id) === tid) || { id: tid }) : prev.signTitles));
 
                       hmisUsers.value[idx] = {
                         ...prev,
@@ -9002,6 +9223,10 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           currentOfficerAccounts,
           getOfficerAccount,
           getOfficerUsername,
+          getOfficerRolesCount,
+          getOfficerRolesText,
+          getOfficerTitlesCount,
+          getOfficerTitlesText,
           displayHmisUsers,
           unassignedRoles,
           unassignedSignTitles,
@@ -9014,6 +9239,10 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           selectHmisUser,
           startEditHmisUser,
           cancelEditHmisUser,
+          getRoleByCode,
+          addStandardRolesPackage,
+          clearAllRolesFromEditingUser,
+          selectBatchStandardRoles,
           addRoleToEditingUser,
           removeRoleFromEditingUser,
           addTitleToEditingUser,

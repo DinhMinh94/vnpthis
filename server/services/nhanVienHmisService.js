@@ -58,6 +58,27 @@ async function getStationNhanVienData(stationId) {
   const signTitles = titlesRes.data?.data?.content || [];
   const rawUsers = usersRes.data?.data?.content || [];
 
+  // Tải chi tiết người dùng song song để nạp đầy đủ nhóm người dùng (nhomNguoiDungs) và chức danh (signTitles)
+  await Promise.allSettled(rawUsers.map(async u => {
+    try {
+      const uRes = await axios.get(`${auth.gateway}common/admuser/detail?id=${u.id}`, {
+        headers,
+        timeout: 10000,
+        validateStatus: () => true
+      });
+      if (uRes.status === 200 && uRes.data?.data) {
+        const d = uRes.data.data;
+        u.nhomNguoiDungs = d.nhomNguoiDungs || [];
+        u.signTitles = d.signTitles || [];
+        u.userLevel = d.userLevel ?? u.userLevel;
+        u.userType = d.userType ?? u.userType;
+        u.status = d.status ?? u.status;
+        u.callOnl = d.callOnl ?? u.callOnl;
+        u.auth2FA = d.auth2FA ?? u.auth2FA;
+      }
+    } catch (e) {}
+  }));
+
   // Ghép tài khoản vào nhân viên tương ứng
   const userMap = {};
   rawUsers.forEach(u => {
@@ -133,7 +154,8 @@ async function getUserDetail(stationId, userId) {
   if (res.status === 200 && (res.data?.code === 0 || res.data?.code === 200 || res.data?.data)) {
     return {
       success: true,
-      data: res.data.data
+      data: res.data.data,
+      user: res.data.data
     };
   }
 
@@ -187,18 +209,25 @@ async function updateUserPhanCong(stationId, userId, updateData = {}, specificPa
   if (part === 'titles') {
     // Chỉ cập nhật chức danh ký số, giữ nguyên 100% nhóm người dùng cũ
     roleIds = existingRoleIds;
+  } else if (updateData.clearRoles) {
+    roleIds = [];
   } else {
     const inputRoleIds = Array.isArray(updateData.roleIds)
       ? updateData.roleIds.map(Number).filter(Boolean)
       : [];
-    if (inputRoleIds.length === 0) {
-      // Không chọn / không điền nhóm người dùng -> Giữ nguyên toàn bộ nhóm đã phân trước đó
-      roleIds = existingRoleIds;
-    } else if (mergeMode) {
-      // Hợp nhất nhóm mới với nhóm cũ đã phân (không làm mất cái đã phân)
-      roleIds = Array.from(new Set([...existingRoleIds, ...inputRoleIds]));
+    if (part === 'roles') {
+      // Khi bấm "Lưu riêng nhóm": áp dụng danh sách roleIds được chỉ định
+      roleIds = mergeMode ? Array.from(new Set([...existingRoleIds, ...inputRoleIds])) : inputRoleIds;
     } else {
-      roleIds = inputRoleIds;
+      // Khi bấm "Lưu chung (F4)":
+      if (inputRoleIds.length === 0) {
+        // Không chọn / không điền nhóm người dùng -> Giữ nguyên toàn bộ nhóm đã phân trước đó
+        roleIds = existingRoleIds;
+      } else if (mergeMode) {
+        roleIds = Array.from(new Set([...existingRoleIds, ...inputRoleIds]));
+      } else {
+        roleIds = inputRoleIds;
+      }
     }
   }
 
@@ -207,18 +236,25 @@ async function updateUserPhanCong(stationId, userId, updateData = {}, specificPa
   if (part === 'roles') {
     // Chỉ cập nhật nhóm người dùng, giữ nguyên 100% chức danh ký số cũ
     signTitleIds = existingTitleIds;
+  } else if (updateData.clearTitles) {
+    signTitleIds = [];
   } else {
     const inputTitleIds = Array.isArray(updateData.signTitleIds)
       ? updateData.signTitleIds.map(Number).filter(Boolean)
       : [];
-    if (inputTitleIds.length === 0) {
-      // Không chọn / không điền chức danh ký số -> Giữ nguyên toàn bộ chức danh đã phân trước đó
-      signTitleIds = existingTitleIds;
-    } else if (mergeMode) {
-      // Hợp nhất chức danh mới với chức danh cũ đã phân (không làm mất cái đã phân)
-      signTitleIds = Array.from(new Set([...existingTitleIds, ...inputTitleIds]));
+    if (part === 'titles') {
+      // Khi bấm "Lưu riêng chức danh": áp dụng danh sách signTitleIds được chỉ định
+      signTitleIds = mergeMode ? Array.from(new Set([...existingTitleIds, ...inputTitleIds])) : inputTitleIds;
     } else {
-      signTitleIds = inputTitleIds;
+      // Khi bấm "Lưu chung (F4)":
+      if (inputTitleIds.length === 0) {
+        // Không chọn / không điền chức danh ký số -> Giữ nguyên toàn bộ chức danh đã phân trước đó
+        signTitleIds = existingTitleIds;
+      } else if (mergeMode) {
+        signTitleIds = Array.from(new Set([...existingTitleIds, ...inputTitleIds]));
+      } else {
+        signTitleIds = inputTitleIds;
+      }
     }
   }
 
@@ -524,18 +560,24 @@ async function updateMultipleUsersPhanCong(stationId, userIds, updateData = {}, 
       if (specificPart === 'titles') {
         // Giữ nguyên roles của chính user này
         finalRoleIds = existingRoleIds;
+      } else if (updateData.clearRoles) {
+        finalRoleIds = [];
       } else {
         const inputRoleIds = Array.isArray(updateData.roleIds)
           ? updateData.roleIds.map(Number).filter(Boolean)
           : [];
-        if (inputRoleIds.length === 0) {
-          // Không điền / không chọn nhóm người dùng -> Giữ nguyên 100% nhóm đã phân của user này
-          finalRoleIds = existingRoleIds;
-        } else if (mergeMode) {
-          // Gán thêm nhóm mới, giữ lại tất cả nhóm đã phân trước đó
-          finalRoleIds = Array.from(new Set([...existingRoleIds, ...inputRoleIds]));
+        if (specificPart === 'roles') {
+          finalRoleIds = mergeMode ? Array.from(new Set([...existingRoleIds, ...inputRoleIds])) : inputRoleIds;
         } else {
-          finalRoleIds = inputRoleIds;
+          if (inputRoleIds.length === 0) {
+            // Không điền / không chọn nhóm người dùng -> Giữ nguyên 100% nhóm đã phân của user này
+            finalRoleIds = existingRoleIds;
+          } else if (mergeMode) {
+            // Gán thêm nhóm mới, giữ lại tất cả nhóm đã phân trước đó
+            finalRoleIds = Array.from(new Set([...existingRoleIds, ...inputRoleIds]));
+          } else {
+            finalRoleIds = inputRoleIds;
+          }
         }
       }
 
@@ -544,18 +586,24 @@ async function updateMultipleUsersPhanCong(stationId, userIds, updateData = {}, 
       if (specificPart === 'roles') {
         // Giữ nguyên chức danh ký số của chính user này
         finalSignTitleIds = existingTitleIds;
+      } else if (updateData.clearTitles) {
+        finalSignTitleIds = [];
       } else {
         const inputTitleIds = Array.isArray(updateData.signTitleIds)
           ? updateData.signTitleIds.map(Number).filter(Boolean)
           : [];
-        if (inputTitleIds.length === 0) {
-          // Không điền / không chọn chức danh ký số -> Giữ nguyên 100% chức danh đã phân của user này
-          finalSignTitleIds = existingTitleIds;
-        } else if (mergeMode) {
-          // Gán thêm chức danh mới, giữ lại tất cả chức danh đã phân trước đó
-          finalSignTitleIds = Array.from(new Set([...existingTitleIds, ...inputTitleIds]));
+        if (specificPart === 'titles') {
+          finalSignTitleIds = mergeMode ? Array.from(new Set([...existingTitleIds, ...inputTitleIds])) : inputTitleIds;
         } else {
-          finalSignTitleIds = inputTitleIds;
+          if (inputTitleIds.length === 0) {
+            // Không điền / không chọn chức danh ký số -> Giữ nguyên 100% chức danh đã phân của user này
+            finalSignTitleIds = existingTitleIds;
+          } else if (mergeMode) {
+            // Gán thêm chức danh mới, giữ lại tất cả chức danh đã phân trước đó
+            finalSignTitleIds = Array.from(new Set([...existingTitleIds, ...inputTitleIds]));
+          } else {
+            finalSignTitleIds = inputTitleIds;
+          }
         }
       }
 

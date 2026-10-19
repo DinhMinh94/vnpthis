@@ -1961,6 +1961,21 @@
                   </div>
                 </div>
 
+                <!-- CẢNH BÁO / TÙY CHỌN BẢO TOÀN PHÂN CÔNG (TRÁNH MẤT CÁI CŨ) -->
+                <div v-if="isEditingHmisUser" class="p-3 bg-emerald-50 border border-emerald-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-2xs">
+                  <label class="inline-flex items-center space-x-2.5 cursor-pointer font-extrabold text-xs text-emerald-950 select-none">
+                    <input 
+                      type="checkbox" 
+                      v-model="hmisAssignMergeMode" 
+                      class="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer"
+                    >
+                    <span>🛡️ Bảo toàn phân công: Giữ nguyên các chức danh & nhóm đã có của tài khoản, chỉ gán thêm</span>
+                  </label>
+                  <span class="text-[11px] text-emerald-700 font-medium italic">
+                    ✓ Nếu không điền chức danh / nhóm sẽ không làm mất cái đã phân!
+                  </span>
+                </div>
+
                 <!-- CÁC TRƯỜNG THÔNG TIN CƠ BẢN -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div>
@@ -5430,6 +5445,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const selectedHmisUser = ref(null);
         const isEditingHmisUser = ref(false);
         const isSavingHmisUser = ref(false);
+        const hmisAssignMergeMode = ref(true); // Mặc định bảo toàn phân công cũ (không xóa cái đã phân)
         const editingUser = ref({
           id: null,
           username: '',
@@ -8472,13 +8488,17 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               officerId: editingUser.value.officerId,
               fullName: editingUser.value.fullName,
               username: editingUser.value.username,
-              companyId: editingUser.value.companyId
+              companyId: editingUser.value.companyId,
+              mergeMode: hmisAssignMergeMode.value,
+              specificPart
             };
 
             if (targetIds.length === 1) {
               const singlePayload = {
                 stationId: selectedHmisStationId.value,
                 userId: targetIds[0],
+                specificPart,
+                updateData: updatePayload,
                 ...updatePayload
               };
 
@@ -8496,11 +8516,15 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                 // Cập nhật lại trong danh sách local
                 const idx = hmisUsers.value.findIndex(u => u.id === targetIds[0]);
                 if (idx !== -1) {
+                  const finalRIds = res.data.finalRoleIds || editingUserRoleIds.value;
+                  const finalTIds = res.data.finalSignTitleIds || editingUserTitleIds.value;
+                  editingUserRoleIds.value = finalRIds;
+                  editingUserTitleIds.value = finalTIds;
                   hmisUsers.value[idx] = {
                     ...hmisUsers.value[idx],
                     ...(res.data.user || {}),
-                    nhomNguoiDungs: editingUserRoleIds.value.map(rid => hmisRoles.value.find(r => r.roleId === rid) || { roleId: rid }),
-                    signTitles: editingUserTitleIds.value.map(tid => hmisSignTitles.value.find(t => t.id === tid) || { id: tid })
+                    nhomNguoiDungs: finalRIds.map(rid => hmisRoles.value.find(r => r.roleId === rid) || { roleId: rid }),
+                    signTitles: finalTIds.map(tid => hmisSignTitles.value.find(t => t.id === tid) || { id: tid })
                   };
                   selectedHmisUser.value = hmisUsers.value[idx];
                 }
@@ -8532,15 +8556,18 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                     const idx = hmisUsers.value.findIndex(u => u.id === r.userId);
                     if (idx !== -1) {
                       const prev = hmisUsers.value[idx];
+                      const userRoles = r.finalRoleIds
+                        ? r.finalRoleIds.map(rid => hmisRoles.value.find(rl => rl.roleId === rid) || { roleId: rid })
+                        : (specificPart === 'titles' ? prev.nhomNguoiDungs : (editingUserRoleIds.value.length > 0 ? editingUserRoleIds.value.map(rid => hmisRoles.value.find(rl => rl.roleId === rid) || { roleId: rid }) : prev.nhomNguoiDungs));
+                      const userTitles = r.finalSignTitleIds
+                        ? r.finalSignTitleIds.map(tid => hmisSignTitles.value.find(t => t.id === tid) || { id: tid })
+                        : (specificPart === 'roles' ? prev.signTitles : (editingUserTitleIds.value.length > 0 ? editingUserTitleIds.value.map(tid => hmisSignTitles.value.find(t => t.id === tid) || { id: tid }) : prev.signTitles));
+
                       hmisUsers.value[idx] = {
                         ...prev,
                         ...(r.user || {}),
-                        nhomNguoiDungs: (specificPart === 'titles') 
-                          ? prev.nhomNguoiDungs 
-                          : editingUserRoleIds.value.map(rid => hmisRoles.value.find(rl => rl.roleId === rid) || { roleId: rid }),
-                        signTitles: (specificPart === 'roles') 
-                          ? prev.signTitles 
-                          : editingUserTitleIds.value.map(tid => hmisSignTitles.value.find(t => t.id === tid) || { id: tid })
+                        nhomNguoiDungs: userRoles,
+                        signTitles: userTitles
                       };
                     }
                   }
@@ -8942,6 +8969,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           selectedHmisUser,
           isEditingHmisUser,
           isSavingHmisUser,
+          hmisAssignMergeMode,
           editingUser,
           editingUserRoleIds,
           editingUserTitleIds,

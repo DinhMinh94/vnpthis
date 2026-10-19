@@ -72,7 +72,8 @@ router.put('/update', async (req, res) => {
     if (!stationId || !userId) {
       return res.status(400).json({ success: false, message: 'Thiếu thông tin cập nhật (stationId, userId)' });
     }
-    const result = await nhanVienHmisService.updateUserPhanCong(stationId, userId, updateData);
+    const specificPart = req.body.specificPart || updateData.specificPart || 'all';
+    const result = await nhanVienHmisService.updateUserPhanCong(stationId, userId, updateData, specificPart);
     res.json(result);
   } catch (error) {
     console.error('Lỗi cập nhật người dùng:', error.message);

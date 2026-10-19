@@ -175,20 +175,55 @@ async function updateUserPhanCong(stationId, userId, updateData) {
   } catch (e) {}
 
   const base = oldDetail || {};
+  const mergeMode = updateData.mergeMode !== undefined ? Boolean(updateData.mergeMode) : true;
 
-  // 2. Chuẩn bị payload chuẩn theo form của HMIS (hỗ trợ cập nhật riêng lẻ độc lập)
-  const roleIds = updateData.roleIds !== undefined
-    ? (Array.isArray(updateData.roleIds) ? updateData.roleIds : [])
-    : (base.nhomNguoiDungs || []).map(r => r.roleId || r.id);
+  const existingRoleIds = (base.nhomNguoiDungs || []).map(r => Number(r.roleId || r.id)).filter(Boolean);
+  const existingTitleIds = (base.signTitles || []).map(t => Number(t.id)).filter(Boolean);
 
-  const signTitleIds = updateData.signTitleIds !== undefined
-    ? (Array.isArray(updateData.signTitleIds) ? updateData.signTitleIds : [])
-    : (base.signTitles || []).map(t => t.id);
+  // 2. Xác định danh sách Nhóm người dùng (Bảo vệ không bị mất nếu không điền)
+  let roleIds;
+  if (specificPart === 'titles') {
+    // Chỉ cập nhật chức danh ký số, giữ nguyên 100% nhóm người dùng cũ
+    roleIds = existingRoleIds;
+  } else {
+    const inputRoleIds = Array.isArray(updateData.roleIds)
+      ? updateData.roleIds.map(Number).filter(Boolean)
+      : [];
+    if (inputRoleIds.length === 0) {
+      // Không chọn / không điền nhóm người dùng -> Giữ nguyên toàn bộ nhóm đã phân trước đó
+      roleIds = existingRoleIds;
+    } else if (mergeMode) {
+      // Hợp nhất nhóm mới với nhóm cũ đã phân (không làm mất cái đã phân)
+      roleIds = Array.from(new Set([...existingRoleIds, ...inputRoleIds]));
+    } else {
+      roleIds = inputRoleIds;
+    }
+  }
+
+  // 3. Xác định danh sách Chức danh ký số (Bảo vệ không bị mất nếu không điền)
+  let signTitleIds;
+  if (specificPart === 'roles') {
+    // Chỉ cập nhật nhóm người dùng, giữ nguyên 100% chức danh ký số cũ
+    signTitleIds = existingTitleIds;
+  } else {
+    const inputTitleIds = Array.isArray(updateData.signTitleIds)
+      ? updateData.signTitleIds.map(Number).filter(Boolean)
+      : [];
+    if (inputTitleIds.length === 0) {
+      // Không chọn / không điền chức danh ký số -> Giữ nguyên toàn bộ chức danh đã phân trước đó
+      signTitleIds = existingTitleIds;
+    } else if (mergeMode) {
+      // Hợp nhất chức danh mới với chức danh cũ đã phân (không làm mất cái đã phân)
+      signTitleIds = Array.from(new Set([...existingTitleIds, ...inputTitleIds]));
+    } else {
+      signTitleIds = inputTitleIds;
+    }
+  }
 
   const payload = {
     id: Number(userId),
     username: updateData.username || base.username,
-    userPwd: updateData.userPwd || '',
+    userPwd: (updateData.userPwd && updateData.userPwd.trim()) ? updateData.userPwd.trim() : '',
     officer: { id: updateData.officerId || base.officer?.id },
     fullName: updateData.fullName || base.fullName || base.officer?.officerName || '',
     userLevel: updateData.userLevel !== undefined ? Number(updateData.userLevel) : (base.userLevel ?? 4),
@@ -247,7 +282,9 @@ async function updateUserPhanCong(stationId, userId, updateData) {
       success: true,
       message: updateRes.data?.message || 'Cập nhật phân công thành công!',
       data: updateRes.data?.data,
-      user: payload
+      user: payload,
+      finalRoleIds: roleIds,
+      finalSignTitleIds: signTitleIds
     };
   }
 
@@ -475,29 +512,49 @@ async function updateMultipleUsersPhanCong(stationId, userIds, updateData = {}, 
       } catch (e) {}
 
       const base = userDetail || {};
+      const mergeMode = updateData.mergeMode !== undefined ? Boolean(updateData.mergeMode) : true;
 
-      // 2. Xác định danh sách Nhóm người dùng
+      const existingRoleIds = (base.nhomNguoiDungs || []).map(r => Number(r.roleId || r.id)).filter(Boolean);
+      const existingTitleIds = (base.signTitles || []).map(t => Number(t.id)).filter(Boolean);
+
+      // 2. Xác định danh sách Nhóm người dùng (Bảo vệ không bị mất nếu không điền)
       let finalRoleIds;
       if (specificPart === 'titles') {
         // Giữ nguyên roles của chính user này
-        finalRoleIds = (base.nhomNguoiDungs || []).map(r => r.roleId || r.id);
+        finalRoleIds = existingRoleIds;
       } else {
-        // Áp dụng danh sách roles đã chọn
-        finalRoleIds = Array.isArray(updateData.roleIds)
-          ? updateData.roleIds
-          : (base.nhomNguoiDungs || []).map(r => r.roleId || r.id);
+        const inputRoleIds = Array.isArray(updateData.roleIds)
+          ? updateData.roleIds.map(Number).filter(Boolean)
+          : [];
+        if (inputRoleIds.length === 0) {
+          // Không điền / không chọn nhóm người dùng -> Giữ nguyên 100% nhóm đã phân của user này
+          finalRoleIds = existingRoleIds;
+        } else if (mergeMode) {
+          // Gán thêm nhóm mới, giữ lại tất cả nhóm đã phân trước đó
+          finalRoleIds = Array.from(new Set([...existingRoleIds, ...inputRoleIds]));
+        } else {
+          finalRoleIds = inputRoleIds;
+        }
       }
 
-      // 3. Xác định danh sách Chức danh ký số
+      // 3. Xác định danh sách Chức danh ký số (Bảo vệ không bị mất nếu không điền)
       let finalSignTitleIds;
       if (specificPart === 'roles') {
         // Giữ nguyên chức danh ký số của chính user này
-        finalSignTitleIds = (base.signTitles || []).map(t => t.id);
+        finalSignTitleIds = existingTitleIds;
       } else {
-        // Áp dụng danh sách chức danh đã chọn
-        finalSignTitleIds = Array.isArray(updateData.signTitleIds)
-          ? updateData.signTitleIds
-          : (base.signTitles || []).map(t => t.id);
+        const inputTitleIds = Array.isArray(updateData.signTitleIds)
+          ? updateData.signTitleIds.map(Number).filter(Boolean)
+          : [];
+        if (inputTitleIds.length === 0) {
+          // Không điền / không chọn chức danh ký số -> Giữ nguyên 100% chức danh đã phân của user này
+          finalSignTitleIds = existingTitleIds;
+        } else if (mergeMode) {
+          // Gán thêm chức danh mới, giữ lại tất cả chức danh đã phân trước đó
+          finalSignTitleIds = Array.from(new Set([...existingTitleIds, ...inputTitleIds]));
+        } else {
+          finalSignTitleIds = inputTitleIds;
+        }
       }
 
       const payload = {
@@ -540,7 +597,9 @@ async function updateMultipleUsersPhanCong(stationId, userIds, updateData = {}, 
           userId: numUserId,
           username: payload.username,
           status: 'success',
-          user: payload
+          user: payload,
+          finalRoleIds,
+          finalSignTitleIds
         });
       } else {
         failCount++;

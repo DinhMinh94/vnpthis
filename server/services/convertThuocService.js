@@ -297,7 +297,7 @@ function convertRows(sourceRows, options = {}) {
     // Nhóm BHXH: Lấy theo tham số cấu hình (9, 10, 11, 14, 15, 16, 17), hoặc lấy từ file nguồn
     const nhomBhxh = (options.nhomBhxhDefault !== undefined && options.nhomBhxhDefault !== null && options.nhomBhxhDefault !== '')
       ? Number(options.nhomBhxhDefault)
-      : (d.MA_NHOM_9324 || d.MA_NHOM_5937 || 10);
+      : (d.MA_NHOM_9324 || d.MA_NHOM_5937 || (isVatTu ? 15 : 10));
     const giaBan = giaThau;
     const giaDichVu = giaThau;
     const giaBhyt = parseNumberVi(d.DON_GIA_BH || d.DON_GIA || 0);

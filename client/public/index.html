@@ -256,7 +256,7 @@
       <!-- ============================================================== -->
       <!-- TAB 1: QUẢN LÝ & CẤU HÌNH TRẠM Y TẾ                             -->
       <!-- ============================================================== -->
-      <div v-show="currentMainTab === 'stations'" class="space-y-6">
+      <div v-if="currentMainTab === 'stations'" class="space-y-6">
 
       <!-- BANNER TIÊU ĐỀ & THÔNG TIN ĐƠN VỊ -->
       <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -646,7 +646,7 @@
       <!-- ============================================================== -->
       <!-- TAB 2: GEN FILE THUỐC IMPORT VNPT HIS (78 CỘT CHUẨN)             -->
       <!-- ============================================================== -->
-      <div v-show="currentMainTab === 'thuoc'" class="space-y-6">
+      <div v-if="currentMainTab === 'thuoc'" class="space-y-6">
 
         <!-- BANNER TIÊU ĐỀ TAB THUỐC -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5 bg-gradient-to-br from-white via-rose-50/20 to-pink-50/30">
@@ -870,7 +870,7 @@
       <!-- ============================================================== -->
       <!-- TAB 3: GEN FILE VẬT TƯ Y TẾ IMPORT VNPT HIS (78 CỘT CHUẨN)     -->
       <!-- ============================================================== -->
-      <div v-show="currentMainTab === 'vattu'" class="space-y-6">
+      <div v-if="currentMainTab === 'vattu'" class="space-y-6">
 
         <!-- BANNER TIÊU ĐỀ TAB VẬT TƯ -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5 bg-gradient-to-br from-white via-emerald-50/25 to-teal-50/30">
@@ -1012,8 +1012,8 @@
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">Nhóm chi phí BHXH mặc định:</label>
                 <select v-model="vattuOptions.nhomBhxh" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-teal-500 focus:outline-none">
-                  <option :value="14">14 - Vật tư y tế (Mặc định)</option>
-                  <option :value="15">15 - Vật tư</option>
+                  <option :value="15">15 - Vật tư (Mặc định)</option>
+                  <option :value="14">14 - Vật tư y tế</option>
                   <option :value="16">16 - Vật tư trong danh mục thay thế</option>
                   <option :value="17">17 - Vật tư ngoài danh mục</option>
                   <option :value="9">9 - Thuốc, dịch truyền</option>
@@ -1092,7 +1092,7 @@
       <!-- ============================================================== -->
       <!-- TAB 4: GEN FILE IMPORT NHÂN VIÊN VNPT HIS (33 CỘT CHUẨN)       -->
       <!-- ============================================================== -->
-      <div v-show="currentMainTab === 'nhanvien'" class="space-y-6">
+      <div v-if="currentMainTab === 'nhanvien'" class="space-y-6">
 
         <!-- BANNER TIÊU ĐỀ TAB NHÂN VIÊN -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5 bg-gradient-to-br from-white via-indigo-50/30 to-purple-50/40">
@@ -1442,7 +1442,7 @@
       <!-- ============================================================== -->
       <!-- TAB 5: PHÂN CÔNG & QUẢN LÝ NHÂN VIÊN - NGƯỜI DÙNG HMIS       -->
       <!-- ============================================================== -->
-      <div v-show="currentMainTab === 'nhanvien_hmis'" class="space-y-6">
+      <div v-if="currentMainTab === 'nhanvien_hmis'" class="space-y-6">
 
         <!-- BANNER HEADER & ĐIỀU KHIỂN CHỌN TRẠM -->
         <div class="bg-gradient-to-r from-teal-800 via-cyan-800 to-blue-900 rounded-3xl p-6 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-5 border border-teal-500/30">
@@ -2023,6 +2023,29 @@
                   </div>
                 </div>
 
+
+                <!-- BANNER THÔNG BÁO CẬP NHẬT THÀNH CÔNG NỔI BẬT TRỰC QUAN -->
+                <div v-if="hmisUserSaveNotice.show" 
+                     class="p-4 rounded-2xl flex items-center justify-between gap-3 shadow-md animate-in fade-in slide-in-from-top-2 duration-200 border-2"
+                     :class="hmisUserSaveNotice.type === 'success' ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white border-emerald-400 shadow-emerald-600/20' : (hmisUserSaveNotice.type === 'warning' ? 'bg-gradient-to-r from-amber-600 to-yellow-600 text-white border-amber-400 shadow-amber-600/20' : 'bg-gradient-to-r from-rose-600 to-red-700 text-white border-rose-400 shadow-rose-600/20')">
+                  <div class="flex items-center space-x-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 shadow-inner">
+                      <i :data-lucide="hmisUserSaveNotice.type === 'success' ? 'check-check' : (hmisUserSaveNotice.type === 'warning' ? 'alert-circle' : 'alert-triangle')" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                      <div class="flex items-center space-x-2">
+                        <span class="font-black text-sm uppercase tracking-wide">
+                          {{ hmisUserSaveNotice.type === 'success' ? '✓ ĐÃ LƯU & CẬP NHẬT THÀNH CÔNG LÊN CỔNG HMIS!' : (hmisUserSaveNotice.type === 'warning' ? '⚠️ CẬP NHẬT CÓ CẢNH BÁO' : '✕ LỖI CẬP NHẬT LÊN CỔNG HMIS') }}
+                        </span>
+                        <span class="text-[10px] bg-black/25 px-2 py-0.5 rounded-full font-mono">{{ hmisUserSaveNotice.time }}</span>
+                      </div>
+                      <p class="text-xs font-semibold mt-0.5 text-white/95">{{ hmisUserSaveNotice.message }}</p>
+                    </div>
+                  </div>
+                  <button type="button" @click="hmisUserSaveNotice.show = false" class="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer" title="Đóng thông báo">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                  </button>
+                </div>
                 <!-- CẢNH BÁO / TÙY CHỌN BẢO TOÀN PHÂN CÔNG (TRÁNH MẤT CÁI CŨ) -->
                 <div v-if="isEditingHmisUser" class="p-3 bg-emerald-50 border border-emerald-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-2xs">
                   <label class="inline-flex items-center space-x-2.5 cursor-pointer font-extrabold text-xs text-emerald-950 select-none">
@@ -5406,7 +5429,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const vattuFileName = ref('');
         const vattuFileSize = ref('');
         const vattuOptions = ref({
-          nhomBhxh: 14,
+          nhomBhxh: 15,
           nguonCt: '1',
           prefixMaThuoc: ''
         });
@@ -5469,6 +5492,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const selectedHmisUser = ref(null);
         const isEditingHmisUser = ref(false);
         const isSavingHmisUser = ref(false);
+        const hmisUserSaveNotice = ref({ show: false, type: 'success', message: '', time: '', username: '' });
         const hmisAssignMergeMode = ref(true); // Mặc định bảo toàn phân công cũ (không xóa cái đã phân)
         const editingUser = ref({
           id: null,
@@ -5540,12 +5564,16 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           
           // Khi chuyển sang tab khác: Tự động làm mới (xóa file và kết quả đã gen) ở tab cũ để sẵn sàng nạp file mới
           if (currentMainTab.value !== tab) {
-            if (currentMainTab.value === 'thuoc') {
-              clearThuocData(false);
-            } else if (currentMainTab.value === 'vattu') {
-              clearVattuData(false);
-            } else if (currentMainTab.value === 'nhanvien') {
-              clearNhanVienData(false);
+            try {
+              if (currentMainTab.value === 'thuoc') {
+                clearThuocData(false);
+              } else if (currentMainTab.value === 'vattu') {
+                clearVattuData(false);
+              } else if (currentMainTab.value === 'nhanvien') {
+                clearNhanVienData(false);
+              }
+            } catch (err) {
+              console.warn('Error clearing tab data on switch:', err);
             }
           }
 
@@ -5793,7 +5821,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           refreshIcons();
           setTimeout(() => {
             removeToast(id);
-          }, 2500);
+          }, 4500);
         }
 
         async function fetchStations() {
@@ -8457,6 +8485,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
         async function selectHmisUser(u) {
           if (!u) return;
+          hmisUserSaveNotice.value.show = false;
           selectedHmisUser.value = u;
           isEditingHmisUser.value = false;
           editingUser.value = {
@@ -8747,6 +8776,13 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                       ? `Đã lưu danh sách chức danh ký số cho ${uName} thành công!`
                       : `Cập nhật phân công tài khoản ${uName} thành công!`);
                 showToast(successMsg, 'success');
+                hmisUserSaveNotice.value = {
+                  show: true,
+                  type: 'success',
+                  message: `${successMsg} (${editingUserRoleIds.value.length} nhóm quyền, ${editingUserTitleIds.value.length} chức danh ký số đã đồng bộ lên HMIS)`,
+                  time: new Date().toLocaleTimeString('vi-VN'),
+                  username: uName
+                };
                 editingUser.value.userPwd = '';
                 fetchSystemLogs();
                 // Cập nhật lại trong danh sách local
@@ -8765,7 +8801,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                   selectedHmisUser.value = hmisUsers.value[idx];
                 }
               } else {
-                showToast('Lỗi cập nhật: ' + (res.data?.message || 'Không thể lưu'), 'error');
+                const errMsg = 'Lỗi cập nhật: ' + (res.data?.message || 'Không thể lưu');
+                showToast(errMsg, 'error');
+                hmisUserSaveNotice.value = { show: true, type: 'error', message: errMsg, time: new Date().toLocaleTimeString('vi-VN') };
               }
             } else {
               // Nhiều tài khoản đã tích chọn
@@ -8783,6 +8821,13 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                       ? `Đã lưu chức danh ký số cho ${res.data.successCount}/${targetIds.length} tài khoản đã tích!`
                       : `Đã cập nhật phân công cho ${res.data.successCount}/${targetIds.length} tài khoản đã tích!`);
                 showToast(successMsg, res.data.failCount > 0 ? 'warning' : 'success');
+                hmisUserSaveNotice.value = {
+                  show: true,
+                  type: res.data.failCount > 0 ? 'warning' : 'success',
+                  message: `${successMsg} (${editingUserRoleIds.value.length} nhóm quyền, ${editingUserTitleIds.value.length} chức danh ký số)`,
+                  time: new Date().toLocaleTimeString('vi-VN'),
+                  username: targetIds.join(', ')
+                };
                 editingUser.value.userPwd = '';
                 fetchSystemLogs();
 
@@ -8814,7 +8859,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             }
           } catch (err) {
             console.error('Lỗi lưu phân công user HMIS:', err);
-            showToast('Lỗi lưu phân công: ' + (err.response?.data?.message || err.message), 'error');
+            const catchErrMsg = 'Lỗi lưu phân công: ' + (err.response?.data?.message || err.message);
+            showToast(catchErrMsg, 'error');
+            hmisUserSaveNotice.value = { show: true, type: 'error', message: catchErrMsg, time: new Date().toLocaleTimeString('vi-VN') };
           } finally {
             isSavingHmisUser.value = false;
             nextTick(() => refreshIcons());
@@ -9253,7 +9300,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           saveHmisUserPhanCong,
           openNhanVienHmisTab,
           openBatchAssignHmisModal,
-          executeBatchAssignHmis
+          executeBatchAssignHmis,
+          hmisUserSaveNotice
         };
       }
     }).mount('#app');

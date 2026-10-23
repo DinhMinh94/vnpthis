@@ -2031,8 +2031,41 @@
                 </div>
 
 
+                <!-- HỘP KẾT QUẢ ĐỒNG BỘ PHÂN CÔNG (THEO ĐÚNG MẪU GIAO DIỆN) -->
+                <div v-if="hmisPhanCongSyncResults" id="hmis-phancong-sync-result-box" class="p-4 rounded-xl border-2 space-y-3 animate-in fade-in" :class="hmisPhanCongSyncResults.failedCount === 0 ? 'bg-emerald-50 border-emerald-400' : 'bg-amber-50 border-amber-400'">
+                  <div class="flex items-center justify-between font-extrabold text-sm" :class="hmisPhanCongSyncResults.failedCount === 0 ? 'text-emerald-900' : 'text-amber-900'">
+                    <span class="flex items-center space-x-2">
+                      <i :data-lucide="hmisPhanCongSyncResults.failedCount === 0 ? 'check-circle-2' : 'alert-circle'" class="w-5 h-5"></i>
+                      <span>KẾT QUẢ ĐỒNG BỘ: {{ hmisPhanCongSyncResults.successCount }} / {{ hmisPhanCongSyncResults.total }} tài khoản thành công!</span>
+                    </span>
+                    <div class="flex items-center space-x-2">
+                      <span v-if="hmisPhanCongSyncResults.failedCount > 0" class="text-rose-600 text-xs font-bold">
+                        ({{ hmisPhanCongSyncResults.failedCount }} thất bại)
+                      </span>
+                      <span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-white/90 border shadow-2xs" :class="hmisPhanCongSyncResults.failedCount === 0 ? 'text-emerald-800 border-emerald-300' : 'text-amber-800 border-amber-300'">
+                        {{ hmisPhanCongSyncResults.actionTitle }}
+                      </span>
+                      <button type="button" @click="hmisPhanCongSyncResults = null" class="p-1 rounded-lg hover:bg-black/10 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer" title="Đóng kết quả">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div class="max-h-48 overflow-y-auto space-y-1 text-xs">
+                    <div v-for="res in hmisPhanCongSyncResults.results" :key="res.userId || res.username" class="p-2 rounded bg-white border flex items-center justify-between shadow-2xs" :class="res.success ? 'border-emerald-200 text-emerald-900' : 'border-rose-200 text-rose-800'">
+                      <div class="flex items-center space-x-2 truncate">
+                        <i :data-lucide="res.success ? 'check' : 'x'" class="w-4 h-4 flex-shrink-0" :class="res.success ? 'text-emerald-600' : 'text-rose-600'"></i>
+                        <span class="font-semibold">{{ res.code ? '[' + res.code + '] ' : '' }}{{ res.username }} <span v-if="res.fullName" class="text-slate-600 font-normal">({{ res.fullName }})</span></span>
+                      </div>
+                      <span class="font-bold text-[11px] flex-shrink-0 ml-2" :class="res.success ? 'text-emerald-700' : 'text-rose-700'">
+                        {{ res.message }} ({{ res.duration }}ms)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- BANNER THÔNG BÁO CẬP NHẬT THÀNH CÔNG NỔI BẬT TRỰC QUAN -->
-                <div v-if="hmisUserSaveNotice.show" 
+                <div v-if="hmisUserSaveNotice.show && !hmisPhanCongSyncResults" 
                      class="p-4 rounded-2xl flex items-center justify-between gap-3 shadow-md animate-in fade-in slide-in-from-top-2 duration-200 border-2"
                      :class="hmisUserSaveNotice.type === 'success' ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white border-emerald-400 shadow-emerald-600/20' : (hmisUserSaveNotice.type === 'warning' ? 'bg-gradient-to-r from-amber-600 to-yellow-600 text-white border-amber-400 shadow-amber-600/20' : 'bg-gradient-to-r from-rose-600 to-red-700 text-white border-rose-400 shadow-rose-600/20')">
                   <div class="flex items-center space-x-3.5">
@@ -2195,6 +2228,25 @@
                     </div>
                   </div>
 
+                  <!-- HỘP KẾT QUẢ ĐỒNG BỘ RIÊNG CHO NHÓM NGƯỜI DÙNG -->
+                  <div v-if="hmisPhanCongSyncResults && hmisPhanCongSyncResults.part === 'roles'" class="p-3.5 rounded-xl border-2 space-y-2 animate-in fade-in" :class="hmisPhanCongSyncResults.failedCount === 0 ? 'bg-emerald-50 border-emerald-400' : 'bg-amber-50 border-amber-400'">
+                    <div class="flex items-center justify-between font-extrabold text-xs" :class="hmisPhanCongSyncResults.failedCount === 0 ? 'text-emerald-900' : 'text-amber-900'">
+                      <span class="flex items-center space-x-1.5">
+                        <i :data-lucide="hmisPhanCongSyncResults.failedCount === 0 ? 'check-circle-2' : 'alert-circle'" class="w-4 h-4"></i>
+                        <span>KẾT QUẢ ĐỒNG BỘ: {{ hmisPhanCongSyncResults.successCount }} / {{ hmisPhanCongSyncResults.total }} tài khoản thành công!</span>
+                      </span>
+                      <button type="button" @click="hmisPhanCongSyncResults = null" class="p-1 rounded-lg hover:bg-black/10 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer" title="Đóng kết quả">
+                        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                      </button>
+                    </div>
+                    <div class="max-h-36 overflow-y-auto space-y-1 text-xs">
+                      <div v-for="res in hmisPhanCongSyncResults.results" :key="res.userId || res.username" class="p-2 rounded bg-white border flex items-center justify-between shadow-2xs" :class="res.success ? 'border-emerald-200 text-emerald-900' : 'border-rose-200 text-rose-800'">
+                        <span class="font-semibold">{{ res.code ? '[' + res.code + '] ' : '' }}{{ res.username }} <span v-if="res.fullName" class="text-slate-600 font-normal">({{ res.fullName }})</span></span>
+                        <span class="font-bold text-[11px]" :class="res.success ? 'text-emerald-700' : 'text-rose-700'">{{ res.message }} ({{ res.duration }}ms)</span>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Danh sách nhóm người dùng hiện có dạng thẻ (Tags) -->
                   <div class="flex flex-wrap gap-2 min-h-[32px] items-center">
                     <span 
@@ -2346,6 +2398,25 @@
                         <i data-lucide="save" class="w-3 h-3"></i>
                         <span>{{ selectedHmisUserIds.length > 1 ? `Lưu riêng chức danh (${selectedHmisUserIds.length} TK)` : 'Lưu riêng chức danh' }}</span>
                       </button>
+                    </div>
+                  </div>
+
+                  <!-- HỘP KẾT QUẢ ĐỒNG BỘ RIÊNG CHO CHỨC DANH KÝ SỐ -->
+                  <div v-if="hmisPhanCongSyncResults && hmisPhanCongSyncResults.part === 'titles'" class="p-3.5 rounded-xl border-2 space-y-2 animate-in fade-in" :class="hmisPhanCongSyncResults.failedCount === 0 ? 'bg-emerald-50 border-emerald-400' : 'bg-amber-50 border-amber-400'">
+                    <div class="flex items-center justify-between font-extrabold text-xs" :class="hmisPhanCongSyncResults.failedCount === 0 ? 'text-emerald-900' : 'text-amber-900'">
+                      <span class="flex items-center space-x-1.5">
+                        <i :data-lucide="hmisPhanCongSyncResults.failedCount === 0 ? 'check-circle-2' : 'alert-circle'" class="w-4 h-4"></i>
+                        <span>KẾT QUẢ ĐỒNG BỘ: {{ hmisPhanCongSyncResults.successCount }} / {{ hmisPhanCongSyncResults.total }} tài khoản thành công!</span>
+                      </span>
+                      <button type="button" @click="hmisPhanCongSyncResults = null" class="p-1 rounded-lg hover:bg-black/10 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer" title="Đóng kết quả">
+                        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                      </button>
+                    </div>
+                    <div class="max-h-36 overflow-y-auto space-y-1 text-xs">
+                      <div v-for="res in hmisPhanCongSyncResults.results" :key="res.userId || res.username" class="p-2 rounded bg-white border flex items-center justify-between shadow-2xs" :class="res.success ? 'border-emerald-200 text-emerald-900' : 'border-rose-200 text-rose-800'">
+                        <span class="font-semibold">{{ res.code ? '[' + res.code + '] ' : '' }}{{ res.username }} <span v-if="res.fullName" class="text-slate-600 font-normal">({{ res.fullName }})</span></span>
+                        <span class="font-bold text-[11px]" :class="res.success ? 'text-emerald-700' : 'text-rose-700'">{{ res.message }} ({{ res.duration }}ms)</span>
+                      </div>
                     </div>
                   </div>
 
@@ -5807,12 +5878,23 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           </div>
 
           <!-- Kết quả phân công -->
-          <div v-if="batchAssignResults" class="p-4 bg-emerald-50 border-2 border-emerald-400 rounded-2xl space-y-2 animate-in fade-in">
-            <div class="flex items-center justify-between font-bold text-emerald-900">
-              <span>ĐÃ PHÂN CÔNG THÀNH CÔNG CHO {{ batchAssignResults.totalUpdated }} TÀI KHOẢN!</span>
-              <span v-if="batchAssignResults.totalErrors > 0" class="text-rose-600 text-xs">({{ batchAssignResults.totalErrors }} lỗi)</span>
+          <div v-if="batchAssignResults" class="p-4 rounded-xl border-2 space-y-3 animate-in fade-in" :class="(batchAssignResults.totalErrors || 0) === 0 ? 'bg-emerald-50 border-emerald-400' : 'bg-amber-50 border-amber-400'">
+            <div class="flex items-center justify-between font-extrabold text-sm" :class="(batchAssignResults.totalErrors || 0) === 0 ? 'text-emerald-900' : 'text-amber-900'">
+              <span class="flex items-center space-x-2">
+                <i :data-lucide="(batchAssignResults.totalErrors || 0) === 0 ? 'check-circle-2' : 'alert-circle'" class="w-5 h-5"></i>
+                <span>KẾT QUẢ ĐỒNG BỘ: {{ batchAssignResults.totalUpdated }} tài khoản thành công!</span>
+              </span>
+              <span v-if="batchAssignResults.totalErrors > 0" class="text-rose-600 text-xs font-bold">
+                ({{ batchAssignResults.totalErrors }} lỗi)
+              </span>
             </div>
-            <p class="text-xs text-emerald-800">Dữ liệu đã được cập nhật trực tiếp lên cổng HMIS và lưu vào nhật ký sửa hệ thống.</p>
+            <div v-if="batchAssignResults.results && batchAssignResults.results.length > 0" class="max-h-40 overflow-y-auto space-y-1 text-xs">
+              <div v-for="(res, idx) in batchAssignResults.results" :key="idx" class="p-2 rounded bg-white border flex items-center justify-between shadow-2xs" :class="res.status === 'success' ? 'border-emerald-200 text-emerald-900' : 'border-rose-200 text-rose-800'">
+                <span class="font-semibold">{{ res.stationCode ? '[' + res.stationCode + '] ' : '' }}{{ res.stationName }} ({{ res.username }})</span>
+                <span class="font-bold text-[11px]" :class="res.status === 'success' ? 'text-emerald-700' : 'text-rose-700'">{{ res.status === 'success' ? 'Cập nhật thành công lên cổng HMIS' : (res.error || 'Thất bại') }}</span>
+              </div>
+            </div>
+            <p v-else class="text-xs text-emerald-800">Dữ liệu đã được cập nhật trực tiếp lên cổng HMIS và lưu vào nhật ký sửa hệ thống.</p>
           </div>
         </div>
 
@@ -6077,6 +6159,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const isEditingHmisUser = ref(false);
         const isSavingHmisUser = ref(false);
         const hmisUserSaveNotice = ref({ show: false, type: 'success', message: '', time: '', username: '' });
+        const hmisPhanCongSyncResults = ref(null);
         const hmisAssignMergeMode = ref(true); // Mặc định bảo toàn phân công cũ (không xóa cái đã phân)
         const editingUser = ref({
           id: null,
@@ -9370,6 +9453,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         async function selectHmisUser(u) {
           if (!u) return;
           hmisUserSaveNotice.value.show = false;
+          hmisPhanCongSyncResults.value = null;
           selectedHmisUser.value = u;
           isEditingHmisUser.value = false;
           editingUser.value = {
@@ -9620,6 +9704,14 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             return;
           }
 
+          const actionTitle = specificPart === 'roles' 
+            ? 'Lưu riêng nhóm' 
+            : (specificPart === 'titles' ? 'Lưu riêng chức danh' : 'Lưu toàn bộ phân công');
+
+          const curStation = stations.value.find(s => s.id === selectedHmisStationId.value);
+          const stCode = curStation?.code || '';
+          const startTime = Date.now();
+
           isSavingHmisUser.value = true;
           try {
             const updatePayload = {
@@ -9652,14 +9744,37 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               };
 
               const res = await axios.put('/api/nhanvien-hmis/update', singlePayload);
+              const duration = Math.max(1, Date.now() - startTime);
+              const uName = editingUser.value.username || 'tài khoản';
+              const fName = editingUser.value.fullName || '';
+
               if (res.data?.success) {
-                const uName = editingUser.value.username || 'tài khoản';
                 const successMsg = specificPart === 'roles' 
                   ? `Đã lưu danh sách nhóm người dùng cho ${uName} thành công!`
                   : (specificPart === 'titles' 
                       ? `Đã lưu danh sách chức danh ký số cho ${uName} thành công!`
                       : `Cập nhật phân công tài khoản ${uName} thành công!`);
                 showToast(successMsg, 'success');
+
+                hmisPhanCongSyncResults.value = {
+                  part: specificPart,
+                  actionTitle,
+                  total: 1,
+                  successCount: 1,
+                  failedCount: 0,
+                  results: [
+                    {
+                      userId: targetIds[0],
+                      code: stCode,
+                      username: uName,
+                      fullName: fName,
+                      success: true,
+                      message: res.data?.message || 'Cập nhật thành công lên cổng HMIS',
+                      duration
+                    }
+                  ]
+                };
+
                 hmisUserSaveNotice.value = {
                   show: true,
                   type: 'success',
@@ -9667,8 +9782,10 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                   time: new Date().toLocaleTimeString('vi-VN'),
                   username: uName
                 };
+
                 editingUser.value.userPwd = '';
                 fetchSystemLogs();
+
                 // Cập nhật lại trong danh sách local
                 const idx = hmisUsers.value.findIndex(u => u.id === targetIds[0]);
                 if (idx !== -1) {
@@ -9687,6 +9804,24 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               } else {
                 const errMsg = 'Lỗi cập nhật: ' + (res.data?.message || 'Không thể lưu');
                 showToast(errMsg, 'error');
+                hmisPhanCongSyncResults.value = {
+                  part: specificPart,
+                  actionTitle,
+                  total: 1,
+                  successCount: 0,
+                  failedCount: 1,
+                  results: [
+                    {
+                      userId: targetIds[0],
+                      code: stCode,
+                      username: uName,
+                      fullName: fName,
+                      success: false,
+                      message: res.data?.message || 'Không thể lưu lên cổng HMIS',
+                      duration
+                    }
+                  ]
+                };
                 hmisUserSaveNotice.value = { show: true, type: 'error', message: errMsg, time: new Date().toLocaleTimeString('vi-VN') };
               }
             } else {
@@ -9698,6 +9833,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                 specificPart
               };
               const res = await axios.put('/api/nhanvien-hmis/update-multiple', batchPayload);
+              const duration = Math.max(1, Date.now() - startTime);
+              const avgDur = Math.round(duration / Math.max(1, targetIds.length));
+
               if (res.data?.success) {
                 const successMsg = specificPart === 'roles'
                   ? `Đã lưu nhóm người dùng cho ${res.data.successCount}/${targetIds.length} tài khoản đã tích!`
@@ -9705,6 +9843,30 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                       ? `Đã lưu chức danh ký số cho ${res.data.successCount}/${targetIds.length} tài khoản đã tích!`
                       : `Đã cập nhật phân công cho ${res.data.successCount}/${targetIds.length} tài khoản đã tích!`);
                 showToast(successMsg, res.data.failCount > 0 ? 'warning' : 'success');
+
+                const itemResults = (res.data.results || []).map(r => {
+                  const userObj = hmisUsers.value.find(u => u.id === r.userId);
+                  const isOk = r.status === 'success';
+                  return {
+                    userId: r.userId,
+                    code: stCode,
+                    username: r.username || userObj?.username || `ID ${r.userId}`,
+                    fullName: userObj?.fullName || userObj?.officer?.officerName || '',
+                    success: isOk,
+                    message: isOk ? 'Cập nhật thành công lên cổng HMIS' : (r.error || 'Cập nhật thất bại'),
+                    duration: avgDur
+                  };
+                });
+
+                hmisPhanCongSyncResults.value = {
+                  part: specificPart,
+                  actionTitle,
+                  total: targetIds.length,
+                  successCount: res.data.successCount ?? itemResults.filter(i => i.success).length,
+                  failedCount: res.data.failCount ?? itemResults.filter(i => !i.success).length,
+                  results: itemResults
+                };
+
                 hmisUserSaveNotice.value = {
                   show: true,
                   type: res.data.failCount > 0 ? 'warning' : 'success',
@@ -9739,16 +9901,60 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
                 });
               } else {
                 showToast('Lỗi cập nhật hàng loạt: ' + (res.data?.message || 'Không thể lưu'), 'error');
+                hmisPhanCongSyncResults.value = {
+                  part: specificPart,
+                  actionTitle,
+                  total: targetIds.length,
+                  successCount: 0,
+                  failedCount: targetIds.length,
+                  results: targetIds.map(uId => {
+                    const userObj = hmisUsers.value.find(u => u.id === uId);
+                    return {
+                      userId: uId,
+                      code: stCode,
+                      username: userObj?.username || `ID ${uId}`,
+                      fullName: userObj?.fullName || userObj?.officer?.officerName || '',
+                      success: false,
+                      message: res.data?.message || 'Không thể lưu hàng loạt',
+                      duration: avgDur
+                    };
+                  })
+                };
               }
             }
           } catch (err) {
             console.error('Lỗi lưu phân công user HMIS:', err);
+            const duration = Math.max(1, Date.now() - startTime);
+            const avgDur = Math.round(duration / Math.max(1, targetIds.length));
             const catchErrMsg = 'Lỗi lưu phân công: ' + (err.response?.data?.message || err.message);
             showToast(catchErrMsg, 'error');
+
+            hmisPhanCongSyncResults.value = {
+              part: specificPart,
+              actionTitle,
+              total: targetIds.length,
+              successCount: 0,
+              failedCount: targetIds.length,
+              results: targetIds.map(uId => {
+                const userObj = hmisUsers.value.find(u => u.id === uId);
+                return {
+                  userId: uId,
+                  code: stCode,
+                  username: userObj?.username || `ID ${uId}`,
+                  fullName: userObj?.fullName || userObj?.officer?.officerName || '',
+                  success: false,
+                  message: catchErrMsg,
+                  duration: avgDur
+                };
+              })
+            };
+
             hmisUserSaveNotice.value = { show: true, type: 'error', message: catchErrMsg, time: new Date().toLocaleTimeString('vi-VN') };
           } finally {
             isSavingHmisUser.value = false;
-            nextTick(() => refreshIcons());
+            nextTick(() => {
+              refreshIcons();
+            });
           }
         }
 
@@ -10186,6 +10392,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           openBatchAssignHmisModal,
           executeBatchAssignHmis,
           hmisUserSaveNotice,
+          hmisPhanCongSyncResults,
           giaoDienList,
           isLoadingGiaoDien,
           isRefreshingGiaoDien,

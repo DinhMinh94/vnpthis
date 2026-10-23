@@ -301,6 +301,12 @@
             <span>Cấu hình nghiệp vụ HMIS</span>
           </button>
 
+          <!-- Nút Cấu hình giao diện HMIS -->
+          <button @click="openGiaoDienModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-sm rounded-xl border border-emerald-300 transition-colors shadow-sm cursor-pointer" title="Xem & chỉnh sửa 125 cấu hình giao diện màn hình động từ cổng HMIS">
+            <i data-lucide="layout-template" class="w-4 h-4 text-emerald-600"></i>
+            <span>Cấu hình giao diện HMIS</span>
+          </button>
+
           <!-- Nút Nhật Ký Sửa Cấu Hình Hệ Thống -->
           <button @click="openSystemLogsModal()" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm rounded-xl border border-amber-300 transition-colors shadow-sm cursor-pointer" title="Xem nhật ký & lịch sử các lần sửa cấu hình hàng loạt cho trạm">
             <i data-lucide="history" class="w-4 h-4 text-amber-600"></i>
@@ -431,6 +437,12 @@
           <button @click="openChucDanhModal" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors shadow cursor-pointer" title="Thêm & đồng bộ chức danh ký số cho các trạm đang được chọn">
             <i data-lucide="file-signature" class="w-3.5 h-3.5"></i>
             <span>Thêm chức danh ký số</span>
+          </button>
+
+          <!-- Cấu hình giao diện màn hình động cho các trạm đang tích -->
+          <button @click="openGiaoDienModal" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition-colors shadow cursor-pointer" title="Chỉnh sửa cấu hình giao diện màn hình động cho các trạm đang được chọn">
+            <i data-lucide="layout-template" class="w-3.5 h-3.5"></i>
+            <span>Cấu hình giao diện</span>
           </button>
 
           <!-- Nhật ký cấu hình các trạm -->
@@ -4331,6 +4343,558 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
     </div>
 
     <!-- ========================================================================= -->
+    <!-- MODAL: CẤU HÌNH GIAO DIỆN MÀN HÌNH ĐỘNG (HMIS - DANH MỤC GIAO DIỆN)          -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.giaoDien" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-3 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-[98vw] w-[98vw] border border-slate-200 overflow-hidden flex flex-col h-[96vh] max-h-[96vh]">
+        
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-emerald-800 via-teal-700 to-cyan-800 text-white px-6 py-3.5 flex items-center justify-between shadow-sm">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+              <i data-lucide="layout-template" class="w-6 h-6 text-emerald-200"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-base sm:text-lg font-black tracking-wide uppercase">Cấu Hình Giao Diện Màn Hình Động (HMIS)</h3>
+                <span class="bg-emerald-500/80 text-white font-mono text-[11px] font-bold px-2 py-0.5 rounded-full border border-emerald-400">
+                  {{ giaoDienList.length }} màn hình
+                </span>
+              </div>
+              <p class="text-xs text-emerald-100 mt-0.5">
+                Chỉnh sửa hiển thị, số cột, bắt buộc, cho sửa, giá trị mặc định cho nhiều trạm Y tế cùng lúc (Đồng bộ trực tiếp cổng HMIS)
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <!-- Nút Làm mới từ HMIS -->
+            <button 
+              type="button" 
+              @click="refreshGiaoDienFromHmis" 
+              :disabled="isRefreshingGiaoDien" 
+              class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors cursor-pointer" 
+              title="Kết nối trực tiếp HMIS tải danh sách 125 cấu hình giao diện mới nhất"
+            >
+              <i data-lucide="refresh-cw" class="w-4 h-4 text-cyan-300" :class="{ 'animate-spin': isRefreshingGiaoDien }"></i>
+              <span>{{ isRefreshingGiaoDien ? 'Đang tải...' : 'Làm mới từ HMIS' }}</span>
+            </button>
+            <button @click="modals.giaoDien = false" class="text-white/80 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
+              <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Thanh thông tin trạm áp dụng & Phạm vi áp dụng -->
+        <div class="bg-emerald-50/90 border-b border-emerald-100 px-6 py-2.5 flex flex-wrap items-center justify-between text-xs gap-3">
+          <div class="flex flex-wrap items-center space-x-3 overflow-hidden flex-1">
+            <span class="font-bold text-emerald-950 whitespace-nowrap">Phạm vi áp dụng:</span>
+            <div class="flex items-center space-x-2">
+              <label class="flex items-center space-x-1.5 cursor-pointer bg-white px-2.5 py-1 rounded-md border border-emerald-300 shadow-2xs">
+                <input type="radio" value="selected" v-model="giaoDienTargetScope" class="text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                <span class="font-bold text-emerald-900">Chỉ các trạm đã tích ({{ selectedIds.length }})</span>
+              </label>
+              <label class="flex items-center space-x-1.5 cursor-pointer bg-white px-2.5 py-1 rounded-md border border-emerald-300 shadow-2xs">
+                <input type="radio" value="all" v-model="giaoDienTargetScope" class="text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                <span class="font-bold text-emerald-900">Tất cả trạm trong hệ thống ({{ stations.length }})</span>
+              </label>
+            </div>
+            <div class="flex items-center space-x-1.5 overflow-x-auto py-0.5 max-w-lg">
+              <span v-for="st in giaoDienTargetStationsList" :key="st.id" class="bg-white px-2 py-0.5 rounded text-emerald-800 border border-emerald-200 font-semibold text-[11px] whitespace-nowrap shadow-2xs">
+                {{ st.code ? '[' + st.code + '] ' : '' }}{{ st.name }}
+              </span>
+            </div>
+          </div>
+          <div class="text-[11px] text-emerald-800 italic font-medium">
+            * Chọn màn hình ở cột trái &rarr; Chỉnh sửa chi tiết bên cột phải &rarr; Bấm "Lưu" để cập nhật trực tiếp lên cổng HMIS
+          </div>
+        </div>
+
+        <!-- Body: 2 cột chia đôi giống HMIS -->
+        <div class="flex-1 flex overflow-hidden">
+          
+          <!-- CỘT TRÁI: DANH SÁCH CẤU HÌNH (40% width) -->
+          <div class="w-5/12 border-r border-slate-200 flex flex-col bg-white">
+            
+            <!-- Bộ lọc bảng cấu hình -->
+            <div class="p-3 bg-slate-50 border-b border-slate-200 space-y-2">
+              <div class="grid grid-cols-12 gap-2">
+                <div class="col-span-3">
+                  <select v-model="giaoDienTrangThaiFilter" class="w-full py-1.5 px-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    <option value="all">Trạng thái: Tất cả</option>
+                    <option value="1">Đang sử dụng</option>
+                    <option value="0">Không sử dụng</option>
+                  </select>
+                </div>
+                <div class="col-span-4 relative">
+                  <input v-model="giaoDienSearchMa" type="text" placeholder="Tìm mã (VD: MH_KLS)..." class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <div class="col-span-5 relative">
+                  <input v-model="giaoDienSearchTen" type="text" placeholder="Tìm tên màn hình..." class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+              </div>
+            </div>
+
+            <!-- Bảng danh sách cấu hình -->
+            <div class="flex-1 overflow-auto">
+              <table class="w-full text-left text-xs border-collapse">
+                <thead class="sticky top-0 bg-slate-100 z-10 text-[11px] font-bold text-slate-700 uppercase tracking-wider border-b border-slate-200">
+                  <tr>
+                    <th class="p-2.5 text-center w-14">Trạng thái</th>
+                    <th class="p-2.5 w-48">Mã cấu hình</th>
+                    <th class="p-2.5">Tên cấu hình</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr v-if="isLoadingGiaoDien">
+                    <td colspan="3" class="py-12 text-center text-slate-400">
+                      <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2 text-emerald-600"></i>
+                      <span>Đang tải danh sách 125 cấu hình giao diện...</span>
+                    </td>
+                  </tr>
+                  <tr v-else-if="filteredGiaoDienList.length === 0">
+                    <td colspan="3" class="py-12 text-center text-slate-400">
+                      Không tìm thấy cấu hình màn hình nào khớp với tìm kiếm
+                    </td>
+                  </tr>
+                  <tr
+                    v-for="item in pagedGiaoDienList"
+                    :key="item.id || item.maCauHinh"
+                    @click="selectGiaoDien(item)"
+                    class="cursor-pointer transition-colors"
+                    :class="selectedGiaoDien && selectedGiaoDien.maCauHinh === item.maCauHinh ? 'bg-amber-100/90 font-bold border-l-4 border-l-amber-500 shadow-2xs' : 'hover:bg-slate-50'"
+                  >
+                    <td class="p-2.5 text-center">
+                      <span v-if="item.trangThai === 1" class="text-emerald-600 inline-block" title="Đang sử dụng">
+                        <i data-lucide="unlock" class="w-4 h-4"></i>
+                      </span>
+                      <span v-else class="text-rose-500 inline-block" title="Không sử dụng">
+                        <i data-lucide="lock" class="w-4 h-4"></i>
+                      </span>
+                    </td>
+                    <td class="p-2.5 font-mono text-emerald-800 font-bold text-[11px] whitespace-nowrap" :title="item.maCauHinh">
+                      {{ item.maCauHinh }}
+                    </td>
+                    <td class="p-2.5 text-slate-900 text-xs font-medium" :title="item.tenCauHinh">
+                      {{ item.tenCauHinh }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Phân trang bảng -->
+            <div class="p-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-600">
+              <div class="flex items-center space-x-2">
+                <span>Hiển thị</span>
+                <select v-model="giaoDienPageSize" class="py-1 px-1.5 bg-white border border-slate-300 rounded text-xs font-semibold">
+                  <option :value="10">10 / trang</option>
+                  <option :value="25">25 / trang</option>
+                  <option :value="50">50 / trang</option>
+                  <option :value="100">100 / trang</option>
+                </select>
+                <span class="text-slate-400">|</span>
+                <span class="text-[11px] text-slate-500">
+                  {{ (giaoDienPage - 1) * giaoDienPageSize + 1 }} - {{ Math.min(giaoDienPage * giaoDienPageSize, filteredGiaoDienList.length) }} / {{ filteredGiaoDienList.length }}
+                </span>
+              </div>
+              <div class="flex items-center space-x-1">
+                <button 
+                  type="button" 
+                  @click="giaoDienPage > 1 && (giaoDienPage--)" 
+                  :disabled="giaoDienPage <= 1" 
+                  class="px-2 py-1 rounded border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-40 cursor-pointer"
+                >
+                  &lt;
+                </button>
+                <span class="px-2 py-1 font-bold text-emerald-800 bg-emerald-50 rounded border border-emerald-200">
+                  {{ giaoDienPage }} / {{ giaoDienTotalPages }}
+                </span>
+                <button 
+                  type="button" 
+                  @click="giaoDienPage < giaoDienTotalPages && (giaoDienPage++)" 
+                  :disabled="giaoDienPage >= giaoDienTotalPages" 
+                  class="px-2 py-1 rounded border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-40 cursor-pointer"
+                >
+                  &gt;
+                </button>
+              </div>
+            </div>
+
+            <!-- Chú thích trạng thái -->
+            <div class="px-3 py-1.5 bg-slate-100 border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
+              <span class="flex items-center space-x-1">
+                <i data-lucide="lock" class="w-3.5 h-3.5 text-rose-500"></i>
+                <span>Không sử dụng</span>
+              </span>
+              <span class="flex items-center space-x-1">
+                <i data-lucide="unlock" class="w-3.5 h-3.5 text-emerald-600"></i>
+                <span>Đang sử dụng</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- CỘT PHẢI: CHI TIẾT CẤU HÌNH (60% width) -->
+          <div class="w-7/12 flex flex-col bg-slate-50/50 overflow-hidden">
+            
+            <div v-if="!selectedGiaoDien" class="flex-1 flex flex-col items-center justify-center p-8 text-center text-slate-400">
+              <i data-lucide="layout-template" class="w-12 h-12 text-slate-300 mb-3"></i>
+              <h4 class="font-bold text-sm text-slate-600">Chưa chọn cấu hình màn hình</h4>
+              <p class="text-xs text-slate-400 max-w-sm mt-1">Vui lòng nhấp chọn một màn hình ở danh sách bên cột trái để xem và chỉnh sửa giao diện chi tiết.</p>
+            </div>
+
+            <div v-else class="flex-1 flex flex-col overflow-hidden">
+              
+              <!-- Action Bar của Cột Phải -->
+              <div class="p-3.5 bg-white border-b border-slate-200 flex items-center justify-between shadow-2xs gap-3">
+                <div class="flex items-center space-x-2 truncate">
+                  <span class="text-xs font-bold text-slate-400 uppercase">CHI TIẾT:</span>
+                  <span class="font-extrabold text-sm text-slate-800 truncate" :title="giaoDienForm.tenCauHinh">
+                    {{ giaoDienForm.tenCauHinh }}
+                  </span>
+                  <span class="font-mono text-xs px-2 py-0.5 bg-emerald-50 text-emerald-800 rounded border border-emerald-200 font-bold whitespace-nowrap">
+                    {{ giaoDienForm.maCauHinh }}
+                  </span>
+                </div>
+
+                <div class="flex items-center space-x-2 shrink-0">
+                  <button 
+                    type="button" 
+                    @click="addGiaoDienRow" 
+                    class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs rounded-xl border border-indigo-200 transition-colors flex items-center space-x-1 cursor-pointer"
+                    title="Thêm một dòng mới vào giao diện"
+                  >
+                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                    <span>Thêm dòng</span>
+                  </button>
+
+                  <button 
+                    type="button" 
+                    @click="restoreDefaultGiaoDien" 
+                    class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl border border-slate-300 transition-colors cursor-pointer"
+                    title="Khôi phục các trường về cấu hình mặc định ban đầu"
+                  >
+                    <span>Mặc định</span>
+                  </button>
+
+                  <!-- Nút Lưu cho các trạm -->
+                  <button 
+                    type="button" 
+                    @click="submitBulkGiaoDienUpdate" 
+                    :disabled="isUpdatingGiaoDien || giaoDienTargetStationsList.length === 0"
+                    class="px-4 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95 disabled:opacity-50"
+                  >
+                    <i data-lucide="save" class="w-4 h-4" :class="{ 'animate-spin': isUpdatingGiaoDien }"></i>
+                    <span>{{ isUpdatingGiaoDien ? 'Đang lưu HMIS...' : ('Lưu cho ' + giaoDienTargetStationsList.length + ' trạm') }}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Form thông tin chung & Bảng các trường (Cuộn dọc) -->
+              <div class="flex-1 overflow-y-auto p-4 space-y-4">
+                
+                <!-- Bảng form thông tin cơ bản -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
+                  <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                      <label class="block font-bold text-slate-700 mb-1">Mã cấu hình <span class="text-rose-500">*</span></label>
+                      <input 
+                        type="text" 
+                        v-model="giaoDienForm.maCauHinh" 
+                        disabled 
+                        class="w-full px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-mono font-bold text-slate-600 cursor-not-allowed"
+                      >
+                    </div>
+                    <div>
+                      <label class="block font-bold text-slate-700 mb-1">Tên cấu hình <span class="text-rose-500">*</span></label>
+                      <input 
+                        type="text" 
+                        v-model="giaoDienForm.tenCauHinh" 
+                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                      >
+                    </div>
+                    <div>
+                      <label class="block font-semibold text-slate-700 mb-1">Mô tả:</label>
+                      <textarea 
+                        v-model="giaoDienForm.moTa" 
+                        rows="2" 
+                        placeholder="Mô tả cấu hình..." 
+                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none resize-none"
+                      ></textarea>
+                    </div>
+                    <div>
+                      <label class="block font-semibold text-slate-700 mb-1">Ghi chú:</label>
+                      <textarea 
+                        v-model="giaoDienForm.ghiChu" 
+                        rows="2" 
+                        placeholder="Ghi chú thêm..." 
+                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none resize-none"
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <!-- Toggle Trạng thái màn hình & Thanh công cụ trường -->
+                  <div class="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+                    <div class="flex items-center space-x-3">
+                      <span class="font-bold text-slate-700">Trạng thái màn hình:</span>
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" :checked="giaoDienForm.trangThai === 1" @change="giaoDienForm.trangThai = $event.target.checked ? 1 : 0" class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                        <span class="ml-2 font-bold" :class="giaoDienForm.trangThai === 1 ? 'text-emerald-700' : 'text-slate-500'">
+                          {{ giaoDienForm.trangThai === 1 ? 'Đang sử dụng' : 'Không sử dụng' }}
+                        </span>
+                      </label>
+                    </div>
+
+                    <!-- Thao tác nhanh cho các trường -->
+                    <div class="flex items-center space-x-2">
+                      <span class="text-[11px] text-slate-500 font-semibold">Thao tác nhanh:</span>
+                      <button 
+                        type="button" 
+                        @click="toggleAllGiaoDienFieldsShow(true)" 
+                        class="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[11px] rounded border border-emerald-200 cursor-pointer"
+                      >
+                        Bật tất cả hiển thị
+                      </button>
+                      <button 
+                        type="button" 
+                        @click="toggleAllGiaoDienFieldsShow(false)" 
+                        class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-[11px] rounded border border-slate-300 cursor-pointer"
+                      >
+                        Tắt tất cả
+                      </button>
+                      <button 
+                        type="button" 
+                        @click="toggleAllGiaoDienFieldsEditable(true)" 
+                        class="px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold text-[11px] rounded border border-blue-200 cursor-pointer"
+                      >
+                        Cho sửa tất cả
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- BẢNG CÁC TRƯỜNG DỮ LIỆU GIAO DIỆN (CHIA THEO DÒNG NHƯ HMIS) -->
+                <div class="space-y-4">
+                  <div 
+                    v-for="(row, rIdx) in giaoDienForm.rows" 
+                    :key="'row-' + rIdx" 
+                    class="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden"
+                  >
+                    <!-- Header của từng dòng -->
+                    <div class="bg-slate-100/90 px-4 py-2 border-b border-slate-200 flex items-center justify-between text-xs">
+                      <div class="flex items-center space-x-2 font-bold text-slate-800">
+                        <i data-lucide="rows" class="w-4 h-4 text-emerald-600"></i>
+                        <span>Dòng số {{ rIdx + 1 }}</span>
+                        <span class="text-slate-500 font-normal">({{ row.length }} trường)</span>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                        <button 
+                          type="button" 
+                          @click="addFieldToGiaoDienRow(rIdx)" 
+                          class="px-2 py-0.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[11px] rounded border border-emerald-300 flex items-center space-x-1 cursor-pointer"
+                        >
+                          <i data-lucide="plus" class="w-3 h-3"></i>
+                          <span>Thêm trường vào dòng {{ rIdx + 1 }}</span>
+                        </button>
+                        <button 
+                          type="button" 
+                          @click="giaoDienForm.rows.splice(rIdx, 1)" 
+                          class="p-1 text-slate-400 hover:text-rose-600 rounded cursor-pointer" 
+                          title="Xóa toàn bộ dòng này"
+                        >
+                          <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Bảng chi tiết các trường trong dòng -->
+                    <div class="overflow-x-auto">
+                      <table class="w-full text-left text-xs border-collapse">
+                        <thead class="bg-slate-50 text-[11px] font-bold text-slate-700 uppercase tracking-wider border-b border-slate-200">
+                          <tr>
+                            <th class="p-2 min-w-[140px]">Mã trường</th>
+                            <th class="p-2 min-w-[160px]">Tiêu đề (Tiếng Việt)</th>
+                            <th class="p-2 min-w-[150px]">Tiêu đề (English)</th>
+                            <th class="p-2 w-16 text-center" title="Số cột tổng">Số cột</th>
+                            <th class="p-2 w-20 text-center" title="Số cột tiêu đề">Số cột TĐ</th>
+                            <th class="p-2 w-20 text-center">Bắt buộc?</th>
+                            <th class="p-2 w-20 text-center">Cho sửa?</th>
+                            <th class="p-2 w-24">Kiểu</th>
+                            <th class="p-2 min-w-[130px]">Giá trị mặc định</th>
+                            <th class="p-2 min-w-[110px]">Ghi chú</th>
+                            <th class="p-2 min-w-[90px]">Css Class</th>
+                            <th class="p-2 w-20 text-center">Trạng thái</th>
+                            <th class="p-2 w-10 text-center"></th>
+                          </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                          <tr v-for="(col, cIdx) in row" :key="'col-' + rIdx + '-' + cIdx" class="hover:bg-slate-50/80 transition-colors">
+                            <!-- Mã trường -->
+                            <td class="p-2">
+                              <input 
+                                type="text" 
+                                v-model="col.code" 
+                                placeholder="Mã trường..." 
+                                class="w-full px-2 py-1 bg-white border border-slate-200 rounded font-mono font-bold text-xs text-indigo-900 focus:ring-1 focus:ring-emerald-500"
+                              >
+                            </td>
+                            <!-- Tiêu đề Tiếng Việt -->
+                            <td class="p-2">
+                              <input 
+                                type="text" 
+                                v-model="col.titleVi" 
+                                placeholder="Tiêu đề TV..." 
+                                class="w-full px-2 py-1 bg-white border border-slate-200 rounded text-xs font-semibold text-slate-800 focus:ring-1 focus:ring-emerald-500"
+                              >
+                            </td>
+                            <!-- Tiêu đề English -->
+                            <td class="p-2">
+                              <input 
+                                type="text" 
+                                v-model="col.titleEn" 
+                                placeholder="Tiêu đề EN..." 
+                                class="w-full px-2 py-1 bg-white border border-slate-200 rounded text-xs text-slate-600 focus:ring-1 focus:ring-emerald-500"
+                              >
+                            </td>
+                            <!-- Số cột -->
+                            <td class="p-2 text-center">
+                              <input 
+                                type="number" 
+                                v-model="col.colSpan" 
+                                min="1" 
+                                max="24" 
+                                class="w-14 px-1 py-1 text-center bg-white border border-slate-200 rounded font-mono text-xs focus:ring-1 focus:ring-emerald-500"
+                              >
+                            </td>
+                            <!-- Số cột tiêu đề -->
+                            <td class="p-2 text-center">
+                              <input 
+                                type="number" 
+                                v-model="col.titleColSpan" 
+                                min="1" 
+                                max="24" 
+                                class="w-14 px-1 py-1 text-center bg-white border border-slate-200 rounded font-mono text-xs focus:ring-1 focus:ring-emerald-500"
+                              >
+                            </td>
+                            <!-- Bắt buộc? -->
+                            <td class="p-2 text-center">
+                              <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" v-model="col.isRequired" class="sr-only peer">
+                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-rose-600"></div>
+                              </label>
+                            </td>
+                            <!-- Cho sửa? -->
+                            <td class="p-2 text-center">
+                              <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" v-model="col.isEditable" class="sr-only peer">
+                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                              </label>
+                            </td>
+                            <!-- Kiểu dữ liệu -->
+                            <td class="p-2">
+                              <select v-model="col.type" class="w-full px-1.5 py-1 bg-white border border-slate-200 rounded text-xs focus:ring-1 focus:ring-emerald-500">
+                                <option value="string">string</option>
+                                <option value="textarea">textarea</option>
+                                <option value="number">number</option>
+                                <option value="select">select</option>
+                                <option value="date">date</option>
+                                <option value="datetime">datetime</option>
+                                <option value="checkbox">checkbox</option>
+                                <option value="radio">radio</option>
+                              </select>
+                            </td>
+                            <!-- Giá trị mặc định -->
+                            <td class="p-2">
+                              <input 
+                                type="text" 
+                                v-model="col.defaultValue" 
+                                placeholder="Mặc định..." 
+                                class="w-full px-2 py-1 bg-white border border-slate-200 rounded text-xs focus:ring-1 focus:ring-emerald-500"
+                              >
+                            </td>
+                            <!-- Ghi chú -->
+                            <td class="p-2">
+                              <input 
+                                type="text" 
+                                v-model="col.note" 
+                                placeholder="Ghi chú..." 
+                                class="w-full px-2 py-1 bg-white border border-slate-200 rounded text-xs focus:ring-1 focus:ring-emerald-500"
+                              >
+                            </td>
+                            <!-- Css Class -->
+                            <td class="p-2">
+                              <input 
+                                type="text" 
+                                v-model="col.cssClass" 
+                                placeholder="class..." 
+                                class="w-full px-2 py-1 bg-white border border-slate-200 rounded text-xs font-mono focus:ring-1 focus:ring-emerald-500"
+                              >
+                            </td>
+                            <!-- Trạng thái (isShow) -->
+                            <td class="p-2 text-center">
+                              <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" v-model="col.isShow" class="sr-only peer">
+                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                              </label>
+                            </td>
+                            <!-- Nút xóa trường -->
+                            <td class="p-2 text-center">
+                              <button 
+                                type="button" 
+                                @click="removeGiaoDienField(rIdx, cIdx)" 
+                                class="text-slate-400 hover:text-rose-600 p-1 rounded transition-colors cursor-pointer" 
+                                title="Xóa trường này"
+                              >
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- HỘP KẾT QUẢ CẬP NHẬT TRẠM -->
+                <div v-if="giaoDienUpdateResults" class="p-4 rounded-xl border-2 space-y-3" :class="giaoDienUpdateResults.failedCount === 0 ? 'bg-emerald-50 border-emerald-400' : 'bg-amber-50 border-amber-400'">
+                  <div class="flex items-center justify-between font-extrabold text-sm" :class="giaoDienUpdateResults.failedCount === 0 ? 'text-emerald-900' : 'text-amber-900'">
+                    <span class="flex items-center space-x-2">
+                      <i :data-lucide="giaoDienUpdateResults.failedCount === 0 ? 'check-circle-2' : 'alert-circle'" class="w-5 h-5"></i>
+                      <span>KẾT QUẢ ĐỒNG BỘ: {{ giaoDienUpdateResults.successCount }} / {{ giaoDienUpdateResults.total }} trạm thành công!</span>
+                    </span>
+                    <span v-if="giaoDienUpdateResults.failedCount > 0" class="text-rose-600 text-xs font-bold">
+                      ({{ giaoDienUpdateResults.failedCount }} trạm thất bại)
+                    </span>
+                  </div>
+                  
+                  <div class="max-h-40 overflow-y-auto space-y-1 text-xs">
+                    <div v-for="res in giaoDienUpdateResults.results" :key="res.id" class="p-2 rounded bg-white border flex items-center justify-between" :class="res.success ? 'border-emerald-200 text-emerald-900' : 'border-rose-200 text-rose-800'">
+                      <span class="font-semibold">{{ res.code ? '[' + res.code + '] ' : '' }}{{ res.name }} ({{ res.username }})</span>
+                      <span class="font-bold text-[11px]">{{ res.message }} ({{ res.duration }}ms)</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="info" class="w-4 h-4 text-emerald-600"></i>
+            <span>Đang thiết lập cấu hình giao diện trực tiếp qua cổng HMIS cho <strong>{{ giaoDienTargetStationsList.length }} trạm</strong>.</span>
+          </div>
+          <button @click="modals.giaoDien = false" class="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 font-semibold rounded-xl border border-slate-300 cursor-pointer">
+            Đóng
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+<!-- ========================================================================= -->
     <!-- MODAL HƯỚNG DẪN TỰ ĐỘNG ĐIỀN & ĐĂNG NHẬP 1-CLICK HMIS                      -->
     <!-- ========================================================================= -->
     <div v-if="modals.autoLoginGuide" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150">
@@ -5337,7 +5901,32 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           phieuin: false,
           chucdanh: false,
           systemLogs: false,
-          batchAssignHmis: false
+          batchAssignHmis: false,
+          giaoDien: false
+        });
+
+        // TRẠNG THÁI CHO CẤU HÌNH GIAO DIỆN MÀN HÌNH ĐỘNG (HMIS)
+        const giaoDienList = ref([]);
+        const isLoadingGiaoDien = ref(false);
+        const isRefreshingGiaoDien = ref(false);
+        const isUpdatingGiaoDien = ref(false);
+        const giaoDienSearchMa = ref('');
+        const giaoDienSearchTen = ref('');
+        const giaoDienTrangThaiFilter = ref('all');
+        const selectedGiaoDien = ref(null);
+        const giaoDienTargetScope = ref('selected'); // 'selected' | 'all'
+        const giaoDienPage = ref(1);
+        const giaoDienPageSize = ref(50);
+        const giaoDienFieldSearch = ref('');
+        const giaoDienUpdateResults = ref(null);
+        const giaoDienForm = ref({
+          id: null,
+          maCauHinh: '',
+          tenCauHinh: '',
+          moTa: '',
+          ghiChu: '',
+          trangThai: 1,
+          rows: []
         });
 
         // Trạng thái cho module Nhật Ký Cấu Hình Hệ Thống
@@ -7021,6 +7610,306 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           } finally {
             isSubmittingChucDanh.value = false;
             refreshIcons();
+          }
+        }
+
+        // =========================================================================
+        // CHỨC NĂNG CẤU HÌNH GIAO DIỆN MÀN HÌNH ĐỘNG (HMIS - DANH MỤC GIAO DIỆN)
+        // =========================================================================
+        const giaoDienTargetStationsList = computed(() => {
+          if (giaoDienTargetScope.value === 'all') {
+            return stations.value.filter(s => s.username && s.password);
+          }
+          return (selectedIds.value || []).map(id => stations.value.find(s => s.id === id)).filter(s => s && s.username && s.password);
+        });
+
+        const filteredGiaoDienList = computed(() => {
+          let list = giaoDienList.value || [];
+          if (giaoDienTrangThaiFilter.value !== 'all') {
+            const st = Number(giaoDienTrangThaiFilter.value);
+            list = list.filter(item => item.trangThai === st);
+          }
+          if (giaoDienSearchMa.value && giaoDienSearchMa.value.trim()) {
+            const q = giaoDienSearchMa.value.trim().toLowerCase();
+            list = list.filter(item => (item.maCauHinh || '').toLowerCase().includes(q));
+          }
+          if (giaoDienSearchTen.value && giaoDienSearchTen.value.trim()) {
+            const q = giaoDienSearchTen.value.trim().toLowerCase();
+            list = list.filter(item => (item.tenCauHinh || '').toLowerCase().includes(q));
+          }
+          return list;
+        });
+
+        const giaoDienTotalPages = computed(() => {
+          return Math.max(1, Math.ceil(filteredGiaoDienList.value.length / giaoDienPageSize.value));
+        });
+
+        const pagedGiaoDienList = computed(() => {
+          const start = (giaoDienPage.value - 1) * giaoDienPageSize.value;
+          return filteredGiaoDienList.value.slice(start, start + giaoDienPageSize.value);
+        });
+
+        function standardizeGiaoDienField(col) {
+          if (!col || typeof col !== 'object') return {};
+          const viTitle = typeof col.title === 'object' && col.title !== null ? (col.title.vi || '') : (col.title || '');
+          const enTitle = typeof col.title === 'object' && col.title !== null ? (col.title.en || '') : '';
+          return {
+            code: col.code || '',
+            titleVi: viTitle,
+            titleEn: enTitle,
+            colSpan: col.colSpan !== undefined ? col.colSpan : 24,
+            titleColSpan: col.titleColSpan !== undefined ? col.titleColSpan : 3,
+            isRequired: !!col.isRequired,
+            isEditable: col.isEditable !== false,
+            type: col.type || 'string',
+            defaultValue: col.defaultValue !== null && col.defaultValue !== undefined ? String(col.defaultValue) : '',
+            note: col.note || '',
+            cssClass: col.cssClass || '',
+            isShow: col.isShow !== false
+          };
+        }
+
+        function selectGiaoDien(item) {
+          if (!item) return;
+          selectedGiaoDien.value = item;
+          let parsed = [];
+          try {
+            const raw = item.giaTriThietLap || item.giaTriMacDinh;
+            parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+          } catch (e) {
+            parsed = [];
+          }
+
+          let normalizedRows = [];
+          if (Array.isArray(parsed)) {
+            if (parsed.length > 0 && Array.isArray(parsed[0])) {
+              normalizedRows = parsed.map(row => (Array.isArray(row) ? row : [row]).map(col => standardizeGiaoDienField(col)));
+            } else {
+              normalizedRows = [parsed.map(col => standardizeGiaoDienField(col))];
+            }
+          }
+
+          giaoDienForm.value = {
+            id: item.id,
+            maCauHinh: item.maCauHinh || '',
+            tenCauHinh: item.tenCauHinh || '',
+            moTa: item.moTa || '',
+            ghiChu: item.ghiChu || '',
+            trangThai: item.trangThai === 1 ? 1 : 0,
+            rows: normalizedRows
+          };
+          giaoDienUpdateResults.value = null;
+          nextTick(() => refreshIcons());
+        }
+
+        function serializeGiaoDienRows(rows) {
+          return rows.map(row => row.map(col => {
+            const hasEn = col.titleEn && col.titleEn.trim();
+            const titleObj = hasEn 
+              ? { vi: col.titleVi || '', en: col.titleEn.trim() } 
+              : (col.titleVi || '');
+            return {
+              code: col.code || '',
+              title: titleObj,
+              colSpan: Number(col.colSpan) || 24,
+              titleColSpan: Number(col.titleColSpan) || 3,
+              defaultValue: col.defaultValue !== '' ? col.defaultValue : null,
+              isShow: !!col.isShow,
+              isEditable: !!col.isEditable,
+              note: col.note || null,
+              isRequired: !!col.isRequired,
+              type: col.type || 'string',
+              cssClass: col.cssClass || ''
+            };
+          }));
+        }
+
+        function restoreDefaultGiaoDien() {
+          if (!selectedGiaoDien.value) return;
+          if (!confirm(`Khôi phục về giá trị mặc định của màn hình "${selectedGiaoDien.value.tenCauHinh}"?`)) return;
+          let parsed = [];
+          try {
+            const raw = selectedGiaoDien.value.giaTriMacDinh || selectedGiaoDien.value.giaTriThietLap;
+            parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+          } catch (e) {
+            parsed = [];
+          }
+          let normalizedRows = [];
+          if (Array.isArray(parsed)) {
+            if (parsed.length > 0 && Array.isArray(parsed[0])) {
+              normalizedRows = parsed.map(row => (Array.isArray(row) ? row : [row]).map(col => standardizeGiaoDienField(col)));
+            } else {
+              normalizedRows = [parsed.map(col => standardizeGiaoDienField(col))];
+            }
+          }
+          giaoDienForm.value.rows = normalizedRows;
+          showToast('Đã khôi phục về giá trị mặc định của màn hình!', 'info');
+        }
+
+        function addGiaoDienRow() {
+          giaoDienForm.value.rows.push([
+            standardizeGiaoDienField({
+              code: 'truongMoi_' + Date.now().toString().slice(-4),
+              title: 'Trường mới',
+              colSpan: 24,
+              titleColSpan: 3,
+              isRequired: false,
+              isEditable: true,
+              isShow: true,
+              type: 'string'
+            })
+          ]);
+          nextTick(() => refreshIcons());
+        }
+
+        function addFieldToGiaoDienRow(rowIndex) {
+          if (!giaoDienForm.value.rows[rowIndex]) return;
+          giaoDienForm.value.rows[rowIndex].push(
+            standardizeGiaoDienField({
+              code: 'truongMoi_' + Date.now().toString().slice(-4),
+              title: 'Trường mới',
+              colSpan: 12,
+              titleColSpan: 3,
+              isRequired: false,
+              isEditable: true,
+              isShow: true,
+              type: 'string'
+            })
+          );
+          nextTick(() => refreshIcons());
+        }
+
+        function removeGiaoDienField(rowIndex, colIndex) {
+          if (!giaoDienForm.value.rows[rowIndex]) return;
+          giaoDienForm.value.rows[rowIndex].splice(colIndex, 1);
+          if (giaoDienForm.value.rows[rowIndex].length === 0) {
+            giaoDienForm.value.rows.splice(rowIndex, 1);
+          }
+        }
+
+        function toggleAllGiaoDienFieldsShow(showVal) {
+          giaoDienForm.value.rows.forEach(row => {
+            row.forEach(col => {
+              col.isShow = showVal;
+            });
+          });
+          showToast(showVal ? 'Đã bật hiển thị tất cả các trường' : 'Đã tắt hiển thị tất cả các trường', 'info');
+        }
+
+        function toggleAllGiaoDienFieldsEditable(editVal) {
+          giaoDienForm.value.rows.forEach(row => {
+            row.forEach(col => {
+              col.isEditable = editVal;
+            });
+          });
+          showToast(editVal ? 'Đã cho phép sửa tất cả các trường' : 'Đã khóa sửa tất cả các trường', 'info');
+        }
+
+        async function openGiaoDienModal() {
+          modals.value.giaoDien = true;
+          giaoDienUpdateResults.value = null;
+          if (selectedIds.value.length > 0) {
+            giaoDienTargetScope.value = 'selected';
+          } else {
+            giaoDienTargetScope.value = 'all';
+          }
+
+          if (!giaoDienList.value || giaoDienList.value.length === 0) {
+            isLoadingGiaoDien.value = true;
+            try {
+              const res = await axios.get('/api/giaodien/list');
+              if (res.data?.success && res.data.data) {
+                giaoDienList.value = res.data.data;
+                if (giaoDienList.value.length > 0 && !selectedGiaoDien.value) {
+                  selectGiaoDien(giaoDienList.value[0]);
+                }
+              }
+            } catch (err) {
+              showToast('Lỗi tải danh sách cấu hình giao diện: ' + err.message, 'error');
+            } finally {
+              isLoadingGiaoDien.value = false;
+            }
+          } else if (!selectedGiaoDien.value && giaoDienList.value.length > 0) {
+            selectGiaoDien(giaoDienList.value[0]);
+          }
+          nextTick(() => refreshIcons());
+        }
+
+        async function refreshGiaoDienFromHmis() {
+          isRefreshingGiaoDien.value = true;
+          try {
+            const res = await axios.post('/api/giaodien/refresh', {
+              stationId: selectedIds.value?.[0] || null
+            });
+            if (res.data?.success) {
+              giaoDienList.value = res.data.data || [];
+              showToast(`Đã làm mới thành công ${res.data.count} cấu hình giao diện từ cổng HMIS!`, 'success');
+              if (giaoDienList.value.length > 0) {
+                const currentMa = selectedGiaoDien.value ? selectedGiaoDien.value.maCauHinh : null;
+                const match = giaoDienList.value.find(x => x.maCauHinh === currentMa) || giaoDienList.value[0];
+                selectGiaoDien(match);
+              }
+            } else {
+              showToast(res.data?.message || 'Không thể làm mới danh sách từ HMIS', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi làm mới từ HMIS: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isRefreshingGiaoDien.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function submitBulkGiaoDienUpdate() {
+          if (!selectedGiaoDien.value) {
+            showToast('Vui lòng chọn một cấu hình màn hình giao diện bên cột trái!', 'warning');
+            return;
+          }
+          if (giaoDienTargetStationsList.value.length === 0) {
+            showToast('Chưa có trạm y tế nào được chọn để áp dụng!', 'warning');
+            return;
+          }
+
+          isUpdatingGiaoDien.value = true;
+          giaoDienUpdateResults.value = null;
+
+          try {
+            const serialized = serializeGiaoDienRows(giaoDienForm.value.rows);
+            const payload = {
+              targetScope: giaoDienTargetScope.value,
+              stationIds: giaoDienTargetStationsList.value.map(s => s.id),
+              maCauHinh: giaoDienForm.value.maCauHinh,
+              updateData: {
+                tenCauHinh: giaoDienForm.value.tenCauHinh,
+                moTa: giaoDienForm.value.moTa,
+                ghiChu: giaoDienForm.value.ghiChu,
+                trangThai: giaoDienForm.value.trangThai === 1 ? 1 : 0,
+                giaTriThietLap: JSON.stringify(serialized)
+              }
+            };
+
+            const res = await axios.post('/api/giaodien/update-bulk', payload);
+            if (res.data?.success) {
+              giaoDienUpdateResults.value = res.data;
+              showToast(`Đã cập nhật giao diện "${giaoDienForm.value.tenCauHinh}" thành công cho ${res.data.successCount}/${res.data.total} trạm!`, 'success');
+
+              if (selectedGiaoDien.value) {
+                selectedGiaoDien.value.tenCauHinh = giaoDienForm.value.tenCauHinh;
+                selectedGiaoDien.value.trangThai = giaoDienForm.value.trangThai;
+                selectedGiaoDien.value.moTa = giaoDienForm.value.moTa;
+                selectedGiaoDien.value.ghiChu = giaoDienForm.value.ghiChu;
+                selectedGiaoDien.value.giaTriThietLap = JSON.stringify(serialized);
+              }
+              fetchSystemLogs();
+            } else {
+              showToast(res.data?.message || 'Có lỗi xảy ra khi lưu cấu hình giao diện', 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi lưu cấu hình giao diện:', err);
+            showToast('Lỗi lưu cấu hình giao diện: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isUpdatingGiaoDien.value = false;
+            nextTick(() => refreshIcons());
           }
         }
 
@@ -9301,7 +10190,35 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           openNhanVienHmisTab,
           openBatchAssignHmisModal,
           executeBatchAssignHmis,
-          hmisUserSaveNotice
+          hmisUserSaveNotice,
+          giaoDienList,
+          isLoadingGiaoDien,
+          isRefreshingGiaoDien,
+          isUpdatingGiaoDien,
+          giaoDienSearchMa,
+          giaoDienSearchTen,
+          giaoDienTrangThaiFilter,
+          selectedGiaoDien,
+          giaoDienTargetScope,
+          giaoDienPage,
+          giaoDienPageSize,
+          giaoDienFieldSearch,
+          giaoDienUpdateResults,
+          giaoDienForm,
+          giaoDienTargetStationsList,
+          filteredGiaoDienList,
+          giaoDienTotalPages,
+          pagedGiaoDienList,
+          selectGiaoDien,
+          restoreDefaultGiaoDien,
+          addGiaoDienRow,
+          addFieldToGiaoDienRow,
+          removeGiaoDienField,
+          toggleAllGiaoDienFieldsShow,
+          toggleAllGiaoDienFieldsEditable,
+          openGiaoDienModal,
+          refreshGiaoDienFromHmis,
+          submitBulkGiaoDienUpdate
         };
       }
     }).mount('#app');

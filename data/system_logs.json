@@ -1,5 +1,54 @@
 [
   {
+    "id": "log_1792723342919_rc517",
+    "timestamp": "2026-10-23T02:42:22.919Z",
+    "formattedTime": "23/10/2026 09:42:22",
+    "actionType": "cauhinh_giaodien",
+    "actionTitle": "Cấu hình giao diện: MH_KLS_CAP_VC",
+    "summary": "Đã cập nhật cấu hình giao diện \"Màn hình khám lâm sàng: Khám cặp vợ chồng\" cho 1/1 trạm (Các trạm đã tích)",
+    "details": {
+      "maCauHinh": "MH_KLS_CAP_VC",
+      "tenCauHinh": "Màn hình khám lâm sàng: Khám cặp vợ chồng",
+      "trangThai": 1,
+      "targetScope": "selected",
+      "targetStations": [
+        {
+          "id": "tyt_dienbienphu_11010",
+          "name": "Trạm y tế Phường Điện Biên Phủ",
+          "username": "11010.ADMINBV"
+        }
+      ],
+      "results": [
+        {
+          "id": "tyt_dienbienphu_11010",
+          "name": "Trạm y tế Phường Điện Biên Phủ",
+          "username": "11010.ADMINBV",
+          "code": "11010",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 698
+        }
+      ]
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "code": "11010",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 698
+      }
+    ]
+  },
+  {
     "id": "log_1792505439575_dl123",
     "timestamp": "2026-10-20T14:10:39.575Z",
     "formattedTime": "20/10/2026 21:10:39",

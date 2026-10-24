@@ -129,7 +129,9 @@
       });
     }
     const svgElement = createElement(iconNode, iconAttrs);
-    return element.parentNode?.replaceChild(svgElement, element);
+    element.innerHTML = "";
+    element.appendChild(svgElement);
+    return svgElement;
   };
 
   const AArrowDown = [

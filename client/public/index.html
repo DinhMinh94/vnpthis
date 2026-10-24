@@ -12,6 +12,18 @@
   <script src="/vendor/lucide.js"></script>
   <style>
     [v-cloak] { display: none; }
+    i[data-lucide] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    i[data-lucide] > svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
     /* Tùy chỉnh thanh cuộn */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
@@ -6229,19 +6241,14 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         function switchMainTab(tab) {
           toasts.value = []; // Tự động xóa thông báo khi chuyển tab để không bị treo sang tab khác
           
-          // Khi chuyển sang tab khác: Tự động làm mới (xóa file và kết quả đã gen) ở tab cũ để sẵn sàng nạp file mới
-          if (currentMainTab.value !== tab) {
-            try {
-              if (currentMainTab.value === 'thuoc') {
-                clearThuocData(false);
-              } else if (currentMainTab.value === 'vattu') {
-                clearVattuData(false);
-              } else if (currentMainTab.value === 'nhanvien') {
-                clearNhanVienData(false);
-              }
-            } catch (err) {
-              console.warn('Error clearing tab data on switch:', err);
-            }
+          // Đóng các modal popup nếu đang mở khi chuyển tab (bảo toàn nguyên vẹn file và kết quả đã gen)
+          try {
+            if (thuocModal.value) thuocModal.value.show = false;
+            if (vattuModal.value) vattuModal.value.show = false;
+            if (nhanVienModal.value) nhanVienModal.value.show = false;
+            if (modals.value) modals.value.convertThuoc = false;
+          } catch (e) {
+            console.warn('Error closing modals on tab switch:', e);
           }
 
           currentMainTab.value = tab;

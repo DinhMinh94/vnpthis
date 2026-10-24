@@ -4654,6 +4654,16 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                     <span>Mặc định</span>
                   </button>
 
+                  <button 
+                    type="button" 
+                    @click="fixGiaoDienCheckboxes" 
+                    class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-xs rounded-xl border border-amber-300 transition-colors flex items-center space-x-1 cursor-pointer"
+                    title="Chuẩn hóa tất cả trường Checkbox: số cột tiêu đề = 0 (tránh vỡ chữ và trùng lặp nhãn trên HMIS)"
+                  >
+                    <i data-lucide="check-square" class="w-3.5 h-3.5 text-amber-600"></i>
+                    <span>Chuẩn hóa Checkbox (TĐ = 0)</span>
+                  </button>
+
                   <!-- Nút Lưu cho các trạm -->
                   <button 
                     type="button" 
@@ -4764,6 +4774,13 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                         <i data-lucide="rows" class="w-4 h-4 text-emerald-600"></i>
                         <span>Dòng số {{ rIdx + 1 }}</span>
                         <span class="text-slate-500 font-normal">({{ row.length }} trường)</span>
+                        <span 
+                          class="px-2 py-0.5 rounded text-[11px] font-mono font-bold"
+                          :class="getGiaoDienRowColSpanSum(row) === 24 ? 'bg-emerald-100 text-emerald-800' : (getGiaoDienRowColSpanSum(row) > 24 ? 'bg-rose-100 text-rose-800' : 'bg-blue-100 text-blue-800')"
+                          :title="getGiaoDienRowColSpanSum(row) > 24 ? 'Tổng số cột vượt quá 24 (sẽ bị rớt dòng trên HMIS)' : 'Tổng độ rộng các cột trong dòng'"
+                        >
+                          Tổng cột: {{ getGiaoDienRowColSpanSum(row) }}/24
+                        </span>
                       </div>
                       <div class="flex items-center space-x-2">
                         <button 
@@ -4849,10 +4866,13 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                               <input 
                                 type="number" 
                                 v-model="col.titleColSpan" 
-                                min="1" 
+                                min="0" 
                                 max="24" 
                                 class="w-14 px-1 py-1 text-center bg-white border border-slate-200 rounded font-mono text-xs focus:ring-1 focus:ring-emerald-500"
+                                :class="{ 'border-rose-400 bg-rose-50 text-rose-700': col.type === 'checkbox' && col.titleColSpan > 0 }"
+                                title="Nhập 0 cho trường checkbox hoặc trường không hiển thị nhãn riêng"
                               >
+                              <span v-if="col.type === 'checkbox' && col.titleColSpan > 0" class="text-[10px] text-rose-600 font-bold block whitespace-nowrap">Cần để 0</span>
                             </td>
                             <!-- Bắt buộc? -->
                             <td class="p-2 text-center">
@@ -4870,11 +4890,13 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                             </td>
                             <!-- Kiểu dữ liệu -->
                             <td class="p-2">
-                              <select v-model="col.type" class="w-full px-1.5 py-1 bg-white border border-slate-200 rounded text-xs focus:ring-1 focus:ring-emerald-500">
+                              <select v-model="col.type" @change="onGiaoDienFieldTypeChange(col)" class="w-full px-1.5 py-1 bg-white border border-slate-200 rounded text-xs focus:ring-1 focus:ring-emerald-500">
                                 <option value="string">string</option>
                                 <option value="textarea">textarea</option>
                                 <option value="number">number</option>
                                 <option value="select">select</option>
+                                <option value="selectKhoa">selectKhoa</option>
+                                <option value="multiSelect">multiSelect</option>
                                 <option value="date">date</option>
                                 <option value="datetime">datetime</option>
                                 <option value="checkbox">checkbox</option>
@@ -7736,18 +7758,36 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
         function standardizeGiaoDienField(col) {
           if (!col || typeof col !== 'object') return {};
-          const viTitle = typeof col.title === 'object' && col.title !== null ? (col.title.vi || '') : (col.title || '');
-          const enTitle = typeof col.title === 'object' && col.title !== null ? (col.title.en || '') : '';
+          const isTitleObj = typeof col.title === 'object' && col.title !== null;
+          const viTitle = isTitleObj ? (col.title.vi || '') : (col.title || '');
+          const enTitle = isTitleObj ? (col.title.en || '') : '';
+          
+          let titleColSpan = 3;
+          if (col.titleColSpan !== undefined && col.titleColSpan !== null && col.titleColSpan !== '') {
+            titleColSpan = Number(col.titleColSpan);
+          } else if (col.type === 'checkbox') {
+            titleColSpan = 0;
+          }
+
+          let defaultValue = '';
+          if (col.type === 'checkbox') {
+            defaultValue = (col.defaultValue === true || col.defaultValue === 'true' || col.defaultValue === 1 || col.defaultValue === '1') ? 'true' : 'false';
+          } else if (col.defaultValue !== null && col.defaultValue !== undefined) {
+            defaultValue = typeof col.defaultValue === 'object' ? JSON.stringify(col.defaultValue) : String(col.defaultValue);
+          }
+
           return {
             code: col.code || '',
             titleVi: viTitle,
             titleEn: enTitle,
-            colSpan: col.colSpan !== undefined ? col.colSpan : 24,
-            titleColSpan: col.titleColSpan !== undefined ? col.titleColSpan : 3,
+            isTitleObject: isTitleObj,
+            colSpan: (col.colSpan !== undefined && col.colSpan !== null && col.colSpan !== '') ? Number(col.colSpan) : 24,
+            titleColSpan: titleColSpan,
             isRequired: !!col.isRequired,
             isEditable: col.isEditable !== false,
             type: col.type || 'string',
-            defaultValue: col.defaultValue !== null && col.defaultValue !== undefined ? String(col.defaultValue) : '',
+            defaultValue: defaultValue,
+            originalDefaultValue: col.defaultValue,
             note: col.note || '',
             cssClass: col.cssClass || '',
             isShow: col.isShow !== false
@@ -7789,24 +7829,99 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
         function serializeGiaoDienRows(rows) {
           return rows.map(row => row.map(col => {
+            // Xác định định dạng title chuẩn
+            let titleVal;
             const hasEn = col.titleEn && col.titleEn.trim();
-            const titleObj = hasEn 
-              ? { vi: col.titleVi || '', en: col.titleEn.trim() } 
-              : (col.titleVi || '');
+            if (col.isTitleObject || hasEn) {
+              titleVal = {
+                vi: col.titleVi !== undefined ? col.titleVi : '',
+                en: col.titleEn !== undefined ? col.titleEn.trim() : ''
+              };
+            } else {
+              titleVal = col.titleVi || '';
+            }
+
+            // Xử lý titleColSpan: Checkbox luôn là 0 để không bị nhân đôi nhãn và vỡ layout HMIS
+            let finalTitleColSpan = 0;
+            if (col.type === 'checkbox') {
+              finalTitleColSpan = 0;
+            } else {
+              finalTitleColSpan = (col.titleColSpan !== undefined && col.titleColSpan !== null && col.titleColSpan !== '')
+                ? Number(col.titleColSpan)
+                : 3;
+            }
+
+            // Xử lý defaultValue chuẩn kiểu dữ liệu của HMIS
+            let finalDefaultValue = null;
+            if (col.type === 'checkbox') {
+              finalDefaultValue = (col.defaultValue === true || col.defaultValue === 'true' || col.defaultValue === 1 || col.defaultValue === '1');
+            } else if (col.type === 'multiSelect') {
+              if (Array.isArray(col.originalDefaultValue)) {
+                finalDefaultValue = col.originalDefaultValue;
+              } else if (col.defaultValue && typeof col.defaultValue === 'string' && col.defaultValue.startsWith('[')) {
+                try { finalDefaultValue = JSON.parse(col.defaultValue); } catch(e) { finalDefaultValue = []; }
+              } else {
+                finalDefaultValue = [];
+              }
+            } else if (col.defaultValue !== '' && col.defaultValue !== null && col.defaultValue !== undefined) {
+              finalDefaultValue = col.defaultValue;
+            }
+
             return {
               code: col.code || '',
-              title: titleObj,
-              colSpan: Number(col.colSpan) || 24,
-              titleColSpan: Number(col.titleColSpan) || 3,
-              defaultValue: col.defaultValue !== '' ? col.defaultValue : null,
+              title: titleVal,
+              colSpan: (col.colSpan !== undefined && col.colSpan !== null && col.colSpan !== '') ? Number(col.colSpan) : 24,
+              titleColSpan: finalTitleColSpan,
+              defaultValue: finalDefaultValue,
               isShow: !!col.isShow,
               isEditable: !!col.isEditable,
-              note: col.note || null,
+              note: col.note && col.note.trim() ? col.note.trim() : null,
               isRequired: !!col.isRequired,
               type: col.type || 'string',
-              cssClass: col.cssClass || ''
+              cssClass: col.cssClass && col.cssClass.trim() ? col.cssClass.trim() : null
             };
           }));
+        }
+
+        function getGiaoDienRowColSpanSum(row) {
+          if (!Array.isArray(row)) return 0;
+          return row.reduce((sum, col) => sum + (Number(col.colSpan) || 0), 0);
+        }
+
+        function onGiaoDienFieldTypeChange(col) {
+          if (col.type === 'checkbox') {
+            col.titleColSpan = 0;
+            if (col.defaultValue === '' || col.defaultValue === null) {
+              col.defaultValue = 'false';
+            }
+          } else if (col.titleColSpan === 0) {
+            col.titleColSpan = 3;
+          }
+        }
+
+        function fixGiaoDienCheckboxes() {
+          let count = 0;
+          if (giaoDienForm.value && giaoDienForm.value.rows) {
+            giaoDienForm.value.rows.forEach(row => {
+              row.forEach(col => {
+                if (col.type === 'checkbox' || ['status', 'bacSiHopTac', 'xuatHoaDon', 'kbhyt', 'truongKhoa', 'otp', 'chuKyAnh', 'klKsk', 'dmGuiBH'].includes(col.code)) {
+                  col.type = 'checkbox';
+                  if (col.titleColSpan !== 0) {
+                    col.titleColSpan = 0;
+                    count++;
+                  }
+                  if (col.defaultValue === 'null' || col.defaultValue === '') {
+                    col.defaultValue = 'false';
+                  }
+                }
+              });
+            });
+          }
+          if (count > 0) {
+            showToast(`Đã tự động chỉnh số cột tiêu đề = 0 cho ${count} trường Checkbox!`, 'success');
+          } else {
+            showToast('Tất cả các trường Checkbox đã chuẩn tiêu đề = 0!', 'info');
+          }
         }
 
         function restoreDefaultGiaoDien() {
@@ -10427,7 +10542,10 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           toggleAllGiaoDienFieldsEditable,
           openGiaoDienModal,
           refreshGiaoDienFromHmis,
-          submitBulkGiaoDienUpdate
+          submitBulkGiaoDienUpdate,
+          getGiaoDienRowColSpanSum,
+          onGiaoDienFieldTypeChange,
+          fixGiaoDienCheckboxes
         };
       }
     }).mount('#app');

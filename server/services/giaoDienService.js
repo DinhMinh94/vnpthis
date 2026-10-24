@@ -80,6 +80,54 @@ async function refreshGiaoDienFromHmis(stationId = null) {
 }
 
 /**
+ * Tự động chuẩn hóa và bảo vệ layout form trước khi gửi HMIS
+ * - BẮT BUỘC: Checkbox phải có titleColSpan = 0 để tránh HMIS render 2 lần nhãn làm vỡ giao diện
+ * - Kiểu multiSelect: defaultValue phải là mảng []
+ */
+function sanitizeGiaoDienLayout(rawGiaTri) {
+  if (!rawGiaTri) return rawGiaTri;
+  let parsed = rawGiaTri;
+  if (typeof parsed === 'string') {
+    try {
+      parsed = JSON.parse(parsed);
+    } catch (e) {
+      return rawGiaTri;
+    }
+  }
+  if (!Array.isArray(parsed)) return rawGiaTri;
+
+  const sanitized = parsed.map(row => {
+    if (!Array.isArray(row)) return row;
+    return row.map(col => {
+      if (!col || typeof col !== 'object') return col;
+      const clone = { ...col };
+
+      // 1. Trường kiểu checkbox trong HMIS BẮT BUỘC titleColSpan = 0
+      // Nếu titleColSpan > 0, HMIS sẽ render 1 cột nhãn riêng và 1 nhãn của chính checkbox -> vỡ giao diện
+      if (clone.type === 'checkbox') {
+        clone.titleColSpan = 0;
+        if (typeof clone.defaultValue === 'string') {
+          clone.defaultValue = clone.defaultValue === 'true' || clone.defaultValue === '1';
+        } else if (clone.defaultValue === undefined || clone.defaultValue === null) {
+          clone.defaultValue = false;
+        }
+      }
+
+      // 2. Kiểu multiSelect trong HMIS defaultValue phải là array
+      if (clone.type === 'multiSelect') {
+        if (!Array.isArray(clone.defaultValue)) {
+          clone.defaultValue = [];
+        }
+      }
+
+      return clone;
+    });
+  });
+
+  return JSON.stringify(sanitized);
+}
+
+/**
  * Cập nhật cấu hình giao diện cho danh sách trạm (các trạm đã tích hoặc tất cả các trạm)
  */
 async function updateGiaoDienForStations({ stationIds = [], targetScope = 'selected', maCauHinh, updateData = {} }) {
@@ -155,9 +203,7 @@ async function updateGiaoDienForStations({ stationIds = [], targetScope = 'selec
         item.trangThai = (updateData.trangThai === 1 || updateData.trangThai === true || updateData.trangThai === '1') ? 1 : 0;
       }
       if (updateData.giaTriThietLap !== undefined) {
-        item.giaTriThietLap = typeof updateData.giaTriThietLap === 'string'
-          ? updateData.giaTriThietLap
-          : JSON.stringify(updateData.giaTriThietLap);
+        item.giaTriThietLap = sanitizeGiaoDienLayout(updateData.giaTriThietLap);
       }
 
       // 3. Gửi lệnh cập nhật PUT
@@ -213,9 +259,7 @@ async function updateGiaoDienForStations({ stationIds = [], targetScope = 'selec
       cache[cachedIdx].trangThai = (updateData.trangThai === 1 || updateData.trangThai === true || updateData.trangThai === '1') ? 1 : 0;
     }
     if (updateData.giaTriThietLap !== undefined) {
-      cache[cachedIdx].giaTriThietLap = typeof updateData.giaTriThietLap === 'string'
-        ? updateData.giaTriThietLap
-        : JSON.stringify(updateData.giaTriThietLap);
+      cache[cachedIdx].giaTriThietLap = sanitizeGiaoDienLayout(updateData.giaTriThietLap);
     }
     saveCachedGiaoDien(cache);
   }

@@ -1306,8 +1306,8 @@
                 </p>
               </div>
 
-              <!-- GRID: KHOA DEPT_ID & MA_KHOA -->
-              <div class="grid grid-cols-2 gap-3">
+              <!-- GRID: KHOA DEPT_ID, MA_KHOA & LOẠI NHÂN VIÊN -->
+              <div class="grid grid-cols-3 gap-3">
                 <!-- KHOA DEPT_ID -->
                 <div>
                   <label class="block text-xs font-bold text-slate-700 mb-1">Khoa (DEPT_ID):</label>
@@ -1330,6 +1330,18 @@
                     class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   >
                   <p class="text-[10px] text-slate-500 mt-0.5">Cột 18: <span class="font-mono font-bold text-emerald-700">K01</span></p>
+                </div>
+
+                <!-- LOẠI NHÂN VIÊN (OFFICER_TYPE) -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Loại NV (OFFICER_TYPE):</label>
+                  <input 
+                    v-model="nhanVienOptions.defaultOfficerType" 
+                    type="number" 
+                    placeholder="4" 
+                    class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-bold font-mono text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  >
+                  <p class="text-[10px] text-slate-500 mt-0.5">Cột 7: Mặc định <span class="font-mono font-bold text-indigo-700">4</span></p>
                 </div>
               </div>
 
@@ -6656,6 +6668,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           maDonVi: '11029',
           defaultDeptId: 'K01',
           defaultMaKhoa: 'K01',
+          defaultOfficerType: 4,
           defaultTuNgay: '20260801',
           defaultNgayCheckGuiBh: '20260801',
           defaultTgNgay: 'T20700-1130;T21330-1700;T30700-1130;T31330-1700;T40700-1130;T41330-1700;T50700-1130;T51330-1700;T60700-1130;T61330-1700',
@@ -9369,6 +9382,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             if (nhanVienOptions.value.maDonVi) params.append('maDonVi', nhanVienOptions.value.maDonVi);
             if (nhanVienOptions.value.defaultDeptId) params.append('defaultDeptId', nhanVienOptions.value.defaultDeptId);
             if (nhanVienOptions.value.defaultMaKhoa) params.append('defaultMaKhoa', nhanVienOptions.value.defaultMaKhoa);
+            if (nhanVienOptions.value.defaultOfficerType) params.append('defaultOfficerType', nhanVienOptions.value.defaultOfficerType);
             if (nhanVienOptions.value.defaultTuNgay) params.append('defaultTuNgay', nhanVienOptions.value.defaultTuNgay);
             if (nhanVienOptions.value.defaultNgayCheckGuiBh) params.append('defaultNgayCheckGuiBh', nhanVienOptions.value.defaultNgayCheckGuiBh);
             if (nhanVienOptions.value.defaultTgNgay) params.append('defaultTgNgay', nhanVienOptions.value.defaultTgNgay);
@@ -9457,6 +9471,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             if (nhanVienOptions.value.maDonVi) formData.append('maDonVi', nhanVienOptions.value.maDonVi);
             if (nhanVienOptions.value.defaultDeptId) formData.append('defaultDeptId', nhanVienOptions.value.defaultDeptId);
             if (nhanVienOptions.value.defaultMaKhoa) formData.append('defaultMaKhoa', nhanVienOptions.value.defaultMaKhoa);
+            if (nhanVienOptions.value.defaultOfficerType) formData.append('defaultOfficerType', nhanVienOptions.value.defaultOfficerType);
+            if (nhanVienOptions.value.defaultOfficerType) formData.append('defaultOfficerType', nhanVienOptions.value.defaultOfficerType);
             if (nhanVienOptions.value.defaultTuNgay) formData.append('defaultTuNgay', nhanVienOptions.value.defaultTuNgay);
             if (nhanVienOptions.value.defaultNgayCheckGuiBh) formData.append('defaultNgayCheckGuiBh', nhanVienOptions.value.defaultNgayCheckGuiBh);
             if (nhanVienOptions.value.defaultTgNgay) formData.append('defaultTgNgay', nhanVienOptions.value.defaultTgNgay);
@@ -9536,6 +9552,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               if (nhanVienOptions.value.maDonVi) params.append('maDonVi', nhanVienOptions.value.maDonVi);
               if (nhanVienOptions.value.defaultDeptId) params.append('defaultDeptId', nhanVienOptions.value.defaultDeptId);
               if (nhanVienOptions.value.defaultMaKhoa) params.append('defaultMaKhoa', nhanVienOptions.value.defaultMaKhoa);
+              if (nhanVienOptions.value.defaultOfficerType) params.append('defaultOfficerType', nhanVienOptions.value.defaultOfficerType);
               if (nhanVienOptions.value.defaultTuNgay) params.append('defaultTuNgay', nhanVienOptions.value.defaultTuNgay);
               if (nhanVienOptions.value.defaultNgayCheckGuiBh) params.append('defaultNgayCheckGuiBh', nhanVienOptions.value.defaultNgayCheckGuiBh);
               if (nhanVienOptions.value.defaultTgNgay) params.append('defaultTgNgay', nhanVienOptions.value.defaultTgNgay);

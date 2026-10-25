@@ -337,12 +337,15 @@ function mapChucDanhNN(val) {
 }
 
 /**
- * Ánh xạ loại nhân viên sang ID chuẩn DMC Loại
+ * Ánh xạ loại nhân viên sang ID chuẩn DMC Loại (mặc định là 4: Bác sĩ / Cán bộ khám)
  */
-function mapOfficerType(val) {
-  if (!val) return 14; // Khác
+function mapOfficerType(val, defaultVal = 4) {
+  if (val === undefined || val === null || val === '') return defaultVal;
   const s = val.toString().trim();
-  if (/^\d+$/.test(s)) return parseInt(s, 10);
+  if (/^\d+$/.test(s)) {
+    const num = parseInt(s, 10);
+    return num === 14 ? defaultVal : num;
+  }
   const norm = removeVietnameseTones(s).toLowerCase();
   if (norm.includes('quan tri')) return 2;
   if (norm.includes('le tan')) return 3;
@@ -355,7 +358,7 @@ function mapOfficerType(val) {
   if (norm.includes('chan doan') || norm.includes('x-quang')) return 10;
   if (norm.includes('phau thuat') || norm.includes('thu thuat')) return 11;
   if (norm.includes('do de')) return 12;
-  return 14;
+  return defaultVal;
 }
 
 /**
@@ -482,6 +485,9 @@ function convertNhanVienRows(sourceRows, options = {}) {
   const defaultTuNgay = options.defaultTuNgay || '20260801';
   const defaultNgayCheckGuiBh = options.defaultNgayCheckGuiBh || '20260801';
   const defaultStatus = options.defaultStatus !== undefined ? options.defaultStatus : 1;
+  const defaultOfficerType = options.defaultOfficerType !== undefined && options.defaultOfficerType !== ''
+    ? parseInt(options.defaultOfficerType, 10)
+    : 4;
 
   const usedUsernames = new Set();
   const dataRows = [];
@@ -510,9 +516,9 @@ function convertNhanVienRows(sourceRows, options = {}) {
     const chucDanhVal = getRowValue(d, ['CHUCDANH_NN', 'CHUC_DANH_NN', 'CHUCDANH', 'CHUC_DANH', 'CHUC_VU']);
     const chucDanhNn = mapChucDanhNN(chucDanhVal);
 
-    // 6. LOẠI NHÂN VIÊN OFFICER_TYPE (Tham chiếu sheet DMC Loại)
+    // 6. LOẠI NHÂN VIÊN OFFICER_TYPE (Tham chiếu sheet DMC Loại) - mặc định là 4 theo yêu cầu
     const loaiVal = getRowValue(d, ['OFFICER_TYPE', 'LOAI_NHAN_VIEN', 'LOAI_NV', 'LOAI']);
-    const officerType = mapOfficerType(loaiVal);
+    const officerType = loaiVal ? mapOfficerType(loaiVal, defaultOfficerType) : defaultOfficerType;
 
     // 7. Mã bác sĩ MA_BAC_SI (CCHN)
     const maBacSi = getRowValue(d, ['MA_BAC_SI', 'CHUNG_CHI_HANH_NGHE', 'CCHN', 'SO_CCHN', 'GPHN']).toString().trim();

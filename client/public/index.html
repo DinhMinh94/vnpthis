@@ -2678,8 +2678,6 @@
               <span>Làm mới dữ liệu</span>
             </button>
             <button @click="downloadKcbExcelReport()" :disabled="isExportingKcbExcel" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
-          currentImportSubTab,
-          setImportSubTab
               <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-200"></i>
               <span>Xuất Báo Cáo Excel</span>
             </button>
@@ -11467,7 +11465,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           loadKcbPhongKhamList,
           loadKcbDashboard,
           renderKcbCharts,
-          downloadKcbExcelReport
+          downloadKcbExcelReport,
+          currentImportSubTab,
+          setImportSubTab
         };
       }
     }).mount('#app');

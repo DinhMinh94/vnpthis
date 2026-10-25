@@ -222,7 +222,7 @@
             </span>
           </button>
 
-          <!-- Tab 2: Cấu hình Trạm Y Tế -->
+          <!-- Tab 2: Quản Lý & Cấu Hình Trạm Y Tế -->
           <button @click="switchMainTab('stations')"
                   type="button"
                   class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border flex-shrink-0"
@@ -234,43 +234,25 @@
             </span>
           </button>
 
-          <!-- Tab 3: Gen File Thuốc HIS (78 Cột) -->
-          <button @click="switchMainTab('thuoc')"
+          <!-- Tab 3: File Import Phần Mềm (Gộp Thuốc, Vật Tư, Nhân Viên) -->
+          <button @click="switchMainTab('import_file')"
                   type="button"
                   class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
-                  :class="currentMainTab === 'thuoc' ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white border-rose-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
-            <i data-lucide="pill" class="w-4 h-4" :class="currentMainTab === 'thuoc' ? 'text-white' : 'text-rose-600'"></i>
-            <span>3. Gen File Thuốc Chuẩn VNPT HIS (78 Cột)</span>
-          </button>
-
-          <!-- Tab 4: Gen File Vật Tư Y Tế HIS (78 Cột) -->
-          <button @click="switchMainTab('vattu')"
-                  type="button"
-                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
-                  :class="currentMainTab === 'vattu' ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border-emerald-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
-            <i data-lucide="package" class="w-4 h-4" :class="currentMainTab === 'vattu' ? 'text-white' : 'text-emerald-600'"></i>
-            <span>4. Gen File Vật Tư Y Tế (78 Cột)</span>
-          </button>
-
-          <!-- Tab 5: Gen File Nhân Viên HIS (33 Cột) -->
-          <button @click="switchMainTab('nhanvien')"
-                  type="button"
-                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
-                  :class="currentMainTab === 'nhanvien' ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white border-indigo-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
-            <i data-lucide="users" class="w-4 h-4" :class="currentMainTab === 'nhanvien' ? 'text-white' : 'text-indigo-600'"></i>
-            <span>5. Gen File Nhân Viên VNPT HIS (33 Cột)</span>
-            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-400 text-amber-950 shadow-2xs animate-pulse">
-              Mới
+                  :class="currentMainTab === 'import_file' ? 'bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-600 text-white border-indigo-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4" :class="currentMainTab === 'import_file' ? 'text-white' : 'text-indigo-600'"></i>
+            <span>3. File Import Phần Mềm</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-400 text-amber-950 shadow-2xs">
+              3 Loại File
             </span>
           </button>
 
-          <!-- Tab 6: Quản lý & Phân công Nhân viên HMIS -->
+          <!-- Tab 4: Quản lý & Phân công Nhân viên HMIS -->
           <button @click="switchMainTab('nhanvien_hmis')"
                   type="button"
                   class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
                   :class="currentMainTab === 'nhanvien_hmis' ? 'bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 text-white border-teal-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
             <i data-lucide="shield-check" class="w-4 h-4" :class="currentMainTab === 'nhanvien_hmis' ? 'text-white' : 'text-teal-600'"></i>
-            <span>6. Phân Công &amp; Quản Lý Nhân Viên (HMIS)</span>
+            <span>4. Phân Công &amp; Quản Lý Nhân Viên (HMIS)</span>
             <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-emerald-400 text-emerald-950 shadow-2xs">
               Live Portal
             </span>
@@ -680,9 +662,61 @@
       </div> <!-- /END TAB 1: STATIONS -->
 
       <!-- ============================================================== -->
+      <!-- TAB 3: FILE IMPORT PHẦN MỀM (THUỐC, VẬT TƯ, NHÂN VIÊN)         -->
+      <!-- ============================================================== -->
+      <div v-if="currentMainTab === 'import_file'" class="space-y-6">
+
+        <!-- THANH ĐIỀU HƯỚNG CHỌN LOẠI FILE IMPORT (SUB-TABS) -->
+        <div class="bg-white rounded-3xl p-4 border border-slate-200/90 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs flex-shrink-0">
+              <i data-lucide="folder-cog" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-sm font-black uppercase text-slate-800 tracking-wide">TẠO FILE IMPORT PHẦN MỀM VNPT HIS</h3>
+                <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">3 Định Dạng</span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">Chuyển đổi dữ liệu chuẩn hóa từ cổng BHXH / Portal sang file Excel import hệ thống HIS</p>
+            </div>
+          </div>
+
+          <!-- BỘ 3 SUB-TABS -->
+          <div class="inline-flex p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200/80 self-start md:self-auto overflow-x-auto max-w-full">
+            <!-- Sub-tab 1: Thuốc -->
+            <button @click="setImportSubTab('thuoc')"
+                    type="button"
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer whitespace-nowrap"
+                    :class="currentImportSubTab === 'thuoc' ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">
+              <i data-lucide="pill" class="w-4 h-4"></i>
+              <span>1. File Thuốc HIS (78 Cột)</span>
+            </button>
+
+            <!-- Sub-tab 2: Vật Tư -->
+            <button @click="setImportSubTab('vattu')"
+                    type="button"
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer whitespace-nowrap"
+                    :class="currentImportSubTab === 'vattu' ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">
+              <i data-lucide="package" class="w-4 h-4"></i>
+              <span>2. File Vật Tư (78 Cột)</span>
+            </button>
+
+            <!-- Sub-tab 3: Nhân Viên -->
+            <button @click="setImportSubTab('nhanvien')"
+                    type="button"
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer whitespace-nowrap"
+                    :class="currentImportSubTab === 'nhanvien' ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">
+              <i data-lucide="users" class="w-4 h-4"></i>
+              <span>3. File Nhân Viên (33 Cột)</span>
+              <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-400 text-amber-950 shadow-2xs">Mới</span>
+            </button>
+          </div>
+        </div>
+
+      <!-- ============================================================== -->
       <!-- TAB 2: GEN FILE THUỐC IMPORT VNPT HIS (78 CỘT CHUẨN)             -->
       <!-- ============================================================== -->
-      <div v-if="currentMainTab === 'thuoc'" class="space-y-6">
+      <div v-if="currentImportSubTab === 'thuoc'" class="space-y-6">
 
         <!-- BANNER TIÊU ĐỀ TAB THUỐC -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5 bg-gradient-to-br from-white via-rose-50/20 to-pink-50/30">
@@ -906,7 +940,7 @@
       <!-- ============================================================== -->
       <!-- TAB 3: GEN FILE VẬT TƯ Y TẾ IMPORT VNPT HIS (78 CỘT CHUẨN)     -->
       <!-- ============================================================== -->
-      <div v-if="currentMainTab === 'vattu'" class="space-y-6">
+      <div v-if="currentImportSubTab === 'vattu'" class="space-y-6">
 
         <!-- BANNER TIÊU ĐỀ TAB VẬT TƯ -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5 bg-gradient-to-br from-white via-emerald-50/25 to-teal-50/30">
@@ -1128,7 +1162,7 @@
       <!-- ============================================================== -->
       <!-- TAB 4: GEN FILE IMPORT NHÂN VIÊN VNPT HIS (33 CỘT CHUẨN)       -->
       <!-- ============================================================== -->
-      <div v-if="currentMainTab === 'nhanvien'" class="space-y-6">
+      <div v-if="currentImportSubTab === 'nhanvien'" class="space-y-6">
 
         <!-- BANNER TIÊU ĐỀ TAB NHÂN VIÊN -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5 bg-gradient-to-br from-white via-indigo-50/30 to-purple-50/40">
@@ -1474,6 +1508,8 @@
         </div>
 
       </div>
+
+      </div> <!-- /END TAB 3: FILE IMPORT PHẦN MỀM -->
 
       <!-- ============================================================== -->
       <!-- TAB 5: PHÂN CÔNG & QUẢN LÝ NHÂN VIÊN - NGƯỜI DÙNG HMIS       -->
@@ -2642,6 +2678,8 @@
               <span>Làm mới dữ liệu</span>
             </button>
             <button @click="downloadKcbExcelReport()" :disabled="isExportingKcbExcel" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
+          currentImportSubTab,
+          setImportSubTab
               <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-200"></i>
               <span>Xuất Báo Cáo Excel</span>
             </button>
@@ -6571,12 +6609,25 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const convertStatus = ref(''); // '' | 'converting' | 'success' | 'error'
         const convertStatusMsg = ref('');
         const convertResult = ref(null);
+        const initialHash = window.location.hash;
+        const currentImportSubTab = ref(
+          initialHash === '#vattu' ? 'vattu' :
+          (initialHash === '#nhanvien' ? 'nhanvien' : 'thuoc')
+        );
+        function setImportSubTab(subTab) {
+          currentImportSubTab.value = subTab;
+          if (window.location.hash !== '#' + subTab) {
+            history.replaceState(null, '', '#' + subTab);
+          }
+          nextTick(() => {
+            refreshIcons();
+          });
+        }
         const currentMainTab = ref(
-          window.location.hash === '#nhanvien_hmis' ? 'nhanvien_hmis' :
-          (window.location.hash === '#nhanvien' ? 'nhanvien' :
-          (window.location.hash === '#vattu' ? 'vattu' :
-          (window.location.hash === '#thuoc' ? 'thuoc' : (window.location.hash === '#stations' ? 'stations' : 'kcb'))))
-        ); // 'kcb' | 'stations' | 'thuoc' | 'vattu' | 'nhanvien' | 'nhanvien_hmis'
+          initialHash === '#nhanvien_hmis' ? 'nhanvien_hmis' :
+          (initialHash === '#stations' ? 'stations' :
+          ((initialHash === '#thuoc' || initialHash === '#vattu' || initialHash === '#nhanvien' || initialHash === '#import_file') ? 'import_file' : 'kcb'))
+        ); // 'kcb' | 'stations' | 'import_file' | 'nhanvien_hmis'
         const vattuFile = ref(null);
         const vattuFileName = ref('');
         const vattuFileSize = ref('');
@@ -6725,35 +6776,34 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
             console.warn('Error closing modals on tab switch:', e);
           }
 
-          currentMainTab.value = tab;
-          if (tab === 'kcb') {
-            if (window.location.hash !== '#kcb') {
-              history.replaceState(null, '', '#kcb');
+          if (tab === 'thuoc' || tab === 'vattu' || tab === 'nhanvien' || tab === 'import_file') {
+            currentMainTab.value = 'import_file';
+            if (tab === 'thuoc' || tab === 'vattu' || tab === 'nhanvien') {
+              currentImportSubTab.value = tab;
             }
-            loadKcbDashboard();
-            loadKcbPhongKhamList();
-          } else if (tab === 'nhanvien_hmis') {
-            if (window.location.hash !== '#nhanvien_hmis') {
-              history.replaceState(null, '', '#nhanvien_hmis');
-            }
-            if (!selectedHmisStationId.value || hmisOfficers.value.length === 0) {
-              loadHmisStationNhanVienData();
-            }
-          } else if (tab === 'nhanvien') {
-            if (window.location.hash !== '#nhanvien') {
-              history.replaceState(null, '', '#nhanvien');
-            }
-          } else if (tab === 'thuoc') {
-            if (window.location.hash !== '#thuoc') {
-              history.replaceState(null, '', '#thuoc');
-            }
-          } else if (tab === 'vattu') {
-            if (window.location.hash !== '#vattu') {
-              history.replaceState(null, '', '#vattu');
+            const hash = '#' + currentImportSubTab.value;
+            if (window.location.hash !== hash) {
+              history.replaceState(null, '', hash);
             }
           } else {
-            if (window.location.hash === '#thuoc' || window.location.hash === '#vattu' || window.location.hash === '#nhanvien' || window.location.hash === '#nhanvien_hmis' || window.location.hash === '#kcb') {
-              history.replaceState(null, '', window.location.pathname + window.location.search);
+            currentMainTab.value = tab;
+            if (tab === 'kcb') {
+              if (window.location.hash !== '#kcb') {
+                history.replaceState(null, '', '#kcb');
+              }
+              loadKcbDashboard();
+              loadKcbPhongKhamList();
+            } else if (tab === 'nhanvien_hmis') {
+              if (window.location.hash !== '#nhanvien_hmis') {
+                history.replaceState(null, '', '#nhanvien_hmis');
+              }
+              if (!selectedHmisStationId.value || hmisOfficers.value.length === 0) {
+                loadHmisStationNhanVienData();
+              }
+            } else if (tab === 'stations') {
+              if (window.location.hash !== '' && window.location.hash !== '#stations') {
+                history.replaceState(null, '', '#stations');
+              }
             }
           }
           nextTick(() => {
@@ -10988,12 +11038,17 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             currentMainTab.value = 'stations';
           } else if (window.location.hash === '#nhanvien_hmis') {
             currentMainTab.value = 'nhanvien_hmis';
-          } else if (window.location.hash === '#nhanvien') {
-            currentMainTab.value = 'nhanvien';
-          } else if (window.location.hash === '#vattu') {
-            currentMainTab.value = 'vattu';
           } else if (window.location.hash === '#thuoc') {
-            currentMainTab.value = 'thuoc';
+            currentMainTab.value = 'import_file';
+            currentImportSubTab.value = 'thuoc';
+          } else if (window.location.hash === '#vattu') {
+            currentMainTab.value = 'import_file';
+            currentImportSubTab.value = 'vattu';
+          } else if (window.location.hash === '#nhanvien') {
+            currentMainTab.value = 'import_file';
+            currentImportSubTab.value = 'nhanvien';
+          } else if (window.location.hash === '#import_file') {
+            currentMainTab.value = 'import_file';
           } else {
             currentMainTab.value = 'kcb';
           }
@@ -11011,16 +11066,23 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
           window.addEventListener('hashchange', () => {
             let targetTab = 'kcb';
-            if (window.location.hash === '#kcb') {
-              targetTab = 'kcb';
+            if (window.location.hash === '#stations') {
+              targetTab = 'stations';
             } else if (window.location.hash === '#nhanvien_hmis') {
               targetTab = 'nhanvien_hmis';
-            } else if (window.location.hash === '#nhanvien') {
-              targetTab = 'nhanvien';
-            } else if (window.location.hash === '#vattu') {
-              targetTab = 'vattu';
             } else if (window.location.hash === '#thuoc') {
-              targetTab = 'thuoc';
+              currentImportSubTab.value = 'thuoc';
+              targetTab = 'import_file';
+            } else if (window.location.hash === '#vattu') {
+              currentImportSubTab.value = 'vattu';
+              targetTab = 'import_file';
+            } else if (window.location.hash === '#nhanvien') {
+              currentImportSubTab.value = 'nhanvien';
+              targetTab = 'import_file';
+            } else if (window.location.hash === '#import_file') {
+              targetTab = 'import_file';
+            } else if (window.location.hash === '#kcb') {
+              targetTab = 'kcb';
             }
             switchMainTab(targetTab);
           });

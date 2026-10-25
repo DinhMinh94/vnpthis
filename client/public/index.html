@@ -171,7 +171,7 @@
     <header class="bg-gradient-to-r from-blue-700 via-sky-700 to-indigo-800 text-white shadow-lg sticky top-0 z-40">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-          <div class="flex items-center space-x-3">
+          <div @click="switchMainTab('kcb')" class="flex items-center space-x-3 cursor-pointer select-none group" title="Xem Biểu Đồ &amp; Thống Kê KCB">
             <img src="/logo.png" alt="Logo" class="w-10 h-10 rounded-xl object-cover shadow-md border border-white/30 flex-shrink-0">
             <div>
               <div class="flex items-center space-x-2">
@@ -209,56 +209,68 @@
     <!-- MAIN NAVIGATION TABS BAR -->
     <nav class="bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-2xs sticky top-16 z-30">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center space-x-3 py-2.5">
-          <!-- Tab 1: Cấu hình Trạm Y Tế -->
+        <div class="flex items-center space-x-2.5 py-2.5 overflow-x-auto no-scrollbar">
+          <!-- Tab 1: Thống Kê & Biểu Đồ KCB (HMIS ds-khambenh) -->
+          <button @click="switchMainTab('kcb')"
+                  type="button"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
+                  :class="currentMainTab === 'kcb' ? 'bg-gradient-to-r from-blue-700 via-indigo-600 to-cyan-600 text-white border-blue-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
+            <i data-lucide="bar-chart-3" class="w-4 h-4" :class="currentMainTab === 'kcb' ? 'text-white' : 'text-blue-600'"></i>
+            <span>1. Biểu Đồ &amp; Thống Kê KCB</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-cyan-400 text-cyan-950 shadow-2xs">
+              Live KCB
+            </span>
+          </button>
+
+          <!-- Tab 2: Cấu hình Trạm Y Tế -->
           <button @click="switchMainTab('stations')"
                   type="button"
-                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border flex-shrink-0"
                   :class="currentMainTab === 'stations' ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
             <i data-lucide="building-2" class="w-4 h-4"></i>
-            <span>1. Quản Lý & Cấu Hình Trạm Y Tế</span>
+            <span>2. Quản Lý &amp; Cấu Hình Trạm Y Tế</span>
             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold" :class="currentMainTab === 'stations' ? 'bg-blue-700 text-white' : 'bg-slate-200 text-slate-700'">
               {{ stations.length }} Trạm
             </span>
           </button>
 
-          <!-- Tab 2: Gen File Thuốc HIS (78 Cột) -->
+          <!-- Tab 3: Gen File Thuốc HIS (78 Cột) -->
           <button @click="switchMainTab('thuoc')"
                   type="button"
-                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
                   :class="currentMainTab === 'thuoc' ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white border-rose-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
             <i data-lucide="pill" class="w-4 h-4" :class="currentMainTab === 'thuoc' ? 'text-white' : 'text-rose-600'"></i>
-            <span>2. Gen File Thuốc Chuẩn VNPT HIS (78 Cột)</span>
+            <span>3. Gen File Thuốc Chuẩn VNPT HIS (78 Cột)</span>
           </button>
 
-          <!-- Tab 3: Gen File Vật Tư Y Tế HIS (78 Cột) -->
+          <!-- Tab 4: Gen File Vật Tư Y Tế HIS (78 Cột) -->
           <button @click="switchMainTab('vattu')"
                   type="button"
-                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
                   :class="currentMainTab === 'vattu' ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border-emerald-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
             <i data-lucide="package" class="w-4 h-4" :class="currentMainTab === 'vattu' ? 'text-white' : 'text-emerald-600'"></i>
-            <span>3. Gen File Vật Tư Y Tế (78 Cột)</span>
+            <span>4. Gen File Vật Tư Y Tế (78 Cột)</span>
           </button>
 
-          <!-- Tab 4: Gen File Nhân Viên HIS (33 Cột) -->
+          <!-- Tab 5: Gen File Nhân Viên HIS (33 Cột) -->
           <button @click="switchMainTab('nhanvien')"
                   type="button"
-                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
                   :class="currentMainTab === 'nhanvien' ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white border-indigo-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
             <i data-lucide="users" class="w-4 h-4" :class="currentMainTab === 'nhanvien' ? 'text-white' : 'text-indigo-600'"></i>
-            <span>4. Gen File Nhân Viên VNPT HIS (33 Cột)</span>
+            <span>5. Gen File Nhân Viên VNPT HIS (33 Cột)</span>
             <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-400 text-amber-950 shadow-2xs animate-pulse">
               Mới
             </span>
           </button>
 
-          <!-- Tab 5: Quản lý & Phân công Nhân viên HMIS -->
+          <!-- Tab 6: Quản lý & Phân công Nhân viên HMIS -->
           <button @click="switchMainTab('nhanvien_hmis')"
                   type="button"
-                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
                   :class="currentMainTab === 'nhanvien_hmis' ? 'bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 text-white border-teal-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
             <i data-lucide="shield-check" class="w-4 h-4" :class="currentMainTab === 'nhanvien_hmis' ? 'text-white' : 'text-teal-600'"></i>
-            <span>5. Phân Công & Quản Lý Nhân Viên (HMIS)</span>
+            <span>6. Phân Công &amp; Quản Lý Nhân Viên (HMIS)</span>
             <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-emerald-400 text-emerald-950 shadow-2xs">
               Live Portal
             </span>
@@ -6563,8 +6575,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           window.location.hash === '#nhanvien_hmis' ? 'nhanvien_hmis' :
           (window.location.hash === '#nhanvien' ? 'nhanvien' :
           (window.location.hash === '#vattu' ? 'vattu' :
-          (window.location.hash === '#thuoc' ? 'thuoc' : 'stations')))
-        ); // 'stations' | 'thuoc' | 'vattu' | 'nhanvien' | 'nhanvien_hmis'
+          (window.location.hash === '#thuoc' ? 'thuoc' : (window.location.hash === '#stations' ? 'stations' : 'kcb'))))
+        ); // 'kcb' | 'stations' | 'thuoc' | 'vattu' | 'nhanvien' | 'nhanvien_hmis'
         const vattuFile = ref(null);
         const vattuFileName = ref('');
         const vattuFileSize = ref('');
@@ -6718,15 +6730,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
             if (window.location.hash !== '#kcb') {
               history.replaceState(null, '', '#kcb');
             }
-            if (kcbRecords.value.length === 0) {
-              loadKcbDashboard();
-              loadKcbPhongKhamList();
-            } else {
-              nextTick(() => {
-                renderKcbCharts();
-                refreshIcons();
-              });
-            }
+            loadKcbDashboard();
+            loadKcbPhongKhamList();
           } else if (tab === 'nhanvien_hmis') {
             if (window.location.hash !== '#nhanvien_hmis') {
               history.replaceState(null, '', '#nhanvien_hmis');
@@ -10736,13 +10741,15 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             };
             const res = await axios.get('/api/kcb/thong-ke', { params });
             if (res.data && res.data.success) {
-              const d = res.data.data;
-              kcbSummary.value = d.summary || kcbSummary.value;
-              kcbByStatus.value = d.byStatus || [];
-              kcbByPhongKham.value = d.byPhongKham || [];
-              kcbByTime.value = d.byTime || { categories: [], series: { daKetThuc: [], dangKham: [], choKham: [] } };
-              kcbByStation.value = d.byStation || [];
-              kcbRecords.value = d.records || [];
+              const d = res.data.data || res.data;
+              if (d && d.summary) {
+                kcbSummary.value = d.summary;
+              }
+              kcbByStatus.value = (d && d.byStatus) || [];
+              kcbByPhongKham.value = (d && d.byPhongKham) || [];
+              kcbByTime.value = (d && d.byTime) || { categories: [], series: { daKetThuc: [], dangKham: [], choKham: [] } };
+              kcbByStation.value = (d && d.byStation) || [];
+              kcbRecords.value = (d && d.records) || [];
               kcbCurrentPage.value = 1;
 
               nextTick(() => {
@@ -10976,8 +10983,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           }
 
           // Kiểm tra hash URL để mở đúng Tab (ví dụ #thuoc, #vattu, #nhanvien, #nhanvien_hmis)
-          if (window.location.hash === '#kcb') {
-            currentMainTab.value = 'kcb';
+          // Mặc định mở Tab KCB khi vào link http://localhost:5000 hoặc #kcb
+          if (window.location.hash === '#stations') {
+            currentMainTab.value = 'stations';
           } else if (window.location.hash === '#nhanvien_hmis') {
             currentMainTab.value = 'nhanvien_hmis';
           } else if (window.location.hash === '#nhanvien') {
@@ -10986,6 +10994,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             currentMainTab.value = 'vattu';
           } else if (window.location.hash === '#thuoc') {
             currentMainTab.value = 'thuoc';
+          } else {
+            currentMainTab.value = 'kcb';
           }
 
           await fetchSettings();
@@ -11000,7 +11010,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           refreshIcons();
 
           window.addEventListener('hashchange', () => {
-            let targetTab = 'stations';
+            let targetTab = 'kcb';
             if (window.location.hash === '#kcb') {
               targetTab = 'kcb';
             } else if (window.location.hash === '#nhanvien_hmis') {

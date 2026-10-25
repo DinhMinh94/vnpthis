@@ -8,7 +8,11 @@ const kcbService = require('../services/kcbService');
 router.get('/thong-ke', async (req, res) => {
   try {
     const data = await kcbService.getKcbDashboardData(req.query);
-    res.json(data);
+    res.json({
+      success: true,
+      data: data,
+      ...data
+    });
   } catch (err) {
     console.error('Lỗi lấy thống kê KCB:', err);
     res.status(500).json({

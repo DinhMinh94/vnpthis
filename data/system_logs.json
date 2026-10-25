@@ -1,5 +1,1325 @@
 [
   {
+    "id": "log_1792892675475_8go69",
+    "timestamp": "2026-10-25T01:44:35.475Z",
+    "formattedTime": "25/10/2026 08:44:35",
+    "actionType": "phancong_nhanvien_multiple",
+    "actionTitle": "Cập nhật Chức danh ký số cho 4 tài khoản (Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa)",
+    "summary": "Đã cập nhật Chức danh ký số cho 4/4 tài khoản thành công tại trạm Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+    "details": [
+      {
+        "userId": 1001,
+        "username": "11097.NTSIM",
+        "status": "success",
+        "user": {
+          "id": 1001,
+          "username": "11097.NTSIM",
+          "userPwd": "",
+          "officer": {
+            "id": 201
+          },
+          "fullName": "Nguyễn Thị Sim",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [
+            {
+              "id": 13022
+            },
+            {
+              "id": 13021
+            },
+            {
+              "id": 13020
+            },
+            {
+              "id": 10001
+            },
+            {
+              "id": 8001
+            },
+            {
+              "id": 7002
+            },
+            {
+              "id": 5001
+            },
+            {
+              "id": 4009
+            },
+            {
+              "id": 4005
+            },
+            {
+              "id": 4002
+            },
+            {
+              "id": 4001
+            },
+            {
+              "id": 3001
+            },
+            {
+              "id": 1009
+            },
+            {
+              "id": 1008
+            }
+          ],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": [
+          13022,
+          13021,
+          13020,
+          10001,
+          8001,
+          7002,
+          5001,
+          4009,
+          4005,
+          4002,
+          4001,
+          3001,
+          1009,
+          1008
+        ]
+      },
+      {
+        "userId": 1000,
+        "username": "11097.MTMAY",
+        "status": "success",
+        "user": {
+          "id": 1000,
+          "username": "11097.MTMAY",
+          "userPwd": "",
+          "officer": {
+            "id": 200
+          },
+          "fullName": "Mai Thị Mây",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [
+            {
+              "id": 13022
+            },
+            {
+              "id": 13021
+            },
+            {
+              "id": 13020
+            },
+            {
+              "id": 10001
+            },
+            {
+              "id": 8001
+            },
+            {
+              "id": 7002
+            },
+            {
+              "id": 5001
+            },
+            {
+              "id": 4009
+            },
+            {
+              "id": 4005
+            },
+            {
+              "id": 4002
+            },
+            {
+              "id": 4001
+            },
+            {
+              "id": 3001
+            },
+            {
+              "id": 1009
+            },
+            {
+              "id": 1008
+            }
+          ],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": [
+          13022,
+          13021,
+          13020,
+          10001,
+          8001,
+          7002,
+          5001,
+          4009,
+          4005,
+          4002,
+          4001,
+          3001,
+          1009,
+          1008
+        ]
+      },
+      {
+        "userId": 1002,
+        "username": "11097.BTTTINH",
+        "status": "success",
+        "user": {
+          "id": 1002,
+          "username": "11097.BTTTINH",
+          "userPwd": "",
+          "officer": {
+            "id": 202
+          },
+          "fullName": "Bùi Thị Thanh Tịnh",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [
+            {
+              "id": 13022
+            },
+            {
+              "id": 13021
+            },
+            {
+              "id": 13020
+            },
+            {
+              "id": 10001
+            },
+            {
+              "id": 8001
+            },
+            {
+              "id": 7002
+            },
+            {
+              "id": 5001
+            },
+            {
+              "id": 4009
+            },
+            {
+              "id": 4005
+            },
+            {
+              "id": 4002
+            },
+            {
+              "id": 4001
+            },
+            {
+              "id": 3001
+            },
+            {
+              "id": 1009
+            },
+            {
+              "id": 1008
+            }
+          ],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": [
+          13022,
+          13021,
+          13020,
+          10001,
+          8001,
+          7002,
+          5001,
+          4009,
+          4005,
+          4002,
+          4001,
+          3001,
+          1009,
+          1008
+        ]
+      },
+      {
+        "userId": 1003,
+        "username": "11097.NTMHUONG",
+        "status": "success",
+        "user": {
+          "id": 1003,
+          "username": "11097.NTMHUONG",
+          "userPwd": "",
+          "officer": {
+            "id": 203
+          },
+          "fullName": "Nguyễn Thị Mai Hương",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [
+            {
+              "id": 13022
+            },
+            {
+              "id": 13021
+            },
+            {
+              "id": 13020
+            },
+            {
+              "id": 10001
+            },
+            {
+              "id": 8001
+            },
+            {
+              "id": 7002
+            },
+            {
+              "id": 5001
+            },
+            {
+              "id": 4009
+            },
+            {
+              "id": 4005
+            },
+            {
+              "id": 4002
+            },
+            {
+              "id": 4001
+            },
+            {
+              "id": 3001
+            },
+            {
+              "id": 1009
+            },
+            {
+              "id": 1008
+            }
+          ],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": [
+          13022,
+          13021,
+          13020,
+          10001,
+          8001,
+          7002,
+          5001,
+          4009,
+          4005,
+          4002,
+          4001,
+          3001,
+          1009,
+          1008
+        ]
+      }
+    ],
+    "total": 0,
+    "successCount": 4,
+    "failedCount": 0,
+    "stationNames": [],
+    "results": []
+  },
+  {
+    "id": "log_1792892665465_dbjdg",
+    "timestamp": "2026-10-25T01:44:25.465Z",
+    "formattedTime": "25/10/2026 08:44:25",
+    "actionType": "phancong_nhanvien_multiple",
+    "actionTitle": "Cập nhật Nhóm người dùng cho 4 tài khoản (Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa)",
+    "summary": "Đã cập nhật Nhóm người dùng cho 4/4 tài khoản thành công tại trạm Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+    "details": [
+      {
+        "userId": 1001,
+        "username": "11097.NTSIM",
+        "status": "success",
+        "user": {
+          "id": 1001,
+          "username": "11097.NTSIM",
+          "userPwd": "",
+          "officer": {
+            "id": 201
+          },
+          "fullName": "Nguyễn Thị Sim",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": []
+      },
+      {
+        "userId": 1000,
+        "username": "11097.MTMAY",
+        "status": "success",
+        "user": {
+          "id": 1000,
+          "username": "11097.MTMAY",
+          "userPwd": "",
+          "officer": {
+            "id": 200
+          },
+          "fullName": "Mai Thị Mây",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": []
+      },
+      {
+        "userId": 1002,
+        "username": "11097.BTTTINH",
+        "status": "success",
+        "user": {
+          "id": 1002,
+          "username": "11097.BTTTINH",
+          "userPwd": "",
+          "officer": {
+            "id": 202
+          },
+          "fullName": "Bùi Thị Thanh Tịnh",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": []
+      },
+      {
+        "userId": 1003,
+        "username": "11097.NTMHUONG",
+        "status": "success",
+        "user": {
+          "id": 1003,
+          "username": "11097.NTMHUONG",
+          "userPwd": "",
+          "officer": {
+            "id": 203
+          },
+          "fullName": "Nguyễn Thị Mai Hương",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": []
+      }
+    ],
+    "total": 0,
+    "successCount": 4,
+    "failedCount": 0,
+    "stationNames": [],
+    "results": []
+  },
+  {
+    "id": "log_1792890423143_z1v8t",
+    "timestamp": "2026-10-25T01:07:03.143Z",
+    "formattedTime": "25/10/2026 08:07:03",
+    "actionType": "phancong_nhanvien_multiple",
+    "actionTitle": "Cập nhật Chức danh ký số cho 6 tài khoản (Trạm Y tế xã Mường Ảng Trạm chính)",
+    "summary": "Đã cập nhật Chức danh ký số cho 6/6 tài khoản thành công tại trạm Trạm Y tế xã Mường Ảng Trạm chính",
+    "details": [
+      {
+        "userId": 1000,
+        "username": "11096.LNTHOA",
+        "status": "success",
+        "user": {
+          "id": 1000,
+          "username": "11096.LNTHOA",
+          "userPwd": "",
+          "officer": {
+            "id": 200
+          },
+          "fullName": "Lò Ngọc Thoa",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [
+            {
+              "id": 13022
+            },
+            {
+              "id": 13021
+            },
+            {
+              "id": 13020
+            },
+            {
+              "id": 10001
+            },
+            {
+              "id": 8001
+            },
+            {
+              "id": 7002
+            },
+            {
+              "id": 5001
+            },
+            {
+              "id": 4009
+            },
+            {
+              "id": 4005
+            },
+            {
+              "id": 4002
+            },
+            {
+              "id": 4001
+            },
+            {
+              "id": 3001
+            },
+            {
+              "id": 1009
+            },
+            {
+              "id": 1008
+            }
+          ],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": [
+          13022,
+          13021,
+          13020,
+          10001,
+          8001,
+          7002,
+          5001,
+          4009,
+          4005,
+          4002,
+          4001,
+          3001,
+          1009,
+          1008
+        ]
+      },
+      {
+        "userId": 1001,
+        "username": "11096.NTHUONG",
+        "status": "success",
+        "user": {
+          "id": 1001,
+          "username": "11096.NTHUONG",
+          "userPwd": "",
+          "officer": {
+            "id": 201
+          },
+          "fullName": "Nguyễn Thị Hương",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [
+            {
+              "id": 13022
+            },
+            {
+              "id": 13021
+            },
+            {
+              "id": 13020
+            },
+            {
+              "id": 10001
+            },
+            {
+              "id": 8001
+            },
+            {
+              "id": 7002
+            },
+            {
+              "id": 5001
+            },
+            {
+              "id": 4009
+            },
+            {
+              "id": 4005
+            },
+            {
+              "id": 4002
+            },
+            {
+              "id": 4001
+            },
+            {
+              "id": 3001
+            },
+            {
+              "id": 1009
+            },
+            {
+              "id": 1008
+            }
+          ],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": [
+          13022,
+          13021,
+          13020,
+          10001,
+          8001,
+          7002,
+          5001,
+          4009,
+          4005,
+          4002,
+          4001,
+          3001,
+          1009,
+          1008
+        ]
+      },
+      {
+        "userId": 1002,
+        "username": "11096.VTTNGOC",
+        "status": "success",
+        "user": {
+          "id": 1002,
+          "username": "11096.VTTNGOC",
+          "userPwd": "",
+          "officer": {
+            "id": 202
+          },
+          "fullName": "Vương Thị Thúy Ngọc",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [
+            {
+              "id": 13022
+            },
+            {
+              "id": 13021
+            },
+            {
+              "id": 13020
+            },
+            {
+              "id": 10001
+            },
+            {
+              "id": 8001
+            },
+            {
+              "id": 7002
+            },
+            {
+              "id": 5001
+            },
+            {
+              "id": 4009
+            },
+            {
+              "id": 4005
+            },
+            {
+              "id": 4002
+            },
+            {
+              "id": 4001
+            },
+            {
+              "id": 3001
+            },
+            {
+              "id": 1009
+            },
+            {
+              "id": 1008
+            }
+          ],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": [
+          13022,
+          13021,
+          13020,
+          10001,
+          8001,
+          7002,
+          5001,
+          4009,
+          4005,
+          4002,
+          4001,
+          3001,
+          1009,
+          1008
+        ]
+      },
+      {
+        "userId": 1003,
+        "username": "11096.BTLUN",
+        "status": "success",
+        "user": {
+          "id": 1003,
+          "username": "11096.BTLUN",
+          "userPwd": "",
+          "officer": {
+            "id": 203
+          },
+          "fullName": "Bạc Thị Lún",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [
+            {
+              "id": 13022
+            },
+            {
+              "id": 13021
+            },
+            {
+              "id": 13020
+            },
+            {
+              "id": 10001
+            },
+            {
+              "id": 8001
+            },
+            {
+              "id": 7002
+            },
+            {
+              "id": 5001
+            },
+            {
+              "id": 4009
+            },
+            {
+              "id": 4005
+            },
+            {
+              "id": 4002
+            },
+            {
+              "id": 4001
+            },
+            {
+              "id": 3001
+            },
+            {
+              "id": 1009
+            },
+            {
+              "id": 1008
+            }
+          ],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": [
+          13022,
+          13021,
+          13020,
+          10001,
+          8001,
+          7002,
+          5001,
+          4009,
+          4005,
+          4002,
+          4001,
+          3001,
+          1009,
+          1008
+        ]
+      },
+      {
+        "userId": 1004,
+        "username": "11096.LTXOAN",
+        "status": "success",
+        "user": {
+          "id": 1004,
+          "username": "11096.LTXOAN",
+          "userPwd": "",
+          "officer": {
+            "id": 204
+          },
+          "fullName": "Lò Thị Xoan",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [
+            {
+              "id": 13022
+            },
+            {
+              "id": 13021
+            },
+            {
+              "id": 13020
+            },
+            {
+              "id": 10001
+            },
+            {
+              "id": 8001
+            },
+            {
+              "id": 7002
+            },
+            {
+              "id": 5001
+            },
+            {
+              "id": 4009
+            },
+            {
+              "id": 4005
+            },
+            {
+              "id": 4002
+            },
+            {
+              "id": 4001
+            },
+            {
+              "id": 3001
+            },
+            {
+              "id": 1009
+            },
+            {
+              "id": 1008
+            }
+          ],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": [
+          13022,
+          13021,
+          13020,
+          10001,
+          8001,
+          7002,
+          5001,
+          4009,
+          4005,
+          4002,
+          4001,
+          3001,
+          1009,
+          1008
+        ]
+      },
+      {
+        "userId": 1005,
+        "username": "11096.HDTOAN",
+        "status": "success",
+        "user": {
+          "id": 1005,
+          "username": "11096.HDTOAN",
+          "userPwd": "",
+          "officer": {
+            "id": 205
+          },
+          "fullName": "Hoàng Danh Toàn",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [
+            {
+              "id": 13022
+            },
+            {
+              "id": 13021
+            },
+            {
+              "id": 13020
+            },
+            {
+              "id": 10001
+            },
+            {
+              "id": 8001
+            },
+            {
+              "id": 7002
+            },
+            {
+              "id": 5001
+            },
+            {
+              "id": 4009
+            },
+            {
+              "id": 4005
+            },
+            {
+              "id": 4002
+            },
+            {
+              "id": 4001
+            },
+            {
+              "id": 3001
+            },
+            {
+              "id": 1009
+            },
+            {
+              "id": 1008
+            }
+          ],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": [
+          13022,
+          13021,
+          13020,
+          10001,
+          8001,
+          7002,
+          5001,
+          4009,
+          4005,
+          4002,
+          4001,
+          3001,
+          1009,
+          1008
+        ]
+      }
+    ],
+    "total": 0,
+    "successCount": 6,
+    "failedCount": 0,
+    "stationNames": [],
+    "results": []
+  },
+  {
+    "id": "log_1792890404362_60t7h",
+    "timestamp": "2026-10-25T01:06:44.362Z",
+    "formattedTime": "25/10/2026 08:06:44",
+    "actionType": "phancong_nhanvien_multiple",
+    "actionTitle": "Cập nhật Nhóm người dùng cho 6 tài khoản (Trạm Y tế xã Mường Ảng Trạm chính)",
+    "summary": "Đã cập nhật Nhóm người dùng cho 6/6 tài khoản thành công tại trạm Trạm Y tế xã Mường Ảng Trạm chính",
+    "details": [
+      {
+        "userId": 1000,
+        "username": "11096.LNTHOA",
+        "status": "success",
+        "user": {
+          "id": 1000,
+          "username": "11096.LNTHOA",
+          "userPwd": "",
+          "officer": {
+            "id": 200
+          },
+          "fullName": "Lò Ngọc Thoa",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": []
+      },
+      {
+        "userId": 1001,
+        "username": "11096.NTHUONG",
+        "status": "success",
+        "user": {
+          "id": 1001,
+          "username": "11096.NTHUONG",
+          "userPwd": "",
+          "officer": {
+            "id": 201
+          },
+          "fullName": "Nguyễn Thị Hương",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": []
+      },
+      {
+        "userId": 1002,
+        "username": "11096.VTTNGOC",
+        "status": "success",
+        "user": {
+          "id": 1002,
+          "username": "11096.VTTNGOC",
+          "userPwd": "",
+          "officer": {
+            "id": 202
+          },
+          "fullName": "Vương Thị Thúy Ngọc",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": []
+      },
+      {
+        "userId": 1003,
+        "username": "11096.BTLUN",
+        "status": "success",
+        "user": {
+          "id": 1003,
+          "username": "11096.BTLUN",
+          "userPwd": "",
+          "officer": {
+            "id": 203
+          },
+          "fullName": "Bạc Thị Lún",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": []
+      },
+      {
+        "userId": 1004,
+        "username": "11096.LTXOAN",
+        "status": "success",
+        "user": {
+          "id": 1004,
+          "username": "11096.LTXOAN",
+          "userPwd": "",
+          "officer": {
+            "id": 204
+          },
+          "fullName": "Lò Thị Xoan",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": []
+      },
+      {
+        "userId": 1005,
+        "username": "11096.HDTOAN",
+        "status": "success",
+        "user": {
+          "id": 1005,
+          "username": "11096.HDTOAN",
+          "userPwd": "",
+          "officer": {
+            "id": 205
+          },
+          "fullName": "Hoàng Danh Toàn",
+          "userLevel": 4,
+          "userType": 0,
+          "status": 1,
+          "callOnl": 0,
+          "auth2FA": 0,
+          "type2fa": null,
+          "company": {
+            "id": 1
+          },
+          "nhomNguoiDungs": [
+            {
+              "roleId": 23
+            }
+          ],
+          "signTitles": [],
+          "adminRegion": 0
+        },
+        "finalRoleIds": [
+          23
+        ],
+        "finalSignTitleIds": []
+      }
+    ],
+    "total": 0,
+    "successCount": 6,
+    "failedCount": 0,
+    "stationNames": [],
+    "results": []
+  },
+  {
     "id": "log_1792723342919_rc517",
     "timestamp": "2026-10-23T02:42:22.919Z",
     "formattedTime": "23/10/2026 09:42:22",

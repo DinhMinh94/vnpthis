@@ -10,6 +10,7 @@
   <script src="/vendor/vue.global.prod.js"></script>
   <script src="/vendor/axios.min.js"></script>
   <script src="/vendor/lucide.js"></script>
+  <script src="/vendor/chart.umd.min.js"></script>
   <style>
     [v-cloak] { display: none; }
     i[data-lucide] {
@@ -2597,6 +2598,417 @@
         </div>
 
       </div>
+      <!-- ============================================================== -->
+      <!-- TAB 6: BIỂU ĐỒ & THỐNG KÊ KHÁM CHỮA BỆNH (HMIS OUTPATIENT)     -->
+      <!-- ============================================================== -->
+      <div v-if="currentMainTab === 'kcb'" class="space-y-6">
+
+        <!-- BANNER HEADER TAB 6 -->
+        <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-cyan-900 rounded-3xl p-6 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-5 border border-cyan-500/30">
+          <div class="flex items-start sm:items-center space-x-4">
+            <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-md flex-shrink-0">
+              <i data-lucide="activity" class="w-8 h-8 text-cyan-300"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2.5 flex-wrap">
+                <h2 class="text-xl sm:text-2xl font-black uppercase tracking-wide">THỐNG KÊ &amp; BIỂU ĐỒ KHÁM CHỮA BỆNH HMIS</h2>
+                <span class="bg-cyan-400 text-cyan-950 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs">Live Portal</span>
+                <span class="bg-emerald-400/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  ds-khambenh
+                </span>
+              </div>
+              <p class="text-xs sm:text-sm text-cyan-100 mt-1 max-w-3xl">
+                Giám sát trực quan dữ liệu khám bệnh ngoại trú từ cổng <span class="font-mono text-amber-300 font-bold">https://ytcs.hmis.vn/new/his/ngoaitru/kb/ds-khambenh</span>. Phân tích chi tiết theo phòng khám, ngày/tháng/năm, và trạng thái Đã kết thúc - Đang khám - Chờ khám.
+              </p>
+            </div>
+          </div>
+
+          <!-- Nút tác vụ nhanh -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button @click="loadKcbDashboard()" :disabled="isLoadingKcb" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition-all cursor-pointer">
+              <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingKcb }"></i>
+              <span>Làm mới dữ liệu</span>
+            </button>
+            <button @click="downloadKcbExcelReport()" :disabled="isExportingKcbExcel" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-200"></i>
+              <span>Xuất Báo Cáo Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- BỘ LỌC THỐNG KÊ (FILTER BAR) -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="filter" class="w-4 h-4 text-indigo-600"></i>
+              <h3 class="text-xs font-black uppercase text-slate-800 tracking-wider">Bộ Lọc Thống Kê &amp; Biểu Đồ</h3>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-[11px] text-slate-500">Chế độ xem thời gian:</span>
+              <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200">
+                <button type="button" @click="setKcbViewType('day')" class="px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer" :class="kcbFilters.viewType === 'day' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">Theo Ngày</button>
+                <button type="button" @click="setKcbViewType('month')" class="px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer" :class="kcbFilters.viewType === 'month' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">Theo Tháng</button>
+                <button type="button" @click="setKcbViewType('year')" class="px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer" :class="kcbFilters.viewType === 'year' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">Theo Năm</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+            <!-- 1. Chọn Trạm Y Tế -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Trạm Y Tế:</label>
+              <select v-model="kcbFilters.stationId" @change="onKcbFilterChange" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <option value="all">-- Tất cả {{ stations.length }} Trạm Y Tế --</option>
+                <option v-for="s in stations" :key="s.id" :value="s.id">
+                  {{ s.code }} - {{ s.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- 2. Chọn Phòng Khám -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Phòng Khám:</label>
+              <select v-model="kcbFilters.phongId" @change="onKcbFilterChange" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <option value="all">-- Tất cả phòng khám --</option>
+                <option v-for="p in kcbPhongKhamList" :key="p.id" :value="p.id">
+                  {{ p.tenPhong }} ({{ p.maPhong }})
+                </option>
+              </select>
+            </div>
+
+            <!-- 3. Chọn Trạng Thái Khám -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Trạng Thái Khám:</label>
+              <select v-model="kcbFilters.trangThaiId" @change="onKcbFilterChange" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <option value="all">-- Tất cả trạng thái --</option>
+                <option value="3">🟢 Đã kết thúc</option>
+                <option value="2">🟠 Đang khám</option>
+                <option value="1">🔵 Chờ khám</option>
+              </select>
+            </div>
+
+            <!-- 4. Từ ngày -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Từ ngày (dd/MM/yyyy):</label>
+              <input v-model="kcbFilters.tuNgay" @change="onKcbFilterChange" type="text" placeholder="VD: 01/10/2026" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-mono font-bold text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+
+            <!-- 5. Đến ngày & Nút Lọc -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Đến ngày (dd/MM/yyyy):</label>
+              <div class="flex items-center space-x-2">
+                <input v-model="kcbFilters.denNgay" @change="onKcbFilterChange" type="text" placeholder="VD: 25/10/2026" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-mono font-bold text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <button type="button" @click="resetKcbFilters" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl border border-slate-300 transition-colors cursor-pointer" title="Đặt lại bộ lọc">
+                  <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 THẺ CHỈ SỐ KPI TỔNG QUAN -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <!-- Card 1: Tổng lượt khám -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-sm flex items-center space-x-3.5">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0 shadow-xs">
+              <i data-lucide="users" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Tổng ca khám</span>
+              <span class="text-2xl font-black text-slate-900 leading-tight font-mono">{{ kcbSummary.total.toLocaleString() }}</span>
+              <span class="text-[10px] text-slate-400 block mt-0.5">Lượt tiếp nhận</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Đã kết thúc -->
+          <div class="bg-white rounded-2xl p-4 border border-emerald-200/90 shadow-sm flex items-center space-x-3.5 bg-gradient-to-br from-white to-emerald-50/30">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0 shadow-xs">
+              <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider block">Đã kết thúc</span>
+              <div class="flex items-baseline space-x-1.5">
+                <span class="text-2xl font-black text-emerald-700 leading-tight font-mono">{{ kcbSummary.daKetThuc.toLocaleString() }}</span>
+                <span class="text-xs font-bold text-emerald-600">({{ kcbSummary.total ? Math.round((kcbSummary.daKetThuc / kcbSummary.total) * 100) : 0 }}%)</span>
+              </div>
+              <span class="text-[10px] text-emerald-600 block mt-0.5">Đã hoàn thành khám</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Đang khám -->
+          <div class="bg-white rounded-2xl p-4 border border-amber-200/90 shadow-sm flex items-center space-x-3.5 bg-gradient-to-br from-white to-amber-50/30">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0 shadow-xs">
+              <i data-lucide="activity" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-amber-700 uppercase tracking-wider block">Đang khám</span>
+              <div class="flex items-baseline space-x-1.5">
+                <span class="text-2xl font-black text-amber-700 leading-tight font-mono">{{ kcbSummary.dangKham.toLocaleString() }}</span>
+                <span class="text-xs font-bold text-amber-600">({{ kcbSummary.total ? Math.round((kcbSummary.dangKham / kcbSummary.total) * 100) : 0 }}%)</span>
+              </div>
+              <span class="text-[10px] text-amber-600 block mt-0.5">Đang xử trí tại phòng</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Chờ khám -->
+          <div class="bg-white rounded-2xl p-4 border border-indigo-200/90 shadow-sm flex items-center space-x-3.5 bg-gradient-to-br from-white to-indigo-50/30">
+            <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center flex-shrink-0 shadow-xs">
+              <i data-lucide="clock" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-indigo-700 uppercase tracking-wider block">Chờ khám</span>
+              <div class="flex items-baseline space-x-1.5">
+                <span class="text-2xl font-black text-indigo-700 leading-tight font-mono">{{ kcbSummary.choKham.toLocaleString() }}</span>
+                <span class="text-xs font-bold text-indigo-600">({{ kcbSummary.total ? Math.round((kcbSummary.choKham / kcbSummary.total) * 100) : 0 }}%)</span>
+              </div>
+              <span class="text-[10px] text-indigo-600 block mt-0.5">Bệnh nhân đang đợi</span>
+            </div>
+          </div>
+
+          <!-- Card 5: Đối tượng BHYT -->
+          <div class="bg-white rounded-2xl p-4 border border-cyan-200/90 shadow-sm flex items-center space-x-3.5 col-span-2 sm:col-span-1 bg-gradient-to-br from-white to-cyan-50/30">
+            <div class="w-12 h-12 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center flex-shrink-0 shadow-xs">
+              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-cyan-700 uppercase tracking-wider block">Khám BHYT</span>
+              <div class="flex items-baseline space-x-1.5">
+                <span class="text-2xl font-black text-cyan-700 leading-tight font-mono">{{ kcbSummary.bhytCount.toLocaleString() }}</span>
+                <span class="text-xs font-bold text-cyan-600">({{ kcbSummary.bhytPercent }}%)</span>
+              </div>
+              <span class="text-[10px] text-cyan-600 block mt-0.5">Viện phí: {{ kcbSummary.vienPhiCount.toLocaleString() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KHU VỰC BIỂU ĐỒ TRỰC QUAN (CHARTS GRID) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <!-- BIỂU ĐỒ 1: THEO THỜI GIAN (NGÀY / THÁNG / NĂM) -->
+          <div class="lg:col-span-2 bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+              <div class="flex items-center space-x-2.5">
+                <div class="p-2 rounded-xl bg-blue-50 text-blue-600">
+                  <i data-lucide="line-chart" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide">
+                    Diễn Biến Khám Bệnh Theo {{ kcbFilters.viewType === 'year' ? 'Năm' : (kcbFilters.viewType === 'month' ? 'Tháng' : 'Ngày') }}
+                  </h3>
+                  <p class="text-[11px] text-slate-500">Phân bố số lượng bệnh nhân theo 3 trạng thái khám bệnh</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-3 text-xs font-bold">
+                <span class="inline-flex items-center space-x-1 text-emerald-700"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> <span>Đã kết thúc</span></span>
+                <span class="inline-flex items-center space-x-1 text-amber-700"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> <span>Đang khám</span></span>
+                <span class="inline-flex items-center space-x-1 text-indigo-700"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500 inline-block"></span> <span>Chờ khám</span></span>
+              </div>
+            </div>
+            <div class="relative h-72 sm:h-80 w-full">
+              <canvas id="kcbTimeChart"></canvas>
+            </div>
+          </div>
+
+          <!-- BIỂU ĐỒ 2: TỶ LỆ TRẠNG THÁI KHÁM (DONUT CHART) -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm space-y-4 flex flex-col justify-between">
+            <div class="pb-3 border-b border-slate-100 flex items-center space-x-2.5">
+              <div class="p-2 rounded-xl bg-cyan-50 text-cyan-600">
+                <i data-lucide="pie-chart" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide">Tỷ Lệ Trạng Thái Khám</h3>
+                <p class="text-[11px] text-slate-500">Cơ cấu hoàn thành lượt khám</p>
+              </div>
+            </div>
+            <div class="relative h-56 sm:h-64 w-full flex items-center justify-center">
+              <canvas id="kcbStatusChart"></canvas>
+            </div>
+            <div class="pt-3 border-t border-slate-100 grid grid-cols-3 gap-2 text-center">
+              <div class="p-2 rounded-xl bg-emerald-50/60">
+                <span class="text-[10px] font-bold text-emerald-800 block">Đã xong</span>
+                <span class="text-xs font-black text-emerald-700 font-mono">{{ kcbSummary.daKetThuc }}</span>
+              </div>
+              <div class="p-2 rounded-xl bg-amber-50/60">
+                <span class="text-[10px] font-bold text-amber-800 block">Đang khám</span>
+                <span class="text-xs font-black text-amber-700 font-mono">{{ kcbSummary.dangKham }}</span>
+              </div>
+              <div class="p-2 rounded-xl bg-indigo-50/60">
+                <span class="text-[10px] font-bold text-indigo-800 block">Chờ khám</span>
+                <span class="text-xs font-black text-indigo-700 font-mono">{{ kcbSummary.choKham }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- BIỂU ĐỒ 3: PHÂN BỔ THEO PHÒNG KHÁM (HORIZONTAL BAR) -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm space-y-4">
+            <div class="flex items-center space-x-2.5 pb-3 border-b border-slate-100">
+              <div class="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+                <i data-lucide="building" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide">Sản Lượng Theo Phòng Khám</h3>
+                <p class="text-[11px] text-slate-500">Số ca khám bệnh của từng chuyên khoa</p>
+              </div>
+            </div>
+            <div class="relative h-72 w-full">
+              <canvas id="kcbPhongChart"></canvas>
+            </div>
+          </div>
+
+          <!-- BIỂU ĐỒ 4: SO SÁNH GIỮA CÁC TRẠM Y TẾ (STATION COMPARISON) -->
+          <div class="lg:col-span-2 bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div class="flex items-center space-x-2.5">
+                <div class="p-2 rounded-xl bg-teal-50 text-teal-600">
+                  <i data-lucide="map-pin" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide">So Sánh Sản Lượng Khám Giữa Các Trạm Y Tế</h3>
+                  <p class="text-[11px] text-slate-500">Tổng số ca khám được tiếp nhận tại các trạm cơ sở trong kỳ</p>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-slate-500 font-mono">{{ kcbByStation.length }} Trạm</span>
+            </div>
+            <div class="relative h-72 w-full">
+              <canvas id="kcbStationChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- BẢNG DANH SÁCH CHI TIẾT KHÁM CHỮA BỆNH (ds-khambenh) -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div>
+              <div class="flex items-center space-x-2">
+                <i data-lucide="list-checks" class="w-5 h-5 text-indigo-600"></i>
+                <h3 class="text-base font-black text-slate-800 uppercase tracking-wide">
+                  Danh Sách Khám Chữa Bệnh Chi Tiết (ds-khambenh)
+                </h3>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 font-mono">
+                  {{ filteredKcbRecords.length }} lượt
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">Dữ liệu đồng bộ trực tiếp từ phân hệ khám ngoại trú HMIS</p>
+            </div>
+
+            <!-- Lọc nhanh trạng thái & Tìm kiếm -->
+            <div class="flex flex-wrap items-center gap-2">
+              <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold">
+                <button type="button" @click="kcbTableStatusFilter = 'all'" class="px-2.5 py-1 rounded-lg transition-all cursor-pointer" :class="kcbTableStatusFilter === 'all' ? 'bg-white text-slate-900 shadow-2xs font-black' : 'text-slate-600 hover:text-slate-900'">Tất cả</button>
+                <button type="button" @click="kcbTableStatusFilter = '3'" class="px-2.5 py-1 rounded-lg transition-all cursor-pointer" :class="kcbTableStatusFilter === '3' ? 'bg-emerald-600 text-white shadow-2xs' : 'text-emerald-700 hover:bg-emerald-50'">Đã xong</button>
+                <button type="button" @click="kcbTableStatusFilter = '2'" class="px-2.5 py-1 rounded-lg transition-all cursor-pointer" :class="kcbTableStatusFilter === '2' ? 'bg-amber-500 text-white shadow-2xs' : 'text-amber-700 hover:bg-amber-50'">Đang khám</button>
+                <button type="button" @click="kcbTableStatusFilter = '1'" class="px-2.5 py-1 rounded-lg transition-all cursor-pointer" :class="kcbTableStatusFilter === '1' ? 'bg-indigo-600 text-white shadow-2xs' : 'text-indigo-700 hover:bg-indigo-50'">Chờ khám</button>
+              </div>
+
+              <div class="relative">
+                <input v-model="kcbFilters.searchQuery" type="text" placeholder="Tìm tên, mã BN, bệnh..." class="pl-8 pr-3 py-1.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none w-48 sm:w-56">
+                <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bảng dữ liệu -->
+          <div class="border border-slate-200 rounded-2xl overflow-x-auto max-h-[500px]">
+            <table class="w-full text-xs text-left">
+              <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 select-none">
+                <tr>
+                  <th class="p-2.5 w-12 text-center">STT</th>
+                  <th class="p-2.5 font-mono text-indigo-900">Mã BN</th>
+                  <th class="p-2.5">Họ và Tên</th>
+                  <th class="p-2.5 text-center">Tuổi</th>
+                  <th class="p-2.5 text-center">Giới tính</th>
+                  <th class="p-2.5">Phòng Khám</th>
+                  <th class="p-2.5">Bác Sĩ Khám</th>
+                  <th class="p-2.5 font-mono">Thời Gian Đến</th>
+                  <th class="p-2.5 text-center">Trạng Thái</th>
+                  <th class="p-2.5 text-center">Đối Tượng</th>
+                  <th class="p-2.5">Chẩn Đoán / Xử Trí</th>
+                  <th class="p-2.5">Trạm Y Tế</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr v-for="(r, idx) in pagedKcbRecords" :key="r.id" class="hover:bg-indigo-50/40 transition-colors">
+                  <td class="p-2.5 text-center text-slate-400 font-bold font-mono">
+                    {{ (kcbCurrentPage - 1) * kcbPageSize + idx + 1 }}
+                  </td>
+                  <td class="p-2.5 font-mono font-bold text-indigo-700 bg-indigo-50/20 whitespace-nowrap">
+                    {{ r.maBenhNhan }}
+                  </td>
+                  <td class="p-2.5 font-extrabold text-slate-900 whitespace-nowrap">
+                    {{ r.tenBenhNhan }}
+                  </td>
+                  <td class="p-2.5 text-center font-semibold text-slate-700 font-mono">
+                    {{ r.tuoi }}
+                  </td>
+                  <td class="p-2.5 text-center font-medium" :class="r.gioiTinh === 'Nam' ? 'text-blue-700 font-bold' : 'text-pink-700 font-bold'">
+                    {{ r.gioiTinh }}
+                  </td>
+                  <td class="p-2.5 font-bold text-slate-800 whitespace-nowrap">
+                    <span class="inline-flex items-center space-x-1">
+                      <span class="font-mono text-[10px] text-indigo-600 bg-indigo-50 px-1 rounded">{{ r.maPhong }}</span>
+                      <span>{{ r.tenPhong }}</span>
+                    </span>
+                  </td>
+                  <td class="p-2.5 font-medium text-slate-700 whitespace-nowrap">
+                    {{ r.bacSiKham }}
+                  </td>
+                  <td class="p-2.5 font-mono text-[11px] text-slate-600 whitespace-nowrap">
+                    {{ r.thoiGianTiepNhan }}
+                  </td>
+                  <td class="p-2.5 text-center whitespace-nowrap">
+                    <span v-if="r.trangThaiId === 3" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                      ✓ Đã kết thúc
+                    </span>
+                    <span v-else-if="r.trangThaiId === 2" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300 animate-pulse">
+                      ⚡ Đang khám
+                    </span>
+                    <span v-else class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-indigo-100 text-indigo-800 border border-indigo-300">
+                      ⏳ Chờ khám
+                    </span>
+                  </td>
+                  <td class="p-2.5 text-center whitespace-nowrap font-bold text-[11px]" :class="r.doiTuong === 'BHYT' ? 'text-emerald-700' : 'text-amber-800'">
+                    <span class="px-1.5 py-0.5 rounded-md" :class="r.doiTuong === 'BHYT' ? 'bg-emerald-50 border border-emerald-200' : 'bg-amber-50 border border-amber-200'">
+                      {{ r.doiTuong }}
+                    </span>
+                  </td>
+                  <td class="p-2.5 text-slate-700 max-w-xs truncate" :title="r.chanDoan">
+                    {{ r.chanDoan }}
+                  </td>
+                  <td class="p-2.5 text-slate-600 text-[11px] whitespace-nowrap">
+                    {{ r.stationName }}
+                  </td>
+                </tr>
+
+                <tr v-if="filteredKcbRecords.length === 0">
+                  <td colspan="12" class="p-8 text-center text-slate-400">
+                    <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 text-slate-300"></i>
+                    <p class="font-bold">Không tìm thấy ca khám bệnh nào phù hợp với bộ lọc</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Phân trang bảng -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+            <div class="text-xs text-slate-500">
+              Hiển thị từ <span class="font-bold font-mono">{{ (kcbCurrentPage - 1) * kcbPageSize + 1 }}</span> đến <span class="font-bold font-mono">{{ Math.min(kcbCurrentPage * kcbPageSize, filteredKcbRecords.length) }}</span> trên tổng số <span class="font-bold font-mono">{{ filteredKcbRecords.length }}</span> ca
+            </div>
+            <div class="flex items-center space-x-2">
+              <button type="button" @click="kcbCurrentPage--" :disabled="kcbCurrentPage <= 1" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-40 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition-colors cursor-pointer">
+                Trước
+              </button>
+              <span class="text-xs font-bold text-slate-700 px-2 font-mono">
+                Trang {{ kcbCurrentPage }} / {{ kcbTotalPages }}
+              </span>
+              <button type="button" @click="kcbCurrentPage++" :disabled="kcbCurrentPage >= kcbTotalPages" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-40 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition-colors cursor-pointer">
+                Sau
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </main>
 
     <!-- ========================================================================= -->
@@ -6302,7 +6714,20 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           }
 
           currentMainTab.value = tab;
-          if (tab === 'nhanvien_hmis') {
+          if (tab === 'kcb') {
+            if (window.location.hash !== '#kcb') {
+              history.replaceState(null, '', '#kcb');
+            }
+            if (kcbRecords.value.length === 0) {
+              loadKcbDashboard();
+              loadKcbPhongKhamList();
+            } else {
+              nextTick(() => {
+                renderKcbCharts();
+                refreshIcons();
+              });
+            }
+          } else if (tab === 'nhanvien_hmis') {
             if (window.location.hash !== '#nhanvien_hmis') {
               history.replaceState(null, '', '#nhanvien_hmis');
             }
@@ -6322,7 +6747,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               history.replaceState(null, '', '#vattu');
             }
           } else {
-            if (window.location.hash === '#thuoc' || window.location.hash === '#vattu' || window.location.hash === '#nhanvien' || window.location.hash === '#nhanvien_hmis') {
+            if (window.location.hash === '#thuoc' || window.location.hash === '#vattu' || window.location.hash === '#nhanvien' || window.location.hash === '#nhanvien_hmis' || window.location.hash === '#kcb') {
               history.replaceState(null, '', window.location.pathname + window.location.search);
             }
           }
@@ -10184,6 +10609,353 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           }
         }
 
+
+        // ==========================================
+        // TAB 6: THỐNG KÊ & BIỂU ĐỒ KCB NGOẠI TRÚ
+        // ==========================================
+        const isLoadingKcb = ref(false);
+        const isExportingKcbExcel = ref(false);
+        const kcbFilters = ref({
+          stationId: 'all',
+          phongId: 'all',
+          viewType: 'day',
+          tuNgay: '',
+          denNgay: '',
+          trangThaiId: 'all',
+          searchQuery: ''
+        });
+        const kcbTableStatusFilter = ref('all');
+        const kcbCurrentPage = ref(1);
+        const kcbPageSize = ref(15);
+        const kcbPhongKhamList = ref([]);
+        const kcbSummary = ref({
+          total: 0,
+          daKetThuc: 0,
+          dangKham: 0,
+          choKham: 0,
+          bhytCount: 0,
+          vienPhiCount: 0,
+          bhytPercent: 0
+        });
+        const kcbByStatus = ref([]);
+        const kcbByPhongKham = ref([]);
+        const kcbByTime = ref({
+          categories: [],
+          series: { daKetThuc: [], dangKham: [], choKham: [] }
+        });
+        const kcbByStation = ref([]);
+        const kcbRecords = ref([]);
+
+        let kcbTimeChartInstance = null;
+        let kcbStatusChartInstance = null;
+        let kcbPhongChartInstance = null;
+        let kcbStationChartInstance = null;
+
+        function initKcbDefaultDates() {
+          const now = new Date();
+          const past = new Date();
+          past.setDate(now.getDate() - 30);
+          
+          const pad = n => String(n).padStart(2, '0');
+          kcbFilters.value.tuNgay = pad(past.getDate()) + '/' + pad(past.getMonth() + 1) + '/' + past.getFullYear();
+          kcbFilters.value.denNgay = pad(now.getDate()) + '/' + pad(now.getMonth() + 1) + '/' + now.getFullYear();
+        }
+        initKcbDefaultDates();
+
+        function setKcbViewType(type) {
+          kcbFilters.value.viewType = type;
+          loadKcbDashboard();
+        }
+
+        function onKcbFilterChange() {
+          kcbCurrentPage.value = 1;
+          loadKcbDashboard();
+        }
+
+        function resetKcbFilters() {
+          kcbFilters.value.stationId = 'all';
+          kcbFilters.value.phongId = 'all';
+          kcbFilters.value.viewType = 'day';
+          kcbFilters.value.trangThaiId = 'all';
+          kcbFilters.value.searchQuery = '';
+          kcbTableStatusFilter.value = 'all';
+          initKcbDefaultDates();
+          loadKcbDashboard();
+        }
+
+        const filteredKcbRecords = computed(() => {
+          let list = kcbRecords.value || [];
+          if (kcbTableStatusFilter.value !== 'all') {
+            const stId = parseInt(kcbTableStatusFilter.value, 10);
+            list = list.filter(r => r.trangThaiId === stId);
+          }
+          if (kcbFilters.value.searchQuery && kcbFilters.value.searchQuery.trim()) {
+            const q = kcbFilters.value.searchQuery.trim().toLowerCase();
+            list = list.filter(r => 
+              (r.tenBenhNhan && r.tenBenhNhan.toLowerCase().includes(q)) ||
+              (r.maBenhNhan && r.maBenhNhan.toLowerCase().includes(q)) ||
+              (r.chanDoan && r.chanDoan.toLowerCase().includes(q)) ||
+              (r.bacSiKham && r.bacSiKham.toLowerCase().includes(q)) ||
+              (r.tenPhong && r.tenPhong.toLowerCase().includes(q)) ||
+              (r.stationName && r.stationName.toLowerCase().includes(q))
+            );
+          }
+          return list;
+        });
+
+        const kcbTotalPages = computed(() => {
+          return Math.max(1, Math.ceil(filteredKcbRecords.value.length / kcbPageSize.value));
+        });
+
+        const pagedKcbRecords = computed(() => {
+          const start = (kcbCurrentPage.value - 1) * kcbPageSize.value;
+          return filteredKcbRecords.value.slice(start, start + kcbPageSize.value);
+        });
+
+        async function loadKcbPhongKhamList() {
+          try {
+            const res = await axios.get('/api/kcb/phong-kham');
+            if (res.data && res.data.success) {
+              kcbPhongKhamList.value = res.data.data || [];
+            }
+          } catch (e) {
+            console.warn('Lỗi tải danh mục phòng khám KCB:', e);
+          }
+        }
+
+        async function loadKcbDashboard() {
+          isLoadingKcb.value = true;
+          try {
+            const params = {
+              stationId: kcbFilters.value.stationId,
+              phongId: kcbFilters.value.phongId,
+              tuNgay: kcbFilters.value.tuNgay,
+              denNgay: kcbFilters.value.denNgay,
+              trangThaiId: kcbFilters.value.trangThaiId,
+              viewType: kcbFilters.value.viewType
+            };
+            const res = await axios.get('/api/kcb/thong-ke', { params });
+            if (res.data && res.data.success) {
+              const d = res.data.data;
+              kcbSummary.value = d.summary || kcbSummary.value;
+              kcbByStatus.value = d.byStatus || [];
+              kcbByPhongKham.value = d.byPhongKham || [];
+              kcbByTime.value = d.byTime || { categories: [], series: { daKetThuc: [], dangKham: [], choKham: [] } };
+              kcbByStation.value = d.byStation || [];
+              kcbRecords.value = d.records || [];
+              kcbCurrentPage.value = 1;
+
+              nextTick(() => {
+                renderKcbCharts();
+                refreshIcons();
+              });
+            } else {
+              showToast((res.data && res.data.message) || 'Không thể tải thống kê KCB', 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi tải dữ liệu KCB:', err);
+            showToast('Lỗi tải dữ liệu KCB: ' + ((err.response && err.response.data && err.response.data.message) || err.message), 'error');
+          } finally {
+            isLoadingKcb.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function renderKcbCharts() {
+          if (typeof Chart === 'undefined') {
+            console.warn('Chart.js chưa sẵn sàng!');
+            return;
+          }
+
+          Chart.defaults.font.family = "'Times New Roman', Times, serif";
+          Chart.defaults.color = '#334155';
+
+          // 1. Biểu đồ diễn biến thời gian (Stacked Bar)
+          const timeCtx = document.getElementById('kcbTimeChart');
+          if (timeCtx) {
+            if (kcbTimeChartInstance) kcbTimeChartInstance.destroy();
+            kcbTimeChartInstance = new Chart(timeCtx, {
+              type: 'bar',
+              data: {
+                labels: kcbByTime.value.categories || [],
+                datasets: [
+                  {
+                    label: 'Đã kết thúc',
+                    data: (kcbByTime.value.series && kcbByTime.value.series.daKetThuc) || [],
+                    backgroundColor: '#10b981',
+                    borderRadius: 4
+                  },
+                  {
+                    label: 'Đang khám',
+                    data: (kcbByTime.value.series && kcbByTime.value.series.dangKham) || [],
+                    backgroundColor: '#f59e0b',
+                    borderRadius: 4
+                  },
+                  {
+                    label: 'Chờ khám',
+                    data: (kcbByTime.value.series && kcbByTime.value.series.choKham) || [],
+                    backgroundColor: '#6366f1',
+                    borderRadius: 4
+                  }
+                ]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                  x: { stacked: true, grid: { display: false } },
+                  y: { stacked: true, beginAtZero: true, grid: { color: '#f1f5f9' } }
+                },
+                plugins: {
+                  legend: { display: false },
+                  tooltip: {
+                    callbacks: {
+                      afterTitle: () => 'Đơn vị: Ca khám'
+                    }
+                  }
+                }
+              }
+            });
+          }
+
+          // 2. Biểu đồ tròn tỷ lệ trạng thái (Donut)
+          const statusCtx = document.getElementById('kcbStatusChart');
+          if (statusCtx) {
+            if (kcbStatusChartInstance) kcbStatusChartInstance.destroy();
+            kcbStatusChartInstance = new Chart(statusCtx, {
+              type: 'doughnut',
+              data: {
+                labels: ['Đã kết thúc', 'Đang khám', 'Chờ khám'],
+                datasets: [{
+                  data: [
+                    kcbSummary.value.daKetThuc || 0,
+                    kcbSummary.value.dangKham || 0,
+                    kcbSummary.value.choKham || 0
+                  ],
+                  backgroundColor: ['#10b981', '#f59e0b', '#6366f1'],
+                  borderWidth: 2,
+                  borderColor: '#ffffff'
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '68%',
+                plugins: {
+                  legend: {
+                    position: 'bottom',
+                    labels: { boxWidth: 12, font: { size: 11 } }
+                  }
+                }
+              }
+            });
+          }
+
+          // 3. Biểu đồ sản lượng theo phòng khám (Horizontal Bar)
+          const phongCtx = document.getElementById('kcbPhongChart');
+          if (phongCtx) {
+            if (kcbPhongChartInstance) kcbPhongChartInstance.destroy();
+            const topPhong = (kcbByPhongKham.value || []).slice(0, 8);
+            kcbPhongChartInstance = new Chart(phongCtx, {
+              type: 'bar',
+              data: {
+                labels: topPhong.map(p => p.tenPhong || p.maPhong),
+                datasets: [{
+                  label: 'Số ca khám',
+                  data: topPhong.map(p => p.total),
+                  backgroundColor: '#6366f1',
+                  borderRadius: 6
+                }]
+              },
+              options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                  x: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                  y: { grid: { display: false } }
+                },
+                plugins: {
+                  legend: { display: false }
+                }
+              }
+            });
+          }
+
+          // 4. Biểu đồ so sánh giữa các trạm y tế cơ sở
+          const stationCtx = document.getElementById('kcbStationChart');
+          if (stationCtx) {
+            if (kcbStationChartInstance) kcbStationChartInstance.destroy();
+            kcbStationChartInstance = new Chart(stationCtx, {
+              type: 'bar',
+              data: {
+                labels: (kcbByStation.value || []).map(s => s.stationCode || s.stationName),
+                datasets: [
+                  {
+                    label: 'Đã kết thúc',
+                    data: (kcbByStation.value || []).map(s => s.daKetThuc || 0),
+                    backgroundColor: '#10b981',
+                    borderRadius: 4
+                  },
+                  {
+                    label: 'Đang khám',
+                    data: (kcbByStation.value || []).map(s => s.dangKham || 0),
+                    backgroundColor: '#f59e0b',
+                    borderRadius: 4
+                  },
+                  {
+                    label: 'Chờ khám',
+                    data: (kcbByStation.value || []).map(s => s.choKham || 0),
+                    backgroundColor: '#6366f1',
+                    borderRadius: 4
+                  }
+                ]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                  x: { stacked: true, grid: { display: false } },
+                  y: { stacked: true, beginAtZero: true, grid: { color: '#f1f5f9' } }
+                },
+                plugins: {
+                  legend: {
+                    position: 'top',
+                    labels: { boxWidth: 12, font: { size: 11 } }
+                  }
+                }
+              }
+            });
+          }
+        }
+
+        async function downloadKcbExcelReport() {
+          isExportingKcbExcel.value = true;
+          try {
+            const params = new URLSearchParams({
+              stationId: kcbFilters.value.stationId,
+              phongId: kcbFilters.value.phongId,
+              tuNgay: kcbFilters.value.tuNgay,
+              denNgay: kcbFilters.value.denNgay,
+              trangThaiId: kcbFilters.value.trangThaiId,
+              viewType: kcbFilters.value.viewType
+            });
+            const url = '/api/kcb/export-excel?' + params.toString();
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Bao_Cao_KCB_HMIS_' + Date.now() + '.xlsx');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Đang tải xuống báo cáo Excel KCB...', 'success');
+          } catch (err) {
+            console.error('Lỗi tải báo cáo Excel:', err);
+            showToast('Lỗi tải file Excel: ' + err.message, 'error');
+          } finally {
+            isExportingKcbExcel.value = false;
+          }
+        }
+
         onMounted(async () => {
           // Tự động khôi phục mã PIN đã đổi vào server nếu Render vừa restart
           const savedCustomPin = localStorage.getItem('vnpt_hmis_custom_pin');
@@ -10204,7 +10976,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           }
 
           // Kiểm tra hash URL để mở đúng Tab (ví dụ #thuoc, #vattu, #nhanvien, #nhanvien_hmis)
-          if (window.location.hash === '#nhanvien_hmis') {
+          if (window.location.hash === '#kcb') {
+            currentMainTab.value = 'kcb';
+          } else if (window.location.hash === '#nhanvien_hmis') {
             currentMainTab.value = 'nhanvien_hmis';
           } else if (window.location.hash === '#nhanvien') {
             currentMainTab.value = 'nhanvien';
@@ -10218,13 +10992,18 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           await fetchStations();
           if (currentMainTab.value === 'nhanvien_hmis') {
             loadHmisStationNhanVienData();
+          } else if (currentMainTab.value === 'kcb') {
+            loadKcbDashboard();
+            loadKcbPhongKhamList();
           }
           fetchSystemLogs();
           refreshIcons();
 
           window.addEventListener('hashchange', () => {
             let targetTab = 'stations';
-            if (window.location.hash === '#nhanvien_hmis') {
+            if (window.location.hash === '#kcb') {
+              targetTab = 'kcb';
+            } else if (window.location.hash === '#nhanvien_hmis') {
               targetTab = 'nhanvien_hmis';
             } else if (window.location.hash === '#nhanvien') {
               targetTab = 'nhanvien';
@@ -10593,7 +11372,30 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           getGiaoDienRowColSpanSum,
           onGiaoDienFieldTypeChange,
           fixGiaoDienCheckboxes,
-          balanceRowCheckboxColSpans
+          balanceRowCheckboxColSpans,
+          isLoadingKcb,
+          isExportingKcbExcel,
+          kcbFilters,
+          kcbTableStatusFilter,
+          kcbCurrentPage,
+          kcbPageSize,
+          kcbPhongKhamList,
+          kcbSummary,
+          kcbByStatus,
+          kcbByPhongKham,
+          kcbByTime,
+          kcbByStation,
+          kcbRecords,
+          filteredKcbRecords,
+          kcbTotalPages,
+          pagedKcbRecords,
+          setKcbViewType,
+          onKcbFilterChange,
+          resetKcbFilters,
+          loadKcbPhongKhamList,
+          loadKcbDashboard,
+          renderKcbCharts,
+          downloadKcbExcelReport
         };
       }
     }).mount('#app');

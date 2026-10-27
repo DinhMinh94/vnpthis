@@ -3128,39 +3128,7 @@
               <i data-lucide="plus" class="w-4 h-4 text-emerald-300"></i>
               <span>Thêm Phân Công</span>
             </button>
-            <button @click="downloadMapExcel,
-          selectedKqdtStationId,
-          kqdtStationData,
-          isLoadingKqdtData,
-          kqdtSearchQuery,
-          selectedKqdtRow,
-          kqdtForm,
-          isSavingKqdt,
-          defaultKetQuaDieuTriList,
-          defaultXuTriNgoaiTruList,
-          defaultXuTriDieuTriList,
-          batchKqdtParams,
-          batchKqdtStationSearch,
-          isExecutingBatchKqdt,
-          batchKqdtResults,
-          filteredKqdtRows,
-          filteredBatchKqdtStations,
-          toggleSelectAllBatchKqdtStations,
-          loadKqdtStationData,
-          selectKqdtRowForEdit,
-          resetKqdtEditForm,
-          onKqdtFormSelectChange,
-          selectAllKqdtNgoaiTru,
-          selectAllKqdtDieuTri,
-          saveSingleKqdtMapping,
-          deleteSingleKqdtMapping,
-          applyStandardKqdtPresetCurrentStation,
-          openBatchAddXuTriModal,
-          selectAllBatchKqdtKq,
-          selectCommonBatchKqdtKq,
-          selectChuyenVienNgoaiTruOnly,
-          executeBatchAddXuTriAll,
-          downloadKqdtExcel" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
+            <button @click="downloadMapExcel" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
               <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
               <span>Xuất Excel</span>
             </button>
@@ -7840,9 +7808,11 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           });
         }
         const currentMainTab = ref(
-          initialHash === '#nhanvien_hmis' ? 'nhanvien_hmis' :
+          (initialHash === '#map_kqdt_xutri' || initialHash === '#kqdt_xutri') ? 'map_kqdt_xutri' :
+          ((initialHash === '#congkham' || initialHash === '#user_dichvu_phong') ? 'user_dichvu_phong' :
+          (initialHash === '#nhanvien_hmis' ? 'nhanvien_hmis' :
           (initialHash === '#stations' ? 'stations' :
-          ((initialHash === '#thuoc' || initialHash === '#vattu' || initialHash === '#nhanvien' || initialHash === '#import_file') ? 'import_file' : 'kcb'))
+          ((initialHash === '#thuoc' || initialHash === '#vattu' || initialHash === '#nhanvien' || initialHash === '#import_file') ? 'import_file' : 'kcb'))))
         ); // 'kcb' | 'stations' | 'import_file' | 'nhanvien_hmis'
         const vattuFile = ref(null);
         const vattuFileName = ref('');
@@ -13459,7 +13429,39 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           deleteSingleMapping,
           openAddSingleMappingModal,
           saveSingleMapping,
-          downloadMapExcel
+          downloadMapExcel,
+          selectedKqdtStationId,
+          kqdtStationData,
+          isLoadingKqdtData,
+          kqdtSearchQuery,
+          selectedKqdtRow,
+          kqdtForm,
+          isSavingKqdt,
+          defaultKetQuaDieuTriList,
+          defaultXuTriNgoaiTruList,
+          defaultXuTriDieuTriList,
+          batchKqdtParams,
+          batchKqdtStationSearch,
+          isExecutingBatchKqdt,
+          batchKqdtResults,
+          filteredKqdtRows,
+          filteredBatchKqdtStations,
+          toggleSelectAllBatchKqdtStations,
+          loadKqdtStationData,
+          selectKqdtRowForEdit,
+          resetKqdtEditForm,
+          onKqdtFormSelectChange,
+          selectAllKqdtNgoaiTru,
+          selectAllKqdtDieuTri,
+          saveSingleKqdtMapping,
+          deleteSingleKqdtMapping,
+          applyStandardKqdtPresetCurrentStation,
+          openBatchAddXuTriModal,
+          selectAllBatchKqdtKq,
+          selectCommonBatchKqdtKq,
+          selectChuyenVienNgoaiTruOnly,
+          executeBatchAddXuTriAll,
+          downloadKqdtExcel
         };
       }
     }).mount('#app');

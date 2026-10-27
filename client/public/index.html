@@ -268,6 +268,18 @@
               All Trạm
             </span>
           </button>
+
+          <!-- Tab 6: Map Kết Quả Điều Trị - Xử Trí (HMIS) -->
+          <button @click="switchMainTab('map_kqdt_xutri')"
+                  type="button"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
+                  :class="currentMainTab === 'map_kqdt_xutri' ? 'bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-700 text-white border-purple-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
+            <i data-lucide="git-merge" class="w-4 h-4" :class="currentMainTab === 'map_kqdt_xutri' ? 'text-white' : 'text-purple-600'"></i>
+            <span>6. Map KQĐT &amp; Xử Trí (HMIS)</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-400 text-amber-950 shadow-2xs">
+              All Trạm
+            </span>
+          </button>
         </div>
       </div>
     </nav>
@@ -3116,7 +3128,39 @@
               <i data-lucide="plus" class="w-4 h-4 text-emerald-300"></i>
               <span>Thêm Phân Công</span>
             </button>
-            <button @click="downloadMapExcel" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
+            <button @click="downloadMapExcel,
+          selectedKqdtStationId,
+          kqdtStationData,
+          isLoadingKqdtData,
+          kqdtSearchQuery,
+          selectedKqdtRow,
+          kqdtForm,
+          isSavingKqdt,
+          defaultKetQuaDieuTriList,
+          defaultXuTriNgoaiTruList,
+          defaultXuTriDieuTriList,
+          batchKqdtParams,
+          batchKqdtStationSearch,
+          isExecutingBatchKqdt,
+          batchKqdtResults,
+          filteredKqdtRows,
+          filteredBatchKqdtStations,
+          toggleSelectAllBatchKqdtStations,
+          loadKqdtStationData,
+          selectKqdtRowForEdit,
+          resetKqdtEditForm,
+          onKqdtFormSelectChange,
+          selectAllKqdtNgoaiTru,
+          selectAllKqdtDieuTri,
+          saveSingleKqdtMapping,
+          deleteSingleKqdtMapping,
+          applyStandardKqdtPresetCurrentStation,
+          openBatchAddXuTriModal,
+          selectAllBatchKqdtKq,
+          selectCommonBatchKqdtKq,
+          selectChuyenVienNgoaiTruOnly,
+          executeBatchAddXuTriAll,
+          downloadKqdtExcel" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
               <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
               <span>Xuất Excel</span>
             </button>
@@ -3341,6 +3385,333 @@
               </button>
             </div>
           </div>
+        </div>
+
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- TAB 6: MAP KẾT QUẢ ĐIỀU TRỊ - XỬ TRÍ ALL CHO CÁC TRẠM (HMIS)   -->
+      <!-- ============================================================== -->
+      <div v-if="currentMainTab === 'map_kqdt_xutri'" class="space-y-6">
+
+        <!-- BANNER HEADER TAB 6 -->
+        <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-950 rounded-3xl p-6 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-5 border border-purple-500/30">
+          <div class="flex items-start sm:items-center space-x-4">
+            <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-md flex-shrink-0">
+              <i data-lucide="git-merge" class="w-8 h-8 text-amber-300"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2.5 flex-wrap">
+                <h2 class="text-xl sm:text-2xl font-black uppercase tracking-wide">MAP KẾT QUẢ ĐIỀU TRỊ - XỬ TRÍ (HMIS)</h2>
+                <span class="bg-amber-400 text-amber-950 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs">Live Portal</span>
+                <span class="bg-purple-400/20 text-purple-200 border border-purple-400/40 text-[10px] font-mono px-2 py-0.5 rounded-full">
+                  dm-map-kqdt-xutri
+                </span>
+              </div>
+              <p class="text-xs sm:text-sm text-purple-100 mt-1 max-w-3xl">
+                Cấu hình liên kết giữa <span class="text-amber-300 font-bold">Kết quả điều trị</span> với <span class="text-cyan-300 font-bold">Xử trí ngoại trú</span> và <span class="text-emerald-300 font-bold">Xử trí điều trị</span>. Hỗ trợ <b class="text-white">Thêm xử trí cho tất cả các trạm đã cấu hình</b> chỉ với 1 click.
+              </p>
+            </div>
+          </div>
+
+          <!-- NÚT TÁC VỤ CHÍNH -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button @click="openBatchAddXuTriModal" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:to-orange-500 text-slate-950 font-black text-xs rounded-xl shadow-lg transition-all cursor-pointer border border-amber-300 active:scale-95">
+              <i data-lucide="zap" class="w-4 h-4 fill-current text-slate-950"></i>
+              <span>THÊM XỬ TRÍ CHO ALL CÁC TRẠM</span>
+            </button>
+            <button @click="applyStandardKqdtPresetCurrentStation" :disabled="isLoadingKqdtData" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition-all cursor-pointer">
+              <i data-lucide="sparkles" class="w-4 h-4 text-amber-300"></i>
+              <span>Áp Dụng Bộ Chuẩn Trạm Này</span>
+            </button>
+            <button @click="downloadKqdtExcel" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>Xuất Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- THANH CHỌN TRẠM & THẺ KPI -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <!-- Dropdown chọn trạm -->
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
+              <label class="text-xs font-bold text-slate-700 flex items-center space-x-1.5 shrink-0">
+                <i data-lucide="building-2" class="w-4 h-4 text-purple-600"></i>
+                <span>Trạm Y Tế Thao Tác:</span>
+              </label>
+              <select 
+                v-model="selectedKqdtStationId" 
+                @change="loadKqdtStationData(selectedKqdtStationId)"
+                class="bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-bold rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-purple-500 focus:outline-none w-full sm:w-80 cursor-pointer shadow-xs"
+              >
+                <option v-for="st in stations" :key="st.id" :value="st.id">
+                  [{{ st.code }}] {{ st.name }}
+                </option>
+              </select>
+              <button 
+                @click="loadKqdtStationData(selectedKqdtStationId)" 
+                :disabled="isLoadingKqdtData"
+                class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 transition-colors cursor-pointer shrink-0" 
+                title="Tải lại dữ liệu trạm này"
+              >
+                <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingKqdtData }"></i>
+              </button>
+            </div>
+
+            <!-- Trạng thái trạm hiện tại -->
+            <div class="flex items-center space-x-2 text-xs font-bold text-slate-600">
+              <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-900">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-purple-600"></i>
+                <span>Đã cấu hình: <b class="font-mono">{{ kqdtStationData.configuredRowsCount || 0 }} / {{ kqdtStationData.listKetQuaDieuTri?.length || 8 }}</b> kết quả</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- 4 THẺ KPI -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 pt-2 border-t border-slate-100">
+            <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="git-merge" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-purple-800 uppercase tracking-wider">Kết Quả Đã Map</div>
+                <div class="text-xl font-black text-purple-950 font-mono">{{ kqdtStationData.configuredRowsCount || 0 }} / {{ kqdtStationData.listKetQuaDieuTri?.length || 8 }}</div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-cyan-50/70 border border-cyan-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-cyan-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="activity" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-cyan-800 uppercase tracking-wider">Xử Trí Ngoại Trú</div>
+                <div class="text-xl font-black text-cyan-950 font-mono">{{ kqdtStationData.listXuTriNgoaiTru?.length || 0 }}</div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="bed" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-indigo-800 uppercase tracking-wider">Xử Trí Điều Trị</div>
+                <div class="text-xl font-black text-indigo-950 font-mono">{{ kqdtStationData.listXuTriDieuTri?.length || 0 }}</div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="layers" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Tổng Bản Ghi Map</div>
+                <div class="text-xl font-black text-emerald-950 font-mono">{{ (kqdtStationData.rawMapNgoaiTruCount || 0) + (kqdtStationData.rawMapDieuTriCount || 0) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BỐ CỤC 2 CỘT CHUẨN GIAO DIỆN HMIS -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- CỘT TRÁI (DANH SÁCH BẢNG) - 7 CỘT -->
+          <div class="lg:col-span-7 bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider flex items-center space-x-2">
+                <i data-lucide="list" class="w-4 h-4 text-purple-600"></i>
+                <span>DANH SÁCH MAP KẾT QUẢ ĐIỀU TRỊ - XỬ TRÍ</span>
+              </h3>
+              <span class="text-xs text-slate-500 font-bold font-mono">({{ filteredKqdtRows.length }} kết quả)</span>
+            </div>
+
+            <!-- Ô tìm kiếm nhanh -->
+            <div class="relative w-full">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+              <input 
+                type="text" 
+                v-model="kqdtSearchQuery" 
+                placeholder="Tìm kết quả điều trị hoặc tên xử trí..." 
+                class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              >
+            </div>
+
+            <!-- Bảng dữ liệu map -->
+            <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-2xs">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-50 text-slate-800 uppercase text-[10px] font-black border-b border-slate-200">
+                  <tr>
+                    <th class="px-3 py-3 text-center w-12">STT</th>
+                    <th class="px-3 py-3 w-40">Kết Quả Điều Trị</th>
+                    <th class="px-3 py-3">Xử Trí Ngoại Trú</th>
+                    <th class="px-3 py-3">Xử Trí Điều Trị</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-medium">
+                  <tr v-if="isLoadingKqdtData">
+                    <td colspan="4" class="px-4 py-12 text-center text-slate-400">
+                      <div class="flex flex-col items-center justify-center space-y-2">
+                        <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-purple-600"></i>
+                        <span>Đang tải danh mục map từ HMIS...</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr 
+                    v-else 
+                    v-for="(row, idx) in filteredKqdtRows" 
+                    :key="row.ketQuaDieuTriId" 
+                    @click="selectKqdtRowForEdit(row)"
+                    class="cursor-pointer transition-colors"
+                    :class="selectedKqdtRow?.ketQuaDieuTriId === row.ketQuaDieuTriId ? 'bg-purple-100/80 font-bold border-l-4 border-l-purple-600' : 'hover:bg-purple-50/50'"
+                  >
+                    <td class="px-3 py-3 text-center font-mono font-bold text-slate-500">
+                      {{ idx + 1 }}
+                    </td>
+                    <td class="px-3 py-3 font-bold text-slate-900">
+                      {{ row.ketQuaDieuTriTen }}
+                    </td>
+                    <td class="px-3 py-3">
+                      <div v-if="row.xuTriNgoaiTruList?.length > 0" class="flex flex-wrap gap-1">
+                        <span v-for="x in row.xuTriNgoaiTruList" :key="x.id" class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-cyan-50 text-cyan-800 border border-cyan-200">
+                          {{ x.ten }}
+                        </span>
+                      </div>
+                      <span v-else class="text-slate-400 font-mono">-</span>
+                    </td>
+                    <td class="px-3 py-3">
+                      <div v-if="row.xuTriDieuTriList?.length > 0" class="flex flex-wrap gap-1">
+                        <span v-for="x in row.xuTriDieuTriList" :key="x.id" class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-indigo-50 text-indigo-800 border border-indigo-200">
+                          {{ x.ten }}
+                        </span>
+                      </div>
+                      <span v-else class="text-slate-400 font-mono">-</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="text-[11px] text-slate-500 italic flex items-center space-x-1.5">
+              <i data-lucide="info" class="w-3.5 h-3.5 text-purple-600 shrink-0"></i>
+              <span>Nhấp chuột vào một hàng để chỉnh sửa hoặc xóa cấu hình ở khung bên phải.</span>
+            </p>
+          </div>
+
+          <!-- CỘT PHẢI (FORM CHỈNH SỬA / THÊM MỚI CHO TRẠM HIỆN TẠI) - 5 CỘT -->
+          <div class="lg:col-span-5 bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4 sticky top-28">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider flex items-center space-x-2">
+                <i data-lucide="edit-3" class="w-4 h-4 text-purple-600"></i>
+                <span>THÔNG TIN MAP KẾT QUẢ ĐT - XỬ TRÍ</span>
+              </h3>
+              <div class="flex items-center space-x-2">
+                <button 
+                  v-if="selectedKqdtRow" 
+                  type="button" 
+                  @click="resetKqdtEditForm" 
+                  class="text-[11px] text-purple-700 hover:underline font-bold"
+                >
+                  Bỏ chọn
+                </button>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <div class="space-y-4 text-xs sm:text-sm text-slate-800">
+              <!-- Chọn kết quả điều trị -->
+              <div>
+                <label class="block font-black text-slate-700 mb-1">
+                  <span>Kết quả điều trị:</span>
+                  <span class="text-rose-600">*</span>
+                </label>
+                <select 
+                  v-model="kqdtForm.ketQuaDieuTriId" 
+                  @change="onKqdtFormSelectChange"
+                  class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
+                  <option :value="null">-- Chọn kết quả điều trị --</option>
+                  <option v-for="kq in kqdtStationData.listKetQuaDieuTri" :key="kq.id" :value="kq.id">
+                    [{{ kq.id }}] {{ kq.ten }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Chọn xử trí ngoại trú (Checkboxes) -->
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <label class="font-black text-slate-700 flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                    <span>Xử trí ngoại trú:</span>
+                  </label>
+                  <div class="flex items-center space-x-2 text-[11px]">
+                    <button type="button" @click="selectAllKqdtNgoaiTru" class="text-purple-600 hover:underline font-bold">Chọn hết</button>
+                    <span>|</span>
+                    <button type="button" @click="kqdtForm.xuTriNgoaiTruIds = []" class="text-slate-500 hover:underline font-bold">Bỏ hết</button>
+                  </div>
+                </div>
+
+                <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl p-2.5 bg-slate-50/50 space-y-1.5">
+                  <label v-for="nt in kqdtStationData.listXuTriNgoaiTru" :key="nt.id" class="flex items-center space-x-2 p-1 hover:bg-white rounded-lg cursor-pointer">
+                    <input type="checkbox" :value="nt.id" v-model="kqdtForm.xuTriNgoaiTruIds" class="rounded text-purple-600 focus:ring-purple-500">
+                    <span class="text-xs font-semibold text-slate-800">{{ nt.ten }}</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Chọn xử trí điều trị (Checkboxes) -->
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <label class="font-black text-slate-700 flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                    <span>Xử trí điều trị (nội trú):</span>
+                  </label>
+                  <div class="flex items-center space-x-2 text-[11px]">
+                    <button type="button" @click="selectAllKqdtDieuTri" class="text-purple-600 hover:underline font-bold">Chọn hết</button>
+                    <span>|</span>
+                    <button type="button" @click="kqdtForm.xuTriDieuTriIds = []" class="text-slate-500 hover:underline font-bold">Bỏ hết</button>
+                  </div>
+                </div>
+
+                <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl p-2.5 bg-slate-50/50 space-y-1.5">
+                  <label v-for="dt in kqdtStationData.listXuTriDieuTri" :key="dt.id" class="flex items-center space-x-2 p-1 hover:bg-white rounded-lg cursor-pointer">
+                    <input type="checkbox" :value="dt.id" v-model="kqdtForm.xuTriDieuTriIds" class="rounded text-purple-600 focus:ring-purple-500">
+                    <span class="text-xs font-semibold text-slate-800">{{ dt.ten }}</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-900 leading-relaxed">
+                Một kết quả điều trị có thể map với nhiều xử trí. Khi sửa/lưu, hệ thống sẽ tự động cập nhật trực tiếp lên cổng HMIS của trạm.
+              </div>
+
+              <!-- Nút hành động -->
+              <div class="flex items-center space-x-2 pt-2">
+                <button 
+                  type="button" 
+                  @click="saveSingleKqdtMapping" 
+                  :disabled="isSavingKqdt || !kqdtForm.ketQuaDieuTriId || (kqdtForm.xuTriNgoaiTruIds.length === 0 && kqdtForm.xuTriDieuTriIds.length === 0)"
+                  class="flex-1 py-2.5 px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50 active:scale-95"
+                >
+                  <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-if="isSavingKqdt"></i>
+                  <i data-lucide="save" class="w-4 h-4" v-else></i>
+                  <span>{{ isSavingKqdt ? 'ĐANG LƯU...' : 'LƯU LÊN HMIS' }}</span>
+                </button>
+
+                <button 
+                  v-if="selectedKqdtRow && selectedKqdtRow.isConfigured" 
+                  type="button" 
+                  @click="deleteSingleKqdtMapping(selectedKqdtRow)" 
+                  :disabled="isSavingKqdt"
+                  class="py-2.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-xl border border-rose-200 transition-colors cursor-pointer"
+                  title="Xóa toàn bộ map của kết quả này"
+                >
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -7054,6 +7425,240 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         </div>
       </div>
     </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL BATCH: THÊM XỬ TRÍ CHO TẤT CẢ CÁC TRẠM ĐÃ CẤU HÌNH                   -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.batchAddXuTriAll" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-in fade-in duration-150">
+      <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+        <!-- Header Modal -->
+        <div class="bg-gradient-to-r from-purple-800 via-indigo-800 to-blue-900 text-white p-5 flex items-center justify-between shrink-0 shadow-md">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white/20 p-2.5 rounded-2xl backdrop-blur-xs">
+              <i data-lucide="zap" class="w-6 h-6 text-amber-300"></i>
+            </div>
+            <div>
+              <h3 class="text-base sm:text-lg font-black uppercase tracking-wide">THÊM XỬ TRÍ CHO TẤT CẢ CÁC TRẠM Y TẾ</h3>
+              <p class="text-xs text-purple-100 mt-0.5">Tự động bổ sung các Xử trí ngoại trú &amp; điều trị vào Kết quả điều trị cho tất cả các trạm</p>
+            </div>
+          </div>
+          <button @click="modals.batchAddXuTriAll = false" class="text-white/80 hover:text-white p-1 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+        <!-- Nội dung Modal -->
+        <div class="p-6 overflow-y-auto space-y-6 flex-1 text-slate-800 text-xs sm:text-sm">
+          
+          <!-- BƯỚC 1: PHẠM VI TRẠM Y TẾ -->
+          <div class="space-y-3 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <div class="flex items-center justify-between">
+              <label class="font-black text-slate-800 text-xs sm:text-sm uppercase tracking-wider flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-full bg-purple-600 text-white inline-flex items-center justify-center text-xs">1</span>
+                <span>Phạm vi Trạm Y tế áp dụng:</span>
+              </label>
+              <div class="flex items-center space-x-3 text-xs">
+                <label class="flex items-center space-x-1.5 cursor-pointer font-bold text-purple-900">
+                  <input type="radio" value="all" v-model="batchKqdtParams.scope" class="text-purple-600 focus:ring-purple-500">
+                  <span>Tất cả {{ stations.length }} Trạm Y tế (Khuyên dùng)</span>
+                </label>
+                <label class="flex items-center space-x-1.5 cursor-pointer font-bold text-slate-700">
+                  <input type="radio" value="custom" v-model="batchKqdtParams.scope" class="text-purple-600 focus:ring-purple-500">
+                  <span>Tùy chọn trạm</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Nếu chọn tùy chọn trạm -->
+            <div v-if="batchKqdtParams.scope === 'custom'" class="pt-3 border-t border-slate-200 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <div class="relative flex-1">
+                  <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
+                  <input type="text" v-model="batchKqdtStationSearch" placeholder="Lọc trạm theo mã hoặc tên..." class="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-purple-500">
+                </div>
+                <button type="button" @click="toggleSelectAllBatchKqdtStations" class="px-2.5 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 text-[11px] font-bold rounded-lg transition-colors cursor-pointer shrink-0">
+                  {{ batchKqdtParams.stationIds.length === stations.length ? 'Bỏ chọn hết' : 'Chọn tất cả' }}
+                </button>
+              </div>
+
+              <div class="max-h-36 overflow-y-auto border border-slate-200 rounded-xl p-2.5 bg-white grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                <label v-for="st in filteredBatchKqdtStations" :key="st.id" class="flex items-center space-x-2 p-1.5 hover:bg-slate-50 rounded-lg cursor-pointer border border-transparent hover:border-slate-200">
+                  <input type="checkbox" :value="st.id" v-model="batchKqdtParams.stationIds" class="rounded text-purple-600 focus:ring-purple-500">
+                  <span class="truncate font-semibold text-xs">
+                    <span class="font-mono text-purple-700 font-bold">[{{ st.code }}]</span> {{ st.name }}
+                  </span>
+                </label>
+              </div>
+              <div class="text-[11px] text-slate-500 font-bold">Đã chọn: <span class="font-mono text-purple-700">{{ batchKqdtParams.stationIds.length }}</span> / {{ stations.length }} trạm</div>
+            </div>
+          </div>
+
+          <!-- BƯỚC 2: CHỌN KẾT QUẢ ĐIỀU TRỊ CẦN THÊM XỬ TRÍ -->
+          <div class="space-y-3 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <div class="flex items-center justify-between">
+              <label class="font-black text-slate-800 text-xs sm:text-sm uppercase tracking-wider flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-full bg-purple-600 text-white inline-flex items-center justify-center text-xs">2</span>
+                <span>Chọn Kết Quả Điều Trị Cần Thêm Xử Trí (*):</span>
+              </label>
+              <div class="flex items-center space-x-2 text-xs">
+                <button type="button" @click="selectAllBatchKqdtKq" class="text-purple-700 hover:underline font-bold">Chọn hết (8)</button>
+                <span>|</span>
+                <button type="button" @click="selectCommonBatchKqdtKq" class="text-amber-700 hover:underline font-bold">Chọn nhanh: Không thay đổi + Nặng hơn</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <label 
+                v-for="kq in (kqdtStationData.listKetQuaDieuTri?.length > 0 ? kqdtStationData.listKetQuaDieuTri : defaultKetQuaDieuTriList)" 
+                :key="kq.id" 
+                class="flex items-center space-x-2 p-2.5 rounded-xl border cursor-pointer transition-all"
+                :class="batchKqdtParams.ketQuaDieuTriIds.includes(kq.id) ? 'bg-purple-100/80 border-purple-500 text-purple-950 font-bold shadow-2xs' : 'bg-white border-slate-200 text-slate-700'"
+              >
+                <input type="checkbox" :value="kq.id" v-model="batchKqdtParams.ketQuaDieuTriIds" class="rounded text-purple-600 focus:ring-purple-500">
+                <span class="text-xs truncate">[{{ kq.id }}] {{ kq.ten }}</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- BƯỚC 3 & 4: CHỌN XỬ TRÍ NGOẠI TRÚ & XỬ TRÍ ĐIỀU TRỊ -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- Xử trí ngoại trú -->
+            <div class="space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+              <div class="flex items-center justify-between">
+                <label class="font-black text-slate-800 text-xs uppercase tracking-wider flex items-center space-x-2">
+                  <span class="w-5 h-5 rounded-full bg-cyan-600 text-white inline-flex items-center justify-center text-[10px]">3</span>
+                  <span>Xử trí Ngoại Trú:</span>
+                </label>
+                <button type="button" @click="selectChuyenVienNgoaiTruOnly" class="text-[11px] text-cyan-800 hover:underline font-bold">Chỉ Chuyển viện</button>
+              </div>
+
+              <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl p-2.5 bg-white space-y-1.5">
+                <label v-for="nt in (kqdtStationData.listXuTriNgoaiTru?.length > 0 ? kqdtStationData.listXuTriNgoaiTru : defaultXuTriNgoaiTruList)" :key="nt.id" class="flex items-center space-x-2 p-1 hover:bg-slate-50 rounded-lg cursor-pointer">
+                  <input type="checkbox" :value="nt.id" v-model="batchKqdtParams.xuTriNgoaiTruIds" class="rounded text-cyan-600 focus:ring-cyan-500">
+                  <span class="text-xs font-semibold text-slate-800">{{ nt.ten }}</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Xử trí điều trị -->
+            <div class="space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+              <div class="flex items-center justify-between">
+                <label class="font-black text-slate-800 text-xs uppercase tracking-wider flex items-center space-x-2">
+                  <span class="w-5 h-5 rounded-full bg-indigo-600 text-white inline-flex items-center justify-center text-[10px]">4</span>
+                  <span>Xử trí Điều Trị (Nội trú):</span>
+                </label>
+                <div class="flex items-center space-x-2 text-[11px]">
+                  <button type="button" @click="batchKqdtParams.xuTriDieuTriIds = []" class="text-slate-500 hover:underline font-bold">Bỏ chọn hết</button>
+                </div>
+              </div>
+
+              <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl p-2.5 bg-white space-y-1.5">
+                <label v-for="dt in (kqdtStationData.listXuTriDieuTri?.length > 0 ? kqdtStationData.listXuTriDieuTri : defaultXuTriDieuTriList)" :key="dt.id" class="flex items-center space-x-2 p-1 hover:bg-slate-50 rounded-lg cursor-pointer">
+                  <input type="checkbox" :value="dt.id" v-model="batchKqdtParams.xuTriDieuTriIds" class="rounded text-indigo-600 focus:ring-indigo-500">
+                  <span class="text-xs font-semibold text-slate-800">{{ dt.ten }}</span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- BƯỚC 5: CHẾ ĐỘ THỰC THI -->
+          <div class="space-y-2 p-4 bg-amber-50/70 rounded-2xl border border-amber-200">
+            <div class="font-black text-amber-950 text-xs uppercase tracking-wider">Chế độ phân công:</div>
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 text-xs">
+              <label class="flex items-center space-x-2 font-bold text-amber-950 cursor-pointer">
+                <input type="radio" value="append" v-model="batchKqdtParams.mode" class="text-amber-600 focus:ring-amber-500">
+                <span><b>Thêm bổ sung</b> (Giữ nguyên các xử trí đã có của trạm, chỉ thêm xử trí mới) [Khuyên dùng]</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TIẾN ĐỘ & BẢNG KẾT QUẢ THỰC HIỆN -->
+          <div v-if="isExecutingBatchKqdt || batchKqdtResults" class="space-y-3 pt-2">
+            <div class="flex items-center justify-between">
+              <span class="font-black text-slate-800 text-xs uppercase tracking-wider flex items-center space-x-2">
+                <i data-lucide="activity" class="w-4 h-4 text-purple-600"></i>
+                <span>Kết Quả &amp; Tiến Độ Phân Công:</span>
+              </span>
+              <span v-if="batchKqdtResults" class="text-xs font-mono font-bold text-purple-700">
+                Tổng thêm: +{{ batchKqdtResults.totalAssigned }} | Bỏ qua: {{ batchKqdtResults.totalSkipped }} | Lỗi: {{ batchKqdtResults.totalErrors }}
+              </span>
+            </div>
+
+            <!-- Bảng kết quả từng trạm -->
+            <div class="max-h-60 overflow-y-auto border border-slate-200 rounded-2xl bg-white shadow-2xs">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 text-slate-700 font-bold uppercase text-[10px] sticky top-0 border-b border-slate-200">
+                  <tr>
+                    <th class="p-2.5 text-center w-10">#</th>
+                    <th class="p-2.5">Trạm Y Tế</th>
+                    <th class="p-2.5 text-center">Trạng Thái</th>
+                    <th class="p-2.5 text-center">Đã Thêm</th>
+                    <th class="p-2.5 text-center">Bỏ Qua</th>
+                    <th class="p-2.5">Ghi Chú</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-medium">
+                  <tr v-if="isExecutingBatchKqdt && (!batchKqdtResults || !batchKqdtResults.results)">
+                    <td colspan="6" class="p-8 text-center text-slate-500">
+                      <div class="flex flex-col items-center justify-center space-y-2">
+                        <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-purple-600"></i>
+                        <span class="font-bold">Đang tiến hành đẩy xử trí cho tất cả các trạm...</span>
+                        <p class="text-xs text-slate-400">Vui lòng đợi vài giây để hệ thống gửi lệnh qua API Gateway</p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr v-else v-for="(item, idx) in batchKqdtResults?.results || []" :key="item.stationId" class="hover:bg-slate-50">
+                    <td class="p-2.5 text-center font-mono font-bold text-slate-400">{{ idx + 1 }}</td>
+                    <td class="p-2.5 font-bold text-slate-800">
+                      <span class="font-mono text-purple-700">[{{ item.stationCode }}]</span> {{ item.stationName }}
+                    </td>
+                    <td class="p-2.5 text-center">
+                      <span v-if="item.status === 'success'" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800">
+                        Thành công
+                      </span>
+                      <span v-else-if="item.status === 'partial'" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-800">
+                        Một phần
+                      </span>
+                      <span v-else class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-800">
+                        Lỗi
+                      </span>
+                    </td>
+                    <td class="p-2.5 text-center font-mono font-black text-emerald-700">+{{ item.assignedCount }}</td>
+                    <td class="p-2.5 text-center font-mono text-slate-500">{{ item.skippedCount }}</td>
+                    <td class="p-2.5 text-[11px] text-slate-600">{{ item.message }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
+          <button 
+            type="button" 
+            @click="modals.batchAddXuTriAll = false"
+            class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition-colors cursor-pointer"
+          >
+            Đóng
+          </button>
+
+          <button 
+            type="button" 
+            @click="executeBatchAddXuTriAll"
+            :disabled="isExecutingBatchKqdt || batchKqdtParams.ketQuaDieuTriIds.length === 0 || (batchKqdtParams.xuTriNgoaiTruIds.length === 0 && batchKqdtParams.xuTriDieuTriIds.length === 0)"
+            class="px-6 py-2.5 bg-gradient-to-r from-purple-700 via-indigo-700 to-blue-800 hover:from-purple-800 hover:to-indigo-800 text-white font-black text-xs rounded-xl shadow-lg transition-all flex items-center space-x-2 cursor-pointer active:scale-95 disabled:opacity-50"
+          >
+            <i data-lucide="play" class="w-4 h-4 fill-current" v-if="!isExecutingBatchKqdt"></i>
+            <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-else></i>
+            <span>{{ isExecutingBatchKqdt ? 'ĐANG TIẾN HÀNH ĐẨY XỬ TRÍ...' : 'BẮT ĐẦU ĐẨY XỬ TRÍ CHO ALL TRẠM' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
     <!-- TOAST THÔNG BÁO NỔI BẬT GÓC TRÊN BÊN PHẢI -->
     <div class="fixed top-5 right-5 z-[9999] flex flex-col space-y-2.5 pointer-events-none max-w-md w-full">
       <div v-for="toast in toasts" :key="toast.id" 
@@ -7113,7 +7718,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           batchAssignHmis: false,
           giaoDien: false,
           batchAssignDichVuPhong: false,
-          addMappingDichVuPhong: false
+          addMappingDichVuPhong: false,
+          batchAddXuTriAll: false
         });
 
         // TRẠNG THÁI CHO CẤU HÌNH GIAO DIỆN MÀN HÌNH ĐỘNG (HMIS)
@@ -7417,6 +8023,13 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               }
               if (!selectedMapStationId.value || !mapStationData.value.stationId) {
                 loadMapStationData(selectedMapStationId.value || (stations.value[0]?.id));
+              }
+            } else if (tab === 'map_kqdt_xutri') {
+              if (window.location.hash !== '#map_kqdt_xutri' && window.location.hash !== '#kqdt_xutri') {
+                history.replaceState(null, '', '#map_kqdt_xutri');
+              }
+              if (!selectedKqdtStationId.value || !kqdtStationData.value.stationId) {
+                loadKqdtStationData(selectedKqdtStationId.value || (stations.value[0]?.id));
               }
             } else if (tab === 'stations') {
               if (window.location.hash !== '' && window.location.hash !== '#stations') {
@@ -11621,6 +12234,385 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         }
 
 
+
+        // =========================================================================
+        // TAB 6: MAP KẾT QUẢ ĐIỀU TRỊ - XỬ TRÍ (HMIS dm-map-kqdt-xutri)
+        // =========================================================================
+        const selectedKqdtStationId = ref('');
+        const kqdtStationData = ref({
+          stationId: '',
+          stationCode: '',
+          stationName: '',
+          csytId: 1,
+          listKetQuaDieuTri: [],
+          listXuTriNgoaiTru: [],
+          listXuTriDieuTri: [],
+          rows: [],
+          configuredRowsCount: 0,
+          rawMapNgoaiTruCount: 0,
+          rawMapDieuTriCount: 0
+        });
+        const isLoadingKqdtData = ref(false);
+        const kqdtSearchQuery = ref('');
+        const selectedKqdtRow = ref(null);
+        const kqdtForm = ref({
+          ketQuaDieuTriId: null,
+          xuTriNgoaiTruIds: [],
+          xuTriDieuTriIds: []
+        });
+        const isSavingKqdt = ref(false);
+
+        // Danh sách dự phòng khi chưa nạp API
+        const defaultKetQuaDieuTriList = [
+          { id: 1, ten: 'Khỏi' },
+          { id: 2, ten: 'Đỡ giảm' },
+          { id: 3, ten: 'Không thay đổi' },
+          { id: 4, ten: 'Nặng hơn' },
+          { id: 5, ten: 'Tử vong' },
+          { id: 6, ten: 'Tiên lượng nặng xin về' },
+          { id: 7, ten: 'Chưa xác định' },
+          { id: 8, ten: 'Tử vong ngoại viện' }
+        ];
+
+        const defaultXuTriNgoaiTruList = [
+          { id: 1, ten: 'Cấp toa cho về' },
+          { id: 2, ten: 'Điều trị ngoại trú' },
+          { id: 5, ten: 'Hẹn khám mới' },
+          { id: 6, ten: 'Nhập viện' },
+          { id: 7, ten: 'Chuyển viện' },
+          { id: 8, ten: 'Tử vong' },
+          { id: 9, ten: 'Khác' }
+        ];
+
+        const defaultXuTriDieuTriList = [
+          { id: 1, ten: 'Ra viện' },
+          { id: 2, ten: 'Xin về' },
+          { id: 3, ten: 'Bỏ về' },
+          { id: 4, ten: 'Đưa về' },
+          { id: 5, ten: 'Chuyển khoa' },
+          { id: 6, ten: 'Chuyển viện' },
+          { id: 7, ten: 'Tử vong' },
+          { id: 8, ten: 'Hẹn' },
+          { id: 9, ten: 'Khác' }
+        ];
+
+        // Batch modal state
+        const batchKqdtParams = ref({
+          scope: 'all',
+          stationIds: [],
+          ketQuaDieuTriIds: [3, 4], // Mặc định chọn Không thay đổi & Nặng hơn
+          xuTriNgoaiTruIds: [7],    // Mặc định chọn Chuyển viện
+          xuTriDieuTriIds: [],
+          mode: 'append'
+        });
+        const batchKqdtStationSearch = ref('');
+        const isExecutingBatchKqdt = ref(false);
+        const batchKqdtResults = ref(null);
+
+        const filteredKqdtRows = computed(() => {
+          let rows = kqdtStationData.value?.rows || [];
+          if (kqdtSearchQuery.value && kqdtSearchQuery.value.trim()) {
+            const q = kqdtSearchQuery.value.trim().toLowerCase();
+            rows = rows.filter(r => 
+              (r.ketQuaDieuTriTen && r.ketQuaDieuTriTen.toLowerCase().includes(q)) ||
+              (r.xuTriNgoaiTruText && r.xuTriNgoaiTruText.toLowerCase().includes(q)) ||
+              (r.xuTriDieuTriText && r.xuTriDieuTriText.toLowerCase().includes(q))
+            );
+          }
+          return rows;
+        });
+
+        const filteredBatchKqdtStations = computed(() => {
+          if (!batchKqdtStationSearch.value.trim()) return stations.value;
+          const q = batchKqdtStationSearch.value.trim().toLowerCase();
+          return stations.value.filter(s => 
+            (s.name && s.name.toLowerCase().includes(q)) ||
+            (s.code && s.code.toLowerCase().includes(q)) ||
+            (s.id && s.id.toLowerCase().includes(q))
+          );
+        });
+
+        function toggleSelectAllBatchKqdtStations() {
+          if (batchKqdtParams.value.stationIds.length === stations.value.length) {
+            batchKqdtParams.value.stationIds = [];
+          } else {
+            batchKqdtParams.value.stationIds = stations.value.map(s => s.id);
+          }
+        }
+
+        async function loadKqdtStationData(stationId) {
+          if (!stationId) {
+            if (stations.value.length > 0) {
+              stationId = stations.value[0].id;
+              selectedKqdtStationId.value = stationId;
+            } else {
+              return;
+            }
+          } else {
+            selectedKqdtStationId.value = stationId;
+          }
+
+          isLoadingKqdtData.value = true;
+          try {
+            const res = await axios.get(`/api/map-kqdt-xutri/station-data?stationId=${stationId}`);
+            if (res.data?.success) {
+              kqdtStationData.value = res.data.data;
+              if (selectedKqdtRow.value) {
+                const refreshedRow = (res.data.data.rows || []).find(r => r.ketQuaDieuTriId === selectedKqdtRow.value.ketQuaDieuTriId);
+                if (refreshedRow) selectKqdtRowForEdit(refreshedRow);
+              }
+            } else {
+              showToast(res.data?.message || 'Không thể tải dữ liệu map KQĐT trạm', 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi tải dữ liệu map KQĐT:', err);
+            showToast('Lỗi tải dữ liệu: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isLoadingKqdtData.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function selectKqdtRowForEdit(row) {
+          selectedKqdtRow.value = row;
+          kqdtForm.value = {
+            ketQuaDieuTriId: row.ketQuaDieuTriId,
+            xuTriNgoaiTruIds: [...(row.xuTriNgoaiTruIds || [])],
+            xuTriDieuTriIds: [...(row.xuTriDieuTriIds || [])]
+          };
+          nextTick(() => refreshIcons());
+        }
+
+        function resetKqdtEditForm() {
+          selectedKqdtRow.value = null;
+          kqdtForm.value = {
+            ketQuaDieuTriId: null,
+            xuTriNgoaiTruIds: [],
+            xuTriDieuTriIds: []
+          };
+        }
+
+        function onKqdtFormSelectChange() {
+          if (!kqdtForm.value.ketQuaDieuTriId) {
+            resetKqdtEditForm();
+            return;
+          }
+          const row = (kqdtStationData.value?.rows || []).find(r => r.ketQuaDieuTriId === Number(kqdtForm.value.ketQuaDieuTriId));
+          if (row) {
+            selectKqdtRowForEdit(row);
+          } else {
+            selectedKqdtRow.value = null;
+            kqdtForm.value.xuTriNgoaiTruIds = [];
+            kqdtForm.value.xuTriDieuTriIds = [];
+          }
+        }
+
+        function selectAllKqdtNgoaiTru() {
+          const list = kqdtStationData.value?.listXuTriNgoaiTru || defaultXuTriNgoaiTruList;
+          kqdtForm.value.xuTriNgoaiTruIds = list.map(x => x.id);
+        }
+
+        function selectAllKqdtDieuTri() {
+          const list = kqdtStationData.value?.listXuTriDieuTri || defaultXuTriDieuTriList;
+          kqdtForm.value.xuTriDieuTriIds = list.map(x => x.id);
+        }
+
+        async function saveSingleKqdtMapping() {
+          if (!kqdtForm.value.ketQuaDieuTriId) {
+            showToast('Vui lòng chọn kết quả điều trị!', 'warning');
+            return;
+          }
+          if (kqdtForm.value.xuTriNgoaiTruIds.length === 0 && kqdtForm.value.xuTriDieuTriIds.length === 0) {
+            showToast('Vui lòng chọn ít nhất 1 xử trí ngoại trú hoặc điều trị!', 'warning');
+            return;
+          }
+
+          isSavingKqdt.value = true;
+          try {
+            const payload = {
+              stationId: selectedKqdtStationId.value,
+              ketQuaDieuTriId: kqdtForm.value.ketQuaDieuTriId,
+              xuTriNgoaiTruIds: kqdtForm.value.xuTriNgoaiTruIds,
+              xuTriDieuTriIds: kqdtForm.value.xuTriDieuTriIds
+            };
+            const res = await axios.post('/api/map-kqdt-xutri/save', payload);
+            if (res.data?.success) {
+              showToast('Đã lưu cấu hình map thành công lên HMIS!', 'success');
+              fetchSystemLogs();
+              await loadKqdtStationData(selectedKqdtStationId.value);
+            } else {
+              showToast(res.data?.message || 'Lỗi khi lưu cấu hình map', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isSavingKqdt.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function deleteSingleKqdtMapping(row) {
+          if (!row || !row.ketQuaDieuTriId) return;
+          if (!confirm(`Bạn có chắc chắn muốn xóa tất cả xử trí đã map của kết quả [${row.ketQuaDieuTriTen}] trên cổng HMIS?`)) {
+            return;
+          }
+
+          isSavingKqdt.value = true;
+          try {
+            const res = await axios.post('/api/map-kqdt-xutri/delete', {
+              stationId: selectedKqdtStationId.value,
+              ketQuaDieuTriId: row.ketQuaDieuTriId
+            });
+            if (res.data?.success) {
+              showToast(`Đã xóa map của kết quả [${row.ketQuaDieuTriTen}]!`, 'success');
+              fetchSystemLogs();
+              resetKqdtEditForm();
+              await loadKqdtStationData(selectedKqdtStationId.value);
+            } else {
+              showToast(res.data?.message || 'Lỗi khi xóa map', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isSavingKqdt.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function applyStandardKqdtPresetCurrentStation() {
+          if (!selectedKqdtStationId.value) return;
+          const stObj = stations.value.find(s => s.id === selectedKqdtStationId.value);
+          const stName = stObj ? stObj.name : selectedKqdtStationId.value;
+          if (!confirm(`Áp dụng bộ mẫu chuẩn y tế (Không thay đổi & Nặng hơn -> Chuyển viện, Khỏi -> Cấp toa/Ra viện...) cho trạm [${stName}]?`)) {
+            return;
+          }
+
+          isLoadingKqdtData.value = true;
+          try {
+            // Đẩy bộ mẫu chuẩn:
+            // 3 (Không thay đổi) -> 7 (Chuyển viện)
+            // 4 (Nặng hơn) -> 7 (Chuyển viện)
+            const payload = {
+              stationIds: [selectedKqdtStationId.value],
+              ketQuaDieuTriIds: [3, 4],
+              xuTriNgoaiTruIds: [7],
+              xuTriDieuTriIds: [],
+              mode: 'append'
+            };
+            const res = await axios.post('/api/map-kqdt-xutri/batch-add-all', payload);
+            if (res.data?.success) {
+              showToast(`Đã áp dụng thành công bộ chuẩn cho [${stName}]!`, 'success');
+              fetchSystemLogs();
+              await loadKqdtStationData(selectedKqdtStationId.value);
+            } else {
+              showToast(res.data?.message || 'Lỗi khi áp dụng bộ chuẩn', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isLoadingKqdtData.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function openBatchAddXuTriModal() {
+          batchKqdtStationSearch.value = '';
+          batchKqdtParams.value = {
+            scope: 'all',
+            stationIds: stations.value.map(s => s.id),
+            ketQuaDieuTriIds: [3, 4], // Mặc định: Không thay đổi & Nặng hơn
+            xuTriNgoaiTruIds: [7],    // Mặc định: Chuyển viện
+            xuTriDieuTriIds: [],
+            mode: 'append'
+          };
+          batchKqdtResults.value = null;
+          modals.value.batchAddXuTriAll = true;
+          nextTick(() => refreshIcons());
+        }
+
+        function selectAllBatchKqdtKq() {
+          const list = kqdtStationData.value?.listKetQuaDieuTri?.length > 0 
+            ? kqdtStationData.value.listKetQuaDieuTri 
+            : defaultKetQuaDieuTriList;
+          batchKqdtParams.value.ketQuaDieuTriIds = list.map(k => k.id);
+        }
+
+        function selectCommonBatchKqdtKq() {
+          batchKqdtParams.value.ketQuaDieuTriIds = [3, 4];
+        }
+
+        function selectChuyenVienNgoaiTruOnly() {
+          batchKqdtParams.value.xuTriNgoaiTruIds = [7];
+        }
+
+        async function executeBatchAddXuTriAll() {
+          const targetStationIds = batchKqdtParams.value.scope === 'all' 
+            ? stations.value.map(s => s.id) 
+            : batchKqdtParams.value.stationIds;
+
+          if (!targetStationIds || targetStationIds.length === 0) {
+            showToast('Vui lòng chọn ít nhất 1 trạm y tế!', 'warning');
+            return;
+          }
+          if (batchKqdtParams.value.ketQuaDieuTriIds.length === 0) {
+            showToast('Vui lòng chọn ít nhất 1 kết quả điều trị!', 'warning');
+            return;
+          }
+          if (batchKqdtParams.value.xuTriNgoaiTruIds.length === 0 && batchKqdtParams.value.xuTriDieuTriIds.length === 0) {
+            showToast('Vui lòng chọn ít nhất 1 xử trí!', 'warning');
+            return;
+          }
+
+          isExecutingBatchKqdt.value = true;
+          batchKqdtResults.value = null;
+          try {
+            const payload = {
+              stationIds: targetStationIds,
+              ketQuaDieuTriIds: batchKqdtParams.value.ketQuaDieuTriIds,
+              xuTriNgoaiTruIds: batchKqdtParams.value.xuTriNgoaiTruIds,
+              xuTriDieuTriIds: batchKqdtParams.value.xuTriDieuTriIds,
+              mode: batchKqdtParams.value.mode || 'append'
+            };
+            const res = await axios.post('/api/map-kqdt-xutri/batch-add-all', payload);
+            if (res.data?.success) {
+              batchKqdtResults.value = res.data.data;
+              showToast(`Đã phân công xong ${res.data.data.totalStations} trạm: +${res.data.data.totalAssigned} xử trí mới!`, 'success');
+              fetchSystemLogs();
+              if (selectedKqdtStationId.value) {
+                await loadKqdtStationData(selectedKqdtStationId.value);
+              }
+            } else {
+              showToast(res.data?.message || 'Có lỗi xảy ra khi phân công hàng loạt', 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi thêm xử trí hàng loạt:', err);
+            showToast('Lỗi thêm xử trí: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isExecutingBatchKqdt.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function downloadKqdtExcel() {
+          if (!selectedKqdtStationId.value) return;
+          try {
+            const res = await axios.get(`/api/map-kqdt-xutri/export-excel?stationId=${selectedKqdtStationId.value}`, { responseType: 'blob' });
+            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Map_KQDT_XuTri_${selectedKqdtStationId.value}_${Date.now()}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            showToast('Đã tải xuống file Excel thành công!', 'success');
+          } catch (err) {
+            showToast('Lỗi tải file Excel: ' + (err.response?.data?.message || err.message), 'error');
+          }
+        }
+
+
         // TAB 6: THỐNG KÊ & BIỂU ĐỒ KCB NGOẠI TRÚ
         // ==========================================
         const isLoadingKcb = ref(false);
@@ -11989,7 +12981,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
           // Kiểm tra hash URL để mở đúng Tab (ví dụ #thuoc, #vattu, #nhanvien, #nhanvien_hmis)
           // Mặc định mở Tab KCB khi vào link http://localhost:5000 hoặc #kcb
-          if (window.location.hash === '#congkham' || window.location.hash === '#user_dichvu_phong') {
+          if (window.location.hash === '#map_kqdt_xutri' || window.location.hash === '#kqdt_xutri') {
+            currentMainTab.value = 'map_kqdt_xutri';
+          } else if (window.location.hash === '#congkham' || window.location.hash === '#user_dichvu_phong') {
             currentMainTab.value = 'user_dichvu_phong';
           } else if (window.location.hash === '#stations') {
             currentMainTab.value = 'stations';
@@ -12019,6 +13013,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             loadKcbPhongKhamList();
           } else if (currentMainTab.value === 'user_dichvu_phong') {
             loadMapStationData(selectedMapStationId.value || (stations.value[0]?.id));
+          } else if (currentMainTab.value === 'map_kqdt_xutri') {
+            loadKqdtStationData(selectedKqdtStationId.value || (stations.value[0]?.id));
           }
           fetchSystemLogs();
           refreshIcons();
@@ -12044,6 +13040,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               targetTab = 'kcb';
             } else if (window.location.hash === '#congkham' || window.location.hash === '#user_dichvu_phong') {
               targetTab = 'user_dichvu_phong';
+            } else if (window.location.hash === '#map_kqdt_xutri' || window.location.hash === '#kqdt_xutri') {
+              targetTab = 'map_kqdt_xutri';
             }
             switchMainTab(targetTab);
           });

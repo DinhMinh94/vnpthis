@@ -257,6 +257,17 @@
               Live Portal
             </span>
           </button>
+          <!-- Tab 5: Phân Yêu Cầu Khám - Phòng Khám (HMIS) -->
+          <button @click="switchMainTab('user_dichvu_phong')"
+                  type="button"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
+                  :class="currentMainTab === 'user_dichvu_phong' ? 'bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-700 text-white border-emerald-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
+            <i data-lucide="stethoscope" class="w-4 h-4" :class="currentMainTab === 'user_dichvu_phong' ? 'text-white' : 'text-emerald-600'"></i>
+            <span>5. Phân Công Khám &amp; Phòng Khám (HMIS)</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-teal-400 text-teal-950 shadow-2xs">
+              All Trạm
+            </span>
+          </button>
         </div>
       </div>
     </nav>
@@ -3069,6 +3080,270 @@
 
       </div>
 
+
+      <!-- ============================================================== -->
+      <!-- TAB 5: PHÂN YÊU CẦU KHÁM & PHÒNG KHÁM ALL CHO CÁC TRẠM (HMIS)  -->
+      <!-- ============================================================== -->
+      <div v-if="currentMainTab === 'user_dichvu_phong'" class="space-y-6">
+
+        <!-- BANNER HEADER TAB 5 -->
+        <div class="bg-gradient-to-r from-teal-900 via-emerald-800 to-cyan-900 rounded-3xl p-6 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-5 border border-emerald-500/30">
+          <div class="flex items-start sm:items-center space-x-4">
+            <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-md flex-shrink-0">
+              <i data-lucide="stethoscope" class="w-8 h-8 text-emerald-300"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2.5 flex-wrap">
+                <h2 class="text-xl sm:text-2xl font-black uppercase tracking-wide">PHÂN CÔNG YÊU CẦU KHÁM &amp; PHÒNG KHÁM (HMIS)</h2>
+                <span class="bg-emerald-400 text-emerald-950 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs">Live Portal</span>
+                <span class="bg-cyan-400/20 text-cyan-200 border border-cyan-400/40 text-[10px] font-mono px-2 py-0.5 rounded-full">
+                  dm-map-nguoidung-yeucau-phongkham
+                </span>
+              </div>
+              <p class="text-xs sm:text-sm text-emerald-100 mt-1 max-w-3xl">
+                Cấu hình gán Bác sĩ/Nhân viên khám bệnh với dịch vụ yêu cầu khám (<span class="font-mono text-amber-300 font-bold">TYT.1899</span>) và buồng khám tiếp nhận (<span class="font-mono text-amber-300 font-bold">KB1</span>). Hỗ trợ <b class="text-white">Phân công hàng loạt ALL 32 Trạm</b> chỉ với 1 click chuột.
+              </p>
+            </div>
+          </div>
+
+          <!-- NÚT TÁC VỤ CHÍNH -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button @click="openBatchMapModal" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:to-orange-500 text-slate-950 font-black text-xs rounded-xl shadow-lg transition-all cursor-pointer border border-amber-300 active:scale-95">
+              <i data-lucide="zap" class="w-4 h-4 fill-current text-slate-950"></i>
+              <span>PHÂN CÔNG HÀNG LOẠT ALL TRẠM</span>
+            </button>
+            <button @click="openAddSingleMappingModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition-all cursor-pointer">
+              <i data-lucide="plus" class="w-4 h-4 text-emerald-300"></i>
+              <span>Thêm Phân Công</span>
+            </button>
+            <button @click="downloadMapExcel" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>Xuất Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- THANH CHỌN TRẠM & TÁC VỤ NHANH TRẠM -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <!-- Dropdown chọn trạm -->
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
+              <label class="text-xs font-bold text-slate-700 flex items-center space-x-1.5 shrink-0">
+                <i data-lucide="building-2" class="w-4 h-4 text-teal-600"></i>
+                <span>Trạm Y Tế Thao Tác:</span>
+              </label>
+              <select 
+                v-model="selectedMapStationId" 
+                @change="loadMapStationData(selectedMapStationId)"
+                class="bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-bold rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-teal-500 focus:outline-none w-full sm:w-80 cursor-pointer shadow-xs"
+              >
+                <option v-for="st in stations" :key="st.id" :value="st.id">
+                  [{{ st.code }}] {{ st.name }}
+                </option>
+              </select>
+              <button 
+                @click="loadMapStationData(selectedMapStationId)" 
+                :disabled="isLoadingMapData"
+                class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 transition-colors cursor-pointer shrink-0" 
+                title="Tải lại dữ liệu trạm này"
+              >
+                <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingMapData }"></i>
+              </button>
+            </div>
+
+            <!-- Nút hành động nhanh cho trạm hiện tại -->
+            <div class="flex flex-wrap items-center gap-2">
+              <button 
+                @click="quickAssignCurrentStation" 
+                :disabled="isQuickAssigningStation || isLoadingMapData"
+                class="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold rounded-xl border border-teal-300 transition-colors cursor-pointer disabled:opacity-50"
+              >
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-teal-600" v-if="!isQuickAssigningStation"></i>
+                <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin" v-else></i>
+                <span>Phân công nhanh trạm này (TYT.1899 + KB1)</span>
+              </button>
+              <button 
+                @click="clearCurrentStationMappings" 
+                :disabled="isClearingStationMappings || isLoadingMapData || mapStationData.totalMappings === 0"
+                class="inline-flex items-center space-x-1.5 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold rounded-xl border border-rose-200 transition-colors cursor-pointer disabled:opacity-40"
+              >
+                <i data-lucide="trash-2" class="w-3.5 h-3.5 text-rose-600" v-if="!isClearingStationMappings"></i>
+                <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin" v-else></i>
+                <span>Xóa hết phân công trạm này</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 THẺ THỐNG KÊ (KPI STATS) -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 pt-2 border-t border-slate-100">
+            <!-- Thẻ 1: Tổng phân công -->
+            <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="stethoscope" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-teal-800 uppercase tracking-wider">Tổng Đã Phân Công</div>
+                <div class="text-xl font-black text-teal-950 font-mono">{{ mapStationData.totalMappings || 0 }}</div>
+              </div>
+            </div>
+
+            <!-- Thẻ 2: Số User trong trạm -->
+            <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="users" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-blue-800 uppercase tracking-wider">Tài Khoản / User</div>
+                <div class="text-xl font-black text-blue-950 font-mono">{{ mapStationData.users?.length || 0 }}</div>
+              </div>
+            </div>
+
+            <!-- Thẻ 3: Dịch vụ công khám -->
+            <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="layers" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Dịch Vụ Khám Bệnh</div>
+                <div class="text-xl font-black text-amber-950 font-mono">{{ mapStationData.services?.length || 0 }}</div>
+              </div>
+            </div>
+
+            <!-- Thẻ 4: Phòng khám tiếp nhận -->
+            <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="door-open" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-purple-800 uppercase tracking-wider">Phòng Tiếp Nhận</div>
+                <div class="text-xl font-black text-purple-950 font-mono">{{ mapStationData.rooms?.length || 0 }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BẢNG DỮ LIỆU PHÂN CÔNG HIỆN TẠI -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
+          <!-- Thanh tìm kiếm & lọc người dùng -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="relative w-full sm:w-96">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+              <input 
+                type="text" 
+                v-model="mapSearchQuery" 
+                placeholder="Tìm tên bác sĩ, tài khoản, mã/tên dịch vụ, phòng khám..." 
+                class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-teal-500 focus:outline-none"
+              >
+            </div>
+
+            <div class="flex items-center space-x-2 w-full sm:w-auto">
+              <label class="text-xs font-bold text-slate-600 shrink-0">Lọc Người Dùng:</label>
+              <select 
+                v-model="mapUserFilter" 
+                class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500 w-full sm:w-60"
+              >
+                <option value="">-- Tất cả người dùng --</option>
+                <option v-for="u in mapStationData.users" :key="u.userId" :value="u.userId">
+                  {{ u.fullName }} ({{ u.username }})
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Bảng danh sách phân công -->
+          <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-2xs">
+            <table class="w-full text-left text-xs text-slate-700">
+              <thead class="bg-slate-50 text-slate-800 uppercase text-[10px] font-black border-b border-slate-200">
+                <tr>
+                  <th class="px-4 py-3 text-center w-12">STT</th>
+                  <th class="px-4 py-3">Bác Sĩ / Người Dùng</th>
+                  <th class="px-4 py-3">Tài Khoản (Username)</th>
+                  <th class="px-4 py-3">Yêu Cầu Khám (Dịch Vụ)</th>
+                  <th class="px-4 py-3">Phòng Khám Tiếp Nhận</th>
+                  <th class="px-4 py-3 text-center w-28">Mặc Định</th>
+                  <th class="px-4 py-3 text-center w-24">Thao Tác</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 font-medium">
+                <tr v-if="isLoadingMapData">
+                  <td colspan="7" class="px-4 py-12 text-center text-slate-400">
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                      <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-teal-600"></i>
+                      <span>Đang tải danh sách phân công từ cổng HMIS...</span>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr v-else-if="filteredMapMappings.length === 0">
+                  <td colspan="7" class="px-4 py-12 text-center text-slate-400">
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                      <i data-lucide="inbox" class="w-8 h-8 text-slate-300"></i>
+                      <span class="font-bold text-slate-600">Trạm này chưa có phân công yêu cầu khám - phòng khám nào!</span>
+                      <p class="text-xs text-slate-500">Bấm nút "Phân công nhanh trạm này" hoặc "Phân công hàng loạt ALL Trạm" ở trên để tự động gán.</p>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr v-else v-for="(m, idx) in pagedMapMappings" :key="m.id" class="hover:bg-teal-50/40 transition-colors">
+                  <td class="px-4 py-3 text-center font-mono font-bold text-slate-500">
+                    {{ (mapCurrentPage - 1) * mapPageSize + idx + 1 }}
+                  </td>
+                  <td class="px-4 py-3 font-bold text-slate-900">
+                    {{ m.fullName || '--' }}
+                  </td>
+                  <td class="px-4 py-3 font-mono font-bold text-teal-700">
+                    {{ m.username }}
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="font-bold text-slate-800">{{ m.tenDichVu }}</div>
+                    <div class="text-[10px] font-mono text-slate-500">{{ m.maDichVu }}</div>
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="font-bold text-slate-800">{{ m.tenPhong }}</div>
+                    <div class="text-[10px] font-mono text-slate-500">{{ m.maPhong }}</div>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <span v-if="m.isMacDinh === 1" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                      Mặc định
+                    </span>
+                    <span v-else class="text-slate-400 text-xs">--</span>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <button 
+                      @click="deleteSingleMapping(m)"
+                      :disabled="isDeletingMappingId === m.id"
+                      class="p-1.5 text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+                      title="Xóa phân công này"
+                    >
+                      <i data-lucide="trash-2" class="w-4 h-4" v-if="isDeletingMappingId !== m.id"></i>
+                      <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-rose-600" v-else></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Phân trang bảng -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+            <div class="text-xs text-slate-500">
+              Hiển thị từ <span class="font-bold font-mono">{{ (mapCurrentPage - 1) * mapPageSize + 1 }}</span> đến <span class="font-bold font-mono">{{ Math.min(mapCurrentPage * mapPageSize, filteredMapMappings.length) }}</span> trên tổng số <span class="font-bold font-mono">{{ filteredMapMappings.length }}</span> phân công
+            </div>
+            <div class="flex items-center space-x-2">
+              <button type="button" @click="mapCurrentPage--" :disabled="mapCurrentPage <= 1" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-40 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition-colors cursor-pointer">
+                Trước
+              </button>
+              <span class="text-xs font-bold text-slate-700 px-2 font-mono">
+                Trang {{ mapCurrentPage }} / {{ mapTotalPages }}
+              </span>
+              <button type="button" @click="mapCurrentPage++" :disabled="mapCurrentPage >= mapTotalPages" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-40 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition-colors cursor-pointer">
+                Sau
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </main>
 
     <!-- ========================================================================= -->
@@ -6456,6 +6731,329 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
       </div>
     </div>
 
+
+    <!-- ========================================================================= -->
+    <!-- MODAL BATCH: PHÂN CÔNG HÀNG LOẠT YÊU CẦU KHÁM & PHÒNG KHÁM ALL CHO CÁC TRẠM -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.batchAssignDichVuPhong" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-in fade-in duration-150">
+      <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+        <!-- Header Modal -->
+        <div class="bg-gradient-to-r from-teal-700 via-emerald-700 to-cyan-800 text-white p-5 flex items-center justify-between shrink-0 shadow-md">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white/20 p-2.5 rounded-2xl backdrop-blur-xs">
+              <i data-lucide="zap" class="w-6 h-6 text-amber-300"></i>
+            </div>
+            <div>
+              <h3 class="text-base sm:text-lg font-black uppercase tracking-wide">PHÂN CÔNG YÊU CẦU KHÁM &amp; PHÒNG KHÁM HÀNG LOẠT</h3>
+              <p class="text-xs text-teal-100 mt-0.5">Tự động gán Bác sĩ/User với Công khám và Phòng khám tiếp nhận cho tất cả trạm y tế</p>
+            </div>
+          </div>
+          <button @click="modals.batchAssignDichVuPhong = false" class="text-white/80 hover:text-white p-1 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+        <!-- Nội dung Modal -->
+        <div class="p-6 overflow-y-auto space-y-6 flex-1 text-slate-800 text-xs sm:text-sm">
+          
+          <!-- BƯỚC 1: PHẠM VI TRẠM Y TẾ -->
+          <div class="space-y-3 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <div class="flex items-center justify-between">
+              <label class="font-black text-slate-800 text-xs sm:text-sm uppercase tracking-wider flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-full bg-teal-600 text-white inline-flex items-center justify-center text-xs">1</span>
+                <span>Phạm vi Trạm Y tế:</span>
+              </label>
+              <div class="flex items-center space-x-3 text-xs">
+                <label class="flex items-center space-x-1.5 cursor-pointer font-bold text-teal-900">
+                  <input type="radio" value="all" v-model="batchMapParams.scope" class="text-teal-600 focus:ring-teal-500">
+                  <span>Tất cả {{ stations.length }} Trạm Y tế (Khuyên dùng)</span>
+                </label>
+                <label class="flex items-center space-x-1.5 cursor-pointer font-bold text-slate-700">
+                  <input type="radio" value="custom" v-model="batchMapParams.scope" class="text-teal-600 focus:ring-teal-500">
+                  <span>Tùy chọn trạm</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Nếu chọn tùy chọn trạm -->
+            <div v-if="batchMapParams.scope === 'custom'" class="pt-3 border-t border-slate-200 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <div class="relative flex-1">
+                  <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
+                  <input type="text" v-model="batchMapStationSearch" placeholder="Lọc trạm theo mã hoặc tên..." class="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-teal-500">
+                </div>
+                <button type="button" @click="toggleSelectAllBatchMapStations" class="px-2.5 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 text-[11px] font-bold rounded-lg transition-colors cursor-pointer shrink-0">
+                  {{ batchMapParams.stationIds.length === stations.length ? 'Bỏ chọn hết' : 'Chọn tất cả' }}
+                </button>
+              </div>
+
+              <div class="max-h-40 overflow-y-auto border border-slate-200 rounded-xl p-2.5 bg-white grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                <label v-for="st in filteredBatchMapStations" :key="st.id" class="flex items-center space-x-2 p-1.5 hover:bg-slate-50 rounded-lg cursor-pointer border border-transparent hover:border-slate-200">
+                  <input type="checkbox" :value="st.id" v-model="batchMapParams.stationIds" class="rounded text-teal-600 focus:ring-teal-500">
+                  <span class="truncate font-semibold text-xs">
+                    <span class="font-mono text-teal-700 font-bold">[{{ st.code }}]</span> {{ st.name }}
+                  </span>
+                </label>
+              </div>
+              <div class="text-[11px] text-slate-500 font-bold">Đã chọn: <span class="font-mono text-teal-700">{{ batchMapParams.stationIds.length }}</span> / {{ stations.length }} trạm</div>
+            </div>
+          </div>
+
+          <!-- BƯỚC 2: ĐỐI TƯỢNG BÁC SĨ / USER -->
+          <div class="space-y-3 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <label class="font-black text-slate-800 text-xs sm:text-sm uppercase tracking-wider flex items-center space-x-2">
+              <span class="w-6 h-6 rounded-full bg-teal-600 text-white inline-flex items-center justify-center text-xs">2</span>
+              <span>Đối tượng Nhân viên / Người dùng (User Scope):</span>
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label class="flex items-start space-x-2.5 p-3 rounded-xl border cursor-pointer transition-all" :class="batchMapParams.userScope === 'all' ? 'bg-teal-50/70 border-teal-500 text-teal-950 font-bold shadow-2xs' : 'bg-white border-slate-200 text-slate-700'">
+                <input type="radio" value="all" v-model="batchMapParams.userScope" class="mt-0.5 text-teal-600 focus:ring-teal-500">
+                <div>
+                  <div class="font-black text-xs">Toàn bộ nhân sự của trạm (Khuyên dùng)</div>
+                  <div class="text-[11px] text-slate-500 font-normal mt-0.5">Phân công cho tất cả tài khoản trong danh mục người dùng trạm (Bác sĩ, Y sĩ, Điều dưỡng...)</div>
+                </div>
+              </label>
+
+              <label class="flex items-start space-x-2.5 p-3 rounded-xl border cursor-pointer transition-all" :class="batchMapParams.userScope === 'doctors_only' ? 'bg-teal-50/70 border-teal-500 text-teal-950 font-bold shadow-2xs' : 'bg-white border-slate-200 text-slate-700'">
+                <input type="radio" value="doctors_only" v-model="batchMapParams.userScope" class="mt-0.5 text-teal-600 focus:ring-teal-500">
+                <div>
+                  <div class="font-black text-xs">Chỉ Bác sĩ / Cán bộ khám bệnh</div>
+                  <div class="text-[11px] text-slate-500 font-normal mt-0.5">Tự động loại bỏ các tài khoản quản trị hệ thống (.admin, .adminbv)</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- BƯỚC 3: DỊCH VỤ CÔNG KHÁM -->
+          <div class="space-y-3 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <label class="font-black text-slate-800 text-xs sm:text-sm uppercase tracking-wider flex items-center space-x-2">
+              <span class="w-6 h-6 rounded-full bg-teal-600 text-white inline-flex items-center justify-center text-xs">3</span>
+              <span>Dịch vụ Yêu Cầu Khám (Service Scope):</span>
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label class="flex items-start space-x-2.5 p-3 rounded-xl border cursor-pointer transition-all" :class="batchMapParams.serviceScope === 'main_only' ? 'bg-teal-50/70 border-teal-500 text-teal-950 font-bold shadow-2xs' : 'bg-white border-slate-200 text-slate-700'">
+                <input type="radio" value="main_only" v-model="batchMapParams.serviceScope" class="mt-0.5 text-teal-600 focus:ring-teal-500">
+                <div>
+                  <div class="font-black text-xs">Dịch vụ chuẩn Trạm Y Tế (TYT.1899) [Khuyên dùng]</div>
+                  <div class="text-[11px] text-slate-500 font-normal mt-0.5">Gán mã dịch vụ khám bệnh chính tại trạm y tế xã và đơn vị tương đương</div>
+                </div>
+              </label>
+
+              <label class="flex items-start space-x-2.5 p-3 rounded-xl border cursor-pointer transition-all" :class="batchMapParams.serviceScope === 'all' ? 'bg-teal-50/70 border-teal-500 text-teal-950 font-bold shadow-2xs' : 'bg-white border-slate-200 text-slate-700'">
+                <input type="radio" value="all" v-model="batchMapParams.serviceScope" class="mt-0.5 text-teal-600 focus:ring-teal-500">
+                <div>
+                  <div class="font-black text-xs">Tất cả dịch vụ nhóm Khám Bệnh</div>
+                  <div class="text-[11px] text-slate-500 font-normal mt-0.5">Gán tất cả các dịch vụ công khám hiện có trong danh mục của từng trạm</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- BƯỚC 4: PHÒNG KHÁM TIẾP NHẬN -->
+          <div class="space-y-3 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <label class="font-black text-slate-800 text-xs sm:text-sm uppercase tracking-wider flex items-center space-x-2">
+              <span class="w-6 h-6 rounded-full bg-teal-600 text-white inline-flex items-center justify-center text-xs">4</span>
+              <span>Buồng / Phòng Khám Tiếp Nhận (Room Scope):</span>
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label class="flex items-start space-x-2.5 p-3 rounded-xl border cursor-pointer transition-all" :class="batchMapParams.roomScope === 'clinic_only' ? 'bg-teal-50/70 border-teal-500 text-teal-950 font-bold shadow-2xs' : 'bg-white border-slate-200 text-slate-700'">
+                <input type="radio" value="clinic_only" v-model="batchMapParams.roomScope" class="mt-0.5 text-teal-600 focus:ring-teal-500">
+                <div>
+                  <div class="font-black text-xs">Phòng khám chung / Trạm Y Tế (Mã KB1) [Khuyên dùng]</div>
+                  <div class="text-[11px] text-slate-500 font-normal mt-0.5">Chỉ định buồng khám bệnh chính của trạm để tiếp nhận bệnh nhân khám</div>
+                </div>
+              </label>
+
+              <label class="flex items-start space-x-2.5 p-3 rounded-xl border cursor-pointer transition-all" :class="batchMapParams.roomScope === 'all' ? 'bg-teal-50/70 border-teal-500 text-teal-950 font-bold shadow-2xs' : 'bg-white border-slate-200 text-slate-700'">
+                <input type="radio" value="all" v-model="batchMapParams.roomScope" class="mt-0.5 text-teal-600 focus:ring-teal-500">
+                <div>
+                  <div class="font-black text-xs">Tất cả các buồng khám của trạm</div>
+                  <div class="text-[11px] text-slate-500 font-normal mt-0.5">Gán bệnh nhân vào mọi phòng có chức năng khám bệnh</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- BƯỚC 5: TÙY CHỌN BẢO VỆ DỮ LIỆU -->
+          <div class="space-y-2 p-4 bg-amber-50/60 rounded-2xl border border-amber-200/80">
+            <div class="font-black text-amber-950 text-xs uppercase tracking-wider">Tùy chọn nâng cao:</div>
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 text-xs">
+              <label class="flex items-center space-x-2 font-bold text-amber-950 cursor-pointer">
+                <input type="checkbox" v-model="batchMapParams.skipDuplicates" class="rounded text-amber-600 focus:ring-amber-500">
+                <span>Bỏ qua phân công đã tồn tại (Chống trùng lặp)</span>
+              </label>
+              <label class="flex items-center space-x-2 font-bold text-rose-700 cursor-pointer">
+                <input type="checkbox" v-model="batchMapParams.clearBefore" class="rounded text-rose-600 focus:ring-rose-500">
+                <span>Xóa sạch phân công cũ của trạm trước khi phân công mới</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TIẾN ĐỘ & BẢNG KẾT QUẢ THỰC HIỆN -->
+          <div v-if="isExecutingBatchMap || batchMapResults" class="space-y-3 pt-2">
+            <div class="flex items-center justify-between">
+              <span class="font-black text-slate-800 text-xs uppercase tracking-wider flex items-center space-x-2">
+                <i data-lucide="activity" class="w-4 h-4 text-teal-600"></i>
+                <span>Kết Quả &amp; Tiến Độ Phân Công:</span>
+              </span>
+              <span v-if="batchMapResults" class="text-xs font-mono font-bold text-teal-700">
+                Tổng thêm: +{{ batchMapResults.totalAssigned }} | Bỏ qua: {{ batchMapResults.totalSkipped }} | Lỗi: {{ batchMapResults.totalErrors }}
+              </span>
+            </div>
+
+            <!-- Bảng kết quả từng trạm -->
+            <div class="max-h-60 overflow-y-auto border border-slate-200 rounded-2xl bg-white shadow-2xs">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 text-slate-700 font-bold uppercase text-[10px] sticky top-0 border-b border-slate-200">
+                  <tr>
+                    <th class="p-2.5 text-center w-10">#</th>
+                    <th class="p-2.5">Trạm Y Tế</th>
+                    <th class="p-2.5 text-center">Trạng Thái</th>
+                    <th class="p-2.5 text-center">Đã Thêm</th>
+                    <th class="p-2.5 text-center">Bỏ Qua</th>
+                    <th class="p-2.5">Ghi Chú</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-medium">
+                  <tr v-if="isExecutingBatchMap && (!batchMapResults || !batchMapResults.results)">
+                    <td colspan="6" class="p-8 text-center text-slate-500">
+                      <div class="flex flex-col items-center justify-center space-y-2">
+                        <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-teal-600"></i>
+                        <span class="font-bold">Đang tiến hành phân công hàng loạt trên cổng HMIS...</span>
+                        <p class="text-xs text-slate-400">Vui lòng đợi vài giây để hệ thống gửi lệnh qua API Gateway</p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr v-else v-for="(item, idx) in batchMapResults?.results || []" :key="item.stationId" class="hover:bg-slate-50">
+                    <td class="p-2.5 text-center font-mono font-bold text-slate-400">{{ idx + 1 }}</td>
+                    <td class="p-2.5 font-bold text-slate-800">
+                      <span class="font-mono text-teal-700">[{{ item.stationCode }}]</span> {{ item.stationName }}
+                    </td>
+                    <td class="p-2.5 text-center">
+                      <span v-if="item.status === 'success'" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800">
+                        Thành công
+                      </span>
+                      <span v-else-if="item.status === 'partial'" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-800">
+                        Một phần
+                      </span>
+                      <span v-else class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-800">
+                        Lỗi
+                      </span>
+                    </td>
+                    <td class="p-2.5 text-center font-mono font-black text-emerald-700">+{{ item.assignedCount }}</td>
+                    <td class="p-2.5 text-center font-mono text-slate-500">{{ item.skippedCount }}</td>
+                    <td class="p-2.5 text-[11px] text-slate-600">{{ item.message }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
+          <button 
+            type="button" 
+            @click="modals.batchAssignDichVuPhong = false"
+            class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition-colors cursor-pointer"
+          >
+            Đóng
+          </button>
+
+          <button 
+            type="button" 
+            @click="executeBatchAssignMap"
+            :disabled="isExecutingBatchMap || (batchMapParams.scope === 'custom' && batchMapParams.stationIds.length === 0)"
+            class="px-6 py-2.5 bg-gradient-to-r from-teal-600 via-emerald-600 to-cyan-700 hover:from-teal-700 hover:to-cyan-800 text-white font-black text-xs rounded-xl shadow-lg transition-all flex items-center space-x-2 cursor-pointer active:scale-95 disabled:opacity-50"
+          >
+            <i data-lucide="play" class="w-4 h-4 fill-current" v-if="!isExecutingBatchMap"></i>
+            <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-else></i>
+            <span>{{ isExecutingBatchMap ? 'ĐANG TIẾN HÀNH PHÂN CÔNG...' : 'BẮT ĐẦU PHÂN CÔNG HÀNG LOẠT' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL THÊM 1 PHÂN CÔNG THỦ CÔNG CHO TRẠM ĐANG CHỌN                       -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.addMappingDichVuPhong" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-in fade-in duration-150">
+      <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden flex flex-col">
+        <!-- Header Modal -->
+        <div class="bg-gradient-to-r from-teal-700 to-emerald-800 text-white p-5 flex items-center justify-between shrink-0">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white/20 p-2 rounded-xl">
+              <i data-lucide="plus-circle" class="w-6 h-6 text-emerald-200"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-black uppercase tracking-wide">THÊM PHÂN CÔNG CÔNG KHÁM</h3>
+              <p class="text-xs text-teal-100">Trạm: {{ currentSelectedMapStationObj?.name || selectedMapStationId }}</p>
+            </div>
+          </div>
+          <button @click="modals.addMappingDichVuPhong = false" class="text-white/80 hover:text-white p-1 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+        <!-- Form Modal -->
+        <div class="p-6 space-y-4 text-xs sm:text-sm text-slate-800">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Bác sĩ / Người dùng (*):</label>
+            <select v-model="singleMappingForm.userId" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold focus:ring-2 focus:ring-teal-500 focus:outline-none">
+              <option v-for="u in mapStationData.users" :key="u.userId" :value="u.userId">
+                {{ u.fullName }} ({{ u.username }})
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Dịch vụ yêu cầu khám (*):</label>
+            <select v-model="singleMappingForm.dichVuId" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold focus:ring-2 focus:ring-teal-500 focus:outline-none">
+              <option v-for="s in mapStationData.services" :key="s.dichVuId" :value="s.dichVuId">
+                [{{ s.maDichVu }}] {{ s.tenDichVu }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Buồng / Phòng khám tiếp nhận (*):</label>
+            <select v-model="singleMappingForm.phongId" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold focus:ring-2 focus:ring-teal-500 focus:outline-none">
+              <option v-for="r in mapStationData.rooms" :key="r.phongId" :value="r.phongId">
+                [{{ r.maPhong }}] {{ r.tenPhong }} ({{ r.tenKhoa }})
+              </option>
+            </select>
+          </div>
+
+          <div class="pt-2">
+            <label class="flex items-center space-x-2 font-bold text-slate-800 cursor-pointer">
+              <input type="checkbox" v-model="singleMappingForm.isMacDinh" class="rounded text-teal-600 focus:ring-teal-500">
+              <span>Đặt làm mặc định cho người dùng này (isMacDinh = 1)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end space-x-3 shrink-0">
+          <button 
+            type="button" 
+            @click="modals.addMappingDichVuPhong = false"
+            class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition-colors cursor-pointer"
+          >
+            Hủy
+          </button>
+          <button 
+            type="button" 
+            @click="saveSingleMapping"
+            :disabled="isSavingSingleMapping"
+            class="px-5 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center space-x-2 cursor-pointer active:scale-95 disabled:opacity-50"
+          >
+            <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-if="isSavingSingleMapping"></i>
+            <span>{{ isSavingSingleMapping ? 'ĐANG LƯU...' : 'LƯU LÊN HMIS' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
     <!-- TOAST THÔNG BÁO NỔI BẬT GÓC TRÊN BÊN PHẢI -->
     <div class="fixed top-5 right-5 z-[9999] flex flex-col space-y-2.5 pointer-events-none max-w-md w-full">
       <div v-for="toast in toasts" :key="toast.id" 
@@ -6513,7 +7111,9 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           chucdanh: false,
           systemLogs: false,
           batchAssignHmis: false,
-          giaoDien: false
+          giaoDien: false,
+          batchAssignDichVuPhong: false,
+          addMappingDichVuPhong: false
         });
 
         // TRẠNG THÁI CHO CẤU HÌNH GIAO DIỆN MÀN HÌNH ĐỘNG (HMIS)
@@ -6810,6 +7410,13 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               }
               if (!selectedHmisStationId.value || hmisOfficers.value.length === 0) {
                 loadHmisStationNhanVienData();
+              }
+            } else if (tab === 'user_dichvu_phong') {
+              if (window.location.hash !== '#congkham' && window.location.hash !== '#user_dichvu_phong') {
+                history.replaceState(null, '', '#congkham');
+              }
+              if (!selectedMapStationId.value || !mapStationData.value.stationId) {
+                loadMapStationData(selectedMapStationId.value || (stations.value[0]?.id));
               }
             } else if (tab === 'stations') {
               if (window.location.hash !== '' && window.location.hash !== '#stations') {
@@ -10681,6 +11288,339 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
 
         // ==========================================
+
+        // =========================================================================
+        // TAB 5: PHÂN YÊU CẦU KHÁM & PHÒNG KHÁM ALL CHO CÁC TRẠM (HMIS)
+        // =========================================================================
+        const selectedMapStationId = ref('');
+        const mapStationData = ref({
+          stationId: '',
+          stationCode: '',
+          stationName: '',
+          totalMappings: 0,
+          mappings: [],
+          users: [],
+          services: [],
+          rooms: []
+        });
+        const isLoadingMapData = ref(false);
+        const mapSearchQuery = ref('');
+        const mapUserFilter = ref('');
+        const mapCurrentPage = ref(1);
+        const mapPageSize = ref(15);
+        const isDeletingMappingId = ref(null);
+        const isClearingStationMappings = ref(false);
+        const isQuickAssigningStation = ref(false);
+        const singleMappingForm = ref({
+          userId: '',
+          dichVuId: '',
+          phongId: '',
+          isMacDinh: true,
+          stt: 1
+        });
+        const isSavingSingleMapping = ref(false);
+
+        const batchMapParams = ref({
+          scope: 'all',
+          stationIds: [],
+          userScope: 'all',
+          serviceScope: 'main_only',
+          roomScope: 'clinic_only',
+          skipDuplicates: true,
+          clearBefore: false
+        });
+        const batchMapStationSearch = ref('');
+        const isExecutingBatchMap = ref(false);
+        const batchMapResults = ref(null);
+
+        const filteredMapMappings = computed(() => {
+          let list = mapStationData.value?.mappings || [];
+          if (mapUserFilter.value) {
+            list = list.filter(m => String(m.userId) === String(mapUserFilter.value));
+          }
+          if (mapSearchQuery.value && mapSearchQuery.value.trim()) {
+            const q = mapSearchQuery.value.trim().toLowerCase();
+            list = list.filter(m => 
+              (m.username && m.username.toLowerCase().includes(q)) ||
+              (m.fullName && m.fullName.toLowerCase().includes(q)) ||
+              (m.maDichVu && m.maDichVu.toLowerCase().includes(q)) ||
+              (m.tenDichVu && m.tenDichVu.toLowerCase().includes(q)) ||
+              (m.maPhong && m.maPhong.toLowerCase().includes(q)) ||
+              (m.tenPhong && m.tenPhong.toLowerCase().includes(q))
+            );
+          }
+          return list;
+        });
+
+        const mapTotalPages = computed(() => {
+          return Math.max(1, Math.ceil(filteredMapMappings.value.length / mapPageSize.value));
+        });
+
+        const pagedMapMappings = computed(() => {
+          const start = (mapCurrentPage.value - 1) * mapPageSize.value;
+          return filteredMapMappings.value.slice(start, start + mapPageSize.value);
+        });
+
+        const currentSelectedMapStationObj = computed(() => {
+          return stations.value.find(s => s.id === selectedMapStationId.value) || null;
+        });
+
+        const filteredBatchMapStations = computed(() => {
+          if (!batchMapStationSearch.value.trim()) return stations.value;
+          const q = batchMapStationSearch.value.trim().toLowerCase();
+          return stations.value.filter(s => 
+            (s.name && s.name.toLowerCase().includes(q)) ||
+            (s.code && s.code.toLowerCase().includes(q)) ||
+            (s.id && s.id.toLowerCase().includes(q))
+          );
+        });
+
+        function toggleSelectAllBatchMapStations() {
+          if (batchMapParams.value.stationIds.length === stations.value.length) {
+            batchMapParams.value.stationIds = [];
+          } else {
+            batchMapParams.value.stationIds = stations.value.map(s => s.id);
+          }
+        }
+
+        async function loadMapStationData(stationId) {
+          if (!stationId) {
+            if (stations.value.length > 0) {
+              stationId = stations.value[0].id;
+              selectedMapStationId.value = stationId;
+            } else {
+              return;
+            }
+          } else {
+            selectedMapStationId.value = stationId;
+          }
+
+          isLoadingMapData.value = true;
+          mapCurrentPage.value = 1;
+          try {
+            const res = await axios.get(`/api/user-dichvu-phong/station-data?stationId=${stationId}&page=0&size=1000`);
+            if (res.data?.success) {
+              mapStationData.value = res.data.data;
+            } else {
+              showToast(res.data?.message || 'Không thể tải dữ liệu phân công trạm', 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi tải dữ liệu phân công trạm:', err);
+            showToast('Lỗi tải dữ liệu: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isLoadingMapData.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function openBatchMapModal() {
+          batchMapStationSearch.value = '';
+          batchMapParams.value = {
+            scope: 'all',
+            stationIds: stations.value.map(s => s.id),
+            userScope: 'all',
+            serviceScope: 'main_only',
+            roomScope: 'clinic_only',
+            skipDuplicates: true,
+            clearBefore: false
+          };
+          batchMapResults.value = null;
+          modals.value.batchAssignDichVuPhong = true;
+          nextTick(() => refreshIcons());
+        }
+
+        async function executeBatchAssignMap() {
+          const targetStationIds = batchMapParams.value.scope === 'all' 
+            ? stations.value.map(s => s.id) 
+            : batchMapParams.value.stationIds;
+
+          if (!targetStationIds || targetStationIds.length === 0) {
+            showToast('Vui lòng chọn ít nhất 1 trạm y tế!', 'warning');
+            return;
+          }
+
+          isExecutingBatchMap.value = true;
+          batchMapResults.value = null;
+          try {
+            const payload = {
+              stationIds: targetStationIds,
+              userScope: batchMapParams.value.userScope,
+              serviceScope: batchMapParams.value.serviceScope,
+              roomScope: batchMapParams.value.roomScope,
+              skipDuplicates: batchMapParams.value.skipDuplicates,
+              clearBefore: batchMapParams.value.clearBefore
+            };
+            const res = await axios.post('/api/user-dichvu-phong/batch-assign-all', payload);
+            if (res.data?.success) {
+              batchMapResults.value = res.data.data;
+              showToast(`Đã hoàn thành phân công ${res.data.data.totalStations} trạm: +${res.data.data.totalAssigned} bản ghi mới!`, 'success');
+              fetchSystemLogs();
+              if (selectedMapStationId.value) {
+                await loadMapStationData(selectedMapStationId.value);
+              }
+            } else {
+              showToast(res.data?.message || 'Có lỗi xảy ra khi phân công hàng loạt', 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi phân công hàng loạt:', err);
+            showToast('Lỗi phân công hàng loạt: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isExecutingBatchMap.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function quickAssignCurrentStation() {
+          if (!selectedMapStationId.value) return;
+          const stObj = stations.value.find(s => s.id === selectedMapStationId.value);
+          const stName = stObj ? stObj.name : selectedMapStationId.value;
+          if (!confirm(`Bạn có chắc chắn muốn phân công nhanh Dịch vụ khám (TYT.1899) và Phòng khám (KB1) cho toàn bộ người dùng của [${stName}]?`)) {
+            return;
+          }
+
+          isQuickAssigningStation.value = true;
+          try {
+            const payload = {
+              stationIds: [selectedMapStationId.value],
+              userScope: 'all',
+              serviceScope: 'main_only',
+              roomScope: 'clinic_only',
+              skipDuplicates: true,
+              clearBefore: false
+            };
+            const res = await axios.post('/api/user-dichvu-phong/batch-assign-all', payload);
+            if (res.data?.success) {
+              const summary = res.data.data;
+              showToast(`Đã phân công nhanh [${stName}]: +${summary.totalAssigned} phân công mới!`, 'success');
+              fetchSystemLogs();
+              await loadMapStationData(selectedMapStationId.value);
+            } else {
+              showToast(res.data?.message || 'Lỗi phân công nhanh', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isQuickAssigningStation.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function clearCurrentStationMappings() {
+          if (!selectedMapStationId.value) return;
+          const stObj = stations.value.find(s => s.id === selectedMapStationId.value);
+          const stName = stObj ? stObj.name : selectedMapStationId.value;
+          if (!confirm(`CẢNH BÁO: Bạn có CHẮC CHẮN muốn XÓA TẤT CẢ phân công công khám & phòng khám của [${stName}] trên HMIS? Hành động này không thể hoàn tác!`)) {
+            return;
+          }
+
+          isClearingStationMappings.value = true;
+          try {
+            const res = await axios.post('/api/user-dichvu-phong/clear-all', { stationId: selectedMapStationId.value });
+            if (res.data?.success) {
+              showToast(`Đã xóa sạch toàn bộ phân công của trạm [${stName}] (${res.data.data.deletedCount} bản ghi)!`, 'success');
+              fetchSystemLogs();
+              await loadMapStationData(selectedMapStationId.value);
+            } else {
+              showToast(res.data?.message || 'Lỗi khi xóa phân công', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isClearingStationMappings.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function deleteSingleMapping(mapping) {
+          if (!mapping || !mapping.id) return;
+          if (!confirm(`Xóa phân công của [${mapping.fullName || mapping.username}] với dịch vụ [${mapping.tenDichVu || mapping.maDichVu}] tại [${mapping.tenPhong || mapping.maPhong}]?`)) {
+            return;
+          }
+          isDeletingMappingId.value = mapping.id;
+          try {
+            const res = await axios.delete(`/api/user-dichvu-phong/delete?stationId=${selectedMapStationId.value}&id=${mapping.id}`);
+            if (res.data?.success) {
+              showToast('Đã xóa phân công thành công!', 'success');
+              mapStationData.value.mappings = mapStationData.value.mappings.filter(m => m.id !== mapping.id);
+              mapStationData.value.totalMappings = Math.max(0, mapStationData.value.totalMappings - 1);
+            } else {
+              showToast(res.data?.message || 'Lỗi xóa phân công', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi xóa phân công: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isDeletingMappingId.value = null;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function openAddSingleMappingModal() {
+          const defaultUserId = mapStationData.value.users.length > 0 ? mapStationData.value.users[0].userId : '';
+          const defaultService = mapStationData.value.services.find(s => s.maDichVu === 'TYT.1899') || mapStationData.value.services[0];
+          const defaultRoom = mapStationData.value.rooms.find(r => r.maPhong === 'KB1') || mapStationData.value.rooms[0];
+
+          singleMappingForm.value = {
+            userId: defaultUserId,
+            dichVuId: defaultService ? defaultService.dichVuId : '',
+            phongId: defaultRoom ? defaultRoom.phongId : '',
+            isMacDinh: true,
+            stt: 1
+          };
+          modals.value.addMappingDichVuPhong = true;
+          nextTick(() => refreshIcons());
+        }
+
+        async function saveSingleMapping() {
+          if (!singleMappingForm.value.userId || !singleMappingForm.value.dichVuId || !singleMappingForm.value.phongId) {
+            showToast('Vui lòng chọn đầy đủ Người dùng, Dịch vụ và Phòng khám!', 'warning');
+            return;
+          }
+          isSavingSingleMapping.value = true;
+          try {
+            const payload = {
+              stationId: selectedMapStationId.value,
+              userId: singleMappingForm.value.userId,
+              dichVuId: singleMappingForm.value.dichVuId,
+              phongId: singleMappingForm.value.phongId,
+              isMacDinh: singleMappingForm.value.isMacDinh ? 1 : 0,
+              stt: singleMappingForm.value.stt || 1
+            };
+            const res = await axios.post('/api/user-dichvu-phong/save', payload);
+            if (res.data?.success) {
+              showToast('Đã lưu phân công thành công lên HMIS!', 'success');
+              modals.value.addMappingDichVuPhong = false;
+              await loadMapStationData(selectedMapStationId.value);
+            } else {
+              showToast(res.data?.message || 'Lỗi khi lưu phân công', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi lưu phân công: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isSavingSingleMapping.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function downloadMapExcel() {
+          if (!selectedMapStationId.value) return;
+          try {
+            const res = await axios.get(`/api/user-dichvu-phong/export-excel?stationId=${selectedMapStationId.value}`, { responseType: 'blob' });
+            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `PhanCong_CongKham_PhongKham_${selectedMapStationId.value}_${Date.now()}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            showToast('Đã tải xuống file Excel thành công!', 'success');
+          } catch (err) {
+            showToast('Lỗi tải file Excel: ' + (err.response?.data?.message || err.message), 'error');
+          }
+        }
+
+
         // TAB 6: THỐNG KÊ & BIỂU ĐỒ KCB NGOẠI TRÚ
         // ==========================================
         const isLoadingKcb = ref(false);
@@ -11049,7 +11989,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
           // Kiểm tra hash URL để mở đúng Tab (ví dụ #thuoc, #vattu, #nhanvien, #nhanvien_hmis)
           // Mặc định mở Tab KCB khi vào link http://localhost:5000 hoặc #kcb
-          if (window.location.hash === '#stations') {
+          if (window.location.hash === '#congkham' || window.location.hash === '#user_dichvu_phong') {
+            currentMainTab.value = 'user_dichvu_phong';
+          } else if (window.location.hash === '#stations') {
             currentMainTab.value = 'stations';
           } else if (window.location.hash === '#nhanvien_hmis') {
             currentMainTab.value = 'nhanvien_hmis';
@@ -11075,6 +12017,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           } else if (currentMainTab.value === 'kcb') {
             loadKcbDashboard();
             loadKcbPhongKhamList();
+          } else if (currentMainTab.value === 'user_dichvu_phong') {
+            loadMapStationData(selectedMapStationId.value || (stations.value[0]?.id));
           }
           fetchSystemLogs();
           refreshIcons();
@@ -11098,6 +12042,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               targetTab = 'import_file';
             } else if (window.location.hash === '#kcb') {
               targetTab = 'kcb';
+            } else if (window.location.hash === '#congkham' || window.location.hash === '#user_dichvu_phong') {
+              targetTab = 'user_dichvu_phong';
             }
             switchMainTab(targetTab);
           });
@@ -11484,7 +12430,38 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           renderKcbCharts,
           downloadKcbExcelReport,
           currentImportSubTab,
-          setImportSubTab
+          setImportSubTab,
+          selectedMapStationId,
+          mapStationData,
+          isLoadingMapData,
+          mapSearchQuery,
+          mapUserFilter,
+          mapCurrentPage,
+          mapPageSize,
+          isDeletingMappingId,
+          isClearingStationMappings,
+          isQuickAssigningStation,
+          singleMappingForm,
+          isSavingSingleMapping,
+          batchMapParams,
+          batchMapStationSearch,
+          isExecutingBatchMap,
+          batchMapResults,
+          filteredMapMappings,
+          mapTotalPages,
+          pagedMapMappings,
+          currentSelectedMapStationObj,
+          filteredBatchMapStations,
+          toggleSelectAllBatchMapStations,
+          loadMapStationData,
+          openBatchMapModal,
+          executeBatchAssignMap,
+          quickAssignCurrentStation,
+          clearCurrentStationMappings,
+          deleteSingleMapping,
+          openAddSingleMappingModal,
+          saveSingleMapping,
+          downloadMapExcel
         };
       }
     }).mount('#app');

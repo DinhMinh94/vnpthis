@@ -12,6 +12,7 @@ const logRoutes = require('./routes/logRoutes');
 const nhanVienHmisRoutes = require('./routes/nhanVienHmisRoutes');
 const giaoDienRoutes = require('./routes/giaoDienRoutes');
 const kcbRoutes = require('./routes/kcbRoutes');
+const userDichVuPhongRoutes = require('./routes/userDichVuPhongRoutes');
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use('/api/logs', logRoutes);
 app.use('/api/nhanvien-hmis', nhanVienHmisRoutes);
 app.use('/api/giaodien', giaoDienRoutes);
 app.use('/api/kcb', kcbRoutes);
+app.use('/api/user-dichvu-phong', userDichVuPhongRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

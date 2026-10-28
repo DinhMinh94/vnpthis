@@ -3340,7 +3340,10 @@
             <div>
               <div class="flex items-center space-x-2.5 flex-wrap">
                 <h2 class="text-xl sm:text-2xl font-black uppercase tracking-wide">THỐNG KÊ &amp; BIỂU ĐỒ KHÁM CHỮA BỆNH HMIS</h2>
-                <span class="bg-cyan-400 text-cyan-950 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs">Live Portal</span>
+                <span class="bg-emerald-500 text-white font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs flex items-center space-x-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                  <span>Dữ liệu thật 100%</span>
+                </span>
                 <span class="bg-emerald-400/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-bold px-2 py-0.5 rounded-full">
                   ds-khambenh
                 </span>
@@ -3353,9 +3356,9 @@
 
           <!-- Nút tác vụ nhanh -->
           <div class="flex flex-wrap items-center gap-2.5">
-            <button @click="loadKcbDashboard()" :disabled="isLoadingKcb" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition-all cursor-pointer">
-              <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingKcb }"></i>
-              <span>Làm mới dữ liệu</span>
+            <button @click="loadKcbDashboard(true)" :disabled="isLoadingKcb" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer" title="Lấy dữ liệu mới nhất trực tiếp từ cổng HMIS">
+              <i data-lucide="refresh-cw" class="w-4 h-4 text-cyan-200" :class="{ 'animate-spin': isLoadingKcb }"></i>
+              <span>Đồng bộ dữ liệu thật</span>
             </button>
             <button @click="downloadKcbExcelReport()" :disabled="isExportingKcbExcel" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
               <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-200"></i>
@@ -12726,6 +12729,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
         function onKcbFilterChange() {
           kcbCurrentPage.value = 1;
+          loadKcbPhongKhamList();
           loadKcbDashboard();
         }
 
@@ -12771,7 +12775,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
         async function loadKcbPhongKhamList() {
           try {
-            const res = await axios.get('/api/kcb/phong-kham');
+            const res = await axios.get('/api/kcb/phong-kham', { params: { stationId: kcbFilters.value.stationId } });
             if (res.data && res.data.success) {
               kcbPhongKhamList.value = res.data.data || [];
             }
@@ -12780,7 +12784,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           }
         }
 
-        async function loadKcbDashboard() {
+        async function loadKcbDashboard(forceRefresh = false) {
           isLoadingKcb.value = true;
           try {
             const params = {
@@ -12789,7 +12793,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               tuNgay: kcbFilters.value.tuNgay,
               denNgay: kcbFilters.value.denNgay,
               trangThaiId: kcbFilters.value.trangThaiId,
-              viewType: kcbFilters.value.viewType
+              viewType: kcbFilters.value.viewType,
+              refresh: forceRefresh ? 'true' : 'false'
             };
             const res = await axios.get('/api/kcb/thong-ke', { params });
             if (res.data && res.data.success) {

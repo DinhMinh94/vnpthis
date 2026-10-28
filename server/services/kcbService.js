@@ -3,49 +3,33 @@ const XLSX = require('xlsx');
 const db = require('./db');
 const cauhinhService = require('./cauhinhService');
 
-// Danh sách phòng khám chuẩn tại Trạm Y Tế
-const DEFAULT_PHONG_KHAM_LIST = [
-  { id: 1, maPhong: 'PK01', tenPhong: 'Phòng khám Đa khoa / Cấp cứu' },
-  { id: 2, maPhong: 'PK02', tenPhong: 'Phòng khám Nội - Nhi' },
-  { id: 3, maPhong: 'PK03', tenPhong: 'Phòng khám Y học cổ truyền' },
-  { id: 4, maPhong: 'PK04', tenPhong: 'Phòng Chăm sóc SKSS - Phụ sản' },
-  { id: 5, maPhong: 'PK05', tenPhong: 'Phòng Khám BHYT & Mãn tính' },
-  { id: 6, maPhong: 'PK06', tenPhong: 'Phòng Tư vấn & Tiêm chủng' }
-];
+// In-memory cache for live station records: stationId -> { timestamp, records }
+const stationRecordsCache = new Map();
+const CACHE_TTL_MS = 10 * 60 * 1000; // 10 phút
+const HMIS_TIMEOUT_MS = 4500; // 4.5 giây timeout mỗi trạm
 
-// Danh sách họ tên mẫu bệnh nhân Việt Nam
-const HO_TEN_SAMPLES = [
-  { ten: 'Nguyễn Văn Hùng', gioiTinh: 'Nam', namSinh: 1968, doiTuong: 'BHYT', chanDoan: 'I10 - Tăng huyết áp vô căn (nguyên phát)' },
-  { ten: 'Trần Thị Mai', gioiTinh: 'Nữ', namSinh: 1982, doiTuong: 'BHYT', chanDoan: 'E11 - Đái tháo đường típ 2' },
-  { ten: 'Lê Hoàng Long', gioiTinh: 'Nam', namSinh: 2018, doiTuong: 'BHYT', chanDoan: 'J02.9 - Viêm họng cấp, không đặc hiệu' },
-  { ten: 'Phạm Thị Lan', gioiTinh: 'Nữ', namSinh: 1955, doiTuong: 'BHYT', chanDoan: 'M17 - Thoái hóa khớp gối' },
-  { ten: 'Vũ Đức Thành', gioiTinh: 'Nam', namSinh: 1974, doiTuong: 'Viện phí', chanDoan: 'K29.7 - Viêm dạ dày không đặc hiệu' },
-  { ten: 'Đỗ Thị Bích', gioiTinh: 'Nữ', namSinh: 1993, doiTuong: 'BHYT', chanDoan: 'O20.0 - Dọa sảy thai' },
-  { ten: 'Hoàng Minh Quân', gioiTinh: 'Nam', namSinh: 1961, doiTuong: 'BHYT', chanDoan: 'I20 - Cơn đau thắt ngực' },
-  { ten: 'Bùi Thị Dung', gioiTinh: 'Nữ', namSinh: 1970, doiTuong: 'BHYT', chanDoan: 'K21.9 - Bệnh trào ngược dạ dày - thực quản' },
-  { ten: 'Ngô Quốc Bảo', gioiTinh: 'Nam', namSinh: 2005, doiTuong: 'BHYT', chanDoan: 'J00 - Viêm mũi họng cấp (cảm lạnh)' },
-  { ten: 'Đinh Thị Hoa', gioiTinh: 'Nữ', namSinh: 1988, doiTuong: 'BHYT', chanDoan: 'N39.0 - Nhiễm trùng đường tiết niệu' },
-  { ten: 'Lý Thanh Tùng', gioiTinh: 'Nam', namSinh: 1990, doiTuong: 'Viện phí', chanDoan: 'S00 - Chấn thương nông ở đầu' },
-  { ten: 'Dương Thị Phương', gioiTinh: 'Nữ', namSinh: 1977, doiTuong: 'BHYT', chanDoan: 'M54.5 - Đau thắt lưng' },
-  { ten: 'Trịnh Văn Cường', gioiTinh: 'Nam', namSinh: 1965, doiTuong: 'BHYT', chanDoan: 'I11 - Bệnh tim do tăng huyết áp' },
-  { ten: 'Phan Thị Nga', gioiTinh: 'Nữ', namSinh: 1984, doiTuong: 'BHYT', chanDoan: 'J20 - Viêm phế quản cấp' },
-  { ten: 'Lương Thế Vinh', gioiTinh: 'Nam', namSinh: 2012, doiTuong: 'BHYT', chanDoan: 'B34.9 - Nhiễm virus, không đặc hiệu' }
-];
-
-// Danh sách bác sĩ khám mẫu
-const BAC_SI_LIST = [
-  'BS. CKI Nguyễn Văn An',
-  'BS. Trần Thị Bình',
-  'Y sĩ Lê Văn Cường',
-  'BS. Đỗ Minh Đức',
-  'Y sĩ Phạm Thị Hạnh',
-  'BS. YHCT Hoàng Văn Khải'
-];
+/**
+ * Phân tích chuỗi ngày Việt Nam 'dd/MM/yyyy' thành đối tượng Date
+ */
+function parseDateVi(dateStr) {
+  if (!dateStr) return null;
+  const parts = String(dateStr).split(' ')[0].split('/');
+  if (parts.length === 3) {
+    const d = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10) - 1;
+    const y = parseInt(parts[2], 10);
+    if (!isNaN(d) && !isNaN(m) && !isNaN(y)) {
+      return new Date(y, m, d);
+    }
+  }
+  return null;
+}
 
 /**
  * Sinh chuỗi ngày theo định dạng dd/MM/yyyy
  */
 function formatDateVi(date) {
+  if (!date) return '';
   const d = String(date.getDate()).padStart(2, '0');
   const m = String(date.getMonth() + 1).padStart(2, '0');
   const y = date.getFullYear();
@@ -53,7 +37,7 @@ function formatDateVi(date) {
 }
 
 /**
- * Lấy danh sách phòng khám của trạm y tế
+ * Lấy danh sách phòng khám thực tế từ cổng HMIS
  */
 async function getPhongKhamList(stationId) {
   try {
@@ -63,7 +47,7 @@ async function getPhongKhamList(stationId) {
     }
     if (!station) {
       const stations = db.getStations(true);
-      station = stations.find(s => s.status === 'success' || s.username) || stations[0];
+      station = stations.find(s => s.status === 'success' || (s.username && s.password)) || stations[0];
     }
 
     if (station && station.username && station.password) {
@@ -75,35 +59,69 @@ async function getPhongKhamList(stationId) {
           'Origin': auth.targetUrl.replace(/\/$/, ''),
           'Referer': auth.targetUrl
         };
-        // Thử lấy danh sách phòng thực tế từ cổng HMIS
-        const res = await axios.get(`${auth.gateway}common/dmcthongtinkhoaphong/findAll`, {
+
+        // Lấy danh sách phòng loại type==2 (Phòng chuyên môn / phòng khám)
+        const res = await axios.get(`${auth.gateway}common/organization/search?filter=type==2&sort=id,asc&page=0&size=50`, {
           headers,
-          timeout: 6000,
+          timeout: HMIS_TIMEOUT_MS,
           validateStatus: () => true
         });
-        if (res.status === 200 && Array.isArray(res.data?.data) && res.data.data.length > 0) {
-          const list = res.data.data
-            .filter(item => item.id?.phongId && item.id.phongId !== 0)
-            .map((item, idx) => ({
-              id: item.id.phongId,
-              maPhong: item.maKhoaByt || `PK0${idx + 1}`,
-              tenPhong: item.tenPhongChuyenKhoa || `Phòng khám số ${idx + 1}`
-            }));
+
+        if (res.status === 200 && res.data && res.data.code === 0 && Array.isArray(res.data.data?.content)) {
+          const list = res.data.data.content.map(item => ({
+            id: item.id,
+            maPhong: item.code || `PK${item.id}`,
+            tenPhong: item.name || `Phòng khám ${item.code}`
+          }));
           if (list.length > 0) return list;
         }
       } catch (err) {
-        // Fallback to default list below
+        console.warn(`[KCB] Không thể lấy phòng khám live từ HMIS cho ${station.code}:`, err.message);
       }
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn('[KCB] Lỗi getPhongKhamList:', e.message);
+  }
 
-  return DEFAULT_PHONG_KHAM_LIST;
+  // Fallback: Tìm các phòng xuất hiện trong bản ghi đã cache
+  const cachedRooms = new Map();
+  for (const entry of stationRecordsCache.values()) {
+    if (Array.isArray(entry.records)) {
+      entry.records.forEach(r => {
+        if (r.phongId && r.tenPhong && !cachedRooms.has(r.phongId)) {
+          cachedRooms.set(r.phongId, { id: r.phongId, maPhong: r.maPhong, tenPhong: r.tenPhong });
+        }
+      });
+    }
+  }
+  if (cachedRooms.size > 0) {
+    return Array.from(cachedRooms.values());
+  }
+
+  return [
+    { id: 208, maPhong: 'KB1', tenPhong: 'Phòng khám trạm y tế' },
+    { id: 220, maPhong: 'KSK', tenPhong: 'Phòng khám sức khỏe' },
+    { id: 1, maPhong: 'PK01', tenPhong: 'Phòng khám Đa khoa / Cấp cứu' },
+    { id: 2, maPhong: 'PK02', tenPhong: 'Phòng khám Nội - Nhi' },
+    { id: 3, maPhong: 'PK03', tenPhong: 'Phòng khám Y học cổ truyền' },
+    { id: 4, maPhong: 'PK04', tenPhong: 'Phòng Chăm sóc SKSS - Phụ sản' }
+  ];
 }
 
 /**
- * Lấy dữ liệu danh sách khám bệnh thực tế từ cổng HMIS cho 1 trạm
+ * Tải danh sách ca khám thực tế của 1 trạm từ cổng HMIS
  */
-async function fetchLiveHmisKcbData(station, filterParams = {}) {
+async function fetchStationLiveKcbRecords(station, forceRefresh = false) {
+  if (!station || !station.username || !station.password) {
+    return [];
+  }
+
+  const cached = stationRecordsCache.get(station.id);
+  const now = Date.now();
+  if (!forceRefresh && cached && (now - cached.timestamp < CACHE_TTL_MS)) {
+    return cached.records;
+  }
+
   try {
     const auth = await cauhinhService.loginToHmis(station);
     const headers = {
@@ -113,135 +131,86 @@ async function fetchLiveHmisKcbData(station, filterParams = {}) {
       'Referer': auth.targetUrl
     };
 
-    let filterStr = '';
-    const filters = [];
-    if (filterParams.tuNgay && filterParams.denNgay) {
-      filters.push(`tuNgay=="${filterParams.tuNgay} 00:00:00"`);
-      filters.push(`denNgay=="${filterParams.denNgay} 23:59:59"`);
-    }
-    if (filterParams.phongId && filterParams.phongId !== 'all') {
-      filters.push(`phongId==${filterParams.phongId}`);
-    }
-    if (filterParams.trangThaiId && filterParams.trangThaiId !== 'all') {
-      filters.push(`trangThaiId==${filterParams.trangThaiId}`);
-    }
-    if (filters.length > 0) {
-      filterStr = `filter=${encodeURIComponent(filters.join(';'))}&`;
-    }
-
-    const url = `${auth.gateway}common/kbhphongkhamdangky/danhsachkhambenh?${filterStr}page=0&size=500&sort=ngay,desc`;
-    const res = await axios.get(url, { headers, timeout: 8000, validateStatus: () => true });
+    // Lấy tối đa 500 ca khám gần nhất từ hệ thống thật
+    const url = `${auth.gateway}common/kbhphongkhamdangky/search?filter=id>0&sort=ngay,desc&page=0&size=500`;
+    const res = await axios.get(url, { headers, timeout: HMIS_TIMEOUT_MS, validateStatus: () => true });
 
     if (res.status === 200 && res.data && res.data.code === 0 && Array.isArray(res.data.data?.content)) {
-      return res.data.data.content;
-    }
-    return [];
-  } catch (e) {
-    return [];
-  }
-}
-
-/**
- * Sinh dữ liệu mẫu khám chữa bệnh thực tế & sinh động dựa trên thông số lọc
- */
-function generateRealisticKcbRecords(stations, options = {}) {
-  const records = [];
-  const phongKhamList = DEFAULT_PHONG_KHAM_LIST;
-  const now = new Date();
-
-  // Xác định khoảng ngày
-  const daysCount = options.viewType === 'year' ? 30 : (options.viewType === 'month' ? 14 : 7);
-
-  stations.forEach((station, sIdx) => {
-    // Mỗi trạm có từ 8 - 25 bệnh nhân khám mỗi ngày
-    for (let dayOffset = 0; dayOffset < daysCount; dayOffset++) {
-      const recordDate = new Date(now);
-      recordDate.setDate(recordDate.getDate() - dayOffset);
-      const dateStr = formatDateVi(recordDate);
-
-      // Số lượng khám của trạm này trong ngày
-      const baseCount = 6 + ((sIdx * 3 + dayOffset * 5) % 12);
-
-      for (let i = 0; i < baseCount; i++) {
-        const sampleIdx = (sIdx * 7 + dayOffset * 4 + i) % HO_TEN_SAMPLES.length;
-        const sample = HO_TEN_SAMPLES[sampleIdx];
-        const pkIdx = (i + dayOffset) % phongKhamList.length;
-        const phongKham = phongKhamList[pkIdx];
-        const bsIdx = (i + sIdx) % BAC_SI_LIST.length;
-        const bacSi = BAC_SI_LIST[bsIdx];
-
-        // Trạng thái: 
-        // 3 = Đã kết thúc (chiếm 65%)
-        // 2 = Đang khám (chiếm 20%)
-        // 1 = Chờ khám (chiếm 15%)
-        let trangThaiId = 3;
-        let trangThaiTen = 'Đã kết thúc';
-        const randStatus = (i * 17 + dayOffset * 13) % 100;
-        if (dayOffset === 0) {
-          // Ngày hôm nay có nhiều ca đang khám và chờ khám hơn
-          if (randStatus < 40) {
-            trangThaiId = 3;
-            trangThaiTen = 'Đã kết thúc';
-          } else if (randStatus < 75) {
-            trangThaiId = 2;
-            trangThaiTen = 'Đang khám';
-          } else {
-            trangThaiId = 1;
-            trangThaiTen = 'Chờ khám';
-          }
-        } else {
-          // Các ngày trước gần như đã kết thúc hết, thỉnh thoảng có ca đang khám
-          if (randStatus < 85) {
-            trangThaiId = 3;
-            trangThaiTen = 'Đã kết thúc';
-          } else if (randStatus < 95) {
-            trangThaiId = 2;
-            trangThaiTen = 'Đang khám';
-          } else {
-            trangThaiId = 1;
-            trangThaiTen = 'Chờ khám';
-          }
+      const items = res.data.data.content;
+      const records = items.map((item, idx) => {
+        let trangThaiId = 1;
+        let trangThaiTen = 'Chờ khám';
+        if (item.trangThaiStt === 9 || item.ngayKt || item.khamBenh?.ngayKetLuan) {
+          trangThaiId = 3;
+          trangThaiTen = 'Đã kết thúc';
+        } else if (item.trangThaiStt === 4 || item.ngayBd) {
+          trangThaiId = 2;
+          trangThaiTen = 'Đang khám';
         }
 
-        const hour = 7 + (i % 9);
-        const minute = (i * 7) % 60;
-        const timeStr = `${dateStr} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`;
+        const benhNhan = item.khamBenh?.tiepNhan?.hoSoBenhAn?.benhNhan ||
+                         item.khamBenh?.tiepNhan?.benhNhan ||
+                         item.benhNhan || {};
+        const namSinh = benhNhan.namSinh || (benhNhan.ngaySinh ? parseInt(benhNhan.ngaySinh.slice(-4)) : null);
+        const dateParsed = parseDateVi(item.ngay);
+        const ngayKham = item.ngay ? item.ngay.split(' ')[0] : (dateParsed ? formatDateVi(dateParsed) : '');
+        const thangKham = dateParsed ? `${String(dateParsed.getMonth() + 1).padStart(2, '0')}/${dateParsed.getFullYear()}` : (ngayKham ? ngayKham.slice(3) : '');
+        const namKham = dateParsed ? String(dateParsed.getFullYear()) : (ngayKham ? ngayKham.slice(6) : '');
 
-        records.push({
-          id: `KCB_${station.code}_${dayOffset}_${i}`,
-          stt: i + 1,
+        const soTheBhyt = item.khamBenh?.tiepNhan?.hoSoBenhAn?.maBhyt ||
+                          item.khamBenh?.tiepNhan?.bhyt?.maSoBhyt || '';
+        const isBhyt = Boolean(soTheBhyt || item.bhytDv === 1 || item.khamBenh?.tiepNhan?.bhyt);
+
+        return {
+          id: item.id || `LIVE_${station.code}_${idx}`,
+          stt: idx + 1,
           stationId: station.id,
           stationCode: station.code,
           stationName: station.name,
-          maBenhNhan: `BN${station.code}${String(dayOffset * 20 + i + 1).padStart(4, '0')}`,
-          tenBenhNhan: sample.ten,
-          namSinh: sample.namSinh,
-          tuoi: now.getFullYear() - sample.namSinh,
-          gioiTinh: sample.gioiTinh,
-          doiTuong: sample.doiTuong,
-          phongId: phongKham.id,
-          maPhong: phongKham.maPhong,
-          tenPhong: phongKham.tenPhong,
-          bacSiKham: bacSi,
-          thoiGianTiepNhan: timeStr,
-          ngayKham: dateStr,
-          thangKham: `${String(recordDate.getMonth() + 1).padStart(2, '0')}/${recordDate.getFullYear()}`,
-          namKham: String(recordDate.getFullYear()),
+          maBenhNhan: benhNhan.maBenhNhan || `BN${item.id}`,
+          tenBenhNhan: benhNhan.tenBenhNhan || 'Bệnh nhân',
+          namSinh: namSinh || 1980,
+          tuoi: namSinh ? (new Date().getFullYear() - namSinh) : 40,
+          gioiTinh: benhNhan.gioiTinhId === 1 ? 'Nam' : (benhNhan.gioiTinhId === 2 ? 'Nữ' : 'Khác'),
+          doiTuong: isBhyt ? 'BHYT' : 'Viện phí',
+          soTheBhyt: soTheBhyt,
+          phongId: item.phong?.id || 0,
+          maPhong: item.phong?.code || 'PK',
+          tenPhong: item.phong?.name || 'Phòng khám trạm',
+          bacSiKham: item.tenDieuDuong || (item.khamBenh?.bsKetThucId ? 'Bác sĩ trạm' : 'Bác sĩ điều trị'),
+          thoiGianTiepNhan: item.ngay || '',
+          ngayKham,
+          thangKham,
+          namKham,
           trangThaiId,
           trangThaiTen,
-          chanDoan: sample.chanDoan,
-          soTheBhyt: sample.doiTuong === 'BHYT' ? `DN4${station.code}99${String(1000 + i).slice(-4)}` : ''
-        });
-      }
-    }
-  });
+          chanDoan: item.chanDoanRaVien || item.khamBenh?.chanDoanRaVien || item.chanDoanBanDau || item.khamBenh?.chanDoanBanDau || 'Khám bệnh thông thường'
+        };
+      });
 
-  return records;
+      // Lưu cache
+      stationRecordsCache.set(station.id, {
+        timestamp: now,
+        records
+      });
+
+      return records;
+    }
+  } catch (err) {
+    console.warn(`[KCB] Không thể lấy dữ liệu live từ trạm ${station.name} (${station.code}):`, err.message);
+  }
+
+  // Nếu trạm lỗi nhưng có cache cũ, trả về cache cũ
+  if (cached && Array.isArray(cached.records)) {
+    return cached.records;
+  }
+
+  return [];
 }
 
 /**
- * Xử lý dữ liệu Dashboard thống kê KCB cho frontend
- * @param {Object} query - { stationId, viewType, tuNgay, denNgay, phongId, trangThaiId }
+ * Xử lý dữ liệu Dashboard thống kê KCB cho frontend từ dữ liệu THẬT của trạm
+ * @param {Object} query - { stationId, viewType, tuNgay, denNgay, phongId, trangThaiId, refresh }
  */
 async function getKcbDashboardData(query = {}) {
   const {
@@ -250,97 +219,80 @@ async function getKcbDashboardData(query = {}) {
     tuNgay = '',
     denNgay = '',
     phongId = 'all',
-    trangThaiId = 'all'
+    trangThaiId = 'all',
+    refresh = 'false'
   } = query;
 
+  const forceRefresh = refresh === 'true' || refresh === true;
   const allStations = db.getStations(true);
   let targetStations = allStations;
   if (stationId && stationId !== 'all') {
     targetStations = allStations.filter(s => s.id === stationId || s.code === stationId);
   }
 
-  // 1. Thử lấy dữ liệu thực tế từ cổng HMIS
+  // 1. Lấy dữ liệu thực tế từ cổng HMIS
   let allRecords = [];
-  let isLive = false;
+  let isLive = true;
 
-  if (targetStations.length === 1 && targetStations[0].username) {
-    const liveData = await fetchLiveHmisKcbData(targetStations[0], { tuNgay, denNgay, phongId, trangThaiId });
-    if (liveData && liveData.length > 0) {
-      isLive = true;
-      allRecords = liveData.map((item, idx) => {
-        const sttTrangThai = item.trangThaiStt || item.trangThaiId || 3;
-        const tenTrangThai = sttTrangThai === 3 ? 'Đã kết thúc' : (sttTrangThai === 2 ? 'Đang khám' : 'Chờ khám');
-        return {
-          id: item.id || `LIVE_${idx}`,
-          stt: idx + 1,
-          stationId: targetStations[0].id,
-          stationCode: targetStations[0].code,
-          stationName: targetStations[0].name,
-          maBenhNhan: item.benhNhan?.maBenhNhan || `BN_${idx}`,
-          tenBenhNhan: item.benhNhan?.tenBenhNhan || 'Bệnh nhân',
-          namSinh: item.benhNhan?.ngaySinh ? new Date(item.benhNhan.ngaySinh).getFullYear() : 1980,
-          tuoi: item.benhNhan?.tuoi || 40,
-          gioiTinh: item.benhNhan?.gioiTinhId === 1 ? 'Nam' : 'Nữ',
-          doiTuong: item.khamBenh?.tiepNhan?.doiTuongBenhNhan?.tenDoiTuong || 'BHYT',
-          phongId: item.phongId || 1,
-          maPhong: item.phongKham?.maPhong || 'PK01',
-          tenPhong: item.phongKham?.tenPhong || 'Phòng khám đa khoa',
-          bacSiKham: item.bsKhamBenh?.fullName || item.bacSiKham || 'Bác sĩ điều trị',
-          thoiGianTiepNhan: item.ngay || new Date().toISOString(),
-          ngayKham: item.ngay ? item.ngay.split(' ')[0] : formatDateVi(new Date()),
-          trangThaiId: sttTrangThai,
-          trangThaiTen: tenTrangThai,
-          chanDoan: item.khamBenh?.chanDoan || item.chanDoanChinh || 'Khám bệnh thông thường',
-          soTheBhyt: item.benhNhan?.soTheBhyt || ''
-        };
+  if (targetStations.length === 1) {
+    // Chỉ 1 trạm: Tải trực tiếp nhanh gọn
+    allRecords = await fetchStationLiveKcbRecords(targetStations[0], forceRefresh);
+  } else {
+    // Tất cả trạm: Tải song song theo batch (tối đa 8 trạm đồng thời)
+    const stationsWithAuth = targetStations.filter(s => s.username && s.password);
+    const BATCH_SIZE = 8;
+    for (let i = 0; i < stationsWithAuth.length; i += BATCH_SIZE) {
+      const batch = stationsWithAuth.slice(i, i + BATCH_SIZE);
+      const batchResults = await Promise.all(
+        batch.map(st => fetchStationLiveKcbRecords(st, forceRefresh))
+      );
+      batchResults.forEach(recs => {
+        if (Array.isArray(recs)) {
+          allRecords.push(...recs);
+        }
       });
     }
   }
 
-  // 2. Nếu chưa có dữ liệu thực tế từ trạm, sinh dữ liệu phân tích chuẩn hóa
-  if (allRecords.length === 0) {
-    allRecords = generateRealisticKcbRecords(targetStations.length > 0 ? targetStations : allStations.slice(0, 5), {
-      viewType,
-      tuNgay,
-      denNgay
-    });
-  }
-
-  // 3. Áp dụng bộ lọc
+  // 2. Lọc theo các tiêu chí (Phòng khám, Trạng thái, Ngày bắt đầu, Ngày kết thúc)
   let filtered = allRecords;
 
+  // Lọc theo phòng khám
   if (phongId && phongId !== 'all') {
     filtered = filtered.filter(r => String(r.phongId) === String(phongId) || String(r.maPhong) === String(phongId));
   }
 
+  // Lọc theo trạng thái khám:
+  // 3: Đã kết thúc, 2: Đang khám, 1: Chờ khám
   if (trangThaiId && trangThaiId !== 'all') {
-    filtered = filtered.filter(r => String(r.trangThaiId) === String(trangThaiId));
+    const targetStatus = parseInt(trangThaiId, 10);
+    filtered = filtered.filter(r => r.trangThaiId === targetStatus);
   }
 
+  // Lọc theo từ ngày
   if (tuNgay) {
-    // Định dạng dd/MM/yyyy
-    filtered = filtered.filter(r => {
-      if (!r.ngayKham) return true;
-      const [rd, rm, ry] = r.ngayKham.split('/');
-      const [fd, fm, fy] = tuNgay.split('/');
-      const rDate = new Date(`${ry}-${rm}-${rd}`);
-      const fDate = new Date(`${fy}-${fm}-${fd}`);
-      return rDate >= fDate;
-    });
+    const fromDate = parseDateVi(tuNgay);
+    if (fromDate) {
+      filtered = filtered.filter(r => {
+        const rDate = parseDateVi(r.ngayKham);
+        return rDate ? rDate >= fromDate : true;
+      });
+    }
   }
 
+  // Lọc theo đến ngày
   if (denNgay) {
-    filtered = filtered.filter(r => {
-      if (!r.ngayKham) return true;
-      const [rd, rm, ry] = r.ngayKham.split('/');
-      const [td, tm, ty] = denNgay.split('/');
-      const rDate = new Date(`${ry}-${rm}-${rd}`);
-      const tDate = new Date(`${ty}-${tm}-${td}`);
-      return rDate <= tDate;
-    });
+    const toDate = parseDateVi(denNgay);
+    if (toDate) {
+      toDate.setHours(23, 59, 59, 999);
+      filtered = filtered.filter(r => {
+        const rDate = parseDateVi(r.ngayKham);
+        return rDate ? rDate <= toDate : true;
+      });
+    }
   }
 
-  // 4. Tính toán Summary KPI
+  // 3. Tính toán Summary KPI
   const total = filtered.length;
   const daKetThuc = filtered.filter(r => r.trangThaiId === 3).length;
   const dangKham = filtered.filter(r => r.trangThaiId === 2).length;
@@ -348,14 +300,14 @@ async function getKcbDashboardData(query = {}) {
   const bhytCount = filtered.filter(r => r.doiTuong === 'BHYT').length;
   const vienPhiCount = total - bhytCount;
 
-  // 5. Thống kê theo Trạng thái (Pie / Donut Chart)
+  // 4. Thống kê theo Trạng thái (Pie / Donut Chart)
   const byStatus = [
     { label: 'Đã kết thúc', value: daKetThuc, color: '#10b981', percent: total ? Math.round((daKetThuc / total) * 100) : 0 },
     { label: 'Đang khám', value: dangKham, color: '#f59e0b', percent: total ? Math.round((dangKham / total) * 100) : 0 },
     { label: 'Chờ khám', value: choKham, color: '#6366f1', percent: total ? Math.round((choKham / total) * 100) : 0 }
   ];
 
-  // 6. Thống kê theo Phòng khám (Horizontal Bar Chart)
+  // 5. Thống kê theo Phòng khám (Horizontal Bar Chart)
   const phongMap = {};
   filtered.forEach(r => {
     const key = r.tenPhong || 'Phòng khám chung';
@@ -376,12 +328,14 @@ async function getKcbDashboardData(query = {}) {
   });
   const byPhongKham = Object.values(phongMap).sort((a, b) => b.total - a.total);
 
-  // 7. Thống kê theo Thời gian (Stacked Bar / Line Chart)
+  // 6. Thống kê theo Thời gian (Stacked Bar Chart: categories + series)
   const timeMap = {};
   filtered.forEach(r => {
     let key = r.ngayKham;
     if (viewType === 'month') key = r.thangKham || r.ngayKham;
     else if (viewType === 'year') key = r.namKham || r.ngayKham;
+
+    if (!key) return;
 
     if (!timeMap[key]) {
       timeMap[key] = { timeLabel: key, total: 0, daKetThuc: 0, dangKham: 0, choKham: 0 };
@@ -391,15 +345,30 @@ async function getKcbDashboardData(query = {}) {
     else if (r.trangThaiId === 2) timeMap[key].dangKham++;
     else if (r.trangThaiId === 1) timeMap[key].choKham++;
   });
-  const byTime = Object.values(timeMap).slice(-15); // Lấy tối đa 15 mốc thời gian gần nhất
 
-  // 8. Thống kê so sánh giữa các Trạm Y tế (Station Comparison Chart)
+  // Sắp xếp các mốc thời gian theo thứ tự tăng dần
+  const sortedTimeKeys = Object.keys(timeMap).sort((a, b) => {
+    const dateA = parseDateVi(viewType === 'month' ? `01/${a}` : (viewType === 'year' ? `01/01/${a}` : a));
+    const dateB = parseDateVi(viewType === 'month' ? `01/${b}` : (viewType === 'year' ? `01/01/${b}` : b));
+    return (dateA || 0) - (dateB || 0);
+  }).slice(-20); // Lấy tối đa 20 mốc gần nhất
+
+  const byTime = {
+    categories: sortedTimeKeys,
+    series: {
+      daKetThuc: sortedTimeKeys.map(k => timeMap[k].daKetThuc),
+      dangKham: sortedTimeKeys.map(k => timeMap[k].dangKham),
+      choKham: sortedTimeKeys.map(k => timeMap[k].choKham)
+    }
+  };
+
+  // 7. Thống kê so sánh giữa các Trạm Y tế (Station Comparison Chart)
   const stationMap = {};
   filtered.forEach(r => {
-    const key = r.stationName || `Trạm ${r.stationCode}`;
+    const key = r.stationCode || r.stationName || 'Khác';
     if (!stationMap[key]) {
       stationMap[key] = {
-        stationName: key,
+        stationName: r.stationName,
         stationCode: r.stationCode,
         total: 0,
         daKetThuc: 0,
@@ -417,6 +386,7 @@ async function getKcbDashboardData(query = {}) {
   return {
     success: true,
     isLive,
+    liveStationCount: targetStations.length,
     summary: {
       total,
       daKetThuc,
@@ -430,19 +400,19 @@ async function getKcbDashboardData(query = {}) {
     byPhongKham,
     byTime,
     byStation,
-    records: filtered.slice(0, 100), // Gửi 100 bản ghi chi tiết xem trước
+    records: filtered.slice(0, 500), // Gửi tối đa 500 bản ghi chi tiết
     totalRecords: filtered.length
   };
 }
 
 /**
- * Xuất file Excel báo cáo thống kê khám chữa bệnh
+ * Xuất file Excel báo cáo thống kê khám chữa bệnh từ dữ liệu thật
  */
 async function exportKcbExcel(query = {}) {
-  const data = await getKcbDashboardData(query);
+  const data = await getKcbDashboardData({ ...query, refresh: false });
   const records = data.records || [];
 
-  // Sheet 1: Danh sách chi tiết
+  // Sheet 1: Danh sách chi tiết bệnh nhân
   const detailRows = records.map((r, idx) => ({
     'STT': idx + 1,
     'Trạm Y Tế': r.stationName,
@@ -495,6 +465,24 @@ async function exportKcbExcel(query = {}) {
   const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
   return buf;
 }
+
+/**
+ * Làm ấm bộ nhớ đệm chạy ngầm khi khởi động server
+ */
+function warmUpCache() {
+  setTimeout(async () => {
+    try {
+      console.log('[KCB] Đang làm ấm cache dữ liệu KCB từ các trạm...');
+      await getKcbDashboardData({ stationId: 'all' });
+      console.log(`[KCB] Đã làm ấm cache xong (${stationRecordsCache.size} trạm đã lưu cache).`);
+    } catch (e) {
+      console.warn('[KCB] Lỗi làm ấm cache:', e.message);
+    }
+  }, 3000);
+}
+
+// Kích hoạt làm ấm cache ngầm
+warmUpCache();
 
 module.exports = {
   getPhongKhamList,

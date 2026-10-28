@@ -257,29 +257,7 @@
               Live Portal
             </span>
           </button>
-          <!-- Tab 5: Phân Yêu Cầu Khám - Phòng Khám (HMIS) -->
-          <button @click="switchMainTab('user_dichvu_phong')"
-                  type="button"
-                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
-                  :class="currentMainTab === 'user_dichvu_phong' ? 'bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-700 text-white border-emerald-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
-            <i data-lucide="stethoscope" class="w-4 h-4" :class="currentMainTab === 'user_dichvu_phong' ? 'text-white' : 'text-emerald-600'"></i>
-            <span>5. Phân Công Khám &amp; Phòng Khám (HMIS)</span>
-            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-teal-400 text-teal-950 shadow-2xs">
-              All Trạm
-            </span>
-          </button>
 
-          <!-- Tab 6: Map Kết Quả Điều Trị - Xử Trí (HMIS) -->
-          <button @click="switchMainTab('map_kqdt_xutri')"
-                  type="button"
-                  class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer border relative flex-shrink-0"
-                  :class="currentMainTab === 'map_kqdt_xutri' ? 'bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-700 text-white border-purple-600 shadow-sm' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'">
-            <i data-lucide="git-merge" class="w-4 h-4" :class="currentMainTab === 'map_kqdt_xutri' ? 'text-white' : 'text-purple-600'"></i>
-            <span>6. Map KQĐT &amp; Xử Trí (HMIS)</span>
-            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-400 text-amber-950 shadow-2xs">
-              All Trạm
-            </span>
-          </button>
         </div>
       </div>
     </nav>
@@ -288,9 +266,67 @@
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
       <!-- ============================================================== -->
-      <!-- TAB 1: QUẢN LÝ & CẤU HÌNH TRẠM Y TẾ                             -->
+      <!-- TAB 2: QUẢN LÝ & CẤU HÌNH TRẠM Y TẾ (GỒM 3 PHÂN HỆ)            -->
       <!-- ============================================================== -->
       <div v-if="currentMainTab === 'stations'" class="space-y-6">
+
+        <!-- THANH ĐIỀU HƯỚNG SUB-TABS PHẦN 2 -->
+        <div class="bg-white rounded-3xl p-4 border border-slate-200/90 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-xs flex-shrink-0">
+              <i data-lucide="building-2" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-sm font-black uppercase text-slate-800 tracking-wide">QUẢN LÝ &amp; CẤU HÌNH TRẠM Y TẾ (HMIS)</h3>
+                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">3 Phân Hệ</span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">Quản lý trạm, phân công yêu cầu khám - buồng khám và ánh xạ kết quả điều trị - xử trí</p>
+            </div>
+          </div>
+
+          <!-- BỘ 3 SUB-TABS TRONG PHẦN 2 -->
+          <div class="inline-flex p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200/80 self-start md:self-auto overflow-x-auto max-w-full">
+            <!-- Sub-tab 1: Danh Sách & Tài Khoản Trạm -->
+            <button @click="setStationSubTab('list')"
+                    type="button"
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer whitespace-nowrap"
+                    :class="currentStationSubTab === 'list' ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">
+              <i data-lucide="hospital" class="w-4 h-4"></i>
+              <span>1. Danh Sách &amp; Tài Khoản Trạm</span>
+              <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold" :class="currentStationSubTab === 'list' ? 'bg-blue-700 text-white' : 'bg-slate-200 text-slate-700'">
+                {{ stations.length }} Trạm
+              </span>
+            </button>
+
+            <!-- Sub-tab 2: Phân Công Khám & Phòng Khám (HMIS) -->
+            <button @click="setStationSubTab('user_dichvu_phong')"
+                    type="button"
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer whitespace-nowrap"
+                    :class="currentStationSubTab === 'user_dichvu_phong' ? 'bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-700 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">
+              <i data-lucide="stethoscope" class="w-4 h-4"></i>
+              <span>2. Phân Công Khám &amp; Phòng Khám</span>
+              <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase" :class="currentStationSubTab === 'user_dichvu_phong' ? 'bg-teal-300 text-teal-950' : 'bg-teal-100 text-teal-800'">
+                All Trạm
+              </span>
+            </button>
+
+            <!-- Sub-tab 3: Map KQĐT & Xử Trí (HMIS) -->
+            <button @click="setStationSubTab('map_kqdt_xutri')"
+                    type="button"
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer whitespace-nowrap"
+                    :class="currentStationSubTab === 'map_kqdt_xutri' ? 'bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-700 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">
+              <i data-lucide="git-merge" class="w-4 h-4"></i>
+              <span>3. Map KQĐT &amp; Xử Trí</span>
+              <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase" :class="currentStationSubTab === 'map_kqdt_xutri' ? 'bg-amber-300 text-amber-950' : 'bg-amber-100 text-amber-800'">
+                All Trạm
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SUB-VIEW 1: DANH SÁCH & TÀI KHOẢN TRẠM -->
+        <div v-if="currentStationSubTab === 'list'" class="space-y-6">
 
       <!-- BANNER TIÊU ĐỀ & THÔNG TIN ĐƠN VỊ -->
       <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -360,6 +396,18 @@
           <button @click="openNhanVienHmisTab(null)" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-teal-50 hover:bg-teal-100 text-teal-800 font-bold text-sm rounded-xl border border-teal-300 transition-colors shadow-sm cursor-pointer" title="Phân công nhóm quyền và chức danh trực tiếp trên cổng HMIS">
             <i data-lucide="user-check" class="w-4 h-4 text-teal-600"></i>
             <span>Phân công nhân viên HMIS</span>
+          </button>
+
+          <!-- Nút Phân công khám & phòng khám HMIS -->
+          <button @click="setStationSubTab('user_dichvu_phong')" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-sm rounded-xl border border-emerald-300 transition-colors shadow-sm cursor-pointer" title="Phân công Bác sĩ/Nhân viên với dịch vụ yêu cầu khám và buồng khám (TYT.1899 & KB1)">
+            <i data-lucide="stethoscope" class="w-4 h-4 text-emerald-600"></i>
+            <span>Phân công khám &amp; buồng khám</span>
+          </button>
+
+          <!-- Nút Map KQĐT & Xử Trí HMIS -->
+          <button @click="setStationSubTab('map_kqdt_xutri')" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold text-sm rounded-xl border border-purple-300 transition-colors shadow-sm cursor-pointer" title="Ánh xạ liên kết Kết quả điều trị với Xử trí cho các trạm">
+            <i data-lucide="git-merge" class="w-4 h-4 text-purple-600"></i>
+            <span>Map KQĐT &amp; Xử trí</span>
           </button>
 
           <!-- Nút Thêm Xã / Phường -->
@@ -682,7 +730,604 @@
           </div>
         </div>
       </div>
-      </div> <!-- /END TAB 1: STATIONS -->
+        </div>
+        <!-- /END SUB-VIEW 1 -->
+
+        <!-- SUB-VIEW 2: PHÂN YÊU CẦU KHÁM & PHÒNG KHÁM -->
+<!-- ============================================================== -->
+      <!-- TAB 5: PHÂN YÊU CẦU KHÁM & PHÒNG KHÁM ALL CHO CÁC TRẠM (HMIS)  -->
+      <!-- ============================================================== -->
+      <div v-if="currentStationSubTab === 'user_dichvu_phong'" class="space-y-6">
+
+        <!-- BANNER HEADER TAB 5 -->
+        <div class="bg-gradient-to-r from-teal-900 via-emerald-800 to-cyan-900 rounded-3xl p-6 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-5 border border-emerald-500/30">
+          <div class="flex items-start sm:items-center space-x-4">
+            <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-md flex-shrink-0">
+              <i data-lucide="stethoscope" class="w-8 h-8 text-emerald-300"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2.5 flex-wrap">
+                <h2 class="text-xl sm:text-2xl font-black uppercase tracking-wide">PHÂN CÔNG YÊU CẦU KHÁM &amp; PHÒNG KHÁM (HMIS)</h2>
+                <span class="bg-emerald-400 text-emerald-950 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs">Live Portal</span>
+                <span class="bg-cyan-400/20 text-cyan-200 border border-cyan-400/40 text-[10px] font-mono px-2 py-0.5 rounded-full">
+                  dm-map-nguoidung-yeucau-phongkham
+                </span>
+              </div>
+              <p class="text-xs sm:text-sm text-emerald-100 mt-1 max-w-3xl">
+                Cấu hình gán Bác sĩ/Nhân viên khám bệnh với dịch vụ yêu cầu khám (<span class="font-mono text-amber-300 font-bold">TYT.1899</span>) và buồng khám tiếp nhận (<span class="font-mono text-amber-300 font-bold">KB1</span>). Hỗ trợ <b class="text-white">Phân công hàng loạt ALL 32 Trạm</b> chỉ với 1 click chuột.
+              </p>
+            </div>
+          </div>
+
+          <!-- NÚT TÁC VỤ CHÍNH -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button @click="openBatchMapModal" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:to-orange-500 text-slate-950 font-black text-xs rounded-xl shadow-lg transition-all cursor-pointer border border-amber-300 active:scale-95">
+              <i data-lucide="zap" class="w-4 h-4 fill-current text-slate-950"></i>
+              <span>PHÂN CÔNG HÀNG LOẠT ALL TRẠM</span>
+            </button>
+            <button @click="openAddSingleMappingModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition-all cursor-pointer">
+              <i data-lucide="plus" class="w-4 h-4 text-emerald-300"></i>
+              <span>Thêm Phân Công</span>
+            </button>
+            <button @click="downloadMapExcel" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>Xuất Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- THANH CHỌN TRẠM & TÁC VỤ NHANH TRẠM -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <!-- Dropdown chọn trạm -->
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
+              <label class="text-xs font-bold text-slate-700 flex items-center space-x-1.5 shrink-0">
+                <i data-lucide="building-2" class="w-4 h-4 text-teal-600"></i>
+                <span>Trạm Y Tế Thao Tác:</span>
+              </label>
+              <select 
+                v-model="selectedMapStationId" 
+                @change="loadMapStationData(selectedMapStationId)"
+                class="bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-bold rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-teal-500 focus:outline-none w-full sm:w-80 cursor-pointer shadow-xs"
+              >
+                <option v-for="st in stations" :key="st.id" :value="st.id">
+                  [{{ st.code }}] {{ st.name }}
+                </option>
+              </select>
+              <button 
+                @click="loadMapStationData(selectedMapStationId)" 
+                :disabled="isLoadingMapData"
+                class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 transition-colors cursor-pointer shrink-0" 
+                title="Tải lại dữ liệu trạm này"
+              >
+                <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingMapData }"></i>
+              </button>
+            </div>
+
+            <!-- Nút hành động nhanh cho trạm hiện tại -->
+            <div class="flex flex-wrap items-center gap-2">
+              <button 
+                @click="quickAssignCurrentStation" 
+                :disabled="isQuickAssigningStation || isLoadingMapData"
+                class="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold rounded-xl border border-teal-300 transition-colors cursor-pointer disabled:opacity-50"
+              >
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-teal-600" v-if="!isQuickAssigningStation"></i>
+                <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin" v-else></i>
+                <span>Phân công nhanh trạm này (TYT.1899 + KB1)</span>
+              </button>
+              <button 
+                @click="clearCurrentStationMappings" 
+                :disabled="isClearingStationMappings || isLoadingMapData || mapStationData.totalMappings === 0"
+                class="inline-flex items-center space-x-1.5 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold rounded-xl border border-rose-200 transition-colors cursor-pointer disabled:opacity-40"
+              >
+                <i data-lucide="trash-2" class="w-3.5 h-3.5 text-rose-600" v-if="!isClearingStationMappings"></i>
+                <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin" v-else></i>
+                <span>Xóa hết phân công trạm này</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 THẺ THỐNG KÊ (KPI STATS) -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 pt-2 border-t border-slate-100">
+            <!-- Thẻ 1: Tổng phân công -->
+            <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="stethoscope" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-teal-800 uppercase tracking-wider">Tổng Đã Phân Công</div>
+                <div class="text-xl font-black text-teal-950 font-mono">{{ mapStationData.totalMappings || 0 }}</div>
+              </div>
+            </div>
+
+            <!-- Thẻ 2: Số User trong trạm -->
+            <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="users" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-blue-800 uppercase tracking-wider">Tài Khoản / User</div>
+                <div class="text-xl font-black text-blue-950 font-mono">{{ mapStationData.users?.length || 0 }}</div>
+              </div>
+            </div>
+
+            <!-- Thẻ 3: Dịch vụ công khám -->
+            <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="layers" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Dịch Vụ Khám Bệnh</div>
+                <div class="text-xl font-black text-amber-950 font-mono">{{ mapStationData.services?.length || 0 }}</div>
+              </div>
+            </div>
+
+            <!-- Thẻ 4: Phòng khám tiếp nhận -->
+            <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="door-open" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-purple-800 uppercase tracking-wider">Phòng Tiếp Nhận</div>
+                <div class="text-xl font-black text-purple-950 font-mono">{{ mapStationData.rooms?.length || 0 }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BẢNG DỮ LIỆU PHÂN CÔNG HIỆN TẠI -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
+          <!-- Thanh tìm kiếm & lọc người dùng -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="relative w-full sm:w-96">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+              <input 
+                type="text" 
+                v-model="mapSearchQuery" 
+                placeholder="Tìm tên bác sĩ, tài khoản, mã/tên dịch vụ, phòng khám..." 
+                class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-teal-500 focus:outline-none"
+              >
+            </div>
+
+            <div class="flex items-center space-x-2 w-full sm:w-auto">
+              <label class="text-xs font-bold text-slate-600 shrink-0">Lọc Người Dùng:</label>
+              <select 
+                v-model="mapUserFilter" 
+                class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500 w-full sm:w-60"
+              >
+                <option value="">-- Tất cả người dùng --</option>
+                <option v-for="u in mapStationData.users" :key="u.userId" :value="u.userId">
+                  {{ u.fullName }} ({{ u.username }})
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Bảng danh sách phân công -->
+          <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-2xs">
+            <table class="w-full text-left text-xs text-slate-700">
+              <thead class="bg-slate-50 text-slate-800 uppercase text-[10px] font-black border-b border-slate-200">
+                <tr>
+                  <th class="px-4 py-3 text-center w-12">STT</th>
+                  <th class="px-4 py-3">Bác Sĩ / Người Dùng</th>
+                  <th class="px-4 py-3">Tài Khoản (Username)</th>
+                  <th class="px-4 py-3">Yêu Cầu Khám (Dịch Vụ)</th>
+                  <th class="px-4 py-3">Phòng Khám Tiếp Nhận</th>
+                  <th class="px-4 py-3 text-center w-28">Mặc Định</th>
+                  <th class="px-4 py-3 text-center w-24">Thao Tác</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 font-medium">
+                <tr v-if="isLoadingMapData">
+                  <td colspan="7" class="px-4 py-12 text-center text-slate-400">
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                      <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-teal-600"></i>
+                      <span>Đang tải danh sách phân công từ cổng HMIS...</span>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr v-else-if="filteredMapMappings.length === 0">
+                  <td colspan="7" class="px-4 py-12 text-center text-slate-400">
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                      <i data-lucide="inbox" class="w-8 h-8 text-slate-300"></i>
+                      <span class="font-bold text-slate-600">Trạm này chưa có phân công yêu cầu khám - phòng khám nào!</span>
+                      <p class="text-xs text-slate-500">Bấm nút "Phân công nhanh trạm này" hoặc "Phân công hàng loạt ALL Trạm" ở trên để tự động gán.</p>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr v-else v-for="(m, idx) in pagedMapMappings" :key="m.id" class="hover:bg-teal-50/40 transition-colors">
+                  <td class="px-4 py-3 text-center font-mono font-bold text-slate-500">
+                    {{ (mapCurrentPage - 1) * mapPageSize + idx + 1 }}
+                  </td>
+                  <td class="px-4 py-3 font-bold text-slate-900">
+                    {{ m.fullName || '--' }}
+                  </td>
+                  <td class="px-4 py-3 font-mono font-bold text-teal-700">
+                    {{ m.username }}
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="font-bold text-slate-800">{{ m.tenDichVu }}</div>
+                    <div class="text-[10px] font-mono text-slate-500">{{ m.maDichVu }}</div>
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="font-bold text-slate-800">{{ m.tenPhong }}</div>
+                    <div class="text-[10px] font-mono text-slate-500">{{ m.maPhong }}</div>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <span v-if="m.isMacDinh === 1" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                      Mặc định
+                    </span>
+                    <span v-else class="text-slate-400 text-xs">--</span>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <button 
+                      @click="deleteSingleMapping(m)"
+                      :disabled="isDeletingMappingId === m.id"
+                      class="p-1.5 text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+                      title="Xóa phân công này"
+                    >
+                      <i data-lucide="trash-2" class="w-4 h-4" v-if="isDeletingMappingId !== m.id"></i>
+                      <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-rose-600" v-else></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Phân trang bảng -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+            <div class="text-xs text-slate-500">
+              Hiển thị từ <span class="font-bold font-mono">{{ (mapCurrentPage - 1) * mapPageSize + 1 }}</span> đến <span class="font-bold font-mono">{{ Math.min(mapCurrentPage * mapPageSize, filteredMapMappings.length) }}</span> trên tổng số <span class="font-bold font-mono">{{ filteredMapMappings.length }}</span> phân công
+            </div>
+            <div class="flex items-center space-x-2">
+              <button type="button" @click="mapCurrentPage--" :disabled="mapCurrentPage <= 1" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-40 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition-colors cursor-pointer">
+                Trước
+              </button>
+              <span class="text-xs font-bold text-slate-700 px-2 font-mono">
+                Trang {{ mapCurrentPage }} / {{ mapTotalPages }}
+              </span>
+              <button type="button" @click="mapCurrentPage++" :disabled="mapCurrentPage >= mapTotalPages" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-40 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition-colors cursor-pointer">
+                Sau
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+        <!-- SUB-VIEW 3: MAP KQĐT & XỬ TRÍ -->
+<!-- ============================================================== -->
+      <!-- TAB 6: MAP KẾT QUẢ ĐIỀU TRỊ - XỬ TRÍ ALL CHO CÁC TRẠM (HMIS)   -->
+      <!-- ============================================================== -->
+      <div v-if="currentStationSubTab === 'map_kqdt_xutri'" class="space-y-6">
+
+        <!-- BANNER HEADER TAB 6 -->
+        <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-950 rounded-3xl p-6 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-5 border border-purple-500/30">
+          <div class="flex items-start sm:items-center space-x-4">
+            <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-md flex-shrink-0">
+              <i data-lucide="git-merge" class="w-8 h-8 text-amber-300"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2.5 flex-wrap">
+                <h2 class="text-xl sm:text-2xl font-black uppercase tracking-wide">MAP KẾT QUẢ ĐIỀU TRỊ - XỬ TRÍ (HMIS)</h2>
+                <span class="bg-amber-400 text-amber-950 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs">Live Portal</span>
+                <span class="bg-purple-400/20 text-purple-200 border border-purple-400/40 text-[10px] font-mono px-2 py-0.5 rounded-full">
+                  dm-map-kqdt-xutri
+                </span>
+              </div>
+              <p class="text-xs sm:text-sm text-purple-100 mt-1 max-w-3xl">
+                Cấu hình liên kết giữa <span class="text-amber-300 font-bold">Kết quả điều trị</span> với <span class="text-cyan-300 font-bold">Xử trí ngoại trú</span> và <span class="text-emerald-300 font-bold">Xử trí điều trị</span>. Hỗ trợ <b class="text-white">Thêm xử trí cho tất cả các trạm đã cấu hình</b> chỉ với 1 click.
+              </p>
+            </div>
+          </div>
+
+          <!-- NÚT TÁC VỤ CHÍNH -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button @click="openBatchAddXuTriModal" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:to-orange-500 text-slate-950 font-black text-xs rounded-xl shadow-lg transition-all cursor-pointer border border-amber-300 active:scale-95">
+              <i data-lucide="zap" class="w-4 h-4 fill-current text-slate-950"></i>
+              <span>THÊM XỬ TRÍ CHO ALL CÁC TRẠM</span>
+            </button>
+            <button @click="applyStandardKqdtPresetCurrentStation" :disabled="isLoadingKqdtData" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition-all cursor-pointer">
+              <i data-lucide="sparkles" class="w-4 h-4 text-amber-300"></i>
+              <span>Áp Dụng Bộ Chuẩn Trạm Này</span>
+            </button>
+            <button @click="downloadKqdtExcel" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>Xuất Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- THANH CHỌN TRẠM & THẺ KPI -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <!-- Dropdown chọn trạm -->
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
+              <label class="text-xs font-bold text-slate-700 flex items-center space-x-1.5 shrink-0">
+                <i data-lucide="building-2" class="w-4 h-4 text-purple-600"></i>
+                <span>Trạm Y Tế Thao Tác:</span>
+              </label>
+              <select 
+                v-model="selectedKqdtStationId" 
+                @change="loadKqdtStationData(selectedKqdtStationId)"
+                class="bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-bold rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-purple-500 focus:outline-none w-full sm:w-80 cursor-pointer shadow-xs"
+              >
+                <option v-for="st in stations" :key="st.id" :value="st.id">
+                  [{{ st.code }}] {{ st.name }}
+                </option>
+              </select>
+              <button 
+                @click="loadKqdtStationData(selectedKqdtStationId)" 
+                :disabled="isLoadingKqdtData"
+                class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 transition-colors cursor-pointer shrink-0" 
+                title="Tải lại dữ liệu trạm này"
+              >
+                <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingKqdtData }"></i>
+              </button>
+            </div>
+
+            <!-- Trạng thái trạm hiện tại -->
+            <div class="flex items-center space-x-2 text-xs font-bold text-slate-600">
+              <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-900">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-purple-600"></i>
+                <span>Đã cấu hình: <b class="font-mono">{{ kqdtStationData.configuredRowsCount || 0 }} / {{ kqdtStationData.listKetQuaDieuTri?.length || 8 }}</b> kết quả</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- 4 THẺ KPI -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 pt-2 border-t border-slate-100">
+            <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="git-merge" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-purple-800 uppercase tracking-wider">Kết Quả Đã Map</div>
+                <div class="text-xl font-black text-purple-950 font-mono">{{ kqdtStationData.configuredRowsCount || 0 }} / {{ kqdtStationData.listKetQuaDieuTri?.length || 8 }}</div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-cyan-50/70 border border-cyan-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-cyan-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="activity" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-cyan-800 uppercase tracking-wider">Xử Trí Ngoại Trú</div>
+                <div class="text-xl font-black text-cyan-950 font-mono">{{ kqdtStationData.listXuTriNgoaiTru?.length || 0 }}</div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="bed" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-indigo-800 uppercase tracking-wider">Xử Trí Điều Trị</div>
+                <div class="text-xl font-black text-indigo-950 font-mono">{{ kqdtStationData.listXuTriDieuTri?.length || 0 }}</div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="layers" class="w-5 h-5"></i>
+              </div>
+              <div class="overflow-hidden">
+                <div class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Tổng Bản Ghi Map</div>
+                <div class="text-xl font-black text-emerald-950 font-mono">{{ (kqdtStationData.rawMapNgoaiTruCount || 0) + (kqdtStationData.rawMapDieuTriCount || 0) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BỐ CỤC 2 CỘT CHUẨN GIAO DIỆN HMIS -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- CỘT TRÁI (DANH SÁCH BẢNG) - 7 CỘT -->
+          <div class="lg:col-span-7 bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider flex items-center space-x-2">
+                <i data-lucide="list" class="w-4 h-4 text-purple-600"></i>
+                <span>DANH SÁCH MAP KẾT QUẢ ĐIỀU TRỊ - XỬ TRÍ</span>
+              </h3>
+              <span class="text-xs text-slate-500 font-bold font-mono">({{ filteredKqdtRows.length }} kết quả)</span>
+            </div>
+
+            <!-- Ô tìm kiếm nhanh -->
+            <div class="relative w-full">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+              <input 
+                type="text" 
+                v-model="kqdtSearchQuery" 
+                placeholder="Tìm kết quả điều trị hoặc tên xử trí..." 
+                class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              >
+            </div>
+
+            <!-- Bảng dữ liệu map -->
+            <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-2xs">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-50 text-slate-800 uppercase text-[10px] font-black border-b border-slate-200">
+                  <tr>
+                    <th class="px-3 py-3 text-center w-12">STT</th>
+                    <th class="px-3 py-3 w-40">Kết Quả Điều Trị</th>
+                    <th class="px-3 py-3">Xử Trí Ngoại Trú</th>
+                    <th class="px-3 py-3">Xử Trí Điều Trị</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-medium">
+                  <tr v-if="isLoadingKqdtData">
+                    <td colspan="4" class="px-4 py-12 text-center text-slate-400">
+                      <div class="flex flex-col items-center justify-center space-y-2">
+                        <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-purple-600"></i>
+                        <span>Đang tải danh mục map từ HMIS...</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr 
+                    v-else 
+                    v-for="(row, idx) in filteredKqdtRows" 
+                    :key="row.ketQuaDieuTriId" 
+                    @click="selectKqdtRowForEdit(row)"
+                    class="cursor-pointer transition-colors"
+                    :class="selectedKqdtRow?.ketQuaDieuTriId === row.ketQuaDieuTriId ? 'bg-purple-100/80 font-bold border-l-4 border-l-purple-600' : 'hover:bg-purple-50/50'"
+                  >
+                    <td class="px-3 py-3 text-center font-mono font-bold text-slate-500">
+                      {{ idx + 1 }}
+                    </td>
+                    <td class="px-3 py-3 font-bold text-slate-900">
+                      {{ row.ketQuaDieuTriTen }}
+                    </td>
+                    <td class="px-3 py-3">
+                      <div v-if="row.xuTriNgoaiTruList?.length > 0" class="flex flex-wrap gap-1">
+                        <span v-for="x in row.xuTriNgoaiTruList" :key="x.id" class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-cyan-50 text-cyan-800 border border-cyan-200">
+                          {{ x.ten }}
+                        </span>
+                      </div>
+                      <span v-else class="text-slate-400 font-mono">-</span>
+                    </td>
+                    <td class="px-3 py-3">
+                      <div v-if="row.xuTriDieuTriList?.length > 0" class="flex flex-wrap gap-1">
+                        <span v-for="x in row.xuTriDieuTriList" :key="x.id" class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-indigo-50 text-indigo-800 border border-indigo-200">
+                          {{ x.ten }}
+                        </span>
+                      </div>
+                      <span v-else class="text-slate-400 font-mono">-</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="text-[11px] text-slate-500 italic flex items-center space-x-1.5">
+              <i data-lucide="info" class="w-3.5 h-3.5 text-purple-600 shrink-0"></i>
+              <span>Nhấp chuột vào một hàng để chỉnh sửa hoặc xóa cấu hình ở khung bên phải.</span>
+            </p>
+          </div>
+
+          <!-- CỘT PHẢI (FORM CHỈNH SỬA / THÊM MỚI CHO TRẠM HIỆN TẠI) - 5 CỘT -->
+          <div class="lg:col-span-5 bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4 sticky top-28">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider flex items-center space-x-2">
+                <i data-lucide="edit-3" class="w-4 h-4 text-purple-600"></i>
+                <span>THÔNG TIN MAP KẾT QUẢ ĐT - XỬ TRÍ</span>
+              </h3>
+              <div class="flex items-center space-x-2">
+                <button 
+                  v-if="selectedKqdtRow" 
+                  type="button" 
+                  @click="resetKqdtEditForm" 
+                  class="text-[11px] text-purple-700 hover:underline font-bold"
+                >
+                  Bỏ chọn
+                </button>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <div class="space-y-4 text-xs sm:text-sm text-slate-800">
+              <!-- Chọn kết quả điều trị -->
+              <div>
+                <label class="block font-black text-slate-700 mb-1">
+                  <span>Kết quả điều trị:</span>
+                  <span class="text-rose-600">*</span>
+                </label>
+                <select 
+                  v-model="kqdtForm.ketQuaDieuTriId" 
+                  @change="onKqdtFormSelectChange"
+                  class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
+                  <option :value="null">-- Chọn kết quả điều trị --</option>
+                  <option v-for="kq in kqdtStationData.listKetQuaDieuTri" :key="kq.id" :value="kq.id">
+                    [{{ kq.id }}] {{ kq.ten }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Chọn xử trí ngoại trú (Checkboxes) -->
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <label class="font-black text-slate-700 flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                    <span>Xử trí ngoại trú:</span>
+                  </label>
+                  <div class="flex items-center space-x-2 text-[11px]">
+                    <button type="button" @click="selectAllKqdtNgoaiTru" class="text-purple-600 hover:underline font-bold">Chọn hết</button>
+                    <span>|</span>
+                    <button type="button" @click="kqdtForm.xuTriNgoaiTruIds = []" class="text-slate-500 hover:underline font-bold">Bỏ hết</button>
+                  </div>
+                </div>
+
+                <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl p-2.5 bg-slate-50/50 space-y-1.5">
+                  <label v-for="nt in kqdtStationData.listXuTriNgoaiTru" :key="nt.id" class="flex items-center space-x-2 p-1 hover:bg-white rounded-lg cursor-pointer">
+                    <input type="checkbox" :value="nt.id" v-model="kqdtForm.xuTriNgoaiTruIds" class="rounded text-purple-600 focus:ring-purple-500">
+                    <span class="text-xs font-semibold text-slate-800">{{ nt.ten }}</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Chọn xử trí điều trị (Checkboxes) -->
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <label class="font-black text-slate-700 flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                    <span>Xử trí điều trị (nội trú):</span>
+                  </label>
+                  <div class="flex items-center space-x-2 text-[11px]">
+                    <button type="button" @click="selectAllKqdtDieuTri" class="text-purple-600 hover:underline font-bold">Chọn hết</button>
+                    <span>|</span>
+                    <button type="button" @click="kqdtForm.xuTriDieuTriIds = []" class="text-slate-500 hover:underline font-bold">Bỏ hết</button>
+                  </div>
+                </div>
+
+                <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl p-2.5 bg-slate-50/50 space-y-1.5">
+                  <label v-for="dt in kqdtStationData.listXuTriDieuTri" :key="dt.id" class="flex items-center space-x-2 p-1 hover:bg-white rounded-lg cursor-pointer">
+                    <input type="checkbox" :value="dt.id" v-model="kqdtForm.xuTriDieuTriIds" class="rounded text-purple-600 focus:ring-purple-500">
+                    <span class="text-xs font-semibold text-slate-800">{{ dt.ten }}</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-900 leading-relaxed">
+                Một kết quả điều trị có thể map với nhiều xử trí. Khi sửa/lưu, hệ thống sẽ tự động cập nhật trực tiếp lên cổng HMIS của trạm.
+              </div>
+
+              <!-- Nút hành động -->
+              <div class="flex items-center space-x-2 pt-2">
+                <button 
+                  type="button" 
+                  @click="saveSingleKqdtMapping" 
+                  :disabled="isSavingKqdt || !kqdtForm.ketQuaDieuTriId || (kqdtForm.xuTriNgoaiTruIds.length === 0 && kqdtForm.xuTriDieuTriIds.length === 0)"
+                  class="flex-1 py-2.5 px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50 active:scale-95"
+                >
+                  <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-if="isSavingKqdt"></i>
+                  <i data-lucide="save" class="w-4 h-4" v-else></i>
+                  <span>{{ isSavingKqdt ? 'ĐANG LƯU...' : 'LƯU LÊN HMIS' }}</span>
+                </button>
+
+                <button 
+                  v-if="selectedKqdtRow && selectedKqdtRow.isConfigured" 
+                  type="button" 
+                  @click="deleteSingleKqdtMapping(selectedKqdtRow)" 
+                  :disabled="isSavingKqdt"
+                  class="py-2.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-xl border border-rose-200 transition-colors cursor-pointer"
+                  title="Xóa toàn bộ map của kết quả này"
+                >
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      </div>
+      <!-- /END TAB 2: STATIONS -->
 
       <!-- ============================================================== -->
       <!-- TAB 3: FILE IMPORT PHẦN MỀM (THUỐC, VẬT TƯ, NHÂN VIÊN)         -->
@@ -3093,596 +3738,6 @@
       </div>
 
 
-      <!-- ============================================================== -->
-      <!-- TAB 5: PHÂN YÊU CẦU KHÁM & PHÒNG KHÁM ALL CHO CÁC TRẠM (HMIS)  -->
-      <!-- ============================================================== -->
-      <div v-if="currentMainTab === 'user_dichvu_phong'" class="space-y-6">
-
-        <!-- BANNER HEADER TAB 5 -->
-        <div class="bg-gradient-to-r from-teal-900 via-emerald-800 to-cyan-900 rounded-3xl p-6 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-5 border border-emerald-500/30">
-          <div class="flex items-start sm:items-center space-x-4">
-            <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-md flex-shrink-0">
-              <i data-lucide="stethoscope" class="w-8 h-8 text-emerald-300"></i>
-            </div>
-            <div>
-              <div class="flex items-center space-x-2.5 flex-wrap">
-                <h2 class="text-xl sm:text-2xl font-black uppercase tracking-wide">PHÂN CÔNG YÊU CẦU KHÁM &amp; PHÒNG KHÁM (HMIS)</h2>
-                <span class="bg-emerald-400 text-emerald-950 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs">Live Portal</span>
-                <span class="bg-cyan-400/20 text-cyan-200 border border-cyan-400/40 text-[10px] font-mono px-2 py-0.5 rounded-full">
-                  dm-map-nguoidung-yeucau-phongkham
-                </span>
-              </div>
-              <p class="text-xs sm:text-sm text-emerald-100 mt-1 max-w-3xl">
-                Cấu hình gán Bác sĩ/Nhân viên khám bệnh với dịch vụ yêu cầu khám (<span class="font-mono text-amber-300 font-bold">TYT.1899</span>) và buồng khám tiếp nhận (<span class="font-mono text-amber-300 font-bold">KB1</span>). Hỗ trợ <b class="text-white">Phân công hàng loạt ALL 32 Trạm</b> chỉ với 1 click chuột.
-              </p>
-            </div>
-          </div>
-
-          <!-- NÚT TÁC VỤ CHÍNH -->
-          <div class="flex flex-wrap items-center gap-2.5">
-            <button @click="openBatchMapModal" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:to-orange-500 text-slate-950 font-black text-xs rounded-xl shadow-lg transition-all cursor-pointer border border-amber-300 active:scale-95">
-              <i data-lucide="zap" class="w-4 h-4 fill-current text-slate-950"></i>
-              <span>PHÂN CÔNG HÀNG LOẠT ALL TRẠM</span>
-            </button>
-            <button @click="openAddSingleMappingModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition-all cursor-pointer">
-              <i data-lucide="plus" class="w-4 h-4 text-emerald-300"></i>
-              <span>Thêm Phân Công</span>
-            </button>
-            <button @click="downloadMapExcel" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
-              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-              <span>Xuất Excel</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- THANH CHỌN TRẠM & TÁC VỤ NHANH TRẠM -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <!-- Dropdown chọn trạm -->
-            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
-              <label class="text-xs font-bold text-slate-700 flex items-center space-x-1.5 shrink-0">
-                <i data-lucide="building-2" class="w-4 h-4 text-teal-600"></i>
-                <span>Trạm Y Tế Thao Tác:</span>
-              </label>
-              <select 
-                v-model="selectedMapStationId" 
-                @change="loadMapStationData(selectedMapStationId)"
-                class="bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-bold rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-teal-500 focus:outline-none w-full sm:w-80 cursor-pointer shadow-xs"
-              >
-                <option v-for="st in stations" :key="st.id" :value="st.id">
-                  [{{ st.code }}] {{ st.name }}
-                </option>
-              </select>
-              <button 
-                @click="loadMapStationData(selectedMapStationId)" 
-                :disabled="isLoadingMapData"
-                class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 transition-colors cursor-pointer shrink-0" 
-                title="Tải lại dữ liệu trạm này"
-              >
-                <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingMapData }"></i>
-              </button>
-            </div>
-
-            <!-- Nút hành động nhanh cho trạm hiện tại -->
-            <div class="flex flex-wrap items-center gap-2">
-              <button 
-                @click="quickAssignCurrentStation" 
-                :disabled="isQuickAssigningStation || isLoadingMapData"
-                class="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold rounded-xl border border-teal-300 transition-colors cursor-pointer disabled:opacity-50"
-              >
-                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-teal-600" v-if="!isQuickAssigningStation"></i>
-                <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin" v-else></i>
-                <span>Phân công nhanh trạm này (TYT.1899 + KB1)</span>
-              </button>
-              <button 
-                @click="clearCurrentStationMappings" 
-                :disabled="isClearingStationMappings || isLoadingMapData || mapStationData.totalMappings === 0"
-                class="inline-flex items-center space-x-1.5 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold rounded-xl border border-rose-200 transition-colors cursor-pointer disabled:opacity-40"
-              >
-                <i data-lucide="trash-2" class="w-3.5 h-3.5 text-rose-600" v-if="!isClearingStationMappings"></i>
-                <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin" v-else></i>
-                <span>Xóa hết phân công trạm này</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- 4 THẺ THỐNG KÊ (KPI STATS) -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 pt-2 border-t border-slate-100">
-            <!-- Thẻ 1: Tổng phân công -->
-            <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                <i data-lucide="stethoscope" class="w-5 h-5"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-[10px] font-bold text-teal-800 uppercase tracking-wider">Tổng Đã Phân Công</div>
-                <div class="text-xl font-black text-teal-950 font-mono">{{ mapStationData.totalMappings || 0 }}</div>
-              </div>
-            </div>
-
-            <!-- Thẻ 2: Số User trong trạm -->
-            <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                <i data-lucide="users" class="w-5 h-5"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-[10px] font-bold text-blue-800 uppercase tracking-wider">Tài Khoản / User</div>
-                <div class="text-xl font-black text-blue-950 font-mono">{{ mapStationData.users?.length || 0 }}</div>
-              </div>
-            </div>
-
-            <!-- Thẻ 3: Dịch vụ công khám -->
-            <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
-                <i data-lucide="layers" class="w-5 h-5"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Dịch Vụ Khám Bệnh</div>
-                <div class="text-xl font-black text-amber-950 font-mono">{{ mapStationData.services?.length || 0 }}</div>
-              </div>
-            </div>
-
-            <!-- Thẻ 4: Phòng khám tiếp nhận -->
-            <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                <i data-lucide="door-open" class="w-5 h-5"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-[10px] font-bold text-purple-800 uppercase tracking-wider">Phòng Tiếp Nhận</div>
-                <div class="text-xl font-black text-purple-950 font-mono">{{ mapStationData.rooms?.length || 0 }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BẢNG DỮ LIỆU PHÂN CÔNG HIỆN TẠI -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
-          <!-- Thanh tìm kiếm & lọc người dùng -->
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div class="relative w-full sm:w-96">
-              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
-              <input 
-                type="text" 
-                v-model="mapSearchQuery" 
-                placeholder="Tìm tên bác sĩ, tài khoản, mã/tên dịch vụ, phòng khám..." 
-                class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-teal-500 focus:outline-none"
-              >
-            </div>
-
-            <div class="flex items-center space-x-2 w-full sm:w-auto">
-              <label class="text-xs font-bold text-slate-600 shrink-0">Lọc Người Dùng:</label>
-              <select 
-                v-model="mapUserFilter" 
-                class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500 w-full sm:w-60"
-              >
-                <option value="">-- Tất cả người dùng --</option>
-                <option v-for="u in mapStationData.users" :key="u.userId" :value="u.userId">
-                  {{ u.fullName }} ({{ u.username }})
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Bảng danh sách phân công -->
-          <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-2xs">
-            <table class="w-full text-left text-xs text-slate-700">
-              <thead class="bg-slate-50 text-slate-800 uppercase text-[10px] font-black border-b border-slate-200">
-                <tr>
-                  <th class="px-4 py-3 text-center w-12">STT</th>
-                  <th class="px-4 py-3">Bác Sĩ / Người Dùng</th>
-                  <th class="px-4 py-3">Tài Khoản (Username)</th>
-                  <th class="px-4 py-3">Yêu Cầu Khám (Dịch Vụ)</th>
-                  <th class="px-4 py-3">Phòng Khám Tiếp Nhận</th>
-                  <th class="px-4 py-3 text-center w-28">Mặc Định</th>
-                  <th class="px-4 py-3 text-center w-24">Thao Tác</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 font-medium">
-                <tr v-if="isLoadingMapData">
-                  <td colspan="7" class="px-4 py-12 text-center text-slate-400">
-                    <div class="flex flex-col items-center justify-center space-y-2">
-                      <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-teal-600"></i>
-                      <span>Đang tải danh sách phân công từ cổng HMIS...</span>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr v-else-if="filteredMapMappings.length === 0">
-                  <td colspan="7" class="px-4 py-12 text-center text-slate-400">
-                    <div class="flex flex-col items-center justify-center space-y-2">
-                      <i data-lucide="inbox" class="w-8 h-8 text-slate-300"></i>
-                      <span class="font-bold text-slate-600">Trạm này chưa có phân công yêu cầu khám - phòng khám nào!</span>
-                      <p class="text-xs text-slate-500">Bấm nút "Phân công nhanh trạm này" hoặc "Phân công hàng loạt ALL Trạm" ở trên để tự động gán.</p>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr v-else v-for="(m, idx) in pagedMapMappings" :key="m.id" class="hover:bg-teal-50/40 transition-colors">
-                  <td class="px-4 py-3 text-center font-mono font-bold text-slate-500">
-                    {{ (mapCurrentPage - 1) * mapPageSize + idx + 1 }}
-                  </td>
-                  <td class="px-4 py-3 font-bold text-slate-900">
-                    {{ m.fullName || '--' }}
-                  </td>
-                  <td class="px-4 py-3 font-mono font-bold text-teal-700">
-                    {{ m.username }}
-                  </td>
-                  <td class="px-4 py-3">
-                    <div class="font-bold text-slate-800">{{ m.tenDichVu }}</div>
-                    <div class="text-[10px] font-mono text-slate-500">{{ m.maDichVu }}</div>
-                  </td>
-                  <td class="px-4 py-3">
-                    <div class="font-bold text-slate-800">{{ m.tenPhong }}</div>
-                    <div class="text-[10px] font-mono text-slate-500">{{ m.maPhong }}</div>
-                  </td>
-                  <td class="px-4 py-3 text-center">
-                    <span v-if="m.isMacDinh === 1" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                      Mặc định
-                    </span>
-                    <span v-else class="text-slate-400 text-xs">--</span>
-                  </td>
-                  <td class="px-4 py-3 text-center">
-                    <button 
-                      @click="deleteSingleMapping(m)"
-                      :disabled="isDeletingMappingId === m.id"
-                      class="p-1.5 text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
-                      title="Xóa phân công này"
-                    >
-                      <i data-lucide="trash-2" class="w-4 h-4" v-if="isDeletingMappingId !== m.id"></i>
-                      <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-rose-600" v-else></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Phân trang bảng -->
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-            <div class="text-xs text-slate-500">
-              Hiển thị từ <span class="font-bold font-mono">{{ (mapCurrentPage - 1) * mapPageSize + 1 }}</span> đến <span class="font-bold font-mono">{{ Math.min(mapCurrentPage * mapPageSize, filteredMapMappings.length) }}</span> trên tổng số <span class="font-bold font-mono">{{ filteredMapMappings.length }}</span> phân công
-            </div>
-            <div class="flex items-center space-x-2">
-              <button type="button" @click="mapCurrentPage--" :disabled="mapCurrentPage <= 1" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-40 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition-colors cursor-pointer">
-                Trước
-              </button>
-              <span class="text-xs font-bold text-slate-700 px-2 font-mono">
-                Trang {{ mapCurrentPage }} / {{ mapTotalPages }}
-              </span>
-              <button type="button" @click="mapCurrentPage++" :disabled="mapCurrentPage >= mapTotalPages" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-40 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition-colors cursor-pointer">
-                Sau
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- ============================================================== -->
-      <!-- TAB 6: MAP KẾT QUẢ ĐIỀU TRỊ - XỬ TRÍ ALL CHO CÁC TRẠM (HMIS)   -->
-      <!-- ============================================================== -->
-      <div v-if="currentMainTab === 'map_kqdt_xutri'" class="space-y-6">
-
-        <!-- BANNER HEADER TAB 6 -->
-        <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-950 rounded-3xl p-6 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-5 border border-purple-500/30">
-          <div class="flex items-start sm:items-center space-x-4">
-            <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-md flex-shrink-0">
-              <i data-lucide="git-merge" class="w-8 h-8 text-amber-300"></i>
-            </div>
-            <div>
-              <div class="flex items-center space-x-2.5 flex-wrap">
-                <h2 class="text-xl sm:text-2xl font-black uppercase tracking-wide">MAP KẾT QUẢ ĐIỀU TRỊ - XỬ TRÍ (HMIS)</h2>
-                <span class="bg-amber-400 text-amber-950 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs">Live Portal</span>
-                <span class="bg-purple-400/20 text-purple-200 border border-purple-400/40 text-[10px] font-mono px-2 py-0.5 rounded-full">
-                  dm-map-kqdt-xutri
-                </span>
-              </div>
-              <p class="text-xs sm:text-sm text-purple-100 mt-1 max-w-3xl">
-                Cấu hình liên kết giữa <span class="text-amber-300 font-bold">Kết quả điều trị</span> với <span class="text-cyan-300 font-bold">Xử trí ngoại trú</span> và <span class="text-emerald-300 font-bold">Xử trí điều trị</span>. Hỗ trợ <b class="text-white">Thêm xử trí cho tất cả các trạm đã cấu hình</b> chỉ với 1 click.
-              </p>
-            </div>
-          </div>
-
-          <!-- NÚT TÁC VỤ CHÍNH -->
-          <div class="flex flex-wrap items-center gap-2.5">
-            <button @click="openBatchAddXuTriModal" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:to-orange-500 text-slate-950 font-black text-xs rounded-xl shadow-lg transition-all cursor-pointer border border-amber-300 active:scale-95">
-              <i data-lucide="zap" class="w-4 h-4 fill-current text-slate-950"></i>
-              <span>THÊM XỬ TRÍ CHO ALL CÁC TRẠM</span>
-            </button>
-            <button @click="applyStandardKqdtPresetCurrentStation" :disabled="isLoadingKqdtData" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition-all cursor-pointer">
-              <i data-lucide="sparkles" class="w-4 h-4 text-amber-300"></i>
-              <span>Áp Dụng Bộ Chuẩn Trạm Này</span>
-            </button>
-            <button @click="downloadKqdtExcel" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer">
-              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-              <span>Xuất Excel</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- THANH CHỌN TRẠM & THẺ KPI -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <!-- Dropdown chọn trạm -->
-            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
-              <label class="text-xs font-bold text-slate-700 flex items-center space-x-1.5 shrink-0">
-                <i data-lucide="building-2" class="w-4 h-4 text-purple-600"></i>
-                <span>Trạm Y Tế Thao Tác:</span>
-              </label>
-              <select 
-                v-model="selectedKqdtStationId" 
-                @change="loadKqdtStationData(selectedKqdtStationId)"
-                class="bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-bold rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-purple-500 focus:outline-none w-full sm:w-80 cursor-pointer shadow-xs"
-              >
-                <option v-for="st in stations" :key="st.id" :value="st.id">
-                  [{{ st.code }}] {{ st.name }}
-                </option>
-              </select>
-              <button 
-                @click="loadKqdtStationData(selectedKqdtStationId)" 
-                :disabled="isLoadingKqdtData"
-                class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 transition-colors cursor-pointer shrink-0" 
-                title="Tải lại dữ liệu trạm này"
-              >
-                <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingKqdtData }"></i>
-              </button>
-            </div>
-
-            <!-- Trạng thái trạm hiện tại -->
-            <div class="flex items-center space-x-2 text-xs font-bold text-slate-600">
-              <span class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-900">
-                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-purple-600"></i>
-                <span>Đã cấu hình: <b class="font-mono">{{ kqdtStationData.configuredRowsCount || 0 }} / {{ kqdtStationData.listKetQuaDieuTri?.length || 8 }}</b> kết quả</span>
-              </span>
-            </div>
-          </div>
-
-          <!-- 4 THẺ KPI -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 pt-2 border-t border-slate-100">
-            <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                <i data-lucide="git-merge" class="w-5 h-5"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-[10px] font-bold text-purple-800 uppercase tracking-wider">Kết Quả Đã Map</div>
-                <div class="text-xl font-black text-purple-950 font-mono">{{ kqdtStationData.configuredRowsCount || 0 }} / {{ kqdtStationData.listKetQuaDieuTri?.length || 8 }}</div>
-              </div>
-            </div>
-
-            <div class="p-3.5 rounded-2xl bg-cyan-50/70 border border-cyan-200 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-cyan-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                <i data-lucide="activity" class="w-5 h-5"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-[10px] font-bold text-cyan-800 uppercase tracking-wider">Xử Trí Ngoại Trú</div>
-                <div class="text-xl font-black text-cyan-950 font-mono">{{ kqdtStationData.listXuTriNgoaiTru?.length || 0 }}</div>
-              </div>
-            </div>
-
-            <div class="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-200 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                <i data-lucide="bed" class="w-5 h-5"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-[10px] font-bold text-indigo-800 uppercase tracking-wider">Xử Trí Điều Trị</div>
-                <div class="text-xl font-black text-indigo-950 font-mono">{{ kqdtStationData.listXuTriDieuTri?.length || 0 }}</div>
-              </div>
-            </div>
-
-            <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                <i data-lucide="layers" class="w-5 h-5"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Tổng Bản Ghi Map</div>
-                <div class="text-xl font-black text-emerald-950 font-mono">{{ (kqdtStationData.rawMapNgoaiTruCount || 0) + (kqdtStationData.rawMapDieuTriCount || 0) }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BỐ CỤC 2 CỘT CHUẨN GIAO DIỆN HMIS -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          
-          <!-- CỘT TRÁI (DANH SÁCH BẢNG) - 7 CỘT -->
-          <div class="lg:col-span-7 bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4">
-            <div class="flex items-center justify-between">
-              <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider flex items-center space-x-2">
-                <i data-lucide="list" class="w-4 h-4 text-purple-600"></i>
-                <span>DANH SÁCH MAP KẾT QUẢ ĐIỀU TRỊ - XỬ TRÍ</span>
-              </h3>
-              <span class="text-xs text-slate-500 font-bold font-mono">({{ filteredKqdtRows.length }} kết quả)</span>
-            </div>
-
-            <!-- Ô tìm kiếm nhanh -->
-            <div class="relative w-full">
-              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
-              <input 
-                type="text" 
-                v-model="kqdtSearchQuery" 
-                placeholder="Tìm kết quả điều trị hoặc tên xử trí..." 
-                class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:outline-none"
-              >
-            </div>
-
-            <!-- Bảng dữ liệu map -->
-            <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-2xs">
-              <table class="w-full text-left text-xs text-slate-700">
-                <thead class="bg-slate-50 text-slate-800 uppercase text-[10px] font-black border-b border-slate-200">
-                  <tr>
-                    <th class="px-3 py-3 text-center w-12">STT</th>
-                    <th class="px-3 py-3 w-40">Kết Quả Điều Trị</th>
-                    <th class="px-3 py-3">Xử Trí Ngoại Trú</th>
-                    <th class="px-3 py-3">Xử Trí Điều Trị</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 font-medium">
-                  <tr v-if="isLoadingKqdtData">
-                    <td colspan="4" class="px-4 py-12 text-center text-slate-400">
-                      <div class="flex flex-col items-center justify-center space-y-2">
-                        <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-purple-600"></i>
-                        <span>Đang tải danh mục map từ HMIS...</span>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr 
-                    v-else 
-                    v-for="(row, idx) in filteredKqdtRows" 
-                    :key="row.ketQuaDieuTriId" 
-                    @click="selectKqdtRowForEdit(row)"
-                    class="cursor-pointer transition-colors"
-                    :class="selectedKqdtRow?.ketQuaDieuTriId === row.ketQuaDieuTriId ? 'bg-purple-100/80 font-bold border-l-4 border-l-purple-600' : 'hover:bg-purple-50/50'"
-                  >
-                    <td class="px-3 py-3 text-center font-mono font-bold text-slate-500">
-                      {{ idx + 1 }}
-                    </td>
-                    <td class="px-3 py-3 font-bold text-slate-900">
-                      {{ row.ketQuaDieuTriTen }}
-                    </td>
-                    <td class="px-3 py-3">
-                      <div v-if="row.xuTriNgoaiTruList?.length > 0" class="flex flex-wrap gap-1">
-                        <span v-for="x in row.xuTriNgoaiTruList" :key="x.id" class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-cyan-50 text-cyan-800 border border-cyan-200">
-                          {{ x.ten }}
-                        </span>
-                      </div>
-                      <span v-else class="text-slate-400 font-mono">-</span>
-                    </td>
-                    <td class="px-3 py-3">
-                      <div v-if="row.xuTriDieuTriList?.length > 0" class="flex flex-wrap gap-1">
-                        <span v-for="x in row.xuTriDieuTriList" :key="x.id" class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-indigo-50 text-indigo-800 border border-indigo-200">
-                          {{ x.ten }}
-                        </span>
-                      </div>
-                      <span v-else class="text-slate-400 font-mono">-</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <p class="text-[11px] text-slate-500 italic flex items-center space-x-1.5">
-              <i data-lucide="info" class="w-3.5 h-3.5 text-purple-600 shrink-0"></i>
-              <span>Nhấp chuột vào một hàng để chỉnh sửa hoặc xóa cấu hình ở khung bên phải.</span>
-            </p>
-          </div>
-
-          <!-- CỘT PHẢI (FORM CHỈNH SỬA / THÊM MỚI CHO TRẠM HIỆN TẠI) - 5 CỘT -->
-          <div class="lg:col-span-5 bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm space-y-4 sticky top-28">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider flex items-center space-x-2">
-                <i data-lucide="edit-3" class="w-4 h-4 text-purple-600"></i>
-                <span>THÔNG TIN MAP KẾT QUẢ ĐT - XỬ TRÍ</span>
-              </h3>
-              <div class="flex items-center space-x-2">
-                <button 
-                  v-if="selectedKqdtRow" 
-                  type="button" 
-                  @click="resetKqdtEditForm" 
-                  class="text-[11px] text-purple-700 hover:underline font-bold"
-                >
-                  Bỏ chọn
-                </button>
-              </div>
-            </div>
-
-            <!-- Form -->
-            <div class="space-y-4 text-xs sm:text-sm text-slate-800">
-              <!-- Chọn kết quả điều trị -->
-              <div>
-                <label class="block font-black text-slate-700 mb-1">
-                  <span>Kết quả điều trị:</span>
-                  <span class="text-rose-600">*</span>
-                </label>
-                <select 
-                  v-model="kqdtForm.ketQuaDieuTriId" 
-                  @change="onKqdtFormSelectChange"
-                  class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 font-bold focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                >
-                  <option :value="null">-- Chọn kết quả điều trị --</option>
-                  <option v-for="kq in kqdtStationData.listKetQuaDieuTri" :key="kq.id" :value="kq.id">
-                    [{{ kq.id }}] {{ kq.ten }}
-                  </option>
-                </select>
-              </div>
-
-              <!-- Chọn xử trí ngoại trú (Checkboxes) -->
-              <div>
-                <div class="flex items-center justify-between mb-1.5">
-                  <label class="font-black text-slate-700 flex items-center space-x-1.5">
-                    <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
-                    <span>Xử trí ngoại trú:</span>
-                  </label>
-                  <div class="flex items-center space-x-2 text-[11px]">
-                    <button type="button" @click="selectAllKqdtNgoaiTru" class="text-purple-600 hover:underline font-bold">Chọn hết</button>
-                    <span>|</span>
-                    <button type="button" @click="kqdtForm.xuTriNgoaiTruIds = []" class="text-slate-500 hover:underline font-bold">Bỏ hết</button>
-                  </div>
-                </div>
-
-                <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl p-2.5 bg-slate-50/50 space-y-1.5">
-                  <label v-for="nt in kqdtStationData.listXuTriNgoaiTru" :key="nt.id" class="flex items-center space-x-2 p-1 hover:bg-white rounded-lg cursor-pointer">
-                    <input type="checkbox" :value="nt.id" v-model="kqdtForm.xuTriNgoaiTruIds" class="rounded text-purple-600 focus:ring-purple-500">
-                    <span class="text-xs font-semibold text-slate-800">{{ nt.ten }}</span>
-                  </label>
-                </div>
-              </div>
-
-              <!-- Chọn xử trí điều trị (Checkboxes) -->
-              <div>
-                <div class="flex items-center justify-between mb-1.5">
-                  <label class="font-black text-slate-700 flex items-center space-x-1.5">
-                    <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-                    <span>Xử trí điều trị (nội trú):</span>
-                  </label>
-                  <div class="flex items-center space-x-2 text-[11px]">
-                    <button type="button" @click="selectAllKqdtDieuTri" class="text-purple-600 hover:underline font-bold">Chọn hết</button>
-                    <span>|</span>
-                    <button type="button" @click="kqdtForm.xuTriDieuTriIds = []" class="text-slate-500 hover:underline font-bold">Bỏ hết</button>
-                  </div>
-                </div>
-
-                <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl p-2.5 bg-slate-50/50 space-y-1.5">
-                  <label v-for="dt in kqdtStationData.listXuTriDieuTri" :key="dt.id" class="flex items-center space-x-2 p-1 hover:bg-white rounded-lg cursor-pointer">
-                    <input type="checkbox" :value="dt.id" v-model="kqdtForm.xuTriDieuTriIds" class="rounded text-purple-600 focus:ring-purple-500">
-                    <span class="text-xs font-semibold text-slate-800">{{ dt.ten }}</span>
-                  </label>
-                </div>
-              </div>
-
-              <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-900 leading-relaxed">
-                Một kết quả điều trị có thể map với nhiều xử trí. Khi sửa/lưu, hệ thống sẽ tự động cập nhật trực tiếp lên cổng HMIS của trạm.
-              </div>
-
-              <!-- Nút hành động -->
-              <div class="flex items-center space-x-2 pt-2">
-                <button 
-                  type="button" 
-                  @click="saveSingleKqdtMapping" 
-                  :disabled="isSavingKqdt || !kqdtForm.ketQuaDieuTriId || (kqdtForm.xuTriNgoaiTruIds.length === 0 && kqdtForm.xuTriDieuTriIds.length === 0)"
-                  class="flex-1 py-2.5 px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50 active:scale-95"
-                >
-                  <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-if="isSavingKqdt"></i>
-                  <i data-lucide="save" class="w-4 h-4" v-else></i>
-                  <span>{{ isSavingKqdt ? 'ĐANG LƯU...' : 'LƯU LÊN HMIS' }}</span>
-                </button>
-
-                <button 
-                  v-if="selectedKqdtRow && selectedKqdtRow.isConfigured" 
-                  type="button" 
-                  @click="deleteSingleKqdtMapping(selectedKqdtRow)" 
-                  :disabled="isSavingKqdt"
-                  class="py-2.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-xl border border-rose-200 transition-colors cursor-pointer"
-                  title="Xóa toàn bộ map của kết quả này"
-                >
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
     </main>
 
     <!-- ========================================================================= -->
@@ -7798,6 +7853,42 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           initialHash === '#vattu' ? 'vattu' :
           (initialHash === '#nhanvien' ? 'nhanvien' : 'thuoc')
         );
+        const currentStationSubTab = ref(
+          (initialHash === '#map_kqdt_xutri' || initialHash === '#kqdt_xutri') ? 'map_kqdt_xutri' :
+          ((initialHash === '#congkham' || initialHash === '#user_dichvu_phong') ? 'user_dichvu_phong' : 'list')
+        );
+
+        function setStationSubTab(subTab) {
+          currentStationSubTab.value = subTab;
+          if (subTab === 'user_dichvu_phong') {
+            if (window.location.hash !== '#congkham' && window.location.hash !== '#user_dichvu_phong') {
+              history.replaceState(null, '', '#congkham');
+            }
+            if (!selectedMapStationId.value && stations.value.length > 0) {
+              const firstWithCreds = stations.value.find(s => s.username && s.password) || stations.value[0];
+              if (firstWithCreds) {
+                selectedMapStationId.value = firstWithCreds.id;
+                loadMapStationData(firstWithCreds.id);
+              }
+            }
+          } else if (subTab === 'map_kqdt_xutri') {
+            if (window.location.hash !== '#map_kqdt_xutri' && window.location.hash !== '#kqdt_xutri') {
+              history.replaceState(null, '', '#map_kqdt_xutri');
+            }
+            if (!selectedKqdtStationId.value && stations.value.length > 0) {
+              const firstWithCreds = stations.value.find(s => s.username && s.password) || stations.value[0];
+              if (firstWithCreds) {
+                selectedKqdtStationId.value = firstWithCreds.id;
+                loadKqdtStationData(firstWithCreds.id);
+              }
+            }
+          } else {
+            if (window.location.hash === '#congkham' || window.location.hash === '#user_dichvu_phong' || window.location.hash === '#map_kqdt_xutri' || window.location.hash === '#kqdt_xutri') {
+              history.replaceState(null, '', '#stations');
+            }
+          }
+          nextTick(() => refreshIcons());
+        }
         function setImportSubTab(subTab) {
           currentImportSubTab.value = subTab;
           if (window.location.hash !== '#' + subTab) {
@@ -7808,8 +7899,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           });
         }
         const currentMainTab = ref(
-          (initialHash === '#map_kqdt_xutri' || initialHash === '#kqdt_xutri') ? 'map_kqdt_xutri' :
-          ((initialHash === '#congkham' || initialHash === '#user_dichvu_phong') ? 'user_dichvu_phong' :
+          (initialHash === '#map_kqdt_xutri' || initialHash === '#kqdt_xutri') ? 'stations' :
+          ((initialHash === '#congkham' || initialHash === '#user_dichvu_phong') ? 'stations' :
           (initialHash === '#nhanvien_hmis' ? 'nhanvien_hmis' :
           (initialHash === '#stations' ? 'stations' :
           ((initialHash === '#thuoc' || initialHash === '#vattu' || initialHash === '#nhanvien' || initialHash === '#import_file') ? 'import_file' : 'kcb'))))
@@ -7987,22 +8078,16 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               if (!selectedHmisStationId.value || hmisOfficers.value.length === 0) {
                 loadHmisStationNhanVienData();
               }
-            } else if (tab === 'user_dichvu_phong') {
-              if (window.location.hash !== '#congkham' && window.location.hash !== '#user_dichvu_phong') {
-                history.replaceState(null, '', '#congkham');
-              }
-              if (!selectedMapStationId.value || !mapStationData.value.stationId) {
-                loadMapStationData(selectedMapStationId.value || (stations.value[0]?.id));
-              }
-            } else if (tab === 'map_kqdt_xutri') {
-              if (window.location.hash !== '#map_kqdt_xutri' && window.location.hash !== '#kqdt_xutri') {
-                history.replaceState(null, '', '#map_kqdt_xutri');
-              }
-              if (!selectedKqdtStationId.value || !kqdtStationData.value.stationId) {
-                loadKqdtStationData(selectedKqdtStationId.value || (stations.value[0]?.id));
-              }
+            } else if (tab === 'user_dichvu_phong' || tab === 'congkham') {
+              currentMainTab.value = 'stations';
+              setStationSubTab('user_dichvu_phong');
+            } else if (tab === 'map_kqdt_xutri' || tab === 'kqdt_xutri') {
+              currentMainTab.value = 'stations';
+              setStationSubTab('map_kqdt_xutri');
             } else if (tab === 'stations') {
-              if (window.location.hash !== '' && window.location.hash !== '#stations') {
+              currentMainTab.value = 'stations';
+              if (!currentStationSubTab.value) currentStationSubTab.value = 'list';
+              if (window.location.hash !== '' && window.location.hash !== '#stations' && window.location.hash !== '#congkham' && window.location.hash !== '#map_kqdt_xutri') {
                 history.replaceState(null, '', '#stations');
               }
             }
@@ -12952,11 +13037,14 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           // Kiểm tra hash URL để mở đúng Tab (ví dụ #thuoc, #vattu, #nhanvien, #nhanvien_hmis)
           // Mặc định mở Tab KCB khi vào link http://localhost:5000 hoặc #kcb
           if (window.location.hash === '#map_kqdt_xutri' || window.location.hash === '#kqdt_xutri') {
-            currentMainTab.value = 'map_kqdt_xutri';
+            currentMainTab.value = 'stations';
+            currentStationSubTab.value = 'map_kqdt_xutri';
           } else if (window.location.hash === '#congkham' || window.location.hash === '#user_dichvu_phong') {
-            currentMainTab.value = 'user_dichvu_phong';
+            currentMainTab.value = 'stations';
+            currentStationSubTab.value = 'user_dichvu_phong';
           } else if (window.location.hash === '#stations') {
             currentMainTab.value = 'stations';
+            currentStationSubTab.value = 'list';
           } else if (window.location.hash === '#nhanvien_hmis') {
             currentMainTab.value = 'nhanvien_hmis';
           } else if (window.location.hash === '#thuoc') {
@@ -12981,10 +13069,12 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           } else if (currentMainTab.value === 'kcb') {
             loadKcbDashboard();
             loadKcbPhongKhamList();
-          } else if (currentMainTab.value === 'user_dichvu_phong') {
-            loadMapStationData(selectedMapStationId.value || (stations.value[0]?.id));
-          } else if (currentMainTab.value === 'map_kqdt_xutri') {
-            loadKqdtStationData(selectedKqdtStationId.value || (stations.value[0]?.id));
+          } else if (currentMainTab.value === 'stations') {
+            if (currentStationSubTab.value === 'user_dichvu_phong') {
+              loadMapStationData(selectedMapStationId.value || (stations.value[0]?.id));
+            } else if (currentStationSubTab.value === 'map_kqdt_xutri') {
+              loadKqdtStationData(selectedKqdtStationId.value || (stations.value[0]?.id));
+            }
           }
           fetchSystemLogs();
           refreshIcons();
@@ -13399,6 +13489,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           downloadKcbExcelReport,
           currentImportSubTab,
           setImportSubTab,
+          currentStationSubTab,
+          setStationSubTab,
           selectedMapStationId,
           mapStationData,
           isLoadingMapData,

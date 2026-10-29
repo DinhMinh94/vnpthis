@@ -1,5 +1,1209 @@
 [
   {
+    "id": "log_1793238473844_7aj7d",
+    "timestamp": "2026-10-29T01:47:53.844Z",
+    "formattedTime": "29/10/2026 08:47:53",
+    "actionType": "phancong_nhanvien",
+    "actionTitle": "Phân công tài khoản 11052.HVMEN (Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài)",
+    "summary": "Đã cập nhật phân công cho tài khoản 11052.HVMEN: 1 nhóm quyền, 14 chức danh ký số",
+    "details": [
+      {
+        "stationId": "tyt_1792720046961_32c6q",
+        "stationCode": "11052",
+        "stationName": "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+        "username": "11052.HVMEN",
+        "officerName": "Hoàng Văn Mến",
+        "status": "success",
+        "message": "Success"
+      }
+    ],
+    "total": 0,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [],
+    "results": []
+  },
+  {
+    "id": "log_1793238470469_lir3u",
+    "timestamp": "2026-10-29T01:47:50.469Z",
+    "formattedTime": "29/10/2026 08:47:50",
+    "actionType": "phancong_nhanvien",
+    "actionTitle": "Phân công tài khoản 11052.HVMEN (Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài)",
+    "summary": "Đã cập nhật phân công cho tài khoản 11052.HVMEN: 1 nhóm quyền, 14 chức danh ký số",
+    "details": [
+      {
+        "stationId": "tyt_1792720046961_32c6q",
+        "stationCode": "11052",
+        "stationName": "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+        "username": "11052.HVMEN",
+        "officerName": "Hoàng Văn Mến",
+        "status": "success",
+        "message": "Success"
+      }
+    ],
+    "total": 0,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [],
+    "results": []
+  },
+  {
+    "id": "log_1793174648887_8wnew",
+    "timestamp": "2026-10-28T08:04:08.887Z",
+    "formattedTime": "28/10/2026 15:04:08",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11020\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11020"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên"
+    ],
+    "results": [
+      {
+        "id": "tyt_1792720046962_6r0co",
+        "name": "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+        "username": "11020.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11020\"",
+        "oldValue": "11010",
+        "newValue": "11020",
+        "duration": 610
+      }
+    ]
+  },
+  {
+    "id": "log_1793174633020_k3p2f",
+    "timestamp": "2026-10-28T08:03:53.020Z",
+    "formattedTime": "28/10/2026 15:03:53",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11022\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11022"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế Thanh Yên Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1792720046961_2mzqg",
+        "name": "Trạm Y tế Thanh Yên Trạm chính",
+        "username": "11022.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11022\"",
+        "oldValue": "11010",
+        "newValue": "11022",
+        "duration": 454
+      }
+    ]
+  },
+  {
+    "id": "log_1793174617251_a5r6x",
+    "timestamp": "2026-10-28T08:03:37.251Z",
+    "formattedTime": "28/10/2026 15:03:37",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11019\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11019"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế Thanh An Điểm trạm Sam Mứn"
+    ],
+    "results": [
+      {
+        "id": "tyt_1792720046961_gpwrk",
+        "name": "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+        "username": "11019.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11019\"",
+        "oldValue": "11010",
+        "newValue": "11019",
+        "duration": 471
+      }
+    ]
+  },
+  {
+    "id": "log_1793174574873_6y2op",
+    "timestamp": "2026-10-28T08:02:54.873Z",
+    "formattedTime": "28/10/2026 15:02:54",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11025\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11025"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế Thanh An Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1792720046961_m5xgy",
+        "name": "Trạm Y tế Thanh An Trạm chính",
+        "username": "11025.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11025\"",
+        "oldValue": "11010",
+        "newValue": "11025",
+        "duration": 409
+      }
+    ]
+  },
+  {
+    "id": "log_1793174558513_1jqkn",
+    "timestamp": "2026-10-28T08:02:38.513Z",
+    "formattedTime": "28/10/2026 15:02:38",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11159\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11159"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí"
+    ],
+    "results": [
+      {
+        "id": "tyt_1792720046961_bjcd7",
+        "name": "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+        "username": "11159.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11159\"",
+        "oldValue": "11010",
+        "newValue": "11159",
+        "duration": 436
+      }
+    ]
+  },
+  {
+    "id": "log_1793174521251_w1a2u",
+    "timestamp": "2026-10-28T08:02:01.251Z",
+    "formattedTime": "28/10/2026 15:02:01",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11160\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11160"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế Nậm Nèn Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1792720046961_8ec20",
+        "name": "Trạm Y tế Nậm Nèn Trạm chính",
+        "username": "11160.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11160\"",
+        "oldValue": "11010",
+        "newValue": "11160",
+        "duration": 474
+      }
+    ]
+  },
+  {
+    "id": "log_1793174509464_3mlp0",
+    "timestamp": "2026-10-28T08:01:49.464Z",
+    "formattedTime": "28/10/2026 15:01:49",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11052\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11052"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài"
+    ],
+    "results": [
+      {
+        "id": "tyt_1792720046961_32c6q",
+        "name": "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+        "username": "11052.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11052\"",
+        "oldValue": "11010",
+        "newValue": "11052",
+        "duration": 405
+      }
+    ]
+  },
+  {
+    "id": "log_1793174493232_lpojy",
+    "timestamp": "2026-10-28T08:01:33.232Z",
+    "formattedTime": "28/10/2026 15:01:33",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11056\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11056"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Pa Ham Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1792720046961_d1las",
+        "name": "Trạm Y tế xã Pa Ham Trạm chính",
+        "username": "11056.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11056\"",
+        "oldValue": "11010",
+        "newValue": "11056",
+        "duration": 497
+      }
+    ]
+  },
+  {
+    "id": "log_1793174455297_3ikha",
+    "timestamp": "2026-10-28T08:00:55.297Z",
+    "formattedTime": "28/10/2026 15:00:55",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11176\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11176"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791695192777_6fjbv",
+        "name": "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+        "username": "11176.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11176\"",
+        "oldValue": "11010",
+        "newValue": "11176",
+        "duration": 404
+      }
+    ]
+  },
+  {
+    "id": "log_1793174434589_9b6z5",
+    "timestamp": "2026-10-28T08:00:34.589Z",
+    "formattedTime": "28/10/2026 15:00:34",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11121\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11121"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791695160278_2epf0",
+        "name": "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+        "username": "11121.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11121\"",
+        "oldValue": "11010",
+        "newValue": "11121",
+        "duration": 481
+      }
+    ]
+  },
+  {
+    "id": "log_1793174310170_4wd6z",
+    "timestamp": "2026-10-28T07:58:30.170Z",
+    "formattedTime": "28/10/2026 14:58:30",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11021\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11021"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Mường Phăng"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791695109044_1lj0m",
+        "name": "Trạm y tế xã Mường Phăng",
+        "username": "11021.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11021\"",
+        "oldValue": "11010",
+        "newValue": "11021",
+        "duration": 399
+      }
+    ]
+  },
+  {
+    "id": "log_1793174299130_k4wdj",
+    "timestamp": "2026-10-28T07:58:19.130Z",
+    "formattedTime": "28/10/2026 14:58:19",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11109\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11109"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế Nà Bủng Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344726_9xjnz",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11109.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11109\"",
+        "oldValue": "11010",
+        "newValue": "11109",
+        "duration": 440
+      }
+    ]
+  },
+  {
+    "id": "log_1793174252695_d0ujr",
+    "timestamp": "2026-10-28T07:57:32.695Z",
+    "formattedTime": "28/10/2026 14:57:32",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11143\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11143"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344726_tfxlt",
+        "name": "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+        "username": "11143.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11143\"",
+        "oldValue": "11010",
+        "newValue": "11143",
+        "duration": 450
+      }
+    ]
+  },
+  {
+    "id": "log_1793174240218_g30ww",
+    "timestamp": "2026-10-28T07:57:20.218Z",
+    "formattedTime": "28/10/2026 14:57:20",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11057\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11057"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Si Pa Phìn Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344726_dd8tb",
+        "name": "Trạm Y tế xã Si Pa Phìn Trạm chính",
+        "username": "11057.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11057\"",
+        "oldValue": "11010",
+        "newValue": "11057",
+        "duration": 549
+      }
+    ]
+  },
+  {
+    "id": "log_1793174223873_2sllp",
+    "timestamp": "2026-10-28T07:57:03.873Z",
+    "formattedTime": "28/10/2026 14:57:03",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11140\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11140"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344726_tyxu3",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+        "username": "11140.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11140\"",
+        "oldValue": "11010",
+        "newValue": "11140",
+        "duration": 465
+      }
+    ]
+  },
+  {
+    "id": "log_1793174211364_y0hva",
+    "timestamp": "2026-10-28T07:56:51.364Z",
+    "formattedTime": "28/10/2026 14:56:51",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11099\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11099"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344726_tk8qe",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+        "username": "11099.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11099\"",
+        "oldValue": "11010",
+        "newValue": "11099",
+        "duration": 446
+      }
+    ]
+  },
+  {
+    "id": "log_1793174187740_osolr",
+    "timestamp": "2026-10-28T07:56:27.740Z",
+    "formattedTime": "28/10/2026 14:56:27",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11119\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11119"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Nà Tấu Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344726_v55ue",
+        "name": "Trạm y tế xã Nà Tấu Trạm chính",
+        "username": "11119.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11119\"",
+        "oldValue": "11010",
+        "newValue": "11119",
+        "duration": 601
+      }
+    ]
+  },
+  {
+    "id": "log_1793174170972_ddob1",
+    "timestamp": "2026-10-28T07:56:10.972Z",
+    "formattedTime": "28/10/2026 14:56:10",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11098\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11098"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344726_r1yq1",
+        "name": "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+        "username": "11098.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11098\"",
+        "oldValue": "11010",
+        "newValue": "11098",
+        "duration": 479
+      }
+    ]
+  },
+  {
+    "id": "log_1793174159258_dzqxm",
+    "timestamp": "2026-10-28T07:55:59.258Z",
+    "formattedTime": "28/10/2026 14:55:59",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11163\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11163"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Búng Lao Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344726_rfb3u",
+        "name": "Trạm Y tế xã Búng Lao Trạm chính",
+        "username": "11163.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11163\"",
+        "oldValue": "11010",
+        "newValue": "11163",
+        "duration": 432
+      }
+    ]
+  },
+  {
+    "id": "log_1793174118430_z9v6v",
+    "timestamp": "2026-10-28T07:55:18.430Z",
+    "formattedTime": "28/10/2026 14:55:18",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11097\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11097"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344726_t41eg",
+        "name": "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+        "username": "11097.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11097\"",
+        "oldValue": "11010",
+        "newValue": "11097",
+        "duration": 392
+      }
+    ]
+  },
+  {
+    "id": "log_1793174093645_zecwv",
+    "timestamp": "2026-10-28T07:54:53.645Z",
+    "formattedTime": "28/10/2026 14:54:53",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11097\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11097"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Mường Ảng Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344725_d2t3c",
+        "name": "Trạm Y tế xã Mường Ảng Trạm chính",
+        "username": "11096.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11096\" ➔ \"11097\"",
+        "oldValue": "11096",
+        "newValue": "11097",
+        "duration": 390
+      }
+    ]
+  },
+  {
+    "id": "log_1793174078703_cqcct",
+    "timestamp": "2026-10-28T07:54:38.703Z",
+    "formattedTime": "28/10/2026 14:54:38",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11096\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11096"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Mường Ảng Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344725_d2t3c",
+        "name": "Trạm Y tế xã Mường Ảng Trạm chính",
+        "username": "11096.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11096\" ➔ \"11096\"",
+        "oldValue": "11096",
+        "newValue": "11096",
+        "duration": 532
+      }
+    ]
+  },
+  {
+    "id": "log_1793174076710_7g1lw",
+    "timestamp": "2026-10-28T07:54:36.710Z",
+    "formattedTime": "28/10/2026 14:54:36",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11096\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11096"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Mường Ảng Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344725_d2t3c",
+        "name": "Trạm Y tế xã Mường Ảng Trạm chính",
+        "username": "11096.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11096\"",
+        "oldValue": "11010",
+        "newValue": "11096",
+        "duration": 579
+      }
+    ]
+  },
+  {
+    "id": "log_1793173177097_lw0wf",
+    "timestamp": "2026-10-28T07:39:37.097Z",
+    "formattedTime": "28/10/2026 14:39:37",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11055\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11055"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Mường Pồn Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344725_0ikn9",
+        "name": "Trạm Y tế xã Mường Pồn Trạm chính",
+        "username": "11055.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11055\"",
+        "oldValue": "11010",
+        "newValue": "11055",
+        "duration": 441
+      }
+    ]
+  },
+  {
+    "id": "log_1793173162394_rb72l",
+    "timestamp": "2026-10-28T07:39:22.394Z",
+    "formattedTime": "28/10/2026 14:39:22",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11029\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11029"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344725_wd7z3",
+        "name": "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+        "username": "11029.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11029\"",
+        "oldValue": "11010",
+        "newValue": "11029",
+        "duration": 430
+      }
+    ]
+  },
+  {
+    "id": "log_1793173111551_x061v",
+    "timestamp": "2026-10-28T07:38:31.551Z",
+    "formattedTime": "28/10/2026 14:38:31",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11142\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11142"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Na Sang Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344725_g1n8b",
+        "name": "Trạm y tế xã Na Sang Trạm chính",
+        "username": "11142.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11142\" ➔ \"11142\"",
+        "oldValue": "11142",
+        "newValue": "11142",
+        "duration": 347
+      }
+    ]
+  },
+  {
+    "id": "log_1793173109097_4hr2q",
+    "timestamp": "2026-10-28T07:38:29.097Z",
+    "formattedTime": "28/10/2026 14:38:29",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11142\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11142"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Na Sang Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344725_g1n8b",
+        "name": "Trạm y tế xã Na Sang Trạm chính",
+        "username": "11142.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11142\"",
+        "oldValue": "11010",
+        "newValue": "11142",
+        "duration": 440
+      }
+    ]
+  },
+  {
+    "id": "log_1793173081463_k7q8f",
+    "timestamp": "2026-10-28T07:38:01.463Z",
+    "formattedTime": "28/10/2026 14:38:01",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11141\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11141"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344725_oo5x9",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+        "username": "11141.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11141\"",
+        "oldValue": "11010",
+        "newValue": "11141",
+        "duration": 422
+      }
+    ]
+  },
+  {
+    "id": "log_1793173065902_3g66k",
+    "timestamp": "2026-10-28T07:37:45.902Z",
+    "formattedTime": "28/10/2026 14:37:45",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11137\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11137"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344725_2ahoh",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+        "username": "11137.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11137\"",
+        "oldValue": "11010",
+        "newValue": "11137",
+        "duration": 593
+      }
+    ]
+  },
+  {
+    "id": "log_1793173047401_zrgsk",
+    "timestamp": "2026-10-28T07:37:27.401Z",
+    "formattedTime": "28/10/2026 14:37:27",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11095\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11095"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Mường Lạn Trạm chính"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344725_pw04b",
+        "name": "Trạm y tế xã Mường Lạn Trạm chính",
+        "username": "11095.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11095\"",
+        "oldValue": "11010",
+        "newValue": "11095",
+        "duration": 455
+      }
+    ]
+  },
+  {
+    "id": "log_1793173029409_ojxtc",
+    "timestamp": "2026-10-28T07:37:09.409Z",
+    "formattedTime": "28/10/2026 14:37:09",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11138\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11138"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344725_6m9dr",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+        "username": "11138.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11138\"",
+        "oldValue": "11010",
+        "newValue": "11138",
+        "duration": 615
+      }
+    ]
+  },
+  {
+    "id": "log_1793172988008_2uq07",
+    "timestamp": "2026-10-28T07:36:28.008Z",
+    "formattedTime": "28/10/2026 14:36:28",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11139\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11139"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344724_fsm1s",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+        "username": "11139.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11139\" ➔ \"11139\"",
+        "oldValue": "11139",
+        "newValue": "11139",
+        "duration": 510
+      }
+    ]
+  },
+  {
+    "id": "log_1793171812795_3lpo9",
+    "timestamp": "2026-10-28T07:16:52.795Z",
+    "formattedTime": "28/10/2026 14:16:52",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11139\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11139"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791691344724_fsm1s",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+        "username": "11139.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11139\"",
+        "oldValue": "11010",
+        "newValue": "11139",
+        "duration": 513
+      }
+    ]
+  },
+  {
+    "id": "log_1793171795392_h5dir",
+    "timestamp": "2026-10-28T07:16:35.392Z",
+    "formattedTime": "28/10/2026 14:16:35",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] từ \"11010\" ➔ \"11017\" trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "oldValue": "11010",
+      "newValue": "11017"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế phường Mường Thanh"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791689200931_7fkiu",
+        "name": "Trạm y tế phường Mường Thanh",
+        "username": "11017.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11017\"",
+        "oldValue": "11010",
+        "newValue": "11017",
+        "duration": 522
+      }
+    ]
+  },
+  {
     "id": "log_1792892675475_8go69",
     "timestamp": "2026-10-25T01:44:35.475Z",
     "formattedTime": "25/10/2026 08:44:35",

@@ -10,11 +10,11 @@
     "status": "success",
     "active": true,
     "notes": "Tài khoản quản trị trạm thực tế HMIS Y tế cơ sở",
-    "lastTested": "2026-10-23T01:47:39.203Z",
+    "lastTested": "2026-10-29T07:57:38.120Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Phường Điện Biên Phủ (Cán bộ: ADMIN BV)",
     "createdAt": "2026-10-11T02:22:32.889Z",
     "updatedAt": "2026-10-11T04:04:09.056Z",
-    "lastResponseTime": 345
+    "lastResponseTime": 337
   },
   {
     "name": "Trạm y tế phường Mường Thanh",
@@ -27,11 +27,11 @@
     "active": true,
     "id": "tyt_1791689200931_7fkiu",
     "status": "success",
-    "lastTested": "2026-10-23T01:47:39.282Z",
+    "lastTested": "2026-10-29T07:57:38.226Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Phường Mường Thanh (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T03:26:40.932Z",
     "updatedAt": "2026-10-11T04:04:09.058Z",
-    "lastResponseTime": 432
+    "lastResponseTime": 425
   },
   {
     "id": "tyt_1791691344724_fsm1s",
@@ -44,11 +44,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.176Z",
+    "lastTested": "2026-10-29T07:57:38.145Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Mường Lạn - Điểm trạm Y tế Nặm Lịch (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.725Z",
     "updatedAt": "2026-10-11T04:04:09.061Z",
-    "lastResponseTime": 327
+    "lastResponseTime": 321
   },
   {
     "id": "tyt_1791691344725_6m9dr",
@@ -61,11 +61,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.184Z",
+    "lastTested": "2026-10-29T07:57:38.207Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Mường Lạn -Điểm trạm Y tế Xuân Lao (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.725Z",
     "updatedAt": "2026-10-11T04:04:09.062Z",
-    "lastResponseTime": 319
+    "lastResponseTime": 402
   },
   {
     "id": "tyt_1791691344725_pw04b",
@@ -78,11 +78,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.286Z",
+    "lastTested": "2026-10-29T07:57:38.108Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Mường Lạn (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.725Z",
     "updatedAt": "2026-10-11T04:04:09.064Z",
-    "lastResponseTime": 400
+    "lastResponseTime": 288
   },
   {
     "id": "tyt_1791691344725_2ahoh",
@@ -95,11 +95,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.632Z",
+    "lastTested": "2026-10-29T07:57:38.610Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Na Sang - Điểm trạm Y tế Na Sang (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.725Z",
     "updatedAt": "2026-10-11T04:04:09.066Z",
-    "lastResponseTime": 201
+    "lastResponseTime": 191
   },
   {
     "id": "tyt_1791691344725_oo5x9",
@@ -112,11 +112,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.596Z",
+    "lastTested": "2026-10-29T07:57:38.588Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Na Sang - Điểm trạm Y tế Sa Lông (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.725Z",
     "updatedAt": "2026-10-11T04:04:09.068Z",
-    "lastResponseTime": 182
+    "lastResponseTime": 170
   },
   {
     "id": "tyt_1791691344725_g1n8b",
@@ -129,11 +129,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.599Z",
+    "lastTested": "2026-10-29T07:57:38.569Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Na Sang (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.725Z",
     "updatedAt": "2026-10-11T04:04:09.069Z",
-    "lastResponseTime": 165
+    "lastResponseTime": 146
   },
   {
     "id": "tyt_1791691344725_wd7z3",
@@ -146,11 +146,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.670Z",
+    "lastTested": "2026-10-29T07:57:38.526Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế xã Mường Pồn - Điểm trạm Y tế Mường Pồn (Cán bộ: ADMIN BV)",
     "createdAt": "2026-10-11T04:02:24.725Z",
     "updatedAt": "2026-10-11T04:04:09.072Z",
-    "lastResponseTime": 229
+    "lastResponseTime": 142
   },
   {
     "id": "tyt_1791691344725_0ikn9",
@@ -163,11 +163,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.581Z",
+    "lastTested": "2026-10-29T07:57:38.600Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế xã Mường Pồn (Cán bộ: ADMIN BV)",
     "createdAt": "2026-10-11T04:02:24.725Z",
     "updatedAt": "2026-10-11T04:04:09.074Z",
-    "lastResponseTime": 142
+    "lastResponseTime": 147
   },
   {
     "id": "tyt_1791691344725_d2t3c",
@@ -180,11 +180,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.969Z",
+    "lastTested": "2026-10-29T07:57:38.957Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế xã Mường Ảng (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.725Z",
     "updatedAt": "2026-10-11T04:04:09.075Z",
-    "lastResponseTime": 165
+    "lastResponseTime": 177
   },
   {
     "id": "tyt_1791691344726_t41eg",
@@ -197,11 +197,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.984Z",
+    "lastTested": "2026-10-29T07:57:38.977Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế xã Mường Ảng - Điểm trạm Y tế Ẳng Nưa (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.726Z",
     "updatedAt": "2026-10-11T04:04:09.077Z",
-    "lastResponseTime": 189
+    "lastResponseTime": 178
   },
   {
     "id": "tyt_1791691344726_rfb3u",
@@ -214,11 +214,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.995Z",
+    "lastTested": "2026-10-29T07:57:38.987Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế xã Búng Lao (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.726Z",
     "updatedAt": "2026-10-11T04:04:09.079Z",
-    "lastResponseTime": 152
+    "lastResponseTime": 170
   },
   {
     "id": "tyt_1791691344726_r1yq1",
@@ -231,11 +231,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:39.960Z",
+    "lastTested": "2026-10-29T07:57:38.982Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế xã Búng Lao - Điểm trạm Y tế Ẳng Tở (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.726Z",
     "updatedAt": "2026-10-11T04:04:09.081Z",
-    "lastResponseTime": 143
+    "lastResponseTime": 162
   },
   {
     "id": "tyt_1791691344726_v55ue",
@@ -248,11 +248,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:40.033Z",
+    "lastTested": "2026-10-29T07:57:38.969Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Nà Tấu (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.726Z",
     "updatedAt": "2026-10-11T04:04:09.082Z",
-    "lastResponseTime": 187
+    "lastResponseTime": 160
   },
   {
     "id": "tyt_1791691344726_tk8qe",
@@ -265,11 +265,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:40.329Z",
+    "lastTested": "2026-10-29T07:57:39.284Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Nà Tấu - Điểm trạm Y tế Mường Đăng (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.726Z",
     "updatedAt": "2026-10-11T04:04:09.084Z",
-    "lastResponseTime": 177
+    "lastResponseTime": 162
   },
   {
     "id": "tyt_1791691344726_tyxu3",
@@ -282,11 +282,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:40.363Z",
+    "lastTested": "2026-10-29T07:57:39.301Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Nà Tấu - Điểm trạm Y tế Ngối Cáy (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.726Z",
     "updatedAt": "2026-10-11T04:04:09.086Z",
-    "lastResponseTime": 182
+    "lastResponseTime": 165
   },
   {
     "id": "tyt_1791691344726_dd8tb",
@@ -299,11 +299,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:40.425Z",
+    "lastTested": "2026-10-29T07:57:39.280Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế xã Si Pa Phìn (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.726Z",
     "updatedAt": "2026-10-11T04:04:09.088Z",
-    "lastResponseTime": 260
+    "lastResponseTime": 158
   },
   {
     "id": "tyt_1791691344726_tfxlt",
@@ -316,11 +316,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:40.407Z",
+    "lastTested": "2026-10-29T07:57:39.305Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế xã Si Pa Phìn - Điểm trạm Y tế Phìn Hồ (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.726Z",
     "updatedAt": "2026-10-11T04:04:09.089Z",
-    "lastResponseTime": 225
+    "lastResponseTime": 154
   },
   {
     "id": "tyt_1791691344726_9xjnz",
@@ -333,11 +333,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:40.369Z",
-    "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Nà Bủng (Cán bộ: Admin BV)",
+    "lastTested": "2026-10-29T07:57:39.308Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Nà Bủng - Điểm trạm Nà Bủng (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T04:02:24.726Z",
     "updatedAt": "2026-10-11T04:04:09.091Z",
-    "lastResponseTime": 197
+    "lastResponseTime": 157
   },
   {
     "name": "Trạm y tế xã Mường Phăng",
@@ -350,11 +350,11 @@
     "active": true,
     "id": "tyt_1791695109044_1lj0m",
     "status": "success",
-    "lastTested": "2026-10-23T01:47:40.704Z",
+    "lastTested": "2026-10-29T07:57:39.611Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Mường Phăng (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T05:05:09.044Z",
     "updatedAt": "2026-10-11T05:05:09.044Z",
-    "lastResponseTime": 149
+    "lastResponseTime": 173
   },
   {
     "name": "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
@@ -367,11 +367,11 @@
     "active": true,
     "id": "tyt_1791695160278_2epf0",
     "status": "success",
-    "lastTested": "2026-10-23T01:47:40.710Z",
+    "lastTested": "2026-10-29T07:57:39.593Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Mường Phăng Điểm trạm Nà Nhạn (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T05:06:00.278Z",
     "updatedAt": "2026-10-11T05:06:00.278Z",
-    "lastResponseTime": 149
+    "lastResponseTime": 161
   },
   {
     "name": "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
@@ -384,11 +384,11 @@
     "active": true,
     "id": "tyt_1791695192777_6fjbv",
     "status": "success",
-    "lastTested": "2026-10-23T01:47:40.696Z",
+    "lastTested": "2026-10-29T07:57:39.629Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Mường Phăng Điểm trạm Pá Khoang (Cán bộ: Admin BV)",
     "createdAt": "2026-10-11T05:06:32.777Z",
     "updatedAt": "2026-10-11T05:06:32.777Z",
-    "lastResponseTime": 134
+    "lastResponseTime": 164
   },
   {
     "id": "tyt_1792720046961_d1las",
@@ -401,11 +401,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:40.998Z",
+    "lastTested": "2026-10-29T07:57:39.624Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế xã Pa Ham (Cán bộ: Admin BV)",
     "createdAt": "2026-10-23T01:47:26.961Z",
     "updatedAt": "2026-10-23T01:47:26.961Z",
-    "lastResponseTime": 137
+    "lastResponseTime": 152
   },
   {
     "id": "tyt_1792720046961_32c6q",
@@ -418,11 +418,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:41.054Z",
+    "lastTested": "2026-10-29T07:57:39.633Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài (Cán bộ: Admin BV)",
     "createdAt": "2026-10-23T01:47:26.961Z",
     "updatedAt": "2026-10-23T01:47:26.961Z",
-    "lastResponseTime": 169
+    "lastResponseTime": 157
   },
   {
     "id": "tyt_1792720046961_8ec20",
@@ -435,11 +435,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:40.995Z",
+    "lastTested": "2026-10-29T07:57:39.945Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Nậm Nèn (Cán bộ: Admin BV)",
     "createdAt": "2026-10-23T01:47:26.961Z",
     "updatedAt": "2026-10-23T01:47:26.961Z",
-    "lastResponseTime": 132
+    "lastResponseTime": 171
   },
   {
     "id": "tyt_1792720046961_bjcd7",
@@ -452,11 +452,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:41.558Z",
-    "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí (Cán bộ: Admin BV)",
+    "lastTested": "2026-10-29T07:57:39.930Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí (Cán bộ: ADMIN BV)",
     "createdAt": "2026-10-23T01:47:26.961Z",
     "updatedAt": "2026-10-23T01:47:26.961Z",
-    "lastResponseTime": 347
+    "lastResponseTime": 152
   },
   {
     "id": "tyt_1792720046961_m5xgy",
@@ -469,11 +469,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:41.552Z",
+    "lastTested": "2026-10-29T07:57:39.949Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Thanh An (Cán bộ: Admin BV)",
     "createdAt": "2026-10-23T01:47:26.961Z",
     "updatedAt": "2026-10-23T01:47:26.961Z",
-    "lastResponseTime": 320
+    "lastResponseTime": 157
   },
   {
     "id": "tyt_1792720046961_gpwrk",
@@ -486,11 +486,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:41.486Z",
-    "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Thanh An Điểm trạm Sam Mứn (Cán bộ: Admin BV)",
+    "lastTested": "2026-10-29T07:57:39.953Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế xã Thanh An Điểm trạm Sam Mứn (Cán bộ: Admin BV)",
     "createdAt": "2026-10-23T01:47:26.961Z",
     "updatedAt": "2026-10-23T01:47:26.961Z",
-    "lastResponseTime": 257
+    "lastResponseTime": 158
   },
   {
     "id": "tyt_1792720046961_2mzqg",
@@ -503,11 +503,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:41.555Z",
+    "lastTested": "2026-10-29T07:57:39.909Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Thanh Yên (Cán bộ: Admin BV)",
     "createdAt": "2026-10-23T01:47:26.962Z",
     "updatedAt": "2026-10-23T01:47:26.962Z",
-    "lastResponseTime": 342
+    "lastResponseTime": 132
   },
   {
     "id": "tyt_1792720046962_gxt8s",
@@ -520,11 +520,11 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:41.497Z",
+    "lastTested": "2026-10-29T07:57:40.254Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Thanh Yên Điểm trạm Pa Thơm (Cán bộ: Admin BV)",
     "createdAt": "2026-10-23T01:47:26.962Z",
     "updatedAt": "2026-10-23T01:47:26.962Z",
-    "lastResponseTime": 281
+    "lastResponseTime": 161
   },
   {
     "id": "tyt_1792720046962_6r0co",
@@ -537,10 +537,146 @@
     "status": "success",
     "active": true,
     "notes": "",
-    "lastTested": "2026-10-23T01:47:41.915Z",
+    "lastTested": "2026-10-29T07:57:40.306Z",
     "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên (Cán bộ: Admin BV)",
     "createdAt": "2026-10-23T01:47:26.962Z",
     "updatedAt": "2026-10-23T01:47:26.962Z",
-    "lastResponseTime": 231
+    "lastResponseTime": 174
+  },
+  {
+    "id": "tyt_1793260643544_64rvw",
+    "name": "Trạm Y tế Nà Bủng Trạm chính",
+    "code": "11162",
+    "district": "",
+    "url": "https://ytcs.hmis.vn/",
+    "username": "11162.ADMINBV",
+    "password": "aef724edd6e4b5f09df8ded4ed780660:522dc915328ce5da86a907bb07e93c6dacca440ff62b58ecf21f7f9414569c23",
+    "status": "success",
+    "active": true,
+    "notes": "",
+    "lastTested": "2026-10-29T07:57:40.275Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Nà Bủng (Cán bộ: Admin BV)",
+    "createdAt": "2026-10-29T07:57:23.544Z",
+    "updatedAt": "2026-10-29T07:57:23.544Z",
+    "lastResponseTime": 174
+  },
+  {
+    "id": "tyt_1793260643544_jt9hs",
+    "name": "Trạm Y tế Sam Mứn Trạm chính",
+    "code": "11158",
+    "district": "",
+    "url": "https://ytcs.hmis.vn/",
+    "username": "11158.ADMINBV",
+    "password": "fad8fdd3628a6fcd190f48203ea73049:b60e1b03a00b5aae08782b8cb2db35203ffc042fd3ece67c93252525b6fc9138",
+    "status": "success",
+    "active": true,
+    "notes": "",
+    "lastTested": "2026-10-29T07:57:40.426Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Sam Mứn (Cán bộ: Admin BV)",
+    "createdAt": "2026-10-29T07:57:23.544Z",
+    "updatedAt": "2026-10-29T07:57:23.544Z",
+    "lastResponseTime": 310
+  },
+  {
+    "id": "tyt_1793260643544_6t1pb",
+    "name": "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+    "code": "11031",
+    "district": "",
+    "url": "https://ytcs.hmis.vn/",
+    "username": "11031.ADMINBV",
+    "password": "6d6f03a7834ebaf471c741783250771a:5f11c335f91b7fa786d3a9511dac06b7d4b2737979e9349445fa551453e78dce",
+    "status": "success",
+    "active": true,
+    "notes": "",
+    "lastTested": "2026-10-29T07:57:40.377Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư (Cán bộ: Admin BV)",
+    "createdAt": "2026-10-29T07:57:23.544Z",
+    "updatedAt": "2026-10-29T07:57:23.544Z",
+    "lastResponseTime": 264
+  },
+  {
+    "id": "tyt_1793260643544_5vp2k",
+    "name": "Trạm y tế Núa Ngam Trạm chính",
+    "code": "11026",
+    "district": "",
+    "url": "https://ytcs.hmis.vn/",
+    "username": "11026.ADMINBV",
+    "password": "cb3fd735907c7a205d1bb498b2330792:3a6cf25057fcf573063aa5dfbc7fb9a80133e226bdee678e4e72840bbf960b5a",
+    "status": "success",
+    "active": true,
+    "notes": "",
+    "lastTested": "2026-10-29T07:57:40.961Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Núa Ngam (Cán bộ: Admin BV)",
+    "createdAt": "2026-10-29T07:57:23.545Z",
+    "updatedAt": "2026-10-29T07:57:23.545Z",
+    "lastResponseTime": 342
+  },
+  {
+    "id": "tyt_1793260643545_wzqnj",
+    "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+    "code": "11170",
+    "district": "",
+    "url": "https://ytcs.hmis.vn/",
+    "username": "11170.ADMINBV",
+    "password": "f2e4c07735fbf450039a359d5d24a97a:f7ba157d6909dc48799b80843c83c984135f0ee7472ae7e5932efc1b8269f48c",
+    "status": "success",
+    "active": true,
+    "notes": "",
+    "lastTested": "2026-10-29T07:57:40.871Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông (Cán bộ: Admin BV)",
+    "createdAt": "2026-10-29T07:57:23.545Z",
+    "updatedAt": "2026-10-29T07:57:23.545Z",
+    "lastResponseTime": 294
+  },
+  {
+    "id": "tyt_1793260643545_adc4m",
+    "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+    "code": "11177",
+    "district": "",
+    "url": "https://ytcs.hmis.vn/",
+    "username": "11177.ADMINBV",
+    "password": "f6e44ced9ef1a2b1ca2c47f586314495:1deb11350937f841ac619241b2d583208d6d98e673a8507fd461728b71e2cc40",
+    "status": "success",
+    "active": true,
+    "notes": "",
+    "lastTested": "2026-10-29T07:57:40.926Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông (Cán bộ: Admin BV)",
+    "createdAt": "2026-10-29T07:57:23.545Z",
+    "updatedAt": "2026-10-29T07:57:23.545Z",
+    "lastResponseTime": 347
+  },
+  {
+    "id": "tyt_1793260643545_h8tz9",
+    "name": "Trạm y tế Mường Nhà Trạm chính",
+    "code": "11157",
+    "district": "",
+    "url": "https://ytcs.hmis.vn/",
+    "username": "11157.ADMINBV",
+    "password": "e74c32c80b22a8daa6e9621adcdd3544:75f9e24641e79b78e39b4958a4bde90d4cb5e037daff7712ef8a887791ee1c1f",
+    "status": "success",
+    "active": true,
+    "notes": "",
+    "lastTested": "2026-10-29T07:57:40.945Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Mường Nhà (Cán bộ: Admin BV)",
+    "createdAt": "2026-10-29T07:57:23.545Z",
+    "updatedAt": "2026-10-29T07:57:23.545Z",
+    "lastResponseTime": 288
+  },
+  {
+    "id": "tyt_1793260643545_gp167",
+    "name": "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+    "code": "11028",
+    "district": "",
+    "url": "https://ytcs.hmis.vn/",
+    "username": "11028.ADMINBV",
+    "password": "0279ec952b6c654651661d7aaf7ddca6:bfa396da66c8d1a0a15fb20b8581949c5cb4ced4c5fb48c86ed1a5491c09df0b",
+    "status": "success",
+    "active": true,
+    "notes": "",
+    "lastTested": "2026-10-29T07:57:40.932Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói (Cán bộ: Admin BV)",
+    "createdAt": "2026-10-29T07:57:23.545Z",
+    "updatedAt": "2026-10-29T07:57:23.545Z",
+    "lastResponseTime": 331
   }
 ]

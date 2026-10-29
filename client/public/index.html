@@ -108,6 +108,14 @@
     .text-\[11px\] {
       font-size: calc(13.5px * var(--font-scale, 1.05)) !important;
     }
+    /* Cỡ chữ 13 chuẩn thể thức văn bản (13pt ~ 17.3px), to rõ, đậm nét */
+    .text-param-desc,
+    .text-\[13pt\],
+    .text-\[13px\] {
+      font-size: calc(13pt * var(--font-scale, 1.05)) !important;
+      line-height: 1.65 !important;
+      color: #0f172a !important;
+    }
     .text-xs {
       font-size: calc(14px * var(--font-scale, 1.05)) !important;
       line-height: 1.45 !important;
@@ -4313,14 +4321,14 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                 <i data-lucide="list" class="w-4 h-4 text-indigo-600"></i>
                 <span>Chi tiết tham số thiết lập ({{ parseParams(item.giaTriThietLap).length }} tham số):</span>
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 max-h-96 overflow-y-auto">
-                <div v-for="p in parseParams(item.giaTriThietLap)" :key="p.key" class="p-3 bg-white rounded-xl border border-slate-200/90 hover:border-indigo-300 transition-all flex flex-col justify-between" :class="{ 'ring-2 ring-indigo-500 bg-indigo-50/70 border-indigo-400 font-semibold shadow-xs': cauhinhSearch && (p.key.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()) || (p.mota && p.mota.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()))) }">
-                  <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 mb-2">
-                    <span class="font-mono font-bold text-sm text-slate-900 break-all">{{ p.key }}</span>
-                    <span class="text-xs font-mono font-black px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-800 border border-indigo-200 shrink-0">{{ p.giatri !== undefined ? p.giatri : '—' }}</span>
+              <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 max-h-[460px] overflow-y-auto">
+                <div v-for="p in parseParams(item.giaTriThietLap)" :key="p.key" class="p-4 bg-white rounded-xl border border-slate-200/90 hover:border-indigo-300 hover:shadow-xs transition-all flex flex-col justify-between" :class="{ 'ring-2 ring-indigo-500 bg-indigo-50/70 border-indigo-400 font-semibold shadow-xs': cauhinhSearch && (p.key.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()) || (p.mota && p.mota.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()))) }">
+                  <div class="flex items-center justify-between gap-2 border-b border-slate-200/80 pb-2.5 mb-2.5">
+                    <span class="font-mono font-bold text-base text-slate-900 break-all">{{ p.key }}</span>
+                    <span class="text-sm font-mono font-black px-2.5 py-0.5 rounded-lg bg-indigo-100 text-indigo-900 border border-indigo-200 shrink-0">{{ p.giatri !== undefined ? p.giatri : '—' }}</span>
                   </div>
-                  <div v-if="p.mota" class="text-slate-700 text-[13px] leading-relaxed whitespace-pre-line font-normal">{{ p.mota }}</div>
-                  <div v-else class="text-slate-400 text-xs italic">(Không có mô tả tham số)</div>
+                  <div v-if="p.mota" class="text-slate-800 text-[13pt] text-param-desc leading-relaxed whitespace-pre-line font-medium pt-1">{{ p.mota }}</div>
+                  <div v-else class="text-slate-400 text-sm italic pt-1">(Không có mô tả tham số)</div>
                 </div>
               </div>
             </div>
@@ -4562,7 +4570,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                         Giá trị hiện tại: <b class="text-purple-700">{{ p.giatri !== undefined ? p.giatri : '—' }}</b>
                       </span>
                     </div>
-                    <p v-if="p.mota" class="text-xs sm:text-sm text-slate-600 whitespace-normal leading-relaxed font-normal">
+                    <p v-if="p.mota" class="text-slate-800 text-[13pt] text-param-desc whitespace-normal leading-relaxed font-medium pt-0.5">
                       {{ p.mota }}
                     </p>
                   </div>
@@ -4581,7 +4589,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                       Giá trị hiện tại: <code class="bg-white px-2.5 py-1 rounded-md font-mono font-bold text-purple-900 border border-purple-200 text-sm sm:text-base">{{ selectedParamMeta.giatri }}</code>
                     </span>
                   </div>
-                  <p v-if="selectedParamMeta.mota" class="text-xs sm:text-sm text-slate-700 whitespace-pre-line pt-2 border-t border-purple-200/70 leading-relaxed font-normal">
+                  <p v-if="selectedParamMeta.mota" class="text-slate-800 text-[13pt] text-param-desc whitespace-pre-line pt-2.5 border-t border-purple-200/70 leading-relaxed font-medium">
                     💡 <strong class="font-bold text-slate-900">Ý nghĩa tham số:</strong> {{ selectedParamMeta.mota }}
                   </p>
                 </div>

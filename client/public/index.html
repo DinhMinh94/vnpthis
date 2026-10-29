@@ -4241,28 +4241,28 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         <!-- Header -->
         <div class="bg-gradient-to-r from-indigo-700 via-purple-700 to-blue-800 text-white p-5 flex items-center justify-between">
           <div class="flex items-center space-x-3">
-            <div class="bg-white/20 p-2 rounded-lg">
+            <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
               <i data-lucide="sliders" class="w-6 h-6 text-cyan-300"></i>
             </div>
             <div>
               <div class="flex items-center space-x-2">
-                <h3 class="text-lg font-bold">Cấu hình nghiệp vụ hệ thống HMIS Y Tế Cơ Sở</h3>
-                <span class="bg-white/20 text-xs px-2.5 py-0.5 rounded-full font-bold">160 Nhóm / 1,708 Tham số</span>
+                <h3 class="text-xl font-bold tracking-tight">Cấu hình nghiệp vụ hệ thống HMIS Y Tế Cơ Sở</h3>
+                <span class="bg-white/20 text-sm px-3 py-0.5 rounded-full font-bold">160 Nhóm / 1,708 Tham số</span>
               </div>
-              <p class="text-xs text-indigo-100">Dữ liệu trích xuất từ https://ytcs.hmis.vn/new/his/danhmuc/cau-hinh/nghiep-vu</p>
+              <p class="text-sm text-indigo-100 mt-0.5">Dữ liệu trích xuất từ https://ytcs.hmis.vn/new/his/danhmuc/cau-hinh/nghiep-vu</p>
             </div>
           </div>
           <div class="flex items-center space-x-2">
             <!-- Nút Refresh Cấu Hình -->
-            <button @click="refreshCauHinhFromHmis" :disabled="isRefreshingCauhinh" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg backdrop-blur-sm transition-colors border border-white/20" title="Kết nối trực tiếp tới cổng HMIS để tải lại dữ liệu cấu hình mới nhất">
+            <button @click="refreshCauHinhFromHmis" :disabled="isRefreshingCauhinh" class="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-white/20 hover:bg-white/30 text-white text-sm font-bold rounded-xl backdrop-blur-sm transition-colors border border-white/20 shadow-xs cursor-pointer" title="Kết nối trực tiếp tới cổng HMIS để tải lại dữ liệu cấu hình mới nhất">
               <i data-lucide="refresh-cw" class="w-4 h-4 text-cyan-300" :class="{ 'animate-spin': isRefreshingCauhinh }"></i>
               <span>{{ isRefreshingCauhinh ? 'Đang cập nhật...' : 'Làm mới cấu hình' }}</span>
             </button>
-            <a href="/api/stations/cauhinh-nghiepvu/download-excel" download class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow transition-colors">
+            <a href="/api/stations/cauhinh-nghiepvu/download-excel" download class="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow transition-colors">
               <i data-lucide="download" class="w-4 h-4"></i>
               <span>Tải file Excel (.xlsx)</span>
             </a>
-            <button @click="modals.cauhinh = false" class="text-white/80 hover:text-white p-1 rounded-lg">
+            <button @click="modals.cauhinh = false" class="text-white/80 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
               <i data-lucide="x" class="w-6 h-6"></i>
             </button>
           </div>
@@ -4270,55 +4270,57 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
 
         <!-- Filter bar -->
         <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-4">
-          <div class="relative flex-1 max-w-md">
-            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-            <input v-model="cauhinhSearch" type="text" placeholder="Tìm theo mã cấu hình (VD: GOI_BN, EMR, PHARMA...), tên, tham số..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+          <div class="relative flex-1 max-w-lg">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input v-model="cauhinhSearch" type="text" placeholder="Tìm theo mã cấu hình (VD: GOI_BN, EMR, PHARMA...), tên, tham số..." class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder:text-slate-400 shadow-2xs font-medium">
           </div>
-          <div class="text-xs text-slate-500 font-medium">
-            Hiển thị <span class="font-bold text-indigo-700">{{ filteredCauHinh.length }}</span> / {{ cauhinhList.length }} nhóm cấu hình
+          <div class="text-sm text-slate-600 font-medium">
+            Hiển thị <span class="font-extrabold text-indigo-700 text-base">{{ filteredCauHinh.length }}</span> / <span class="font-bold text-slate-800">{{ cauhinhList.length }}</span> nhóm cấu hình
           </div>
         </div>
 
         <!-- Body list -->
-        <div class="p-6 overflow-y-auto flex-1 space-y-3">
+        <div class="p-6 overflow-y-auto flex-1 space-y-4">
           <div v-if="isLoadingCauhinh" class="text-center py-12 text-slate-400">
             <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2 text-indigo-600"></i>
-            <p>Đang tải dữ liệu cấu hình nghiệp vụ...</p>
+            <p class="text-sm font-medium">Đang tải dữ liệu cấu hình nghiệp vụ...</p>
           </div>
           <div v-else-if="filteredCauHinh.length === 0" class="text-center py-12 text-slate-400">
-            <p>Không tìm thấy cấu hình nghiệp vụ nào khớp với từ khóa tìm kiếm</p>
+            <p class="text-sm">Không tìm thấy cấu hình nghiệp vụ nào khớp với từ khóa tìm kiếm</p>
           </div>
-          <div v-for="item in filteredCauHinh" :key="item.id" class="border border-slate-200 rounded-xl p-4 bg-white hover:border-indigo-300 transition-all shadow-sm">
-            <div class="flex items-start justify-between gap-3 mb-2">
+          <div v-for="item in filteredCauHinh" :key="item.id" class="border border-slate-200 rounded-2xl p-4 sm:p-5 bg-white hover:border-indigo-300 transition-all shadow-sm space-y-3">
+            <div class="flex items-start justify-between gap-3 flex-wrap">
               <div>
-                <div class="flex items-center space-x-2">
-                  <span class="font-mono font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded text-xs border border-indigo-200">
+                <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                  <span class="font-mono font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-lg text-sm border border-indigo-200 shadow-2xs">
                     {{ item.maCauHinh }}
                   </span>
-                  <span class="text-xs font-bold text-slate-800">{{ item.tenCauHinh }}</span>
+                  <span class="text-base font-bold text-slate-900">{{ item.tenCauHinh }}</span>
                 </div>
-                <p v-if="item.moTa" class="text-xs text-slate-500 mt-1 italic">{{ item.moTa }}</p>
+                <p v-if="item.moTa" class="text-sm text-slate-600 mt-1.5 leading-relaxed">{{ item.moTa }}</p>
               </div>
-              <div class="flex items-center space-x-2 text-xs">
-                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold" :class="item.trangThai === 1 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500'">
+              <div class="flex items-center space-x-2.5 text-xs">
+                <span class="px-3 py-1 rounded-full text-xs font-bold" :class="item.trangThai === 1 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500'">
                   {{ item.trangThai === 1 ? 'Đang bật' : 'Đang tắt' }}
                 </span>
-                <span class="text-slate-400 text-[11px]">{{ item.ngaySua || item.ngayTao }}</span>
+                <span class="text-slate-500 text-xs font-medium">{{ item.ngaySua || item.ngayTao }}</span>
               </div>
             </div>
 
             <!-- Tham số chi tiết -->
-            <div class="bg-slate-50 rounded-lg p-3 border border-slate-100 text-xs">
-              <div class="font-semibold text-slate-700 mb-1.5 flex items-center space-x-1">
+            <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200/80">
+              <div class="font-bold text-slate-800 text-sm mb-2.5 flex items-center space-x-1.5">
+                <i data-lucide="list" class="w-4 h-4 text-indigo-600"></i>
                 <span>Chi tiết tham số thiết lập ({{ parseParams(item.giaTriThietLap).length }} tham số):</span>
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 max-h-80 overflow-y-auto">
-                <div v-for="p in parseParams(item.giaTriThietLap)" :key="p.key" class="p-2 bg-white rounded border border-slate-200 text-[11px] transition-all" :class="{ 'ring-2 ring-indigo-500 bg-indigo-50/60 border-indigo-300 font-semibold shadow-sm': cauhinhSearch && (p.key.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()) || (p.mota && p.mota.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()))) }">
-                  <div class="flex items-center justify-between text-slate-600 font-mono font-bold">
-                    <span>{{ p.key }}</span>
-                    <span class="text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">{{ p.giatri !== undefined ? p.giatri : '—' }}</span>
+              <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 max-h-96 overflow-y-auto">
+                <div v-for="p in parseParams(item.giaTriThietLap)" :key="p.key" class="p-3 bg-white rounded-xl border border-slate-200/90 hover:border-indigo-300 transition-all flex flex-col justify-between" :class="{ 'ring-2 ring-indigo-500 bg-indigo-50/70 border-indigo-400 font-semibold shadow-xs': cauhinhSearch && (p.key.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()) || (p.mota && p.mota.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()))) }">
+                  <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 mb-2">
+                    <span class="font-mono font-bold text-sm text-slate-900 break-all">{{ p.key }}</span>
+                    <span class="text-xs font-mono font-black px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-800 border border-indigo-200 shrink-0">{{ p.giatri !== undefined ? p.giatri : '—' }}</span>
                   </div>
-                  <div v-if="p.mota" class="text-slate-500 mt-1 text-[10px] whitespace-pre-line">{{ p.mota }}</div>
+                  <div v-if="p.mota" class="text-slate-700 text-[13px] leading-relaxed whitespace-pre-line font-normal">{{ p.mota }}</div>
+                  <div v-else class="text-slate-400 text-xs italic">(Không có mô tả tham số)</div>
                 </div>
               </div>
             </div>
@@ -4326,9 +4328,9 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         </div>
 
         <!-- Footer -->
-        <div class="p-4 bg-slate-100 border-t border-slate-200 flex items-center justify-between">
-          <span class="text-xs text-slate-500">File Excel CauHinh_NghiepVu_HMIS.xlsx đã được lưu sẵn trong thư mục dự án của bạn.</span>
-          <button @click="modals.cauhinh = false" class="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl border border-slate-300">
+        <div class="p-4 bg-slate-100 border-t border-slate-200 flex items-center justify-between flex-wrap gap-2">
+          <span class="text-sm text-slate-600 font-medium">File Excel <code class="text-xs font-mono bg-white px-2 py-0.5 rounded border border-slate-200 text-slate-800">CauHinh_NghiepVu_HMIS.xlsx</code> đã được lưu sẵn trong thư mục dự án của bạn.</span>
+          <button @click="modals.cauhinh = false" class="px-5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 text-sm font-bold rounded-xl border border-slate-300 shadow-2xs transition-colors cursor-pointer">
             Đóng
           </button>
         </div>

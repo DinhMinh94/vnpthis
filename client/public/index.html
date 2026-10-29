@@ -85,7 +85,7 @@
     .table-fixed-header tbody tr:hover td.col-sticky-3 {
       background-color: #eff6ff;
     }
-    /* Tối ưu font chữ hệ thống - Tăng cỡ chữ rõ ràng, dễ đọc */
+    /* Tối ưu font chữ hệ thống - Đồng bộ Cỡ Chữ 13 (13pt ~ 17.3px) theo chuẩn văn bản Times New Roman cho toàn bộ hệ thống */
     html {
       font-size: 16px;
       --font-scale: 1.05;
@@ -94,19 +94,31 @@
       font-family: 'Times New Roman', Times, serif !important;
     }
     body {
-      font-size: calc(15px * var(--font-scale, 1.05));
-      line-height: 1.5;
+      font-size: calc(13pt * var(--font-scale, 1.05)); /* Chuẩn cỡ chữ 13 (~17.3px) */
+      line-height: 1.6;
+      color: #1e293b;
     }
 
-    /* Nâng kích cỡ các class text nhỏ để không bị quá bé */
+    /* Nâng kích cỡ các class text nhỏ toàn hệ thống để không bao giờ bị bé, luôn rõ nét, dễ đọc */
     .text-\[9px\] {
-      font-size: calc(11.5px * var(--font-scale, 1.05)) !important;
+      font-size: calc(11pt * var(--font-scale, 1.05)) !important; /* ~14.6px */
+      line-height: 1.35 !important;
     }
     .text-\[10px\] {
-      font-size: calc(12.5px * var(--font-scale, 1.05)) !important;
+      font-size: calc(11.5pt * var(--font-scale, 1.05)) !important; /* ~15.3px */
+      line-height: 1.4 !important;
     }
     .text-\[11px\] {
-      font-size: calc(13.5px * var(--font-scale, 1.05)) !important;
+      font-size: calc(12pt * var(--font-scale, 1.05)) !important; /* ~16px */
+      line-height: 1.45 !important;
+    }
+    .text-xs {
+      font-size: calc(12.5pt * var(--font-scale, 1.05)) !important; /* ~16.6px */
+      line-height: 1.5 !important;
+    }
+    .text-sm {
+      font-size: calc(13pt * var(--font-scale, 1.05)) !important; /* ~17.3px - Chuẩn cỡ chữ 13 */
+      line-height: 1.6 !important;
     }
     /* Cỡ chữ 13 chuẩn thể thức văn bản (13pt ~ 17.3px), to rõ, đậm nét */
     .text-param-desc,
@@ -116,42 +128,49 @@
       line-height: 1.65 !important;
       color: #0f172a !important;
     }
-    .text-xs {
-      font-size: calc(14px * var(--font-scale, 1.05)) !important;
-      line-height: 1.45 !important;
-    }
-    .text-sm {
-      font-size: calc(15.5px * var(--font-scale, 1.05)) !important;
-      line-height: 1.5 !important;
-    }
     .text-base {
-      font-size: calc(16.5px * var(--font-scale, 1.05)) !important;
+      font-size: calc(14pt * var(--font-scale, 1.05)) !important; /* ~18.6px */
+      line-height: 1.6 !important;
     }
     .text-lg {
-      font-size: calc(18.5px * var(--font-scale, 1.05)) !important;
+      font-size: calc(16pt * var(--font-scale, 1.05)) !important; /* ~21.3px */
+      line-height: 1.5 !important;
     }
     .text-xl {
-      font-size: calc(21px * var(--font-scale, 1.05)) !important;
+      font-size: calc(18pt * var(--font-scale, 1.05)) !important; /* ~24px */
     }
     .text-2xl {
-      font-size: calc(26px * var(--font-scale, 1.05)) !important;
+      font-size: calc(22pt * var(--font-scale, 1.05)) !important; /* ~29.3px */
     }
 
-    /* Các thành phần nhập liệu & nút bấm to rõ, dễ bấm */
+    /* Các thành phần nhập liệu & nút bấm to rõ, dễ bấm trên toàn bộ hệ thống */
     input, select, textarea {
-      font-size: calc(14.5px * var(--font-scale, 1.05)) !important;
+      font-size: calc(13pt * var(--font-scale, 1.05)) !important;
     }
     button {
-      font-size: calc(14px * var(--font-scale, 1.05)) !important;
+      font-size: calc(12.5pt * var(--font-scale, 1.05)) !important;
     }
 
-    /* Bảng dữ liệu: Tiêu đề cột & Nội dung hàng */
+    /* Bảng dữ liệu: Tiêu đề cột & Nội dung hàng chuẩn cỡ chữ 13 trên tất cả các tab & modal */
     table th {
-      font-size: calc(13.5px * var(--font-scale, 1.05)) !important;
+      font-size: calc(12.5pt * var(--font-scale, 1.05)) !important; /* ~16.6px */
       letter-spacing: 0.02em;
+      font-weight: 700 !important;
     }
     table td {
-      font-size: calc(14.5px * var(--font-scale, 1.05)) !important;
+      font-size: calc(13pt * var(--font-scale, 1.05)) !important; /* ~17.3px */
+      line-height: 1.55 !important;
+    }
+
+    /* Đảm bảo các huy hiệu trạng thái (badges, pills, tags) và nhãn hiển thị sắc nét */
+    .badge, .pill, .tag {
+      font-size: calc(11.5pt * var(--font-scale, 1.05)) !important;
+    }
+
+    /* Placeholder to rõ, dễ đọc */
+    ::placeholder {
+      font-size: calc(12.5pt * var(--font-scale, 1.05)) !important;
+      color: #94a3b8;
     }
   </style>
 </head>

@@ -18,9 +18,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5146,
@@ -41,9 +42,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00052_BC_XUAT_NHAP_TON_CO_CK_NEW_A4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5145,
@@ -64,9 +66,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00051_BC_XUAT_NHAP_TON_CO_TRA_NEW_A4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5125,
@@ -87,9 +90,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_PHIEU_DKY_KHAMBENH_CHUNG_BS_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5085,
@@ -110,9 +114,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHIEM_KHO_DUOC_IN_TON_KHO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5065,
@@ -133,9 +138,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_CAM_DOAN_TU_NGUYEN_PHA_THAI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5045,
@@ -156,9 +162,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 40,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_PHA_THAI",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5028,
@@ -179,9 +186,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHIDINH_CLS_42005_KSK_THEODOAN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5027,
@@ -202,9 +210,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHI_DINH_XN_KSK_THEODOAN_TIENDIEN_HTH_XML",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5026,
@@ -225,9 +234,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHI_DINH_CLS_NGT_HTH_XML_42005_KSK_THEODOAN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5025,
@@ -248,9 +258,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHIDINH_CLS_DEV_HTH_XML_42005_KSK_THEODOAN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5006,
@@ -271,9 +282,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "DON_DE_NGHI_XAC_DINH_TINH_TRANG_NGHIEN_MA_TUY_MAU_02",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5005,
@@ -294,9 +306,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "DON_DE_NGHI_XAC_DINH_TINH_TRANG_NGHIEN_MA_TUY_MAU_01",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4985,
@@ -317,9 +330,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_KET_QUA_XAC_DINH_TINH_TRANG_NGHIEN_MA_TUY",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4965,
@@ -340,9 +354,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BIEN_BAN_TOM_TAT_LY_LICH_NGUOI_DUOC_DE_NGHI_NGHIEN_MA_TUY",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4928,
@@ -363,9 +378,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEUHOANTRA_LIENTHONG_06DBV01",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4927,
@@ -386,9 +402,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEUHOANTRA_LIENTHONG_06DBV01",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4926,
@@ -409,9 +426,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEUDUTRU_LIENTHONG_06DBV01",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4925,
@@ -432,9 +450,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEUDUTRU_LIENTHONG_06DBV01",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4655,
@@ -455,9 +474,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 17,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BENH_AN_XA_PHUONG",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4635,
@@ -478,9 +498,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_DU_TRU_NHA_CUNG_CAP",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4615,
@@ -501,9 +522,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000010_PHIEU_DIEU_TRI_CHUNG_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4597,
@@ -524,9 +546,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000051_PHIEULINHTVTYTTH_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4596,
@@ -547,9 +570,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_XUAT_KHO_LUAN_CHUYEN_A4_NGANG",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4595,
@@ -570,9 +594,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_XUAT_UNG_TIEN_DIEN_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4575,
@@ -593,9 +618,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000010_PHIEU_DIEU_TRI_DNG_KHAM_BENH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4555,
@@ -616,9 +642,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "SO_Y_LENH_LINH_THUOC",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4535,
@@ -639,9 +666,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000017_GIAY_NGHI_HUONG_BHXH_DNG_HUUPHUOC",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4515,
@@ -662,9 +690,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000048_PHIEU_XUAT_KHO_LUAN_CHUYEN_TIEN_DIEN_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4497,
@@ -685,9 +714,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00052_BC_XUAT_NHAP_TON_CO_CK_KT_A4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4496,
@@ -708,9 +738,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00052_BC_XUAT_NHAP_TON_CO_CK_A4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4495,
@@ -731,9 +762,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00051_BC_XUAT_NHAP_TON_CO_TRA_A4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4475,
@@ -754,9 +786,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_BC_XUAT_NHAP_TON_TONGHOP",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4456,
@@ -777,9 +810,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT15004_PHIEU_XUAT_NHAP_TON_LCI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4455,
@@ -800,9 +834,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_BC_XUAT_NHAP_TON_DNG_NEW",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4435,
@@ -823,9 +858,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_SANG_LOC_VA_DANH_GIA_DINH_DUONG_BENH_NHI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4415,
@@ -846,9 +882,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT018113_PHIEU_CHUAN_BI_TRUOC_MO_2_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4407,
@@ -869,9 +906,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 49,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BENH_AN_NTU_NHI_YHCT_TT32_HIS4_DRAFT",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4406,
@@ -892,9 +930,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 20,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BA_NGOAI_TRU_FORM_TT32_DRAFT",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4405,
@@ -915,9 +954,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 13,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_UNGBUOU_TT32_LAN_1048_HIS4_DRAFT",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4375,
@@ -938,9 +978,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_THE_KHO_DUOC_04DBV01",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4355,
@@ -961,9 +1002,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000056_BANG_KE_CV697_F9_HAOPHI_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4337,
@@ -984,9 +1026,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_TRA_LAI_TVT_HC_TH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4336,
@@ -1007,9 +1050,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_TRA_LAI_TVT_HC_TH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4335,
@@ -1030,9 +1074,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_TRA_LAI_TVT_HC_TH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4315,
@@ -1053,9 +1098,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BIEU_DO_CHUYEN_DA_HTH_COPY_DATA",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4296,
@@ -1076,9 +1122,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00052_BC_XUAT_NHAP_TON_CO_CK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4295,
@@ -1099,9 +1146,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00051_BC_XUAT_NHAP_TON_CO_TRA",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4279,
@@ -1122,9 +1170,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_NHAP_KHO_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4278,
@@ -1145,9 +1194,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000049_PHIEU_LINH_TVT_HC_BUTT_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4277,
@@ -1168,9 +1218,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000049_PHIEU_LINH_TVT_HC_TIEN_DIEN_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4276,
@@ -1191,9 +1242,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000049_PHIEU_LINH_THT_TGN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4275,
@@ -1214,9 +1266,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000049_PHIEU_LINH_TVT_HC_TIEN_DIEN_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4238,
@@ -1237,9 +1290,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BAO_CAO_XUAT_KHO_THEO_THUOC",
-    "nhomBaoCao": "Nhóm báo cáo dược"
+    "nhomBaoCao": "Nhóm báo cáo dược",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4237,
@@ -1260,9 +1314,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_DIEU_TRI_SO_SINH_SAU_SINH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4236,
@@ -1283,9 +1338,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_SANG_LOC_VA_DANH_GIA_DINH_DUONG_BENH_NHI_NGOAI_TRU_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4235,
@@ -1306,9 +1362,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_SANG_LOC_VA_DANH_GIA_DINH_DUONG_BENH_NHI_NOI_TRU_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4215,
@@ -1329,9 +1386,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_BAO_CAO_XUAT_NHAP_TON_DNG",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4199,
@@ -1352,9 +1410,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_THEO_DOI_DE_XAC_DINH_TRANG_THAI_CAI_CAN_SA_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4198,
@@ -1375,9 +1434,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_THEO_DOI_DE_XAC_DINH_TRANG_THAI_CAI_CAC_CHAT_KICH_THICH_THAN_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4197,
@@ -1398,9 +1458,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_THEO_DOI_DE_XAC_DINH_TRANG_THAI_CAI_CAC_CHAT_DANG_THUOC_PHIEN_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4196,
@@ -1421,9 +1482,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_LUONG_GIA_HOAT_DONG_CHUC_NANG_VA_SU_THAM_GIA_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4195,
@@ -1444,9 +1506,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "CAP_GIAY_CHUNG_SINH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4175,
@@ -1467,9 +1530,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_TONG_HOP_THEO_DOI_DE_XAC_DINH_TINH_TRANG_NGHIEN_MA_TUY_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4158,
@@ -1490,9 +1554,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "DON_THUOC_THUONG_TT26_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4157,
@@ -1513,9 +1578,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "DON_THUOC_DONG_Y_TT26",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4156,
@@ -1536,9 +1602,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "DON_THUOC_DONG_Y_TT26",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4155,
@@ -1559,9 +1626,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_HEN_TRICH_SAO_BA",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4135,
@@ -1582,9 +1650,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000147_DUC_PHIEUPHATTHUOC_SP_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4115,
@@ -1605,9 +1674,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEU_XUAT_KHO_TT_TYT_TIEN_DIEN_HTH",
-    "nhomBaoCao": "Nhóm báo cáo dược"
+    "nhomBaoCao": "Nhóm báo cáo dược",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4097,
@@ -1628,9 +1698,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TREN_18_DAY_CONG_2068_V2",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4096,
@@ -1651,9 +1722,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TRE_DUOI_6_DAY_CONG_2068_HYN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4095,
@@ -1674,9 +1746,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_DUOI_18_DAY_CONG_2068",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4077,
@@ -1697,9 +1770,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEU_XUAT_KHO_TT_TYT",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4076,
@@ -1720,9 +1794,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000049_PHIEU_LINH_THUOC_TIEN_DIEN_HTH_NEW",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4075,
@@ -1743,9 +1818,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000048_PHIEU_XUAT_KHO_TIEN_DIEN_HTH_NEW",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4055,
@@ -1766,9 +1842,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000052_PHIEU_TRA_LAI_THUOC_TIEN_DIEN_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4035,
@@ -1789,9 +1866,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000026_GIAY_CHUYEN_VIEN_A4_HHN_HATINH_TIENDIEN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 4015,
@@ -1812,9 +1890,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_SANG_LOC_VA_DANH_GIA_DINH_DUONG_NGUOI_BENH_NOI_TRU_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3996,
@@ -1835,9 +1914,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_PHIEU_TRUYENDICH_22_TT32_LAN_1048_HTH_HIS4_VER2",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3995,
@@ -1858,9 +1938,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_NHAN_DINH_PHAN_LOAI_NGUOI_BENH_KHOA_CAP_CUU_SUB",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3975,
@@ -1881,9 +1962,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 46,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BA_NGT_CHAY_THAN_NHANTAO_HIS4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3956,
@@ -1904,9 +1986,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000063_GIAY_BIEN_BAN_HOI_CHAN_HTH_HHN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3955,
@@ -1927,9 +2010,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000063_SO_BIEN_BAN_HOI_CHAN_HTH_HHN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3937,
@@ -1950,9 +2034,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 38,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_MAT_35_HIS4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3936,
@@ -1973,9 +2058,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000053_PHIEU_CONG_KHAI_THUOC_NGOAITRU",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3935,
@@ -1996,9 +2082,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000053_PHIEU_CONG_KHAI_THUOC_NOITRU_BANT",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3739,
@@ -2019,9 +2106,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BANG_KIEM_TRUOC_TIEM_CHUNG_DOI_VOI_TRE_DUOI_1_THANG_TUOI_TAI_CAC_CO_SO_TIEM_CHUNG_THUOC_BENH_VIEN_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3738,
@@ -2042,9 +2130,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_HUONG_DAN_CHE_DO_DINH_DUONG_CHO_NGUOI_BENH_NOI_TRU",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3737,
@@ -2065,9 +2154,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_THEO_DOI_TAI_PHONG_HOI_TINH_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3736,
@@ -2088,9 +2178,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_KHAM_TIEN_ME_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3735,
@@ -2111,9 +2202,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_THEO_DOI_NGUOI_BENH_SAU_MO_TRONG_24_GIO_DAU_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3734,
@@ -2134,9 +2226,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BIEN_BAN_HOI_CHAN_THONG_QUA_MO_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3733,
@@ -2157,9 +2250,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_DANH_GIA_TRUOC_KHI_CHO_NGUOI_BENH_RA_KHOI_PHONG_HOI_TINH_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3732,
@@ -2180,9 +2274,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_CAM_KET_CHAP_THUAN_PHAU_THUAT_THU_THUAT_VA_GAY_ME_HOI_SUC_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3731,
@@ -2203,9 +2298,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_CAM_KET_XIN_SU_DUNG_XET_NGHIEM_VAT_TU_TIEU_HAO_THUOC_BO_TRO_VA_DICH_VU_THEO_YEU_CAU_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3730,
@@ -2226,9 +2322,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_TU_VAN_HUONG_DAN_GIAO_DUC_SUC_KHOE_HTML1",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3729,
@@ -2249,9 +2346,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CUNG_CAP_THONG_TIN_VE_NGUOI_BENH_TAI_KHOA_HOI_SUC_TICH_CUC",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3728,
@@ -2272,9 +2370,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_SANG_LOC_VA_DANH_GIA_DINH_DUONG_BENH_NHI_SO_SINH_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3727,
@@ -2295,9 +2394,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_NHAN_DINH_BAN_DAU_VAO_VIEN_TAI_KHOA_NOI_TRU",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3726,
@@ -2318,9 +2418,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_THEO_DOI_VA_HOI_SUC_NGUOI_BENH_CHUA_MO_VA_SAU_MO_TU_GIO_THU_25_TRO_DI_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3725,
@@ -2341,9 +2442,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_CAM_KET_RA_VIEN_KHONG_THEO_CHI_DINH_CUA_BAC_SY_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3724,
@@ -2364,9 +2466,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_KHAM_VA_CHI_DINH_PHUC_HOI_CHUC_NANG_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3723,
@@ -2387,9 +2490,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_CAM_DOAN_CHAP_NHAN_THU_THUAT_CHAY_THAN_NHAN_TAO_SINGMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3722,
@@ -2410,9 +2514,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_XAC_NHAN_QUA_TRINH_DIEU_TRI_NOI_TRU",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3721,
@@ -2433,9 +2538,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_BAN_GIAO_NGUOI_BENH_CHUYEN_KHOA_DANH_CHO_DIEU_DUONG_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3720,
@@ -2456,9 +2562,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_BAN_GIAO_NGUOI_BENH_CHUYEN_KHOA_DANH_CHO_BAC_SY",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3719,
@@ -2479,9 +2586,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_CUNG_CAP_THONG_TIN_VA_CAM_KET_CHUNG_VE_NHAP_VIEN_NOI_TRU_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3718,
@@ -2502,9 +2610,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "THE_DI_UNG_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3717,
@@ -2525,9 +2634,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_HEN_TRICH_SAO_BENH_AN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3695,
@@ -2548,9 +2658,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_XAC_NHAN_DIEU_TRI_VO_SINH_CUA_LAO_DONG_NU_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3677,
@@ -2571,9 +2682,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_NHAN_DINH_PHAN_LOAI_NGUOI_BENH_KHOA_CAP_CUU",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3676,
@@ -2594,9 +2706,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_LOC_MAU_HDF",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3655,
@@ -2617,9 +2730,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000147_DUC_PHIEUPHATTHUOC_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3636,
@@ -2640,9 +2754,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_H016004_PHIEUTRATHUOCKHACHLE_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3616,
@@ -2663,9 +2778,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_CAM_DOAN_CHAY_THAN_NHAN_TAO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3615,
@@ -2686,9 +2802,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "GIAY_CAM_KET_NHAP_VIEN_NOI_TRU",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3582,
@@ -2709,9 +2826,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000052_PHIEUTRALAITHUOCHCVTYTTH_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3581,
@@ -2732,9 +2850,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00019_BAOCAOXNT_TVTHC_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3574,
@@ -2755,9 +2874,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_KET_QUA_XET_NGHIEM_CHANDOANROILOANDONGCAMMAU",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3573,
@@ -2778,9 +2898,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_KET_QUA_XET_NGHIEM_HUYETTUYDO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3572,
@@ -2801,9 +2922,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "NTU039_PHIEUXETNGHIEMHUYETTUYDO_29BV01_QD4069_A4_TT32",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3569,
@@ -2824,9 +2946,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000044_BBTHANHLYTHUOCHCVTYTTH_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3568,
@@ -2847,9 +2970,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000043_BBXACNHANTVTTHONGVO_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3567,
@@ -2870,9 +2994,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00046_BC_SO_KHAMBENH_LON_COPY_20260715:182127",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3566,
@@ -2893,9 +3018,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000041_BBKIEMKEHOACHAT_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3565,
@@ -2916,9 +3042,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000042_BBKIEMKEVATTUYTTH_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3547,
@@ -2939,9 +3066,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_HMIS_DANH_SACH_HO_KHAU",
-    "nhomBaoCao": "Nhóm phiếu in YTDP"
+    "nhomBaoCao": "Nhóm phiếu in YTDP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3532,
@@ -2962,9 +3090,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000040_BBKIEMKETHUOCVT_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3531,
@@ -2985,9 +3114,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00028_THEKHOVT_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3530,
@@ -3008,9 +3138,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_KET_QUA_XET_NGHIEM_VISINH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3528,
@@ -3031,9 +3162,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_KET_QUA_XET_NGHIEM_NUOCDICH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3527,
@@ -3054,9 +3186,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_KET_QUA_XET_NGHIEM_SINHTHIETTUYXUONG",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3505,
@@ -3077,9 +3210,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000112_PHIEU_THU_BH_TU_NHAN_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3485,
@@ -3100,9 +3234,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000132_PHIEU_PT_LAC_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3465,
@@ -3123,9 +3258,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTH003044_PHIEU_IN_BARCODE_NHIEU_THUOC",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3445,
@@ -3146,9 +3282,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BAO_CAO_CHUYEN_KHO_HHN",
-    "nhomBaoCao": "Nhóm báo cáo dược"
+    "nhomBaoCao": "Nhóm báo cáo dược",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3426,
@@ -3169,9 +3306,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_GIAO_NHAN_DUNG_CU_YTE",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3425,
@@ -3192,9 +3330,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000132_GIAY_TUCHOI_KBCB_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3408,
@@ -3215,9 +3354,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000031_BANG_KHAI_THAC_TIEN_SU_NGUOI_CHUP_MRI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3407,
@@ -3238,9 +3378,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000031_GIAY_KHAI_THAC_TIEN_SU_MRI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3406,
@@ -3261,9 +3402,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000030_GIAY_CAM_KET_CHUYEN_CO_SO_KHAM_CHUA_BENH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3405,
@@ -3284,9 +3426,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_DIEUTRI_VATLYTRILIEU_A4_965",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3385,
@@ -3307,9 +3450,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 20,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BA_NGOAI_TRU_FORM_TT32",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3265,
@@ -3330,9 +3474,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 71,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "EMR_PHIEULUONGGIA_HOATDONGCHUCNANG",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3245,
@@ -3353,9 +3498,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000113_PHIEU_TAM_UNG_HD_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3239,
@@ -3376,9 +3522,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_DANHGIA_CANTHIEP_DINHDUONG_HIS4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3238,
@@ -3399,9 +3546,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000112_PHIEU_THU_TIEN_HD_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3205,
@@ -3422,9 +3570,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT018113_PHIEU_CHUAN_BI_TRUOC_MO_2",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3173,
@@ -3445,9 +3594,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "TT23_SOA8_SO_KHAM_PHONG",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3147,
@@ -3468,9 +3618,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "DON_THUOC_TRANG_TT26_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3146,
@@ -3491,9 +3642,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KET_QUA_KHAM_SUC_KHOE_THEO_DOAN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3145,
@@ -3514,9 +3666,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "TT23_SOA11_TUYEN_TRUYEN_GIAO_DUC_SUC_KHOE",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3129,
@@ -3537,9 +3690,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "TT23_SOA9_SO_KHAM_HIV",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3117,
@@ -3560,9 +3714,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "KSK_TRE_NGUY_CO_TU_KY",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3115,
@@ -3583,9 +3738,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "TT23_SOA9_SO_KHAM_LAO",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2992,
@@ -3606,9 +3762,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000114_PHIEU_CHI_HHN_HTH_V2",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2936,
@@ -3629,9 +3786,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_THUYEN_VIEN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2935,
@@ -3652,9 +3810,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TRE_2_6_TUOI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2934,
@@ -3675,9 +3834,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TRE_19_24_THANG_TUOI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2933,
@@ -3698,9 +3858,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TRE_4_6_THANG_TUOI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2932,
@@ -3721,9 +3882,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TRE_0_2_THANG_TUOI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2931,
@@ -3744,9 +3906,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TRE_10_12_THANG_TUOI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2930,
@@ -3767,9 +3930,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_GIAO_THONG_DUONG_SAT",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2929,
@@ -3790,9 +3954,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TRE_2_3_THANG_TUOI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2927,
@@ -3813,9 +3978,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TRE_7_9_THANG_TUOI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2926,
@@ -3836,9 +4002,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_DUOI_18_DAY_CONG_2068",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2925,
@@ -3859,9 +4026,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_LAI_XE_07082026",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2924,
@@ -3882,9 +4050,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_CAN_BO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2923,
@@ -3905,9 +4074,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TRE_13_18_THANG_TUOI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2922,
@@ -3928,9 +4098,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TREN_18_TUOI_DINH_KY",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2906,
@@ -3951,9 +4122,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "TT23_SOA7_SOT_RET",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2905,
@@ -3974,9 +4146,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "TT23_SOA6_SO_THEO_DOI_TU_VONG",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2884,
@@ -3997,9 +4170,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_BC_CONG_NO_CHUA_THU",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2865,
@@ -4020,9 +4194,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "TT23_A4_SO_DE",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2864,
@@ -4043,9 +4218,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT22549_HOA_DON_BAN_HANG_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2844,
@@ -4066,9 +4242,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_KSK_TREN_18_DAY_CONG_2068_V2",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2837,
@@ -4089,9 +4266,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000143_BIENBANKIEMNHAP_TVT_TYT",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2824,
@@ -4112,9 +4290,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "DON_THUOC_TRANG_TT26_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2804,
@@ -4135,9 +4314,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_KHAM_SUC_KHOE",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2784,
@@ -4158,9 +4338,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000112_GIAY_MOI_HOI_CHAN_DINH_DUONG_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2765,
@@ -4181,9 +4362,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTH003044_PHIEU_IN_BARCODE_THUOC",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2764,
@@ -4204,9 +4386,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "TT23_SOA52_HMIS",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2744,
@@ -4227,9 +4410,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEU_TUVANDINHDUONG_HIS4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2724,
@@ -4250,9 +4434,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "TT23_A51_BIENPHAPTRANHTHAI",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2704,
@@ -4273,9 +4458,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "A3_SO_KHAM_THAI_HMIS",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2684,
@@ -4296,9 +4482,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_GIAYHOICHANTHUOCDUYETLANHDAO_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2665,
@@ -4319,9 +4506,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHIDINH_CLS_THEO_MBP",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2664,
@@ -4342,9 +4530,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "TT23_CSYT_A21_TEST_REPORT",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2624,
@@ -4365,9 +4554,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT018113_PHIEU_CHUAN_BI_TRUOC_MO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2605,
@@ -4388,9 +4578,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEU_PHCN_HIS4_V2",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2604,
@@ -4411,9 +4602,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_CHUNGNHANPTTT_HHN_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2587,
@@ -4434,9 +4626,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_DGDD_KHONG_MANG_THAI_HIS4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2586,
@@ -4457,9 +4650,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_DGDD_TRE_EM_HIS4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2585,
@@ -4480,9 +4674,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_DGDD_PHU_NU_MANG_THAI_HIS4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2584,
@@ -4503,9 +4698,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEUDEMGAC_HHN_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2544,
@@ -4526,9 +4722,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBA00004_BENH_AN_PHUC_HOI_CHUC_NANG_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2507,
@@ -4549,9 +4746,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_PHIEU_LOC_MAU_HDF_194_HIS4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2506,
@@ -4574,7 +4772,8 @@
     "dwhFlag": null,
     "renderType": 0,
     "templateCode": "RPT000131_PHIEU_CHAMSOC_CAP23_HIS4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2505,
@@ -4595,9 +4794,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000132_PHIEU_XUAT_NHAP_TON_CENTER_LAB",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2504,
@@ -4618,9 +4818,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT0001_BC_PHAUTHUAT_THUTHUAT",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2484,
@@ -4641,9 +4842,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000013_KHAI_THAC_TIENSU_DIUNG_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2464,
@@ -4664,9 +4866,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "H_GIAY_CHUNG_NHAN_TNTT_TT25",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2444,
@@ -4687,9 +4890,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "H020050_PHIEU_CHUNG_NHAN_NGHI_DUONG_THAI",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2426,
@@ -4710,9 +4914,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000028_BC_THONG_KE_VAT_TU_Y_TE_TTBH19",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2425,
@@ -4733,9 +4938,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000030_BC_THONG_KE_DV_KT_THANHTOAN_BHYT21",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2424,
@@ -4756,9 +4962,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000029_BC_THONG_KE_THUOC_THANHTOAN_BHYT20",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2404,
@@ -4779,9 +4986,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000112_PHIEU_THU_CONG_NO_HHN_CTO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2384,
@@ -4802,9 +5010,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_TIENSU_DIUNG",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2364,
@@ -4825,9 +5034,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEUGAYMEHOISUC_HHN_1",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2344,
@@ -4848,9 +5058,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013008_PHIEU_KET_QUA_VK_LAO_2_PZA",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2324,
@@ -4871,9 +5082,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013006_KET_QUA_XET_NGHIEM_SOI_DOM_HQ",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2304,
@@ -4894,9 +5106,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEUDIUNGTHUOC_HHN_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2284,
@@ -4917,9 +5130,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BAO_CAO_BAN_HANG_CENTER_LAB",
-    "nhomBaoCao": "Nhóm báo cáo dược"
+    "nhomBaoCao": "Nhóm báo cáo dược",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2264,
@@ -4940,9 +5154,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000143_BANG_TAM_SOAT_CHUP_CONG_HUONG_MRI_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2244,
@@ -4963,9 +5178,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000143_GIAY_CHUNG_NHAN_NAM_VIEN_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2227,
@@ -4986,9 +5202,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000143_BIEN_BAN_HOI_CHAN_THUOC_DUYET_LANH_DAO_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2225,
@@ -5009,9 +5226,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000999_BC_79A_TH_ND_178_HHN",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2224,
@@ -5032,9 +5250,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000129_BC_79A_QD_ND_178",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2206,
@@ -5055,9 +5274,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000142_PHIEU_KET_QUA_KHAM_CHUYEN_KHOA_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2205,
@@ -5078,9 +5298,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000141_PHIEU_CHI_DINH_KHAM_CHUYEN_KHOA_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1925,
@@ -5101,9 +5322,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000124_PHIEU_CHITIET_LOC_MAU_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1924,
@@ -5124,9 +5346,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000001_BC_TONG_HOP_LOAI_DICH_VU_CDHA",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1904,
@@ -5147,9 +5370,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000031_BC_79A_BHYT_VIEN_PHI",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1884,
@@ -5170,9 +5394,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 22,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_NGOAITRU_TMH_31_26030_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1864,
@@ -5193,9 +5418,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000012_PHIEU_KHAITHAC_TIENSU_DIUNG_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1844,
@@ -5216,9 +5442,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 33,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_CHANTHUONGMAT_35_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1824,
@@ -5239,9 +5466,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_PHIEU_TRUYENDICH_22_TT32_LAN_1048_HIS4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1804,
@@ -5262,9 +5490,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHUYEN_DIEU_TRI_KET_HOP_SM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1785,
@@ -5285,9 +5514,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT0000092_BC_HOAT_DONG_PK",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1766,
@@ -5308,9 +5538,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000112_PHIEU_IN_QR_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1744,
@@ -5331,9 +5562,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 49,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BENH_AN_NTU_NHI_YHCT_TT32_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1724,
@@ -5354,9 +5586,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 28,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BENH_AN_NTU_YHCT_TT32_HIS4_TEST",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1708,
@@ -5377,9 +5610,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BAO_CAO_XUAT_KHO_KHONG_THEO_BAC_SI_CENTER_LAB",
-    "nhomBaoCao": "Nhóm báo cáo dược"
+    "nhomBaoCao": "Nhóm báo cáo dược",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1707,
@@ -5400,9 +5634,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000038_PHIEU_THU_PHAN_UNG_THUOC",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1706,
@@ -5423,9 +5658,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BAO_CAO_XUAT_KHO_THEO_BAC_SI_CENTER_LAB",
-    "nhomBaoCao": "Nhóm báo cáo dược"
+    "nhomBaoCao": "Nhóm báo cáo dược",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1705,
@@ -5446,9 +5682,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 14,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_RHM_TT32_1048_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1704,
@@ -5469,9 +5706,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 15,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_TMH_31_26030_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1685,
@@ -5492,9 +5730,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000140_BAO_CAO_02_BH_TT12_HHN",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1684,
@@ -5515,9 +5754,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000139_BAO_CAO_01_BH_TT12_HHN",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1664,
@@ -5538,9 +5778,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_PHIEU_DKY_KHAMBENH_CHUNG_BS_SIGNMARK_DBN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1645,
@@ -5561,9 +5802,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_PHIEU_DKY_KHAMBENH_CHUNG_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1644,
@@ -5584,9 +5826,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 13,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_UNGBUOU_TT32_LAN_1048_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1630,
@@ -5607,9 +5850,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000130_GIAY_CHUNG_SINH",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1627,
@@ -5630,9 +5874,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_BANG_KIEM_AN_TOAN_PHAU_THUAT_THU_THUAT_HIS4_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1626,
@@ -5653,9 +5898,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 53,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_THANKINH_315_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1625,
@@ -5676,9 +5922,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 44,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_NHI_PHUCHOICHUCNANG_26055_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1624,
@@ -5699,9 +5946,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 43,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_NOI_PHUCHOICHUCNANG_26055_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1604,
@@ -5722,9 +5970,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 3,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_TRUYENNHIEM_49_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1593,
@@ -5745,9 +5994,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000131_BM_LIST_THEODOI_CHAMSOC_CAP1_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1592,
@@ -5768,9 +6018,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 1,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_NOIKHOA_20_LAN_TT32_1048_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1591,
@@ -5791,9 +6042,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 10,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_HHTM_45_LAN_1048_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1589,
@@ -5814,9 +6066,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 12,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_BONG_57_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1588,
@@ -5837,9 +6090,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00043_BAO_CAO_BAN_HANG_THUOC_CENTER_LAB",
-    "nhomBaoCao": "Nhóm báo cáo dược"
+    "nhomBaoCao": "Nhóm báo cáo dược",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1587,
@@ -5860,9 +6114,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 49,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BENH_AN_NTU_NHI_YHCT_TT32_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1586,
@@ -5883,9 +6138,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 26,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "H018035_BENH_AN_NGOAI_KHOA",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1571,
@@ -5906,9 +6162,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 9,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_DALIEU_LAN_1048_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1570,
@@ -5929,9 +6186,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 7,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_TAMTHAN_37_TT32_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1569,
@@ -5952,9 +6210,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_NOIKHOA_20_26193",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1567,
@@ -5975,9 +6234,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000017_GIAY_NGHI_HUONG_BHXH_THA_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1566,
@@ -5998,9 +6258,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000134_BC_NHAP_KHO_THUOC",
-    "nhomBaoCao": "Nhóm báo cáo dược"
+    "nhomBaoCao": "Nhóm báo cáo dược",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1565,
@@ -6021,9 +6282,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000136_BC_LAI_LO_THUOC",
-    "nhomBaoCao": "Nhóm báo cáo dược"
+    "nhomBaoCao": "Nhóm báo cáo dược",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1564,
@@ -6044,9 +6306,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000020_PHIEU_TRUYEN_MAU_HHN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1544,
@@ -6067,9 +6330,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEU_CT_THANHTOAN_BANT_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1526,
@@ -6090,9 +6354,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00045_BAO_CAO_TONG_HOP_THONG_TIN_CHUYEN_TUYEN_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1525,
@@ -6113,9 +6378,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 2,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_NHIKHOA_TT32_LAN_1048_HIS4_KYSO",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1506,
@@ -6136,9 +6402,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000112_PHIEU_CHI_TIET_TT_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1484,
@@ -6159,9 +6426,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000139_DON_THUOC_BAN_LE_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1467,
@@ -6182,9 +6450,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BBXACNHAN_THC_VTYT_MATHONGVO_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1466,
@@ -6205,9 +6474,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000217_BC_CHI_TIET_BENH_NHAN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1465,
@@ -6228,9 +6498,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 6,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_SOSINH_LAN_1048_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1464,
@@ -6251,9 +6522,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 5,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_SANKHOA_34_VPC_TT32_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1451,
@@ -6274,9 +6546,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000059_DON_THUOC_THUONG_HMIS_TEST",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1450,
@@ -6297,9 +6570,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000132_PHIEU_XUAT_NHAP_TON_DANQUY",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1449,
@@ -6320,9 +6594,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000048_PHIEU_XUAT_KHO_TRAMYTEDTP_TEST",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1448,
@@ -6343,9 +6618,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000026_GIAY_CHUYEN_VIEN_A4_TRAMYTEDTP_5KYTUSO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1447,
@@ -6366,9 +6642,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 4,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BM_BA_PHUKHOA_52_HIS4",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1445,
@@ -6389,9 +6666,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000056_BANG_KE_CV697_F9_TEST",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1444,
@@ -6412,9 +6690,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 6,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BENH_AN_SO_SINH_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1405,
@@ -6435,9 +6714,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000129_BC_79A_QD_ND_178",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1404,
@@ -6458,9 +6738,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT00001DTP_BAO_CAO_TIEP_NHAN_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1391,
@@ -6481,9 +6762,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000999_BC_79A_TH_ND_178_HHN",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1389,
@@ -6504,9 +6786,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000219_BC_TONG_HOP_THEO_BAC_SI_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1364,
@@ -6527,9 +6810,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BAO_CAO_CHI_TIET_DICH_VU_CAN_LAM_SANG_HHN",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1344,
@@ -6550,9 +6834,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "THONG_KE_DICH_VU_CAN_LAM_SANG_CENTERLAB",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1324,
@@ -6573,9 +6858,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000142_PHIEU_KET_QUA_XET_NGHIEM_SINH_HUYET_HOC_THA_38730_TEST",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1304,
@@ -6596,9 +6882,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000028_GIAY_RA_VIEN_HHN_TEST",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1284,
@@ -6619,9 +6906,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000026_GIAY_CHUYEN_VIEN_A5_HHN_5KYTUSO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1271,
@@ -6642,9 +6930,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHIDINH_CLS_DEV_HTH_XML",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1270,
@@ -6665,9 +6954,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHI_DINH_CLS_NGT_HTH_XML",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1269,
@@ -6688,9 +6978,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHI_DINH_XN_TIENDIEN_HTH_XML",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1268,
@@ -6711,9 +7002,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHIDINH_CLS_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1267,
@@ -6734,9 +7026,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHIDINH_CLS_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1266,
@@ -6757,9 +7050,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHIDINH_CLS_DEV_HTH_XML",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1265,
@@ -6780,9 +7074,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHI_DINH_CLS_NGT_HTH_XML",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1264,
@@ -6803,9 +7098,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHI_DINH_XN_TIENDIEN_HTH_XML",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1245,
@@ -6826,9 +7122,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000056_BANG_KE_CV697_F9_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1244,
@@ -6849,9 +7146,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000056_BANG_KE_CV697_F9_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1224,
@@ -6872,9 +7170,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHI_DINH_CLS_DAN_QUY_CHUNG",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1204,
@@ -6895,9 +7194,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHI_DINH_CLS_DANQUY_NEW_COPY_PARENTNAME_ASSIGNCODE_DEV",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1184,
@@ -6918,9 +7218,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000217_BC_CHI_TIET_BENH_NHAN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1105,
@@ -6941,9 +7242,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BAO_CAO_XUAT_KHO_THEO_THUOC_HHN",
-    "nhomBaoCao": "Nhóm báo cáo dược"
+    "nhomBaoCao": "Nhóm báo cáo dược",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1084,
@@ -6964,9 +7266,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000133_NHAP_KHO_THEO_HOA_DON_HHN",
-    "nhomBaoCao": "Nhóm báo cáo dược"
+    "nhomBaoCao": "Nhóm báo cáo dược",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1064,
@@ -6987,9 +7290,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000218_BAO_CAO_THU_CHI_VPI",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1004,
@@ -7010,9 +7314,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00043_BAO_CAO_SO_CHUYEN_TUYEN_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 984,
@@ -7033,9 +7338,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000139_HOA_DON_BAN_HANG_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 964,
@@ -7056,9 +7362,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00043_BAO_CAO_THU_TIEN_VPI",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 944,
@@ -7079,9 +7386,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000132_PHIEU_XUAT_NHAP_TON",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 928,
@@ -7102,9 +7410,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_THEO_DOI_CHUC_NANG_SONG",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 927,
@@ -7125,9 +7434,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CONG_KHAI_DICH_VU_KY_THUAT_HTML",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 926,
@@ -7148,9 +7458,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_DANH_SACH_SUAT_AN_NV",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 925,
@@ -7171,9 +7482,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_DANH_SACH_SUAT_AN_BN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 924,
@@ -7194,9 +7506,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBA00002_BENH_AN_RANG_HAM_MAT_HHN",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 923,
@@ -7217,9 +7530,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000228_PHIEU_THONGTIN_TINH_DICH_DO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 903,
@@ -7240,9 +7554,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000225_GIAY_CAMKET_TIEUPHAU",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 886,
@@ -7263,9 +7578,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000226_GIAY_CHAPNHAN_XQUANG_KHONG_CANQUANG",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 885,
@@ -7286,9 +7602,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000229_PHIEU_XACNHAN_XN_HIV",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 884,
@@ -7309,9 +7626,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000227_PHIEU_SANGLOC_TRUOCSINH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 883,
@@ -7332,9 +7650,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_THONG_TIN_BENH_NHAN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 863,
@@ -7355,9 +7674,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_HUONGDANKHAMSUCKHOE_HCM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 843,
@@ -7378,9 +7698,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_PHIEU_KSK_CHIDINH_DV",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 823,
@@ -7401,9 +7722,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00005_BC_SO_THUTHUAT",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 803,
@@ -7424,9 +7746,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "NGT008_SOKHAMBENH_01BV01_QD4069_NET_54040_V01",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 783,
@@ -7447,9 +7770,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00034_BAO_CAO_TINH_HINH_PTTT",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 778,
@@ -7470,9 +7794,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000056_BANG_KE_CV697_F9_KBH_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 777,
@@ -7493,9 +7818,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000056_BANG_KE_BHYT",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 768,
@@ -7516,9 +7842,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00036_BC_CHI_PHI_THEO_DV",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 767,
@@ -7539,9 +7866,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00037_BC_TONG_HOP_PTTT",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 766,
@@ -7562,9 +7890,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_NGHI_DUONG_THAI_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 764,
@@ -7585,9 +7914,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00038_BC_PTTT_CHITIET",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 745,
@@ -7608,9 +7938,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00046_BC_SO_KHAMBENH_LON",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 744,
@@ -7631,9 +7962,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00047_BC_DIEN_TAM_DO",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 743,
@@ -7654,9 +7986,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHIDINH_CLS_HHN_HTH_TIENDIEN_BA",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 703,
@@ -7677,9 +8010,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT_BC_SO_SIEUAM",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 684,
@@ -7700,9 +8034,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "BAO_CAO_KHAM_BENH_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 683,
@@ -7723,9 +8058,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00045_BAO_CAO_TONG_HOP_THONG_TIN_CHUYEN_TUYEN_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 677,
@@ -7746,9 +8082,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013012_KET_QUA_XET_NGHIEM_XPERT",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 676,
@@ -7769,9 +8106,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013008_PHIEU_KET_QUA_VK_LAO_2",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 675,
@@ -7792,9 +8130,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013008_PHIEU_KET_QUA_VK_LAO_1",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 674,
@@ -7815,9 +8154,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013009_PHIEU_KET_QUA_XN_KHANG_SINH_DO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 673,
@@ -7838,9 +8178,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013009_PHIEU_KET_QUA_XN_NUOI_CAY",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 672,
@@ -7861,9 +8202,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013014_PHIEU_KET_QUA_XN_TRUYEN_MAU",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 671,
@@ -7884,9 +8226,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013011_KET_QUA_XET_NGHIEM_PAP_SMEAR",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 670,
@@ -7907,9 +8250,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000125_PHIEU_KET_QUA_DIEN_TIM_TDCN_CTO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 669,
@@ -7930,9 +8274,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013010_KET_QUA_NHUOM_PHIEN_DO_PAPANICOLAOU",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 668,
@@ -7953,9 +8298,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013007_KET_QUA_KHANG_RMP_XPERT",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 667,
@@ -7976,9 +8322,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT013006_KET_QUA_XET_NGHIEM_SOI_DOM",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 664,
@@ -7999,9 +8346,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000198_HOA_DON_BAN_THUOC",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 643,
@@ -8022,9 +8370,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00063_PHIEU_THANH_LY_THUOC_HC_VTTH_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 630,
@@ -8045,9 +8394,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000141_PHIEU_KET_QUA_XET_NGHIEM_SINH_HOA_NUOC_TIEU_THA_38730",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 629,
@@ -8068,9 +8418,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000140_PHIEU_KET_QUA_XET_NGHIEM_SINH_HOA_MAU_THA_38730",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 628,
@@ -8091,9 +8442,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000142_PHIEU_KET_QUA_XET_NGHIEM_SINH_HUYET_HOC_THA_38730",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 625,
@@ -8114,9 +8466,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000035_KET_QUA_GIAI_PHAU_BENH_SINH_THIET_TT32",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 624,
@@ -8137,9 +8490,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000090_CHI_DINH_GIAI_PHAU_BENH_SINH_THIET_TT32",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 622,
@@ -8160,9 +8514,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000032_PHIEU_KET_QUA_CHUP_CAT_LOP_CTO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 621,
@@ -8183,9 +8538,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000071_PHIEU_KET_QUA_DIEN_NAO_CTO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 620,
@@ -8206,9 +8562,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000125_PHIEU_KET_QUA_DIEN_TIM_HOLTER_CTO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 619,
@@ -8229,9 +8586,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000034_PHIEU_KET_QUA_NOI_SOI_CTO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 618,
@@ -8252,9 +8610,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000031_PHIEU_KET_QUA_X_QUANG_CTO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 617,
@@ -8275,9 +8634,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000029_PHIEU_KET_QUA_SIEU_AM_CTO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 616,
@@ -8298,9 +8658,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000030_PHIEU_KET_QUA_XET_NGHIEM_CTO_A4",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 615,
@@ -8321,9 +8682,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000030_PHIEU_KET_QUA_XET_NGHIEM_CTO",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 614,
@@ -8344,9 +8706,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000125_PHIEU_KET_QUA_DIEN_TIM_TDCN_TUNG_DV_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 613,
@@ -8367,9 +8730,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000034_PHIEU_KET_QUA_NOI_SOI_TUNG_DV_THA",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 612,
@@ -8390,9 +8754,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000033_PHIEU_KET_QUA_CHUP_CONG_HUONG_TU_TUNG_DV_HHN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 611,
@@ -8413,9 +8778,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000032_PHIEU_KET_QUA_CHUP_CAT_LOP_TUNG_DV_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 610,
@@ -8436,9 +8802,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000031_PHIEU_KET_QUA_X_QUANG_TUNG_DV_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 609,
@@ -8459,9 +8826,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000029_PHIEU_KET_QUA_SIEU_AM_TUNG_DV_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 607,
@@ -8482,9 +8850,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000126_PHIEU_IN_STT_PHONG_THUC_HIEN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 606,
@@ -8505,9 +8874,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000123_PHIEU_KHAMSUCKHOE_CANBO_NU_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 605,
@@ -8528,9 +8898,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000124_PHIEU_CHITIET_LOC_MAU_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 603,
@@ -8551,9 +8922,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000123_PHIEU_KHAMSUCKHOE_CANBO_NAM_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 583,
@@ -8574,9 +8946,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000125_PHIEU_KET_QUA_DIEN_TIM_TDCN_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 563,
@@ -8597,9 +8970,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CLS_ALL_HHN_LOGIN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 523,
@@ -8620,9 +8994,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00042_BAO_CAO_TINH_HINH_BAC_SI_KHAM_BENH_THEO_DICH_VU_CT_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 508,
@@ -8643,9 +9018,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000032_BC_80A_BHYT_VIEN_PHI",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 507,
@@ -8666,9 +9042,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000031_BC_79A_BHYT_VIEN_PHI",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 506,
@@ -8689,9 +9066,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000030_BC_THONG_KE_DV_KT_THANHTOAN_BHYT21",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 505,
@@ -8712,9 +9090,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000029_BC_THONG_KE_THUOC_THANHTOAN_BHYT20",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 504,
@@ -8735,9 +9114,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000028_BC_THONG_KE_VAT_TU_Y_TE_TTBH19",
-    "nhomBaoCao": "Nhóm báo cáo VP"
+    "nhomBaoCao": "Nhóm báo cáo VP",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 503,
@@ -8758,9 +9138,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00042_BAO_CAO_TINH_HINH_BAC_SI_KHAM_BENH_THEO_DICH_VU_TH_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 483,
@@ -8781,9 +9162,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00041_BAO_CAO_TIEP_NHAN_CCCD_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 482,
@@ -8804,9 +9186,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00006_BAO_CAO_SO_XET_NGHIEM_HHN",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 444,
@@ -8827,9 +9210,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000030_DAN_QUY_PHIEU_KET_QUA_XET_NGHIEM_A5_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 443,
@@ -8850,9 +9234,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000030_DAN_QUY_PHIEU_KET_QUA_XET_NGHIEM_A4_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 442,
@@ -8873,9 +9258,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000046_PHIEU_THE_KHO_DUOC_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 423,
@@ -8896,9 +9282,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000048_PHIEU_XUAT_KHO_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 422,
@@ -8919,9 +9306,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000011_PHIEU_LINH_VAT_TU_TIEU_HAO_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 407,
@@ -8942,9 +9330,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000119_PHIEU_CHI_DINH_CONG_KHAM_A5_HTH_SIGNMARK_COPY_20261010:085302",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 406,
@@ -8965,9 +9354,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000116_PHIEU_HEN_NS_DAITRANG",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 405,
@@ -8988,9 +9378,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000050_PHIEU_LINH_HOA_CHAT_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 404,
@@ -9011,9 +9402,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000049_PHIEU_LINH_THUOC_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 403,
@@ -9034,9 +9426,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00021_BC_HOAT_DONG_NGOAI_TRU",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 402,
@@ -9057,9 +9450,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000047_PHIEU_NHAP_KHO_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 387,
@@ -9080,9 +9474,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000118_BIEN_BAN_KIEM_THAO_TU_VONG_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 386,
@@ -9103,9 +9498,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000063_BIEN_BAN_HOI_CHAN_HHN_TT32_HTH_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 385,
@@ -9126,9 +9522,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 20,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBA00005_BENH_AN_NGOAI_TRU_HHN",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 382,
@@ -9149,9 +9546,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00001_BC_HOAT_DONG_KHAM_BENH",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 362,
@@ -9172,9 +9570,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00001_BC_SO_NOI_SOI",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 342,
@@ -9195,9 +9594,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00006_BC_PHAUTHUAT_THUTHUAT",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 324,
@@ -9218,9 +9618,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00010_BC_SO_X_QUANG",
-    "nhomBaoCao": "Nhóm báo cáo CLS"
+    "nhomBaoCao": "Nhóm báo cáo CLS",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 323,
@@ -9241,9 +9642,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000015_PHIEU_TOM_TAT_BENH_AN_HHN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 322,
@@ -9264,9 +9666,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000010_PHIEU_DIEU_TRI_CHUNG_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 302,
@@ -9287,9 +9690,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT0000XX_GIAY_BAO_TU_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 282,
@@ -9310,9 +9714,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000062_PHIEU_KET_QUA_PTTT_TIEN_DIEN_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 264,
@@ -9333,9 +9738,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000056_BANG_KE",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 263,
@@ -9356,9 +9762,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "DON_THUOC_GAY_NGHIEN_TT26_HHN_HATINH_TIENDIEN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 262,
@@ -9379,9 +9786,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "DON_THUOC_HUONG_THAN_HHN_TT26_HATINH_TIENDIEN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 242,
@@ -9402,9 +9810,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000115_PHIEU_VAO_VIEN_KHAM_BENH_HHN_HTH_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 222,
@@ -9425,9 +9834,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000113_PHIEU_TAM_UNG_HHN_HTH_1",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 203,
@@ -9448,9 +9858,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000114_PHIEU_CHI_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 202,
@@ -9471,9 +9882,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000112_PHIEU_THU_HHN_HTH",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 186,
@@ -9494,9 +9906,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000027_PHIEU_YEU_CAU_TAM_UNG_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 185,
@@ -9517,9 +9930,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000014_PHIEU_SO_KET_DIEU_TRI_HHN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 184,
@@ -9540,9 +9954,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000111_PHIEU_BARCODE_XET_NGHIEM_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 183,
@@ -9563,9 +9978,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000110_PHIEU_HEN_TRA_KET_QUA_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 182,
@@ -9586,9 +10002,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000017_GIAY_NGHI_HUONG_BHXH_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 167,
@@ -9609,9 +10026,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000035_PHIEU_KET_QUA_GIAI_PHAU_BENH_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 166,
@@ -9632,9 +10050,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000034_PHIEU_KET_QUA_NOI_SOI_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 165,
@@ -9655,9 +10074,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000033_PHIEU_KET_QUA_CHUP_CONG_HUONG_TU_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 164,
@@ -9678,9 +10098,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000032_PHIEU_KET_QUA_CHUP_CAT_LOP_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 163,
@@ -9701,9 +10122,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000031_PHIEU_KET_QUA_X_QUANG_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 162,
@@ -9724,9 +10146,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000057_DON_THUOC_GAY_NGHIEN_HHN_TT26_DTP",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 161,
@@ -9747,9 +10170,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000030_DAN_QUY_PHIEU_KET_QUA_XET_NGHIEM_A4_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 141,
@@ -9770,9 +10194,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000029_PHIEU_KET_QUA_SIEU_AM_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 123,
@@ -9793,9 +10218,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000119_PHIEU_CHI_DINH_AO_VANG_A5_HHN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 121,
@@ -9816,9 +10242,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000059_DON_THUOC_HUONG_THAN_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 102,
@@ -9839,9 +10266,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 27,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBA00003_BENH_AN_Y_HOC_CO_TRUYEN_HHN",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 101,
@@ -9862,9 +10290,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 42,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBA00004_BENH_AN_PHUC_HOI_CHUC_NANG_HHN",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 81,
@@ -9885,9 +10314,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 21,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBA00002_BENH_AN_RANG_HAM_MAT_HHN",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 80,
@@ -9908,9 +10338,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000119_PHIEU_CHI_DINH_CONG_KHAM_A5_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 79,
@@ -9931,9 +10362,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000119_PHIEU_CHI_DINH_THU_KHAC_A5_HHN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 78,
@@ -9954,9 +10386,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000119_PHIEU_CHI_DINH_PHU_THU_A5_HHN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 77,
@@ -9977,9 +10410,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000119_PHIEU_CHI_DINH_VAN_CHUYEN_A5_HHN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 76,
@@ -10000,9 +10434,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000119_PHIEU_CHI_DINH_SUAT_AN_A5_HHN_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 75,
@@ -10023,9 +10458,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000119_PHIEU_CHI_DINH_NGAY_GIUONG_A5_HTH_SIGNMARK_DATE",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 44,
@@ -10046,9 +10482,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": 15,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBA00001_BENH_AN_TAI_MUI_HONG_HHN",
-    "nhomBaoCao": "Nhóm bệnh án"
+    "nhomBaoCao": "Nhóm bệnh án",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 22,
@@ -10069,9 +10506,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_DANG_KY_KHAM_HTH_HTH_BA",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 10,
@@ -10092,9 +10530,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHIDINH_CLS_DEV_HTH_XML",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 9,
@@ -10115,9 +10554,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHI_DINH_XN_TIENDIEN_HTH_XML",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 8,
@@ -10138,9 +10578,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "PHIEU_CHI_DINH_CLS_NGT_HTH_XML",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 7,
@@ -10161,9 +10602,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000059_DON_THUOC_THUONG_HTH_TIENDIEN_42005_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 6,
@@ -10184,9 +10626,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000055_GIAY_HEN_KHAM_LAI_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 5,
@@ -10207,9 +10650,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000028_GIAY_RA_VIEN_HHN_HTH_SIGNMARK",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 3,
@@ -10230,9 +10674,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 2,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPTBC00004_BAO_CAO_SO_VAO_RA_CHUYEN_VIEN_HHN",
-    "nhomBaoCao": "Nhóm báo cáo KB"
+    "nhomBaoCao": "Nhóm báo cáo KB",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 2,
@@ -10253,9 +10698,10 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": 1,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000015_BAN_TOM_TAT_BENH_AN_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   },
   {
     "id": 1,
@@ -10276,8 +10722,9 @@
     "nhomPhieuIn": null,
     "loaiBenhAnId": null,
     "dwhFlag": null,
-    "renderType": null,
+    "renderType": 0,
     "templateCode": "RPT000060_PHIEUCHIDINH_TTPT_HHN",
-    "nhomBaoCao": "Nhóm phiếu in"
+    "nhomBaoCao": "Nhóm phiếu in",
+    "heThongRender": "Dreport v1"
   }
 ]

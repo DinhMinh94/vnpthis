@@ -57,11 +57,17 @@ function getCachedPhieuIn() {
   if (fs.existsSync(PHIEUIN_CACHE_FILE)) {
     try {
       const raw = JSON.parse(fs.readFileSync(PHIEUIN_CACHE_FILE, 'utf8'));
-      return raw.map(item => ({
-        ...item,
-        templateCode: item.tempCode || item.templateCode || '',
-        nhomBaoCao: NHOM_BC_MAP[item.nhomBcCha] || item.nhomBaoCao || 'Nhóm phiếu in'
-      }));
+      return raw.map(item => {
+        const rType = (item.renderType !== undefined && item.renderType !== null) ? Number(item.renderType) : 0;
+        const rName = rType === 1 ? 'Dreport v2' : (rType === 2 ? 'Jasper Report' : (item.heThongRender || 'Dreport v1'));
+        return {
+          ...item,
+          templateCode: item.tempCode || item.templateCode || '',
+          nhomBaoCao: NHOM_BC_MAP[item.nhomBcCha] || item.nhomBaoCao || 'Nhóm phiếu in',
+          renderType: rType,
+          heThongRender: rName
+        };
+      });
     } catch (e) {
       return [];
     }
@@ -112,11 +118,17 @@ async function fetchPhieuInFromHmis(stationId = null, customSearchPath = null) {
 
   if (res.status === 200 && (res.data?.code === 0 || res.data?.code === 200 || res.data?.data)) {
     const rawList = res.data?.data?.content || res.data?.data || [];
-    const normalizedList = rawList.map(item => ({
-      ...item,
-      templateCode: item.tempCode || item.templateCode || '',
-      nhomBaoCao: NHOM_BC_MAP[item.nhomBcCha] || item.nhomBaoCao || 'Nhóm phiếu in'
-    }));
+    const normalizedList = rawList.map(item => {
+      const rType = (item.renderType !== undefined && item.renderType !== null) ? Number(item.renderType) : 0;
+      const rName = rType === 1 ? 'Dreport v2' : (rType === 2 ? 'Jasper Report' : (item.heThongRender || 'Dreport v1'));
+      return {
+        ...item,
+        templateCode: item.tempCode || item.templateCode || '',
+        nhomBaoCao: NHOM_BC_MAP[item.nhomBcCha] || item.nhomBaoCao || 'Nhóm phiếu in',
+        renderType: rType,
+        heThongRender: rName
+      };
+    });
 
     fs.writeFileSync(PHIEUIN_CACHE_FILE, JSON.stringify(normalizedList, null, 2), 'utf8');
     return {
@@ -197,7 +209,9 @@ async function updatePhieuInForStations(stationIds, reportData) {
         soNgayXemBc: reportData.soNgayXemBc !== undefined ? Number(reportData.soNgayXemBc) : targetItem.soNgayXemBc,
         ghiChu: reportData.ghiChu !== undefined ? reportData.ghiChu : targetItem.ghiChu,
         trangThai: reportData.trangThai !== undefined ? Number(reportData.trangThai) : targetItem.trangThai,
-        renderType: reportData.renderType !== undefined ? reportData.renderType : targetItem.renderType,
+        renderType: (reportData.renderType !== undefined && reportData.renderType !== null && reportData.renderType !== '') 
+          ? Number(reportData.renderType) 
+          : (reportData.heThongRender === 'Dreport v2' ? 1 : (reportData.heThongRender === 'Jasper Report' ? 2 : (targetItem.renderType !== undefined && targetItem.renderType !== null ? targetItem.renderType : 0))),
         id: targetItem.id
       };
 
@@ -280,7 +294,9 @@ async function updatePhieuInForStations(stationIds, reportData) {
         trangThai: trangThaiText,
         formId: reportData.formId,
         soNgayXemBc: reportData.soNgayXemBc,
-        ghiChu: reportData.ghiChu || ''
+        ghiChu: reportData.ghiChu || '',
+        heThongRender: reportData.heThongRender || (reportData.renderType === 1 ? 'Dreport v2' : (reportData.renderType === 2 ? 'Jasper Report' : 'Dreport v1')),
+        renderType: reportData.renderType !== undefined ? reportData.renderType : 0
       },
       total: results.length,
       successCount,

@@ -1010,7 +1010,7 @@
               </thead>
               <tbody class="divide-y divide-slate-100 font-medium">
                 <tr v-if="isLoadingMapData">
-                  <td colspan="7" class="px-4 py-12 text-center text-slate-400">
+                  <td colspan="8" class="px-4 py-12 text-center text-slate-400">
                     <div class="flex flex-col items-center justify-center space-y-2">
                       <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-teal-600"></i>
                       <span>Đang tải danh sách phân công từ cổng HMIS...</span>
@@ -1019,7 +1019,7 @@
                 </tr>
 
                 <tr v-else-if="filteredMapMappings.length === 0">
-                  <td colspan="7" class="px-4 py-12 text-center text-slate-400">
+                  <td colspan="8" class="px-4 py-12 text-center text-slate-400">
                     <div class="flex flex-col items-center justify-center space-y-2">
                       <i data-lucide="inbox" class="w-8 h-8 text-slate-300"></i>
                       <span class="font-bold text-slate-600">Trạm này chưa có phân công yêu cầu khám - phòng khám nào!</span>
@@ -5083,11 +5083,19 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                     <option v-for="nhom in phieuinUniqueNhoms" :key="nhom" :value="nhom">{{ nhom }}</option>
                   </select>
                 </div>
-                <div class="w-36">
+                <div class="w-32">
                   <select v-model="phieuinTrangThaiFilter" class="w-full py-1.5 px-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none">
                     <option value="Tất cả">Trạng thái: Tất cả</option>
                     <option value="1">Sử dụng</option>
                     <option value="0">Không sử dụng</option>
+                  </select>
+                </div>
+                <div class="w-36">
+                  <select v-model="phieuinRenderFilter" class="w-full py-1.5 px-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                    <option value="Tất cả">Render: Tất cả</option>
+                    <option value="Dreport v1">Dreport v1</option>
+                    <option value="Dreport v2">Dreport v2</option>
+                    <option value="Jasper Report">Jasper Report</option>
                   </select>
                 </div>
               </div>
@@ -5104,6 +5112,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                     <th class="p-2.5">Template Code</th>
                     <th class="p-2.5 text-center">Số ngày</th>
                     <th class="p-2.5 text-center">Trạng thái</th>
+                    <th class="p-2.5 text-center">Render</th>
                     <th class="p-2.5">Service</th>
                   </tr>
                 </thead>
@@ -5134,6 +5143,11 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                     <td class="p-2.5 text-center">
                       <span class="px-2 py-0.5 rounded-full text-[10px] font-bold" :class="item.trangThai === 1 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500'">
                         {{ item.trangThai === 1 ? 'Sử dụng' : 'Không sử dụng' }}
+                      </span>
+                    </td>
+                    <td class="p-2.5 text-center whitespace-nowrap">
+                      <span class="px-2 py-0.5 rounded-md text-[10px] font-bold border" :class="item.heThongRender === 'Dreport v2' ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : 'bg-purple-50 text-purple-700 border-purple-200'">
+                        {{ item.heThongRender || 'Dreport v1' }}
                       </span>
                     </td>
                     <td class="p-2.5 text-[11px] text-slate-500 truncate max-w-[120px]" :title="item.service">{{ item.service || '—' }}</td>
@@ -5238,8 +5252,15 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                   </select>
                 </div>
                 <div>
-                  <label class="block font-semibold text-slate-700 mb-1">Hệ thống render</label>
-                  <input v-model="phieuInForm.heThongRender" type="text" placeholder="Chọn" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-slate-700 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                  <label class="block font-semibold text-slate-700 mb-1 flex items-center justify-between">
+                    <span>Hệ thống render</span>
+                    <span class="text-[10px] font-mono text-purple-700 font-bold bg-purple-50 px-1.5 py-0.2 rounded border border-purple-200">renderType: {{ phieuInForm.renderType !== undefined ? phieuInForm.renderType : 0 }}</span>
+                  </label>
+                  <select v-model="phieuInForm.heThongRender" @change="onRenderSystemChange" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none cursor-pointer">
+                    <option value="Dreport v1">Dreport v1</option>
+                    <option value="Dreport v2">Dreport v2</option>
+                    <option value="Jasper Report">Jasper Report</option>
+                  </select>
                 </div>
               </div>
 
@@ -7880,6 +7901,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const phieuinSearch = ref('');
         const phieuinNhomFilter = ref('Tất cả');
         const phieuinTrangThaiFilter = ref('Tất cả');
+        const phieuinRenderFilter = ref('Tất cả');
         const selectedPhieuIn = ref(null);
         const phieuInForm = ref({
           id: null,
@@ -7892,7 +7914,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           soNgayXemBc: 366,
           ghiChu: '',
           trangThai: 1,
-          heThongRender: ''
+          renderType: 0,
+          heThongRender: 'Dreport v1'
         });
         const isUpdatingPhieuIn = ref(false);
         const phieuInUpdateResults = ref(null);
@@ -9250,6 +9273,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             const st = parseInt(phieuinTrangThaiFilter.value);
             list = list.filter(item => item.trangThai === st);
           }
+          if (phieuinRenderFilter.value && phieuinRenderFilter.value !== 'Tất cả') {
+            list = list.filter(item => (item.heThongRender || 'Dreport v1') === phieuinRenderFilter.value);
+          }
           if (phieuinSearch.value && phieuinSearch.value.trim()) {
             const q = phieuinSearch.value.toLowerCase().trim();
             list = list.filter(item =>
@@ -9273,6 +9299,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
         function selectPhieuIn(item) {
           selectedPhieuIn.value = item;
+          const rType = (item.renderType !== undefined && item.renderType !== null) ? Number(item.renderType) : (item.heThongRender === 'Dreport v2' ? 1 : (item.heThongRender === 'Jasper Report' ? 2 : 0));
+          const rName = item.heThongRender || (rType === 1 ? 'Dreport v2' : (rType === 2 ? 'Jasper Report' : 'Dreport v1'));
           phieuInForm.value = {
             id: item.id,
             ten: item.ten || '',
@@ -9284,9 +9312,21 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             soNgayXemBc: item.soNgayXemBc !== undefined ? item.soNgayXemBc : 366,
             ghiChu: item.ghiChu || '',
             trangThai: item.trangThai !== undefined ? item.trangThai : 1,
-            heThongRender: item.heThongRender || ''
+            renderType: rType,
+            heThongRender: rName
           };
           refreshIcons();
+        }
+
+        function onRenderSystemChange() {
+          if (phieuInForm.value.heThongRender === 'Dreport v2') {
+            phieuInForm.value.renderType = 1;
+          } else if (phieuInForm.value.heThongRender === 'Jasper Report') {
+            phieuInForm.value.renderType = 2;
+          } else {
+            phieuInForm.value.heThongRender = 'Dreport v1';
+            phieuInForm.value.renderType = 0;
+          }
         }
 
         function resetPhieuInForm() {
@@ -9304,7 +9344,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               soNgayXemBc: 366,
               ghiChu: '',
               trangThai: 1,
-              heThongRender: ''
+              renderType: 0,
+              heThongRender: 'Dreport v1'
             };
           }
         }
@@ -13423,6 +13464,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           phieuinSearch,
           phieuinNhomFilter,
           phieuinTrangThaiFilter,
+          phieuinRenderFilter,
+          onRenderSystemChange,
           selectedPhieuIn,
           phieuInForm,
           isUpdatingPhieuIn,

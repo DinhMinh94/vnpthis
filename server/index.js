@@ -14,6 +14,7 @@ const giaoDienRoutes = require('./routes/giaoDienRoutes');
 const kcbRoutes = require('./routes/kcbRoutes');
 const userDichVuPhongRoutes = require('./routes/userDichVuPhongRoutes');
 const mapKqdtXuTriRoutes = require('./routes/mapKqdtXuTriRoutes');
+const tonDauThuocRoutes = require('./routes/tonDauThuocRoutes');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use('/api/giaodien', giaoDienRoutes);
 app.use('/api/kcb', kcbRoutes);
 app.use('/api/user-dichvu-phong', userDichVuPhongRoutes);
 app.use('/api/map-kqdt-xutri', mapKqdtXuTriRoutes);
+app.use('/api/tondau-thuoc', tonDauThuocRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

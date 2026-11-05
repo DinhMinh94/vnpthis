@@ -333,7 +333,7 @@
             <i data-lucide="file-spreadsheet" class="w-4 h-4" :class="currentMainTab === 'import_file' ? 'text-white' : 'text-indigo-600'"></i>
             <span>3. File Import Phần Mềm</span>
             <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-400 text-amber-950 shadow-2xs">
-              3 Loại File
+              4 Loại File
             </span>
           </button>
 
@@ -1469,6 +1469,15 @@
               <span>3. File Nhân Viên (33 Cột)</span>
               <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-400 text-amber-950 shadow-2xs">Mới</span>
             </button>
+            <!-- Sub-tab 4: Tồn Đầu Thuốc (Kho Dược) -->
+            <button @click="setImportSubTab('tondau_thuoc')"
+                    type="button"
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer whitespace-nowrap"
+                    :class="currentImportSubTab === 'tondau_thuoc' ? 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">
+              <i data-lucide="boxes" class="w-4 h-4"></i>
+              <span>4. Tồn Đầu Thuốc (Kho Dược)</span>
+              <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-400 text-amber-950 shadow-2xs">Mới</span>
+            </button>
           </div>
         </div>
 
@@ -2275,6 +2284,313 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ============================================================== -->
+      <!-- SUB-TAB 4: TỒN ĐẦU THUỐC (KHO DƯỢC) 11 CỘT CHUẨN HMIS       -->
+      <!-- ============================================================== -->
+      <div v-if="currentImportSubTab === 'tondau_thuoc'" class="space-y-6">
+
+        <!-- BANNER TIÊU ĐỀ SUB-TAB TỒN ĐẦU THUỐC -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5 bg-gradient-to-br from-white via-amber-50/30 to-orange-50/40">
+          <div class="flex items-start sm:items-center space-x-4">
+            <div class="p-3.5 bg-gradient-to-br from-amber-600 via-orange-600 to-rose-600 rounded-2xl text-white shadow-md shadow-orange-500/20 flex-shrink-0">
+              <i data-lucide="boxes" class="w-8 h-8"></i>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <h1 class="text-xl font-extrabold text-slate-800 tracking-tight">Tạo File Import Tồn Đầu Thuốc Vào Kho Dược</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
+                  Chuẩn 11 Cột HMIS 4.0
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                  Xuất Excel &amp; CSV
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-purple-100 text-purple-800 border border-purple-200">
+                  Format Hạn Dùng DD/MM/YYYY
+                </span>
+              </div>
+              <p class="text-sm text-slate-600 mt-1 max-w-4xl">
+                Chuẩn hóa và tạo file import số lượng tồn kho đầu kỳ từ Báo Cáo Xuất Nhập Tồn &amp; Biên Bản Kiểm Kê (Mã thuốc, Tên thuốc, Số lượng tồn, Giá nhập, Giá bán, Số lô, Hạn dùng...) sẵn sàng import trực tiếp vào phân hệ Kho Dược phần mềm VNPT HMIS.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
+            <button @click="downloadNaBungFile('excel')"
+                    type="button"
+                    title="Tải trực tiếp file Excel 130 khoản Trạm Y Tế Nà Bủng"
+                    class="px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center space-x-2 cursor-pointer active:scale-95">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>Tải Excel Nà Bủng (130 Khoản)</span>
+            </button>
+            <button @click="downloadNaBungFile('csv')"
+                    type="button"
+                    title="Tải trực tiếp file CSV 130 khoản Trạm Y Tế Nà Bủng"
+                    class="px-4 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center space-x-2 cursor-pointer active:scale-95">
+              <i data-lucide="file-text" class="w-4 h-4"></i>
+              <span>Tải CSV Nà Bủng (.csv)</span>
+            </button>
+            <button @click="downloadTonDauTemplate('excel')"
+                    type="button"
+                    class="px-3.5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-xl border border-slate-300 shadow-2xs transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95">
+              <i data-lucide="download" class="w-4 h-4 text-slate-500"></i>
+              <span>Mẫu Trắng</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 KPI STAT CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-2xs flex items-center justify-between">
+            <div>
+              <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tổng Khoản Thuốc / Vật Tư</p>
+              <h3 class="text-2xl font-black text-slate-800 mt-1">{{ tonDauThuocSummary.totalRecords || 0 }}</h3>
+              <span class="text-[11px] text-slate-400 font-medium">mặt hàng đang có trong danh sách</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center border border-rose-100">
+              <i data-lucide="pill" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-2xs flex items-center justify-between">
+            <div>
+              <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tổng Số Lượng Tồn Kho</p>
+              <h3 class="text-2xl font-black text-amber-600 mt-1">{{ (tonDauThuocSummary.totalQuantity || 0).toLocaleString('vi-VN') }}</h3>
+              <span class="text-[11px] text-slate-400 font-medium">viên / lọ / ống / chai / đơn vị</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
+              <i data-lucide="boxes" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-2xs flex items-center justify-between">
+            <div>
+              <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tổng Thành Tiền Tồn Kho</p>
+              <h3 class="text-2xl font-black text-emerald-600 mt-1">{{ tonDauThuocSummary.totalValueFormatted || '0 ₫' }}</h3>
+              <span class="text-[11px] text-slate-400 font-medium">tổng trị giá nhập kho dược đầu kỳ</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
+              <i data-lucide="badge-dollar-sign" class="w-6 h-6"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- KHU VỰC THAO TÁC UPLOAD & QUẢN LÝ DỮ LIỆU -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <h3 class="text-base font-extrabold text-slate-800 flex items-center space-x-2">
+                <span>Dữ Liệu Tồn Đầu Thuốc (Kho Dược)</span>
+                <span class="text-xs font-normal text-slate-500">(Nạp nhanh 130 khoản Trạm Y Tế Nà Bủng hoặc kéo thả file khác)</span>
+              </h3>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button @click="loadNaBungData"
+                      type="button"
+                      class="px-3.5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95">
+                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                <span>Nạp Dữ Liệu TYT Nà Bủng (130 Khoản)</span>
+              </button>
+              <button @click="loadSampleTonDauThuoc"
+                      type="button"
+                      class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl border border-slate-200 shadow-2xs transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95">
+                <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i>
+                <span>Mẫu 2 Dòng</span>
+              </button>
+              <button @click="addNewTonDauRow"
+                      type="button"
+                      class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl border border-slate-200 shadow-2xs transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95">
+                <i data-lucide="plus" class="w-4 h-4 text-emerald-600"></i>
+                <span>Thêm Dòng</span>
+              </button>
+              <button v-if="tonDauThuocRows.length > 0"
+                      @click="clearAllTonDauRows"
+                      type="button"
+                      class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-xl border border-rose-200 transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95">
+                <i data-lucide="trash-2" class="w-4 h-4 text-rose-600"></i>
+                <span>Xóa Hết</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Drag & Drop Upload Box -->
+          <div class="relative border-2 border-dashed rounded-2xl p-6 text-center transition-all cursor-pointer"
+               :class="tonDauThuocIsDragging ? 'border-amber-500 bg-amber-50/50' : 'border-slate-300 hover:border-amber-400 bg-slate-50/50 hover:bg-amber-50/20'"
+               @dragover.prevent="tonDauThuocIsDragging = true"
+               @dragleave.prevent="tonDauThuocIsDragging = false"
+               @drop.prevent="onTonDauThuocDrop">
+            <input type="file"
+                   @change="onTonDauThuocFileSelect"
+                   accept=".xlsx, .xls, .csv"
+                   class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
+            <div class="flex flex-col items-center justify-center space-y-2 pointer-events-none">
+              <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-xs">
+                <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+              </div>
+              <div class="text-sm font-bold text-slate-700">
+                <span v-if="tonDauThuocFileName">{{ tonDauThuocFileName }} ({{ tonDauThuocFileSize }})</span>
+                <span v-else>Kéo thả file Excel / CSV tồn đầu vào đây, hoặc <span class="text-amber-600 underline">bấm để chọn file từ máy</span></span>
+              </div>
+              <p class="text-xs text-slate-400">Tự động nhận diện và ghép nối: Mã &amp; Tên thuốc từ Báo Cáo XNT, Đơn giá, Số kiểm soát, Hạn dùng format DD/MM/YYYY từ Biên Bản Kiểm Kê</p>
+            </div>
+          </div>
+
+          <!-- THANH TÌM KIẾM, PHÂN TRANG & NÚT XUẤT FILE -->
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-2">
+            <div class="flex items-center space-x-3 flex-1 max-w-md">
+              <div class="relative w-full">
+                <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input v-model="tonDauThuocSearch"
+                       type="text"
+                       placeholder="Tìm kiếm mã thuốc, tên thuốc, số kiểm soát lô..."
+                       class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all" />
+              </div>
+              <span class="text-xs font-semibold text-slate-500 whitespace-nowrap">
+                {{ filteredTonDauThuocRows.length }} / {{ tonDauThuocRows.length }} dòng
+              </span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <!-- Xuất File Excel -->
+              <button @click="downloadTonDauThuocExcel"
+                      :disabled="tonDauThuocRows.length === 0"
+                      type="button"
+                      class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center space-x-2 cursor-pointer active:scale-95">
+                <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                <span>XUẤT FILE EXCEL (.XLSX) 11 CỘT HMIS</span>
+              </button>
+
+              <!-- Xuất File CSV -->
+              <button @click="downloadTonDauThuocCsv"
+                      :disabled="tonDauThuocRows.length === 0"
+                      type="button"
+                      class="px-5 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center space-x-2 cursor-pointer active:scale-95">
+                <i data-lucide="file-text" class="w-4 h-4"></i>
+                <span>XUẤT FILE CSV (.CSV)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- BẢNG DỮ LIỆU TỒN ĐẦU THUỐC 11 CỘT (CÓ SỬA TRỰC TIẾP TRÊN WEB) -->
+          <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
+            <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+              <table class="w-full text-xs text-left border-collapse">
+                <thead class="bg-gradient-to-r from-slate-100 to-amber-50/50 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200">
+                  <tr class="divide-x divide-slate-200">
+                    <th class="p-3 text-center w-12 bg-slate-100">STT</th>
+                    <th class="p-3 w-36">MA <span class="text-rose-500">*</span></th>
+                    <th class="p-3 min-w-[220px]">TEN <span class="text-rose-500">*</span></th>
+                    <th class="p-3 text-right w-24">SOLUONG <span class="text-rose-500">*</span></th>
+                    <th class="p-3 text-right w-28">GIANHAP <span class="text-rose-500">*</span></th>
+                    <th class="p-3 text-right w-28">GIABAN <span class="text-rose-500">*</span></th>
+                    <th class="p-3 min-w-[160px]">SOLO <span class="text-rose-500">*</span></th>
+                    <th class="p-3 w-32">HANDUNG <span class="text-rose-500">*</span></th>
+                    <th class="p-3 w-24 text-slate-500">MATHAU</th>
+                    <th class="p-3 w-24 text-slate-500">DINHMUC</th>
+                    <th class="p-3 w-24 text-slate-500">SLCANHBAO</th>
+                    <th class="p-3 w-24 text-slate-500">GHICHULOI</th>
+                    <th class="p-3 text-right w-32 text-emerald-800 bg-emerald-50/40">THÀNH TIỀN (VNĐ)</th>
+                    <th class="p-3 text-center w-16">XÓA</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 bg-white">
+                  <tr v-if="filteredTonDauThuocRows.length === 0">
+                    <td colspan="14" class="p-8 text-center text-slate-400">
+                      <div class="flex flex-col items-center justify-center space-y-2">
+                        <i data-lucide="inbox" class="w-8 h-8 text-slate-300"></i>
+                        <span class="font-medium">Chưa có dữ liệu tồn đầu thuốc. Vui lòng bấm "Nạp Dữ Liệu TYT Nà Bủng (130 Khoản)" hoặc kéo thả file Excel.</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr v-for="(row, idx) in paginatedTonDauThuocRows" :key="idx" class="hover:bg-amber-50/30 transition-colors divide-x divide-slate-100">
+                    <td class="p-2.5 text-center font-bold text-slate-500 bg-slate-50/50">
+                      {{ (tonDauThuocPage - 1) * tonDauThuocPageSize + idx + 1 }}
+                    </td>
+                    <td class="p-1.5">
+                      <input v-model="row.MA" type="text" class="w-full px-2 py-1 font-mono font-bold text-indigo-700 bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent focus:border-amber-400 rounded focus:outline-none" placeholder="Mã thuốc..." />
+                    </td>
+                    <td class="p-1.5">
+                      <input v-model="row.TEN" type="text" class="w-full px-2 py-1 font-bold text-slate-800 bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent focus:border-amber-400 rounded focus:outline-none" placeholder="Tên thuốc..." />
+                    </td>
+                    <td class="p-1.5">
+                      <input v-model.number="row.SOLUONG" @input="updateTonDauRowCalculation(row)" type="number" step="any" min="0" class="w-full px-2 py-1 text-right font-mono font-bold text-amber-700 bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent focus:border-amber-400 rounded focus:outline-none" />
+                    </td>
+                    <td class="p-1.5">
+                      <input v-model.number="row.GIANHAP" @input="updateTonDauRowCalculation(row)" type="number" step="any" min="0" class="w-full px-2 py-1 text-right font-mono font-medium text-slate-800 bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent focus:border-amber-400 rounded focus:outline-none" />
+                    </td>
+                    <td class="p-1.5">
+                      <input v-model.number="row.GIABAN" type="number" step="any" min="0" class="w-full px-2 py-1 text-right font-mono font-medium text-slate-800 bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent focus:border-amber-400 rounded focus:outline-none" />
+                    </td>
+                    <td class="p-1.5">
+                      <input v-model="row.SOLO" type="text" class="w-full px-2 py-1 font-mono font-semibold text-slate-700 bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent focus:border-amber-400 rounded focus:outline-none" placeholder="Số kiểm soát / Lô..." />
+                    </td>
+                    <td class="p-1.5">
+                      <input v-model="row.HANDUNG" type="text" class="w-full px-2 py-1 font-mono text-slate-700 bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent focus:border-amber-400 rounded focus:outline-none" placeholder="DD/MM/YYYY" />
+                    </td>
+                    <td class="p-1.5">
+                      <input v-model="row.MATHAU" type="text" class="w-full px-2 py-1 font-mono text-slate-600 bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent focus:border-amber-400 rounded focus:outline-none" placeholder="Mã thầu..." />
+                    </td>
+                    <td class="p-1.5">
+                      <input v-model="row.DINHMUC" type="text" class="w-full px-2 py-1 font-mono text-slate-600 bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent focus:border-amber-400 rounded focus:outline-none" />
+                    </td>
+                    <td class="p-1.5">
+                      <input v-model="row.SLCANHBAO" type="text" class="w-full px-2 py-1 font-mono text-slate-600 bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent focus:border-amber-400 rounded focus:outline-none" />
+                    </td>
+                    <td class="p-1.5">
+                      <input v-model="row.GHICHULOI" type="text" class="w-full px-2 py-1 font-mono text-slate-500 bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent focus:border-amber-400 rounded focus:outline-none" />
+                    </td>
+                    <td class="p-2.5 text-right font-mono font-bold text-emerald-700 bg-emerald-50/20">
+                      {{ ((Number(row.SOLUONG) || 0) * (Number(row.GIANHAP) || 0)).toLocaleString('vi-VN') }} ₫
+                    </td>
+                    <td class="p-2 text-center">
+                      <button @click="removeTonDauRow((tonDauThuocPage - 1) * tonDauThuocPageSize + idx)"
+                              type="button"
+                              title="Xóa dòng này"
+                              class="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-all cursor-pointer">
+                        <i data-lucide="trash" class="w-4 h-4"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- PHÂN TRANG FOOTER -->
+            <div v-if="filteredTonDauThuocRows.length > 0" class="p-3 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
+              <div class="flex items-center space-x-2">
+                <span>Hiển thị mỗi trang:</span>
+                <select v-model.number="tonDauThuocPageSize" class="px-2 py-1 bg-white border border-slate-300 rounded-lg font-bold text-slate-700 focus:outline-none">
+                  <option :value="10">10</option>
+                  <option :value="25">25</option>
+                  <option :value="50">50</option>
+                  <option :value="100">100</option>
+                  <option :value="1000">Tất cả ({{ filteredTonDauThuocRows.length }})</option>
+                </select>
+                <span class="text-slate-400">|</span>
+                <span>Trang {{ tonDauThuocPage }} / {{ tonDauThuocTotalPages }} (Tổng {{ filteredTonDauThuocRows.length }} dòng)</span>
+              </div>
+
+              <div class="flex items-center space-x-1">
+                <button @click="tonDauThuocPage = Math.max(1, tonDauThuocPage - 1)"
+                        :disabled="tonDauThuocPage <= 1"
+                        type="button"
+                        class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-bold cursor-pointer">
+                  Trước
+                </button>
+                <span class="px-2 font-bold text-amber-700">{{ tonDauThuocPage }}</span>
+                <button @click="tonDauThuocPage = Math.min(tonDauThuocTotalPages, tonDauThuocPage + 1)"
+                        :disabled="tonDauThuocPage >= tonDauThuocTotalPages"
+                        type="button"
+                        class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-bold cursor-pointer">
+                  Sau
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -7991,8 +8307,9 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         }
 
         const currentImportSubTab = ref(
-          initialHash === '#vattu' ? 'vattu' :
-          (initialHash === '#nhanvien' ? 'nhanvien' : 'thuoc')
+          initialHash === '#tondau_thuoc' ? 'tondau_thuoc' :
+          (initialHash === '#vattu' ? 'vattu' :
+          (initialHash === '#nhanvien' ? 'nhanvien' : 'thuoc'))
         );
         const currentStationSubTab = ref(
           (initialHash === '#map_kqdt_xutri' || initialHash === '#kqdt_xutri') ? 'map_kqdt_xutri' :
@@ -8044,7 +8361,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           ((initialHash === '#congkham' || initialHash === '#user_dichvu_phong') ? 'stations' :
           (initialHash === '#nhanvien_hmis' ? 'nhanvien_hmis' :
           (initialHash === '#stations' ? 'stations' :
-          ((initialHash === '#thuoc' || initialHash === '#vattu' || initialHash === '#nhanvien' || initialHash === '#import_file') ? 'import_file' : 'kcb'))))
+          ((initialHash === '#thuoc' || initialHash === '#vattu' || initialHash === '#nhanvien' || initialHash === '#tondau_thuoc' || initialHash === '#import_file') ? 'import_file' : 'kcb'))))
         ); // 'kcb' | 'stations' | 'import_file' | 'nhanvien_hmis'
         const vattuFile = ref(null);
         const vattuFileName = ref('');
@@ -11033,6 +11350,266 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         }
 
         // =========================================================================
+        // TRẠNG THÁI & HÀM CHO SUB-TAB 4: TỒN ĐẦU THUỐC (KHO DƯỢC) 11 CỘT CHUẨN HMIS
+        // =========================================================================
+        const tonDauThuocFile = ref(null);
+        const tonDauThuocFileName = ref('');
+        const tonDauThuocFileSize = ref('');
+        const tonDauThuocLoading = ref(false);
+        const tonDauThuocRows = ref([]);
+        const tonDauThuocSummary = ref({
+          totalRecords: 0,
+          totalQuantity: 0,
+          totalValue: 0,
+          totalValueFormatted: '0 ₫'
+        });
+        const tonDauThuocSearch = ref('');
+        const tonDauThuocPage = ref(1);
+        const tonDauThuocPageSize = ref(25);
+        const tonDauThuocIsDragging = ref(false);
+
+        const filteredTonDauThuocRows = computed(() => {
+          if (!tonDauThuocSearch.value) return tonDauThuocRows.value;
+          const q = tonDauThuocSearch.value.toLowerCase().trim();
+          return tonDauThuocRows.value.filter(r => {
+            return (r.MA && String(r.MA).toLowerCase().includes(q)) ||
+                   (r.TEN && String(r.TEN).toLowerCase().includes(q)) ||
+                   (r.SOLO && String(r.SOLO).toLowerCase().includes(q)) ||
+                   (r.MATHAU && String(r.MATHAU).toLowerCase().includes(q));
+          });
+        });
+
+        const paginatedTonDauThuocRows = computed(() => {
+          const start = (tonDauThuocPage.value - 1) * tonDauThuocPageSize.value;
+          return filteredTonDauThuocRows.value.slice(start, start + tonDauThuocPageSize.value);
+        });
+
+        const tonDauThuocTotalPages = computed(() => {
+          return Math.ceil(filteredTonDauThuocRows.value.length / tonDauThuocPageSize.value) || 1;
+        });
+
+        function recalculateTonDauSummary() {
+          let totalQty = 0;
+          let totalVal = 0;
+          tonDauThuocRows.value.forEach(r => {
+            const q = Number(r.SOLUONG) || 0;
+            const p = Number(r.GIANHAP) || 0;
+            totalQty += q;
+            totalVal += (q * p);
+          });
+          tonDauThuocSummary.value = {
+            totalRecords: tonDauThuocRows.value.length,
+            totalQuantity: totalQty,
+            totalValue: totalVal,
+            totalValueFormatted: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalVal)
+          };
+        }
+
+        function updateTonDauRowCalculation(row) {
+          const q = Number(row.SOLUONG) || 0;
+          const p = Number(row.GIANHAP) || 0;
+          row.THANHTIEN = q * p;
+          if (!row.GIABAN && p > 0) {
+            row.GIABAN = p;
+          }
+          recalculateTonDauSummary();
+        }
+
+        async function uploadTonDauThuocFile(file) {
+          if (!file) return;
+          tonDauThuocLoading.value = true;
+          try {
+            const formData = new FormData();
+            formData.append('file', file);
+            const res = await axios.post('/api/tondau-thuoc/convert', formData);
+            if (res.data.success) {
+              tonDauThuocRows.value = res.data.allRows || [];
+              tonDauThuocSummary.value = res.data.summary || {
+                totalRecords: tonDauThuocRows.value.length,
+                totalQuantity: 0,
+                totalValue: 0,
+                totalValueFormatted: '0 ₫'
+              };
+              tonDauThuocPage.value = 1;
+              showToast(`Đã nhận diện thành công ${res.data.totalRows} mặt hàng thuốc tồn đầu!`, 'success');
+              nextTick(() => refreshIcons());
+            } else {
+              showToast(res.data.message || 'Lỗi khi xử lý file', 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi upload file tồn đầu:', err);
+            showToast('Lỗi khi đọc file: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            tonDauThuocLoading.value = false;
+          }
+        }
+
+        function onTonDauThuocFileSelect(e) {
+          const file = e.target.files && e.target.files[0];
+          if (file) {
+            tonDauThuocFile.value = file;
+            tonDauThuocFileName.value = file.name;
+            tonDauThuocFileSize.value = formatFileSize(file.size);
+            uploadTonDauThuocFile(file);
+          }
+        }
+
+        function onTonDauThuocDrop(e) {
+          tonDauThuocIsDragging.value = false;
+          const files = e.dataTransfer?.files;
+          if (files && files.length > 0) {
+            const file = files[0];
+            tonDauThuocFile.value = file;
+            tonDauThuocFileName.value = file.name;
+            tonDauThuocFileSize.value = formatFileSize(file.size);
+            uploadTonDauThuocFile(file);
+          }
+        }
+
+        async function loadSampleTonDauThuoc() {
+          tonDauThuocLoading.value = true;
+          try {
+            const res = await axios.get('/api/tondau-thuoc/sample-data');
+            if (res.data.success) {
+              tonDauThuocRows.value = res.data.allRows || [];
+              tonDauThuocSummary.value = res.data.summary;
+              tonDauThuocFileName.value = 'Dữ liệu mẫu tồn đầu thuốc (2 dòng)';
+              tonDauThuocFileSize.value = 'Mẫu chuẩn';
+              tonDauThuocPage.value = 1;
+              showToast('Đã nạp 2 dòng thuốc mẫu tồn đầu chuẩn vào bảng!', 'success');
+              nextTick(() => refreshIcons());
+            }
+          } catch (err) {
+            showToast('Lỗi nạp dữ liệu mẫu: ' + err.message, 'error');
+          } finally {
+            tonDauThuocLoading.value = false;
+          }
+        }
+
+        function addNewTonDauRow() {
+          const nextIndex = tonDauThuocRows.value.length + 1;
+          const newRow = {
+            stt: nextIndex,
+            MA: 'DKLS_' + String(nextIndex).padStart(6, '0'),
+            TEN: '',
+            SOLUONG: 100,
+            GIANHAP: 10000,
+            GIABAN: 10000,
+            SOLO: 'LOT' + new Date().getFullYear(),
+            HANDUNG: '2030-12-31',
+            MATHAU: '',
+            DINHMUC: '',
+            SLCANHBAO: '',
+            GHICHULOI: '',
+            THANHTIEN: 1000000
+          };
+          tonDauThuocRows.value.push(newRow);
+          recalculateTonDauSummary();
+          tonDauThuocPage.value = tonDauThuocTotalPages.value;
+          showToast('Đã thêm 1 dòng thuốc mới. Bạn có thể chỉnh sửa trực tiếp trên bảng!', 'info');
+          nextTick(() => refreshIcons());
+        }
+
+        function removeTonDauRow(idx) {
+          if (idx >= 0 && idx < tonDauThuocRows.value.length) {
+            tonDauThuocRows.value.splice(idx, 1);
+            recalculateTonDauSummary();
+            showToast('Đã xóa dòng thuốc khỏi danh sách', 'info');
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function clearAllTonDauRows() {
+          if (confirm('Bạn có chắc chắn muốn xóa toàn bộ danh sách tồn đầu thuốc đang hiển thị?')) {
+            tonDauThuocRows.value = [];
+            tonDauThuocFileName.value = '';
+            tonDauThuocFileSize.value = '';
+            recalculateTonDauSummary();
+            showToast('Đã xóa sạch danh sách tồn đầu thuốc', 'info');
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function downloadTonDauTemplate(format = 'excel') {
+          window.location.href = `/api/tondau-thuoc/download-template?format=${format}`;
+          showToast(`Đang tải file mẫu ${format.toUpperCase()} tồn đầu thuốc về máy...`, 'success');
+        }
+
+        async function downloadTonDauThuocExcel() {
+          if (tonDauThuocRows.value.length === 0) {
+            showToast('Chưa có dữ liệu thuốc để xuất file. Vui lòng nạp hoặc nhập thuốc trước!', 'warning');
+            return;
+          }
+          try {
+            showToast('Đang tạo và tải file Excel chuẩn HMIS về máy...', 'info');
+            const res = await axios.post('/api/tondau-thuoc/export?format=excel', {
+              rows: tonDauThuocRows.value
+            }, { responseType: 'blob' });
+
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'File_Import_TonDau_Thuoc_VNPT_HIS.xlsx');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast(`Đã xuất thành công file Excel (${tonDauThuocRows.value.length} khoản thuốc)!`, 'success');
+          } catch (err) {
+            showToast('Lỗi xuất file Excel: ' + err.message, 'error');
+          }
+        }
+
+        async function downloadTonDauThuocCsv() {
+          if (tonDauThuocRows.value.length === 0) {
+            showToast('Chưa có dữ liệu thuốc để xuất file. Vui lòng nạp hoặc nhập thuốc trước!', 'warning');
+            return;
+          }
+          try {
+            showToast('Đang tạo và tải file CSV chuẩn HMIS về máy...', 'info');
+            const res = await axios.post('/api/tondau-thuoc/export?format=csv', {
+              rows: tonDauThuocRows.value
+            }, { responseType: 'blob' });
+
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'File_Import_TonDau_Thuoc_VNPT_HIS.csv');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast(`Đã xuất thành công file CSV (${tonDauThuocRows.value.length} khoản thuốc)!`, 'success');
+          } catch (err) {
+            showToast('Lỗi xuất file CSV: ' + err.message, 'error');
+          }
+        }
+
+        async function loadNaBungData() {
+          tonDauThuocLoading.value = true;
+          try {
+            const res = await axios.get('/api/tondau-thuoc/nabung-data');
+            if (res.data.success) {
+              tonDauThuocRows.value = res.data.allRows || [];
+              tonDauThuocSummary.value = res.data.summary;
+              tonDauThuocFileName.value = 'Trạm Y Tế Nà Bủng (130 Khoản Tồn Đầu)';
+              tonDauThuocFileSize.value = '130 mặt hàng';
+              tonDauThuocPage.value = 1;
+              showToast('Đã nạp thành công 130 khoản tồn đầu thuốc Trạm Y Tế Nà Bủng (Tổng: 25.707.514 ₫)!', 'success');
+              nextTick(() => refreshIcons());
+            }
+          } catch (err) {
+            showToast('Lỗi nạp dữ liệu Nà Bủng: ' + err.message, 'error');
+          } finally {
+            tonDauThuocLoading.value = false;
+          }
+        }
+
+        function downloadNaBungFile(format = 'excel') {
+          window.location.href = `/api/tondau-thuoc/nabung-download?format=${format}`;
+          showToast(`Đang tải file ${format.toUpperCase()} 130 khoản Nà Bủng về máy...`, 'success');
+        }
+
+
+        // =========================================================================
         // COMPUTED & METHODS CHO QUẢN LÝ & PHÂN CÔNG NHÂN VIÊN HMIS (TAB 5)
         // =========================================================================
         function getOfficerAccount(off) {
@@ -13219,6 +13796,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           } else if (window.location.hash === '#nhanvien') {
             currentMainTab.value = 'import_file';
             currentImportSubTab.value = 'nhanvien';
+          } else if (window.location.hash === '#tondau_thuoc') {
+            currentMainTab.value = 'import_file';
+            currentImportSubTab.value = 'tondau_thuoc';
           } else if (window.location.hash === '#import_file') {
             currentMainTab.value = 'import_file';
           } else {
@@ -13256,6 +13836,9 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               targetTab = 'import_file';
             } else if (window.location.hash === '#nhanvien') {
               currentImportSubTab.value = 'nhanvien';
+              targetTab = 'import_file';
+            } else if (window.location.hash === '#tondau_thuoc') {
+              currentImportSubTab.value = 'tondau_thuoc';
               targetTab = 'import_file';
             } else if (window.location.hash === '#import_file') {
               targetTab = 'import_file';
@@ -13457,6 +14040,32 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           convertNhanVienStatus,
           convertNhanVienStatusMsg,
           convertNhanVienResult,
+          tonDauThuocFile,
+          tonDauThuocFileName,
+          tonDauThuocFileSize,
+          tonDauThuocLoading,
+          tonDauThuocRows,
+          tonDauThuocSummary,
+          tonDauThuocSearch,
+          tonDauThuocPage,
+          tonDauThuocPageSize,
+          tonDauThuocIsDragging,
+          filteredTonDauThuocRows,
+          paginatedTonDauThuocRows,
+          tonDauThuocTotalPages,
+          updateTonDauRowCalculation,
+          uploadTonDauThuocFile,
+          onTonDauThuocFileSelect,
+          onTonDauThuocDrop,
+          loadSampleTonDauThuoc,
+          addNewTonDauRow,
+          removeTonDauRow,
+          clearAllTonDauRows,
+          downloadTonDauTemplate,
+          downloadTonDauThuocExcel,
+          downloadTonDauThuocCsv,
+          loadNaBungData,
+          downloadNaBungFile,
           openPhieuInModal,
           phieuinList,
           isLoadingPhieuin,

@@ -26,12 +26,12 @@
     "notes": "",
     "active": true,
     "id": "tyt_1791689200931_7fkiu",
-    "status": "success",
-    "lastTested": "2026-10-29T07:57:38.226Z",
-    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Phường Mường Thanh (Cán bộ: Admin BV)",
+    "status": "failed",
+    "lastTested": "2026-11-05T02:13:28.632Z",
+    "lastTestedMessage": "Đăng nhập thất bại: getaddrinfo ENOTFOUND ytcs-gw.hmis.vn",
     "createdAt": "2026-10-11T03:26:40.932Z",
     "updatedAt": "2026-10-11T04:04:09.058Z",
-    "lastResponseTime": 425
+    "lastResponseTime": 66
   },
   {
     "id": "tyt_1791691344724_fsm1s",

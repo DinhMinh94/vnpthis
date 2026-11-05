@@ -23,6 +23,57 @@ if (fs.existsSync(naBungJsonPath)) {
 }
 
 /**
+ * API: Ghép nối 2 file (Biên Bản Kiểm Kê + Báo Cáo Xuất Nhập Tồn)
+ * POST /api/tondau-thuoc/merge-files
+ */
+router.post('/merge-files', upload.fields([
+  { name: 'fileKiemKe', maxCount: 1 },
+  { name: 'fileXNT', maxCount: 1 }
+]), (req, res) => {
+  try {
+    if (!req.files || !req.files.fileKiemKe || req.files.fileKiemKe.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Vui lòng tải lên File Biên Bản Kiểm Kê (để lấy Đơn giá, Số kiểm soát/Lô, Hạn dùng, Số lượng thực tế)'
+      });
+    }
+
+    const kiemKeBuffer = req.files.fileKiemKe[0].buffer;
+    const xntBuffer = req.files.fileXNT && req.files.fileXNT.length > 0 ? req.files.fileXNT[0].buffer : null;
+
+    const { rows, summary } = tonDauService.mergeKiemKeAndXntFiles(kiemKeBuffer, xntBuffer);
+
+    // Download trực tiếp Excel
+    if (req.query.download === 'excel' || req.body.download === 'excel') {
+      const buffer = tonDauService.createExcelBuffer(rows);
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', 'attachment; filename="File_Import_TonDau_Thuoc_VNPT_HIS_GhepNoi.xlsx"');
+      return res.send(buffer);
+    }
+
+    // Download trực tiếp CSV
+    if (req.query.download === 'csv' || req.body.download === 'csv') {
+      const csvStr = tonDauService.createCsvString(rows);
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader('Content-Disposition', 'attachment; filename="File_Import_TonDau_Thuoc_VNPT_HIS_GhepNoi.csv"');
+      return res.send(csvStr);
+    }
+
+    res.json({
+      success: true,
+      headers: tonDauService.STANDARD_HEADERS,
+      totalRows: rows.length,
+      summary,
+      previewRows: rows.slice(0, 100),
+      allRows: rows
+    });
+  } catch (error) {
+    console.error('Lỗi ghép nối 2 file tồn đầu thuốc:', error);
+    res.status(500).json({ success: false, message: 'Lỗi ghép nối file: ' + error.message });
+  }
+});
+
+/**
  * API: Convert file upload hoặc JSON rows sang cấu trúc Tồn Đầu Thuốc HMIS
  * POST /api/tondau-thuoc/convert
  */

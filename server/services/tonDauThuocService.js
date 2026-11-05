@@ -1,5 +1,6 @@
 const xlsx = require('xlsx');
 const path = require('path');
+const fs = require('fs');
 
 const STANDARD_HEADERS = [
   'MA',
@@ -23,7 +24,7 @@ const SAMPLE_ROWS = [
     GIANHAP: 9850,
     GIABAN: 9850,
     SOLO: 'GA60333',
-    HANDUNG: '2031-04-02',
+    HANDUNG: '02/04/2031',
     MATHAU: '',
     DINHMUC: '',
     SLCANHBAO: '',
@@ -36,7 +37,7 @@ const SAMPLE_ROWS = [
     GIANHAP: 120000,
     GIABAN: 120000,
     SOLO: 'GA55555',
-    HANDUNG: '2031-10-22',
+    HANDUNG: '22/10/2031',
     MATHAU: '',
     DINHMUC: '',
     SLCANHBAO: '',
@@ -55,90 +56,217 @@ function stripVietnamese(str) {
     .trim();
 }
 
+function parseCSVString(text) {
+  const lines = text.split(/\r?\n/);
+  const rows = [];
+  for (let line of lines) {
+    line = line.trim();
+    if (!line) continue;
+    const row = [];
+    let inQuotes = false;
+    let currentCell = '';
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') {
+        if (inQuotes && line[i + 1] === '"') {
+          currentCell += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (c === ',' && !inQuotes) {
+        row.push(currentCell.trim());
+        currentCell = '';
+      } else {
+        currentCell += c;
+      }
+    }
+    row.push(currentCell.trim());
+    rows.push(row);
+  }
+  return rows;
+}
+
 function parseNumberVi(val) {
   if (val === undefined || val === null || val === '') return 0;
   if (typeof val === 'number') return isNaN(val) ? 0 : val;
   let str = String(val).trim();
-  // Thousands separated by dot: 120.000 or 1.600
-  if (/^\d{1,3}(\.\d{3})+$/.test(str)) {
-    return Number(str.replace(/\./g, ''));
-  }
-  // Thousands separated by comma: 120,000 or 1,600
-  if (/^\d{1,3}(,\d{3})+$/.test(str)) {
-    return Number(str.replace(/,/g, ''));
-  }
-  // Decimal with comma: 1600,5
-  if (/^\d+,\d+$/.test(str)) {
-    return Number(str.replace(',', '.'));
-  }
+  str = str.replace(/\./g, '').replace(/,/g, '.');
   const num = parseFloat(str);
   return isNaN(num) ? 0 : num;
 }
 
-function normalizeDate(val) {
+function convertHanDung(val) {
   if (!val) return '';
   if (typeof val === 'number') {
-    // Excel serial number (e.g. 47940 -> 2031-04-02)
     try {
       const formatted = xlsx.SSF.format('yyyy-mm-dd', val);
       if (formatted && /^\d{4}-\d{2}-\d{2}$/.test(formatted)) {
-        return formatted;
+        const [y, m, d] = formatted.split('-');
+        return `${d}/${m}/${y}`;
       }
-    } catch (e) {
-      // fallback
-    }
+    } catch (e) {}
     const d = new Date((val - 25569) * 86400 * 1000);
     if (!isNaN(d.getTime())) {
-      return d.toISOString().split('T')[0];
+      const day = String(d.getDate()).padStart(2, '0');
+      const mon = String(d.getMonth() + 1).padStart(2, '0');
+      return `${day}/${mon}/${d.getFullYear()}`;
     }
   }
 
   const str = String(val).trim();
-  // YYYY-MM-DD
-  if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
-    return str;
+  // 6 digits: DDMMYY e.g. 100228 -> 10/02/2028, 310329 -> 31/03/2029
+  if (/^\d{6}$/.test(str)) {
+    const d = str.substring(0, 2);
+    const m = str.substring(2, 4);
+    const y = '20' + str.substring(4, 6);
+    return `${d}/${m}/${y}`;
   }
-  // YYYYMMDD
+  // 4 digits: MMYY e.g. 0129 -> 01/01/2029
+  if (/^\d{4}$/.test(str)) {
+    const m = str.substring(0, 2);
+    const y = '20' + str.substring(2, 4);
+    return `01/${m}/${y}`;
+  }
+  // 8 digits: YYYYMMDD or DDMMYYYY
   if (/^\d{8}$/.test(str)) {
-    return `${str.substring(0, 4)}-${str.substring(4, 6)}-${str.substring(6, 8)}`;
+    if (str.startsWith('20')) {
+      return `${str.substring(6, 8)}/${str.substring(4, 6)}/${str.substring(0, 4)}`;
+    } else {
+      return `${str.substring(0, 2)}/${str.substring(2, 4)}/${str.substring(4, 8)}`;
+    }
   }
-  // DD/MM/YYYY or D/M/YYYY
+  // Already DD/MM/YYYY
   if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(str)) {
     const parts = str.split('/');
-    const d = parts[0].padStart(2, '0');
-    const m = parts[1].padStart(2, '0');
-    const y = parts[2];
-    return `${y}-${m}-${d}`;
+    return `${parts[0].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${parts[2]}`;
   }
-  // DD-MM-YYYY
-  if (/^\d{1,2}-\d{1,2}-\d{4}$/.test(str)) {
+  // YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
     const parts = str.split('-');
-    const d = parts[0].padStart(2, '0');
-    const m = parts[1].padStart(2, '0');
-    const y = parts[2];
-    return `${y}-${m}-${d}`;
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
   }
-
-  // Attempt Date parse
-  const parsed = new Date(str);
-  if (!isNaN(parsed.getTime()) && parsed.getFullYear() > 1990) {
-    const y = parsed.getFullYear();
-    const m = String(parsed.getMonth() + 1).padStart(2, '0');
-    const d = String(parsed.getDate()).padStart(2, '0');
-    return `${y}-${m}-${d}`;
-  }
-
   return str;
 }
 
 /**
- * Tự động tìm dòng header và ánh xạ các cột thông minh
+ * Đọc buffer (Excel hoặc CSV) thành mảng 2 chiều
+ */
+function readBufferToRows(buffer) {
+  if (!buffer) return [];
+  // Kiểm tra nếu là file CSV dạng text
+  const isZip = buffer[0] === 0x50 && buffer[1] === 0x4B; // PK for .xlsx
+  const isOle = buffer[0] === 0xD0 && buffer[1] === 0xCF; // OLE for .xls
+  if (!isZip && !isOle) {
+    const text = buffer.toString('utf8');
+    if (text.includes(',') || text.includes(';')) {
+      return parseCSVString(text);
+    }
+  }
+
+  // File Excel nhị phân
+  const wb = xlsx.read(buffer, { type: 'buffer' });
+  for (const sName of wb.SheetNames) {
+    const rows = xlsx.utils.sheet_to_json(wb.Sheets[sName], { header: 1, defval: '' });
+    if (rows && rows.length > 0) return rows;
+  }
+  return [];
+}
+
+/**
+ * Ghép nối 2 file: Biên Bản Kiểm Kê + Báo Cáo Xuất Nhập Tồn
+ */
+function mergeKiemKeAndXntFiles(kiemKeBuffer, xntBuffer) {
+  const xntRows = readBufferToRows(xntBuffer);
+  const bbkkRows = readBufferToRows(kiemKeBuffer);
+
+  if (!bbkkRows || bbkkRows.length === 0) {
+    throw new Error('File Biên Bản Kiểm Kê không có dữ liệu hoặc định dạng không hợp lệ');
+  }
+
+  // 1. Phân tích file Báo Cáo Xuất Nhập Tồn (XNT)
+  const xntMap = new Map();
+  if (xntRows && xntRows.length > 0) {
+    for (const r of xntRows) {
+      if (!Array.isArray(r) || r.length < 3) continue;
+      const stt = String(r[0] || '').trim();
+      const ma = String(r[1] || '').trim();
+      const ten = String(r[2] || '').trim();
+      if (stt && /^\d+$/.test(stt) && ma && ten) {
+        xntMap.set(ma, { ma, ten });
+      }
+    }
+  }
+
+  // 2. Phân tích file Biên Bản Kiểm Kê (BBKK)
+  const finalItems = [];
+  let totalQuantity = 0;
+  let totalValue = 0;
+
+  for (const r of bbkkRows) {
+    if (!Array.isArray(r) || r.length < 6) continue;
+    const stt = String(r[0] || '').trim();
+    // Bỏ qua dòng tiêu đề, subtotal, hoặc nhóm
+    if (!stt || !/^\d+$/.test(stt) || parseInt(stt) === 0) continue;
+    if (!r[1] && !r[2]) continue;
+
+    const maBBKK = String(r[1] || '').trim();
+    const tenBBKK = String(r[2] || '').trim();
+    const donGia = parseNumberVi(r[4]);
+    const soKiemSoat = String(r[5] || '').trim();
+    const hanDungRaw = r[7];
+    const soLuongThucTe = parseNumberVi(r[9] !== undefined && r[9] !== '' ? r[9] : r[8]);
+
+    // Ánh xạ Mã & Tên từ file Báo cáo XNT
+    let finalMa = maBBKK;
+    let finalTen = tenBBKK;
+    if (xntMap.has(maBBKK)) {
+      const fromXnt = xntMap.get(maBBKK);
+      finalMa = fromXnt.ma;
+      finalTen = fromXnt.ten;
+    }
+
+    const finalHanDung = convertHanDung(hanDungRaw);
+    const thanhTien = soLuongThucTe * donGia;
+
+    totalQuantity += soLuongThucTe;
+    totalValue += thanhTien;
+
+    finalItems.push({
+      stt: finalItems.length + 1,
+      MA: finalMa,
+      TEN: finalTen,
+      SOLUONG: soLuongThucTe,
+      GIANHAP: donGia,
+      GIABAN: donGia,
+      SOLO: soKiemSoat,
+      HANDUNG: finalHanDung,
+      MATHAU: '',
+      DINHMUC: '',
+      SLCANHBAO: '',
+      GHICHULOI: '',
+      THANHTIEN: thanhTien
+    });
+  }
+
+  return {
+    rows: finalItems,
+    summary: {
+      totalRecords: finalItems.length,
+      totalQuantity,
+      totalValue,
+      totalValueFormatted: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalValue)
+    }
+  };
+}
+
+/**
+ * Tự động tìm dòng header và ánh xạ các cột thông minh cho 1 file duy nhất
  */
 function parseSheetSmart(sheet) {
   const rows = xlsx.utils.sheet_to_json(sheet, { header: 1, defval: '' });
   if (!rows || rows.length === 0) return [];
 
-  // Tìm dòng header tốt nhất
   let headerIdx = -1;
   let maxMatches = 0;
   const targetKeywords = [
@@ -167,9 +295,7 @@ function parseSheetSmart(sheet) {
     }
   }
 
-  // Nếu không tìm thấy header, mặc định dòng đầu
   if (headerIdx === -1) headerIdx = 0;
-
   const headerRow = rows[headerIdx];
   const colMap = {};
 
@@ -178,65 +304,51 @@ function parseSheetSmart(sheet) {
     const raw = String(cell).trim().toUpperCase();
     const stripped = stripVietnamese(cell).replace(/[_\s-]+/g, '');
 
-    // 1. MA
     if (['MA', 'MATHUOC', 'MAHANG', 'MAVATTI', 'ITEMCODE', 'CODE'].includes(stripped) || raw === 'MA' || raw === 'MÃ' || raw === 'MÃ THUỐC') {
       if (colMap.MA === undefined) colMap.MA = idx;
     }
-    // 2. TEN
     else if (['TEN', 'TENTHUOC', 'TENHANG', 'TENDUOC', 'NAME', 'ITEMNAME', 'DESCRIPTION'].includes(stripped) || raw === 'TEN' || raw === 'TÊN' || raw === 'TÊN THUỐC') {
       if (colMap.TEN === undefined) colMap.TEN = idx;
     }
-    // 3. SOLUONG
     else if (['SOLUONG', 'SL', 'SOLUONGTON', 'TONKHO', 'TON', 'QTY', 'QUANTITY'].includes(stripped) || raw === 'SOLUONG' || raw === 'SỐ LƯỢNG') {
       if (colMap.SOLUONG === undefined) colMap.SOLUONG = idx;
     }
-    // 4. GIANHAP
     else if (['GIANHAP', 'DONGIA', 'DONGIANHAP', 'GIAMUA', 'COST', 'PRICE', 'PURCHASEPRICE'].includes(stripped) || raw === 'GIANHAP' || raw === 'GIÁ NHẬP' || raw === 'ĐƠN GIÁ') {
       if (colMap.GIANHAP === undefined) colMap.GIANHAP = idx;
     }
-    // 5. GIABAN
     else if (['GIABAN', 'DONGIABAN', 'SALEPRICE', 'SELLINGPRICE'].includes(stripped) || raw === 'GIABAN' || raw === 'GIÁ BÁN') {
       if (colMap.GIABAN === undefined) colMap.GIABAN = idx;
     }
-    // 6. SOLO
-    else if (['SOLO', 'LO', 'BATCH', 'BATCHNO', 'LOT', 'LOTNO'].includes(stripped) || raw === 'SOLO' || raw === 'SỐ LÔ' || raw === 'LÔ') {
+    else if (['SOLO', 'LO', 'BATCH', 'BATCHNO', 'LOT', 'LOTNO', 'SOKIEMSOAT'].includes(stripped) || raw === 'SOLO' || raw === 'SỐ LÔ' || raw === 'LÔ' || raw === 'SỐ KIỂM SOÁT') {
       if (colMap.SOLO === undefined) colMap.SOLO = idx;
     }
-    // 7. HANDUNG
     else if (['HANDUNG', 'HANSUDUNG', 'HSD', 'EXP', 'EXPIRY', 'EXPIRYDATE'].includes(stripped) || raw === 'HANDUNG' || raw === 'HẠN DÙNG' || raw === 'HSD') {
       if (colMap.HANDUNG === undefined) colMap.HANDUNG = idx;
     }
-    // 8. MATHAU
     else if (['MATHAU', 'THAU', 'SOQD', 'TENDER', 'TENDERCODE'].includes(stripped) || raw === 'MATHAU' || raw === 'MÃ THẦU') {
       if (colMap.MATHAU === undefined) colMap.MATHAU = idx;
     }
-    // 9. DINHMUC
     else if (['DINHMUC', 'QUOTA', 'COSOTUTRUC'].includes(stripped) || raw === 'DINHMUC' || raw === 'ĐỊNH MỨC') {
       if (colMap.DINHMUC === undefined) colMap.DINHMUC = idx;
     }
-    // 10. SLCANHBAO
     else if (['SLCANHBAO', 'CANHBAOTON', 'MINQTY', 'ALERTQTY'].includes(stripped) || raw === 'SLCANHBAO' || raw === 'CẢNH BÁO') {
       if (colMap.SLCANHBAO === undefined) colMap.SLCANHBAO = idx;
     }
-    // 11. GHICHULOI
     else if (['GHICHULOI', 'GHICHU', 'NOTE', 'ERROR'].includes(stripped) || raw === 'GHICHULOI' || raw === 'GHI CHÚ') {
       if (colMap.GHICHULOI === undefined) colMap.GHICHULOI = idx;
     }
   });
 
-  // Chuyển các dòng data thành JSON objects
   const result = [];
   for (let i = headerIdx + 1; i < rows.length; i++) {
     const row = rows[i];
     if (!row || !Array.isArray(row) || row.length === 0) continue;
-    // Bỏ qua dòng trống hoàn toàn
     const hasData = row.some(cell => cell !== null && cell !== undefined && String(cell).trim() !== '');
     if (!hasData) continue;
 
     const ma = colMap.MA !== undefined ? String(row[colMap.MA] || '').trim() : '';
     const ten = colMap.TEN !== undefined ? String(row[colMap.TEN] || '').trim() : '';
 
-    // Nếu không có cả mã lẫn tên thì bỏ qua dòng rác
     if (!ma && !ten) continue;
 
     const soLuong = colMap.SOLUONG !== undefined ? parseNumberVi(row[colMap.SOLUONG]) : 0;
@@ -245,7 +357,7 @@ function parseSheetSmart(sheet) {
     if (!giaBan) giaBan = giaNhap;
 
     const soLo = colMap.SOLO !== undefined ? String(row[colMap.SOLO] || '').trim() : '';
-    const hanDung = colMap.HANDUNG !== undefined ? normalizeDate(row[colMap.HANDUNG]) : '';
+    const hanDung = colMap.HANDUNG !== undefined ? convertHanDung(row[colMap.HANDUNG]) : '';
     const maThau = colMap.MATHAU !== undefined ? String(row[colMap.MATHAU] || '').trim() : '';
     const dinhMuc = colMap.DINHMUC !== undefined ? String(row[colMap.DINHMUC] || '').trim() : '';
     const slCanhBao = colMap.SLCANHBAO !== undefined ? String(row[colMap.SLCANHBAO] || '').trim() : '';
@@ -269,9 +381,6 @@ function parseSheetSmart(sheet) {
   return result;
 }
 
-/**
- * Chuẩn hóa danh sách dòng và tính toán tổng số liệu
- */
 function processTonDauRows(rows) {
   let totalQuantity = 0;
   let totalValue = 0;
@@ -285,7 +394,7 @@ function processTonDauRows(rows) {
     if (!giaBan && giaNhap) giaBan = giaNhap;
 
     const soLo = String(r.SOLO || r.solo || '').trim();
-    const hanDung = normalizeDate(r.HANDUNG !== undefined ? r.HANDUNG : r.handung);
+    const hanDung = convertHanDung(r.HANDUNG !== undefined ? r.HANDUNG : r.handung);
     const maThau = String(r.MATHAU || r.mathau || '').trim();
     const dinhMuc = r.DINHMUC !== undefined ? String(r.DINHMUC).trim() : (r.dinhmuc !== undefined ? String(r.dinhmuc).trim() : '');
     const slCanhBao = r.SLCANHBAO !== undefined ? String(r.SLCANHBAO).trim() : (r.slcanhbao !== undefined ? String(r.slcanhbao).trim() : '');
@@ -322,9 +431,6 @@ function processTonDauRows(rows) {
   };
 }
 
-/**
- * Chuyển đổi danh sách đối tượng thành ma trận 2 chiều [Header, Row1, Row2...]
- */
 function toArrayOfArrays(rows) {
   const aoa = [STANDARD_HEADERS];
   for (const r of rows) {
@@ -345,22 +451,18 @@ function toArrayOfArrays(rows) {
   return aoa;
 }
 
-/**
- * Tạo Buffer Excel file
- */
 function createExcelBuffer(rows, sheetName = 'Trang tính1') {
   const aoa = toArrayOfArrays(rows);
   const wb = xlsx.utils.book_new();
   const ws = xlsx.utils.aoa_to_sheet(aoa);
 
-  // Set column widths
   ws['!cols'] = [
     { wch: 18 }, // MA
-    { wch: 38 }, // TEN
+    { wch: 40 }, // TEN
     { wch: 12 }, // SOLUONG
     { wch: 14 }, // GIANHAP
     { wch: 14 }, // GIABAN
-    { wch: 15 }, // SOLO
+    { wch: 28 }, // SOLO
     { wch: 14 }, // HANDUNG
     { wch: 14 }, // MATHAU
     { wch: 12 }, // DINHMUC
@@ -372,9 +474,6 @@ function createExcelBuffer(rows, sheetName = 'Trang tính1') {
   return xlsx.write(wb, { type: 'buffer', bookType: 'xlsx' });
 }
 
-/**
- * Xuất ra định dạng CSV chuẩn UTF-8 có BOM
- */
 function createCsvString(rows) {
   const aoa = toArrayOfArrays(rows);
   const csvLines = aoa.map(row => {
@@ -388,7 +487,6 @@ function createCsvString(rows) {
     }).join(',');
   });
 
-  // UTF-8 BOM
   return '\uFEFF' + csvLines.join('\r\n');
 }
 
@@ -397,7 +495,9 @@ module.exports = {
   SAMPLE_ROWS,
   stripVietnamese,
   parseNumberVi,
-  normalizeDate,
+  convertHanDung,
+  readBufferToRows,
+  mergeKiemKeAndXntFiles,
   parseSheetSmart,
   processTonDauRows,
   toArrayOfArrays,

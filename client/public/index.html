@@ -2418,25 +2418,162 @@
             </div>
           </div>
 
-          <!-- Drag & Drop Upload Box -->
-          <div class="relative border-2 border-dashed rounded-2xl p-6 text-center transition-all cursor-pointer"
-               :class="tonDauThuocIsDragging ? 'border-amber-500 bg-amber-50/50' : 'border-slate-300 hover:border-amber-400 bg-slate-50/50 hover:bg-amber-50/20'"
-               @dragover.prevent="tonDauThuocIsDragging = true"
-               @dragleave.prevent="tonDauThuocIsDragging = false"
-               @drop.prevent="onTonDauThuocDrop">
-            <input type="file"
-                   @change="onTonDauThuocFileSelect"
-                   accept=".xlsx, .xls, .csv"
-                   class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
-            <div class="flex flex-col items-center justify-center space-y-2 pointer-events-none">
-              <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-xs">
-                <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+          <!-- KHU VỰC TẢI LÊN 2 FILE: BIÊN BẢN KIỂM KÊ & BÁO CÁO XUẤT NHẬP TỒN -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center space-x-1.5">
+                <i data-lucide="layers" class="w-4 h-4 text-amber-600"></i>
+                <span>Tải Lên 2 File Nguồn Để Ghép Nối Dữ Liệu Tồn Đầu</span>
+              </span>
+              <span class="text-xs text-slate-500 font-medium">Hỗ trợ định dạng .xlsx, .xls, .csv</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- HỘP 1: BIÊN BẢN KIỂM KÊ -->
+              <div class="relative rounded-2xl border-2 transition-all p-4 bg-gradient-to-br from-amber-50/40 via-white to-orange-50/20"
+                   :class="fileKiemKe ? 'border-amber-500 ring-2 ring-amber-500/20' : (fileKiemKeDragging ? 'border-amber-500 bg-amber-50' : 'border-amber-300/80 hover:border-amber-500')">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-amber-100">
+                  <div class="flex items-center space-x-2">
+                    <span class="w-6 h-6 rounded-lg bg-amber-600 text-white font-black text-xs flex items-center justify-center shadow-xs">1</span>
+                    <h4 class="text-sm font-extrabold text-amber-950">File Biên Bản Kiểm Kê</h4>
+                    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">Bắt buộc</span>
+                  </div>
+                  <div v-if="fileKiemKe" class="flex items-center space-x-1">
+                    <button @click.stop="removeKiemKeFile" type="button" class="p-1 hover:bg-rose-100 text-rose-600 rounded-md transition-colors cursor-pointer" title="Xóa file này">
+                      <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Input File Thật Kéo Thả -->
+                <div class="relative border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all"
+                     :class="fileKiemKe ? 'border-emerald-400 bg-emerald-50/30' : 'border-amber-300 hover:border-amber-500 bg-white/80'"
+                     @dragover.prevent="fileKiemKeDragging = true"
+                     @dragleave.prevent="fileKiemKeDragging = false"
+                     @drop.prevent="onKiemKeDrop">
+                  <input type="file"
+                         @change="onKiemKeFileSelect"
+                         accept=".xlsx, .xls, .csv"
+                         class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10" />
+                  
+                  <div v-if="fileKiemKe" class="flex flex-col items-center justify-center space-y-1.5 pointer-events-none">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shadow-xs">
+                      <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-xs font-bold text-slate-800 break-all">{{ fileKiemKeName }}</p>
+                    <span class="text-[11px] text-emerald-700 font-semibold bg-emerald-100 px-2 py-0.5 rounded-full">{{ fileKiemKeSize }} • Đã sẵn sàng</span>
+                  </div>
+
+                  <div v-else class="flex flex-col items-center justify-center space-y-1.5 pointer-events-none">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-xs">
+                      <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-xs font-bold text-slate-700">Kéo thả <span class="text-amber-700 font-bold">Biên Bản Kiểm Kê</span> vào đây</p>
+                    <span class="text-[11px] text-amber-600 underline font-medium">hoặc bấm để chọn file từ máy</span>
+                  </div>
+                </div>
+
+                <div class="mt-2.5 pt-2 border-t border-amber-100/60 text-[11px] space-y-1">
+                  <div class="flex items-center space-x-1 text-slate-600">
+                    <span class="font-bold text-amber-900">Thông tin trích xuất:</span>
+                    <span class="text-slate-500">Đơn giá (nhập &amp; bán), Số kiểm soát (Lô), Số lượng thực tế</span>
+                  </div>
+                  <div class="flex items-center space-x-1.5 text-amber-800 bg-amber-100/60 px-2 py-1 rounded-md font-mono text-[10.5px]">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-600 flex-shrink-0"></i>
+                    <span>Tự đổi Hạn dùng: <b>100228</b> ➔ <b>10/02/2028</b>, <b>310329</b> ➔ <b>31/03/2029</b></span>
+                  </div>
+                </div>
               </div>
-              <div class="text-sm font-bold text-slate-700">
-                <span v-if="tonDauThuocFileName">{{ tonDauThuocFileName }} ({{ tonDauThuocFileSize }})</span>
-                <span v-else>Kéo thả file Excel / CSV tồn đầu vào đây, hoặc <span class="text-amber-600 underline">bấm để chọn file từ máy</span></span>
+
+              <!-- HỘP 2: BÁO CÁO XUẤT NHẬP TỒN -->
+              <div class="relative rounded-2xl border-2 transition-all p-4 bg-gradient-to-br from-sky-50/40 via-white to-indigo-50/20"
+                   :class="fileXNT ? 'border-sky-500 ring-2 ring-sky-500/20' : (fileXNTDragging ? 'border-sky-500 bg-sky-50' : 'border-sky-300/80 hover:border-sky-500')">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-sky-100">
+                  <div class="flex items-center space-x-2">
+                    <span class="w-6 h-6 rounded-lg bg-sky-600 text-white font-black text-xs flex items-center justify-center shadow-xs">2</span>
+                    <h4 class="text-sm font-extrabold text-sky-950">File Báo Cáo Xuất Nhập Tồn</h4>
+                    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-sky-100 text-sky-800 border border-sky-200">Khuyên dùng</span>
+                  </div>
+                  <div v-if="fileXNT" class="flex items-center space-x-1">
+                    <button @click.stop="removeXntFile" type="button" class="p-1 hover:bg-rose-100 text-rose-600 rounded-md transition-colors cursor-pointer" title="Xóa file này">
+                      <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Input File Thật Kéo Thả -->
+                <div class="relative border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all"
+                     :class="fileXNT ? 'border-emerald-400 bg-emerald-50/30' : 'border-sky-300 hover:border-sky-500 bg-white/80'"
+                     @dragover.prevent="fileXNTDragging = true"
+                     @dragleave.prevent="fileXNTDragging = false"
+                     @drop.prevent="onXntDrop">
+                  <input type="file"
+                         @change="onXntFileSelect"
+                         accept=".xlsx, .xls, .csv"
+                         class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10" />
+                  
+                  <div v-if="fileXNT" class="flex flex-col items-center justify-center space-y-1.5 pointer-events-none">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shadow-xs">
+                      <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-xs font-bold text-slate-800 break-all">{{ fileXNTName }}</p>
+                    <span class="text-[11px] text-emerald-700 font-semibold bg-emerald-100 px-2 py-0.5 rounded-full">{{ fileXNTSize }} • Đã sẵn sàng</span>
+                  </div>
+
+                  <div v-else class="flex flex-col items-center justify-center space-y-1.5 pointer-events-none">
+                    <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center shadow-xs">
+                      <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-xs font-bold text-slate-700">Kéo thả <span class="text-sky-700 font-bold">Báo Cáo Xuất Nhập Tồn</span> vào đây</p>
+                    <span class="text-[11px] text-sky-600 underline font-medium">hoặc bấm để chọn file từ máy</span>
+                  </div>
+                </div>
+
+                <div class="mt-2.5 pt-2 border-t border-sky-100/60 text-[11px] space-y-1">
+                  <div class="flex items-center space-x-1 text-slate-600">
+                    <span class="font-bold text-sky-900">Thông tin trích xuất:</span>
+                    <span class="text-slate-500">Mã thuốc chuẩn HMIS (Cột MA), Tên thuốc - Hàm lượng (Cột TEN)</span>
+                  </div>
+                  <div class="flex items-center space-x-1.5 text-sky-800 bg-sky-100/60 px-2 py-1 rounded-md font-mono text-[10.5px]">
+                    <i data-lucide="link" class="w-3.5 h-3.5 text-sky-600 flex-shrink-0"></i>
+                    <span>Tự động khớp nối theo Mã hoặc STT tương ứng với Biên Bản Kiểm Kê</span>
+                  </div>
+                </div>
               </div>
-              <p class="text-xs text-slate-400">Tự động nhận diện và ghép nối: Mã &amp; Tên thuốc từ Báo Cáo XNT, Đơn giá, Số kiểm soát, Hạn dùng format DD/MM/YYYY từ Biên Bản Kiểm Kê</p>
+            </div>
+
+            <!-- NÚT GHÉP NỐI & HÀNH ĐỘNG -->
+            <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-50 via-orange-50 to-emerald-50 border border-amber-200/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div class="flex items-center space-x-3 text-xs text-slate-700">
+                <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold flex-shrink-0 shadow-xs">
+                  <i data-lucide="zap" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="font-bold text-slate-800">
+                    <span v-if="fileKiemKe && fileXNT" class="text-emerald-700 font-extrabold flex items-center space-x-1">
+                      <span>✓ Đã nạp đủ 2 file! Sẵn sàng ghép nối ra 11 cột HMIS.</span>
+                    </span>
+                    <span v-else-if="fileKiemKe" class="text-amber-800">
+                      ✓ Đã có File Kiểm Kê. (Có thể ghép nối ngay hoặc chọn thêm Báo Cáo XNT để lấy mã &amp; tên chuẩn).
+                    </span>
+                    <span v-else class="text-slate-600">
+                      Vui lòng chọn File 1 (Biên Bản Kiểm Kê) và File 2 (Báo Cáo Xuất Nhập Tồn) để bắt đầu.
+                    </span>
+                  </div>
+                  <div class="text-[11px] text-slate-500">Quy trình tự động: Lấy Mã/Tên (XNT) + Đơn giá/Lô/Hạn dùng DD/MM/YYYY/Số lượng (Kiểm Kê).</div>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+                <button @click="mergeTwoUploadedFiles()"
+                        type="button"
+                        :disabled="!fileKiemKe || isMergingFiles"
+                        class="px-5 py-2.5 bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 hover:from-amber-700 hover:to-rose-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center space-x-2 cursor-pointer active:scale-95">
+                  <i v-if="isMergingFiles" data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                  <i v-else data-lucide="sparkles" class="w-4 h-4"></i>
+                  <span>{{ isMergingFiles ? 'Đang Ghép Nối...' : '⚡ GHÉP NỐI 2 FILE & TẠO FILE IMPORT HMIS' }}</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -11352,6 +11489,18 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         // =========================================================================
         // TRẠNG THÁI & HÀM CHO SUB-TAB 4: TỒN ĐẦU THUỐC (KHO DƯỢC) 11 CỘT CHUẨN HMIS
         // =========================================================================
+        const fileKiemKe = ref(null);
+        const fileKiemKeName = ref('');
+        const fileKiemKeSize = ref('');
+        const fileKiemKeDragging = ref(false);
+
+        const fileXNT = ref(null);
+        const fileXNTName = ref('');
+        const fileXNTSize = ref('');
+        const fileXNTDragging = ref(false);
+
+        const isMergingFiles = ref(false);
+
         const tonDauThuocFile = ref(null);
         const tonDauThuocFileName = ref('');
         const tonDauThuocFileSize = ref('');
@@ -11606,6 +11755,117 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         function downloadNaBungFile(format = 'excel') {
           window.location.href = `/api/tondau-thuoc/nabung-download?format=${format}`;
           showToast(`Đang tải file ${format.toUpperCase()} 130 khoản Nà Bủng về máy...`, 'success');
+        }
+
+        function onKiemKeFileSelect(e) {
+          const file = e.target.files && e.target.files[0];
+          if (file) {
+            fileKiemKe.value = file;
+            fileKiemKeName.value = file.name;
+            fileKiemKeSize.value = formatFileSize(file.size);
+            showToast('Đã chọn File Biên Bản Kiểm Kê: ' + file.name, 'info');
+          }
+        }
+
+        function onKiemKeDrop(e) {
+          fileKiemKeDragging.value = false;
+          const files = e.dataTransfer?.files;
+          if (files && files.length > 0) {
+            fileKiemKe.value = files[0];
+            fileKiemKeName.value = files[0].name;
+            fileKiemKeSize.value = formatFileSize(files[0].size);
+            showToast('Đã chọn File Biên Bản Kiểm Kê: ' + files[0].name, 'info');
+          }
+        }
+
+        function removeKiemKeFile() {
+          fileKiemKe.value = null;
+          fileKiemKeName.value = '';
+          fileKiemKeSize.value = '';
+        }
+
+        function onXntFileSelect(e) {
+          const file = e.target.files && e.target.files[0];
+          if (file) {
+            fileXNT.value = file;
+            fileXNTName.value = file.name;
+            fileXNTSize.value = formatFileSize(file.size);
+            showToast('Đã chọn File Báo Cáo Xuất Nhập Tồn: ' + file.name, 'info');
+          }
+        }
+
+        function onXntDrop(e) {
+          fileXNTDragging.value = false;
+          const files = e.dataTransfer?.files;
+          if (files && files.length > 0) {
+            fileXNT.value = files[0];
+            fileXNTName.value = files[0].name;
+            fileXNTSize.value = formatFileSize(files[0].size);
+            showToast('Đã chọn File Báo Cáo Xuất Nhập Tồn: ' + files[0].name, 'info');
+          }
+        }
+
+        function removeXntFile() {
+          fileXNT.value = null;
+          fileXNTName.value = '';
+          fileXNTSize.value = '';
+        }
+
+        async function mergeTwoUploadedFiles(directFormat = null) {
+          if (!fileKiemKe.value) {
+            showToast('Vui lòng chọn File 1: Biên Bản Kiểm Kê trước khi ghép nối!', 'warning');
+            return;
+          }
+
+          isMergingFiles.value = true;
+          try {
+            const formData = new FormData();
+            formData.append('fileKiemKe', fileKiemKe.value);
+            if (fileXNT.value) {
+              formData.append('fileXNT', fileXNT.value);
+            }
+
+            if (directFormat) {
+              formData.append('download', directFormat);
+              const res = await axios.post(`/api/tondau-thuoc/merge-files?download=${directFormat}`, formData, {
+                responseType: 'blob'
+              });
+              const ext = directFormat === 'csv' ? 'csv' : 'xlsx';
+              const url = window.URL.createObjectURL(new Blob([res.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', `File_Import_TonDau_Thuoc_GhepNoi.${ext}`);
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+              showToast(`Đã tạo và tải thành công file ${directFormat.toUpperCase()}!`, 'success');
+              return;
+            }
+
+            const res = await axios.post('/api/tondau-thuoc/merge-files', formData);
+            if (res.data.success) {
+              tonDauThuocRows.value = res.data.allRows || [];
+              tonDauThuocSummary.value = res.data.summary || {
+                totalRecords: tonDauThuocRows.value.length,
+                totalQuantity: 0,
+                totalValue: 0,
+                totalValueFormatted: '0 ₫'
+              };
+              tonDauThuocFileName.value = `${fileKiemKeName.value} + ${fileXNTName.value || 'Gốc'}`;
+              tonDauThuocFileSize.value = `${res.data.totalRows} mặt hàng`;
+              tonDauThuocPage.value = 1;
+              showToast(`Ghép nối thành công ${res.data.totalRows} khoản thuốc! Đã chuẩn hóa Hạn dùng DD/MM/YYYY.`, 'success');
+              nextTick(() => refreshIcons());
+            } else {
+              showToast(res.data.message || 'Lỗi ghép nối 2 file', 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi ghép nối 2 file:', err);
+            showToast('Lỗi ghép nối file: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isMergingFiles.value = false;
+            nextTick(() => refreshIcons());
+          }
         }
 
 
@@ -14066,6 +14326,22 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           downloadTonDauThuocCsv,
           loadNaBungData,
           downloadNaBungFile,
+          fileKiemKe,
+          fileKiemKeName,
+          fileKiemKeSize,
+          fileKiemKeDragging,
+          fileXNT,
+          fileXNTName,
+          fileXNTSize,
+          fileXNTDragging,
+          isMergingFiles,
+          onKiemKeFileSelect,
+          onKiemKeDrop,
+          removeKiemKeFile,
+          onXntFileSelect,
+          onXntDrop,
+          removeXntFile,
+          mergeTwoUploadedFiles,
           openPhieuInModal,
           phieuinList,
           isLoadingPhieuin,

@@ -409,6 +409,212 @@ async function batchUpdateDrugsOnHmis(stationId, updateList) {
   };
 }
 
+/**
+ * Lấy danh mục tham chiếu (Đơn vị tính, Đường dùng, Nhà cung cấp, QĐ Thầu)
+ */
+async function getDanhMucThamChieu(stationId) {
+  const station = db.getStationById(stationId, true);
+  if (!station) {
+    throw new Error(`Không tìm thấy cấu hình trạm ID: ${stationId}`);
+  }
+
+  const auth = await cauhinhService.loginToHmis(station);
+  const headers = {
+    'Authorization': 'Bearer ' + auth.token,
+    'region-code': auth.region,
+    'Origin': auth.targetUrl.replace(/\/$/, ''),
+    'Referer': auth.targetUrl,
+    'Content-Type': 'application/json'
+  };
+
+  // 1. Đơn vị tính
+  let donViTinhList = [
+    { id: 200, maDvt: 'Bộ', tenDvt: 'Bộ' },
+    { id: 201, maDvt: 'Cái', tenDvt: 'Cái' },
+    { id: 202, maDvt: 'Ống', tenDvt: 'Ống' },
+    { id: 203, maDvt: 'Viên', tenDvt: 'Viên' },
+    { id: 204, maDvt: 'Tuýp', tenDvt: 'Tuýp' },
+    { id: 205, maDvt: 'Lọ', tenDvt: 'Lọ' },
+    { id: 206, maDvt: 'Gói', tenDvt: 'Gói' },
+    { id: 207, maDvt: 'Chai', tenDvt: 'Chai' },
+    { id: 208, maDvt: 'Tub', tenDvt: 'Tub' },
+    { id: 209, maDvt: 'Túi', tenDvt: 'Túi' },
+    { id: 220, maDvt: 'Kg', tenDvt: 'Kg' },
+    { id: 221, maDvt: 'Cuộn', tenDvt: 'Cuộn' },
+    { id: 222, maDvt: 'Miếng', tenDvt: 'Miếng' },
+    { id: 223, maDvt: 'Đôi', tenDvt: 'Đôi' },
+    { id: 224, maDvt: 'Vỉ', tenDvt: 'Vỉ' },
+    { id: 225, maDvt: 'Lít', tenDvt: 'Lít' }
+  ];
+  try {
+    const resDvt = await axios.get(`${auth.gateway}pharmacy/donvitinhthuocvattu/findAll`, { headers, timeout: 8000 });
+    if (Array.isArray(resDvt.data?.data) && resDvt.data.data.length > 0) {
+      donViTinhList = resDvt.data.data;
+    }
+  } catch (e) {
+    console.warn('Lỗi lấy donvitinhthuocvattu từ HMIS, dùng fallback:', e.message);
+  }
+
+  // 2. Đường dùng
+  let duongDungList = [
+    { id: 201, ma: '1.01', ten: 'Uống' },
+    { id: 200, ma: '2.10', ten: 'Tiêm' },
+    { id: 202, ma: '3.05', ten: 'Dùng ngoài' },
+    { id: 203, ma: '6.01', ten: 'Nhỏ mắt' },
+    { id: 204, ma: '5.10', ten: 'Nhỏ mũi' },
+    { id: 205, ma: '5.06', ten: 'Hít qua máy khí dung' },
+    { id: 206, ma: '6.02', ten: 'Tra mắt' },
+    { id: 207, ma: '2.15', ten: 'Tiêm truyền tĩnh mạch' },
+    { id: 208, ma: '4.01', ten: 'Đặt âm đạo' },
+    { id: 209, ma: '1.04', ten: 'Đặt dưới lưỡi' },
+    { id: 210, ma: '5.01', ten: 'Phun mù bơm vào niêm mạc' },
+    { id: 211, ma: '4.02', ten: 'Đặt hậu môn/trực tràng' },
+    { id: 212, ma: '4.03', ten: 'Thụt trực tràng' }
+  ];
+  try {
+    const resDd = await axios.get(`${auth.gateway}pharmacy/duongdung/findAll`, { headers, timeout: 8000 });
+    if (Array.isArray(resDd.data?.data) && resDd.data.data.length > 0) {
+      duongDungList = resDd.data.data;
+    }
+  } catch (e) {
+    console.warn('Lỗi lấy duongdung từ HMIS, dùng fallback:', e.message);
+  }
+
+  // 3. Nhà cung cấp
+  let nhaCungCapList = [];
+  try {
+    const resNcc = await axios.get(`${auth.gateway}pharmacy/ducnhacungcap/findAll`, { headers, timeout: 8000 });
+    if (Array.isArray(resNcc.data?.data)) {
+      nhaCungCapList = resNcc.data.data;
+    }
+  } catch (e) {
+    console.warn('Lỗi lấy ducnhacungcap từ HMIS:', e.message);
+  }
+
+  // 4. Quyết định thầu
+  let qdThauList = [];
+  try {
+    const resQd = await axios.get(`${auth.gateway}pharmacy/dauthau/loaddauthaunew?loaihienthi=0`, { headers, timeout: 8000 });
+    if (Array.isArray(resQd.data?.data)) {
+      qdThauList = resQd.data.data;
+    }
+  } catch (e) {
+    console.warn('Lỗi lấy loaddauthaunew từ HMIS:', e.message);
+  }
+
+  return {
+    donViTinhList,
+    duongDungList,
+    nhaCungCapList,
+    qdThauList
+  };
+}
+
+/**
+ * Thêm mới thuốc hoặc vật tư vào danh mục trạm trên cổng HMIS
+ */
+async function themThuocVatTuHmis(stationId, drugData) {
+  const station = db.getStationById(stationId, true);
+  if (!station) {
+    throw new Error(`Không tìm thấy cấu hình trạm ID: ${stationId}`);
+  }
+
+  const auth = await cauhinhService.loginToHmis(station);
+  const companyId = auth.userInfo?.company?.id || 1;
+  const headers = {
+    'Authorization': 'Bearer ' + auth.token,
+    'region-code': auth.region,
+    'Origin': auth.targetUrl.replace(/\/$/, ''),
+    'Referer': auth.targetUrl,
+    'Content-Type': 'application/json'
+  };
+
+  const isVatTu = Number(drugData.loai) === 2 || String(drugData.loai).toUpperCase() === 'VATTU' || drugData.maNhom === 'VT';
+  const loai = isVatTu ? 2 : 0;
+  const maNhom = isVatTu ? 'VT' : 'TH';
+  const tenNhom = isVatTu ? 'VẬT TƯ' : 'Thuốc thường';
+  const maThuoc = String(drugData.ma || drugData.maThuoc || '').trim();
+  const tenThuoc = String(drugData.ten || drugData.tenThuoc || '').trim();
+
+  if (!maThuoc) throw new Error('Mã thuốc / vật tư không được để trống');
+  if (!tenThuoc) throw new Error('Tên thuốc / vật tư không được để trống');
+
+  const gia = Number(drugData.gia || drugData.giaNhap || 0);
+
+  const payload = {
+    thuocVatTuId: null,
+    ma: maThuoc,
+    maThuoc: maThuoc,
+    maThuocBv: maThuoc,
+    ten: tenThuoc,
+    tenKhoaHoc: tenThuoc,
+    tenByt: tenThuoc,
+    loai: loai,
+    maNhom: maNhom,
+    tenNhom: tenNhom,
+    thuocTanDuoc: isVatTu ? 0 : 1,
+    viThuocYhct: isVatTu ? 1 : 0,
+    nhomMabhytId: isVatTu ? 15 : 10,
+    donViTinhId: drugData.donViTinhId ? Number(drugData.donViTinhId) : null,
+    dongGoi: drugData.dongGoi || '',
+    duongDungId: isVatTu ? null : (drugData.duongDungId ? Number(drugData.duongDungId) : null),
+    dangDung: isVatTu ? null : (drugData.dangDung || null),
+    soDangKy: drugData.soDangKy ? String(drugData.soDangKy).trim() : '',
+    // Giá điền đồng loạt vào tất cả các ô giá theo yêu cầu user
+    giaNhap: Number(drugData.giaNhap) || gia,
+    giaBan: Number(drugData.giaBan) || gia,
+    giaVienPhi: Number(drugData.giaDichVu) || gia,
+    giaDichVu: Number(drugData.giaDichVu) || gia,
+    giaBhyt: Number(drugData.giaBhyt || drugData.giaBH) || gia,
+    giaNhanDan: Number(drugData.giaNhanDan) || gia,
+    giaNuocNgoai: Number(drugData.giaNuocNgoai) || gia,
+    tranBHYT: Number(drugData.tranBHYT) || gia,
+    vatNhap: Number(drugData.vatNhap) || 0,
+    vatBan: Number(drugData.vatBan) || 0,
+    // Thông tin thầu
+    nhaCungCapId: drugData.nhaCungCapId ? Number(drugData.nhaCungCapId) : null,
+    tenNcc: drugData.tenNcc || null,
+    maThau: drugData.qdThau || null,
+    qdThau: drugData.qdThau || null,
+    namCungUng: drugData.namCungUng ? String(drugData.namCungUng) : new Date().getFullYear().toString(),
+    maNhomThau: drugData.maNhomThau || '',
+    sttDauThau: drugData.sttThau || drugData.sttDauThau || '',
+    goiThau: drugData.goiThau || '',
+    soGoiThau: drugData.soGoiThau || '',
+    loaiThau: drugData.loaiThau !== undefined ? Number(drugData.loaiThau) : (isVatTu ? 2 : 1),
+    htThau: drugData.htThau !== undefined ? Number(drugData.htThau) : 1,
+    thauGhep: drugData.thauGhep || '',
+    slThau: Number(drugData.slThau) || 0,
+    // Cấu hình bắt buộc HMIS
+    csytId: companyId,
+    maCsKcbThuoc: station.maTram || '11109',
+    kieu: 1,
+    kieuDuLieu: 1,
+    dmGuiBH: '1',
+    ngayCheckGuiBH: new Date().toISOString(),
+    tuNgay: drugData.tuNgay ? toIsoDate(drugData.tuNgay) : new Date().toISOString(),
+    denNgay: drugData.denNgay ? toIsoDate(drugData.denNgay) : new Date(Date.now() + 365*24*3600*1000).toISOString(),
+    ngayCapNhat: null,
+    ngayThucHien: null
+  };
+
+  const saveUrl = `${auth.gateway}pharmacy/dmthuoc/luuthongtinthuocvattu`;
+  const saveRes = await axios.post(saveUrl, payload, { headers, timeout: 25000 });
+
+  if (saveRes.data && (saveRes.data.code === 0 || saveRes.status === 200)) {
+    const createdItem = saveRes.data.data;
+    const newDrugId = createdItem?.id || (typeof createdItem === 'number' ? createdItem : null);
+    return {
+      success: true,
+      newDrugId,
+      drug: createdItem,
+      message: saveRes.data.message || 'Thêm thuốc/vật tư thành công'
+    };
+  } else {
+    throw new Error(saveRes.data?.message || 'Lỗi khi lưu thuốc vào HMIS');
+  }
+}
+
 module.exports = {
   startsWithThOrVt,
   extractSdk,
@@ -418,5 +624,7 @@ module.exports = {
   fetchCatalogForStation,
   compareInventoryWithCatalog,
   updateSingleDrugOnHmis,
-  batchUpdateDrugsOnHmis
+  batchUpdateDrugsOnHmis,
+  getDanhMucThamChieu,
+  themThuocVatTuHmis
 };

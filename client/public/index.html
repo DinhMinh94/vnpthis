@@ -3111,6 +3111,22 @@
                                 title="Sửa mã thuốc này trên cổng HMIS">
                           Sửa mã
                         </button>
+                        <div v-else-if="item.status === 'KHONG_TIM_THAY'" class="flex items-center justify-center gap-1">
+                          <button @click="openThemThuocModal(item, 'THUOC')"
+                                  type="button"
+                                  class="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 rounded-lg text-[10.5px] font-bold transition-all shadow-2xs flex items-center space-x-1 cursor-pointer hover:shadow-xs active:scale-95"
+                                  title="Thêm thuốc này vào danh mục trạm trên HMIS (Nhóm TH - Thuốc thường)">
+                            <i data-lucide="plus-circle" class="w-3 h-3 text-emerald-600"></i>
+                            <span>+ Thuốc</span>
+                          </button>
+                          <button @click="openThemThuocModal(item, 'VATTU')"
+                                  type="button"
+                                  class="px-2 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-300 rounded-lg text-[10.5px] font-bold transition-all shadow-2xs flex items-center space-x-1 cursor-pointer hover:shadow-xs active:scale-95"
+                                  title="Thêm vật tư này vào danh mục trạm trên HMIS (Nhóm VT - Vật tư)">
+                            <i data-lucide="package-plus" class="w-3 h-3 text-sky-600"></i>
+                            <span>+ Vật tư</span>
+                          </button>
+                        </div>
                         <span v-else class="text-slate-300 text-xs">—</span>
                       </td>
                     </tr>
@@ -8677,6 +8693,382 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         </div>
       </div>
     </div>
+    <!-- ========================================================================= -->
+    <!-- MODAL THÊM THUỐC / VẬT TƯ VÀO DANH MỤC TRẠM TRÊN CỔNG HMIS                -->
+    <!-- ========================================================================= -->
+    <div v-if="showThemThuocModal" 
+         @keydown.f4.prevent="saveThemThuocHmis"
+         @keydown.esc="showThemThuocModal = false"
+         tabindex="0"
+         class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-800 text-white px-5 py-3.5 flex items-center justify-between shadow-sm">
+          <div class="flex items-center space-x-3">
+            <div class="p-2 rounded-xl shadow-inner" :class="themThuocMode === 'THUOC' ? 'bg-emerald-500/30' : 'bg-sky-500/30'">
+              <i :data-lucide="themThuocMode === 'THUOC' ? 'pill' : 'package'" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-base font-bold">
+                  {{ themThuocMode === 'THUOC' ? 'Thêm Thuốc Thường Vào Danh Mục Trạm (HMIS)' : 'Thêm Vật Tư Y Tế Vào Danh Mục Trạm (HMIS)' }}
+                </h3>
+                <span class="text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider"
+                      :class="themThuocMode === 'THUOC' ? 'bg-emerald-500/40 text-emerald-100 border border-emerald-300/40' : 'bg-sky-500/40 text-sky-100 border border-sky-300/40'">
+                  {{ themThuocMode === 'THUOC' ? 'TH - Thuốc thường' : 'VT - Vật tư' }}
+                </span>
+              </div>
+              <p class="text-[11px] text-sky-100 mt-0.5">
+                Cổng HMIS: https://ytcs.hmis.vn/new/his/danhmuc/dm-duoc/dm-thuoc-vat-tu
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button @click="showThemThuocModal = false" class="text-white/80 hover:text-white p-1.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="bg-slate-50 border-b border-slate-200 px-5 pt-2 flex items-center justify-between">
+          <div class="flex space-x-1">
+            <button type="button"
+                    @click="themThuocActiveTab = 'chitiet'"
+                    class="px-4 py-2 text-xs font-bold border-b-2 transition-all cursor-pointer flex items-center space-x-1.5"
+                    :class="themThuocActiveTab === 'chitiet' ? 'border-indigo-600 text-indigo-700 bg-white rounded-t-lg' : 'border-transparent text-slate-500 hover:text-slate-800'">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+              <span>Thông tin chi tiết thuốc vật tư</span>
+            </button>
+            <button type="button"
+                    @click="themThuocActiveTab = 'thau'"
+                    class="px-4 py-2 text-xs font-bold border-b-2 transition-all cursor-pointer flex items-center space-x-1.5"
+                    :class="themThuocActiveTab === 'thau' ? 'border-indigo-600 text-indigo-700 bg-white rounded-t-lg' : 'border-transparent text-slate-500 hover:text-slate-800'">
+              <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+              <span>Thông tin thầu</span>
+            </button>
+          </div>
+          <div class="text-[11px] text-slate-500 pb-1">
+            <span class="font-semibold text-slate-700">Phím tắt:</span> Nhấn <kbd class="px-1.5 py-0.5 bg-slate-200 text-slate-700 rounded font-mono font-bold">F4</kbd> để Lưu
+          </div>
+        </div>
+
+        <!-- Body Form -->
+        <div class="p-5 overflow-y-auto flex-1 space-y-4 text-xs">
+          <!-- TAB 1: THÔNG TIN CHI TIẾT THUỐC VẬT TƯ -->
+          <div v-show="themThuocActiveTab === 'chitiet'" class="space-y-4">
+            <!-- Row 1: Mã, Loại, Nhóm -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">
+                  Mã thuốc vật tư <span class="text-rose-500">*</span>
+                </label>
+                <input v-model="themThuocForm.maThuoc"
+                       type="text"
+                       placeholder="VD: 25.V2.108"
+                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">
+                  Loại <span class="text-rose-500">*</span>
+                </label>
+                <select v-model.number="themThuocForm.loai"
+                        @change="onThemThuocLoaiChange"
+                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                  <option :value="0">Thuốc thường</option>
+                  <option :value="2">Vật tư</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">
+                  Nhóm <span class="text-rose-500">*</span>
+                </label>
+                <input :value="themThuocForm.loai === 2 ? 'VT - VẬT TƯ' : 'TH - Thuốc thường'"
+                       type="text"
+                       readonly
+                       class="w-full px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-semibold text-slate-600 cursor-not-allowed" />
+              </div>
+            </div>
+
+            <!-- Row 2: Tên thuốc vật tư -->
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">
+                Tên thuốc vật tư <span class="text-rose-500">*</span>
+              </label>
+              <input v-model="themThuocForm.tenThuoc"
+                     type="text"
+                     placeholder="Tên thuốc hoặc vật tư y tế"
+                     class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+            </div>
+
+            <!-- Row 3: Đơn vị tính, Đóng gói, Đường dùng -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1 flex items-center justify-between">
+                  <span>Đơn vị tính <span class="text-rose-500">*</span></span>
+                  <span v-if="isLoadingThamChieu" class="text-[10px] text-slate-400 font-normal">Đang tải...</span>
+                </label>
+                <select v-model.number="themThuocForm.donViTinhId"
+                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                  <option :value="null">-- Chọn đơn vị tính --</option>
+                  <option v-for="dvt in thamChieuDvtList" :key="dvt.id" :value="dvt.id">
+                    {{ dvt.tenDvt || dvt.maDvt }}
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Đóng gói</label>
+                <input v-model="themThuocForm.dongGoi"
+                       type="text"
+                       placeholder="VD: Hộp 10 vỉ x 10 viên"
+                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">
+                  Đường dùng <span v-if="themThuocForm.loai !== 2" class="text-rose-500">*</span>
+                </label>
+                <select v-model.number="themThuocForm.duongDungId"
+                        :disabled="themThuocForm.loai === 2"
+                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                  <option :value="null">{{ themThuocForm.loai === 2 ? '(Không áp dụng cho vật tư)' : '-- Chọn đường dùng --' }}</option>
+                  <option v-for="dd in thamChieuDuongDungList" :key="dd.id" :value="dd.id">
+                    {{ dd.ten }} ({{ dd.ma }})
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Khối: Thông tin giá -->
+            <div class="p-3.5 bg-amber-50/40 border border-amber-200/80 rounded-xl space-y-2.5">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-amber-900 flex items-center space-x-1.5">
+                  <i data-lucide="circle-dollar-sign" class="w-4 h-4 text-amber-600"></i>
+                  <span>Thông tin giá (Tự động điền đồng loạt từ file tồn đầu)</span>
+                </span>
+                <button type="button"
+                        @click="syncAllPrices(themThuocForm.giaNhap)"
+                        class="text-[11px] font-bold text-indigo-700 hover:underline cursor-pointer">
+                  Đồng bộ lại theo Giá nhập
+                </button>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                <div>
+                  <label class="block font-semibold text-slate-600 mb-0.5 text-[11px]">Giá nhập (₫)</label>
+                  <input v-model.number="themThuocForm.giaNhap"
+                         @input="syncAllPrices(themThuocForm.giaNhap)"
+                         type="number"
+                         step="any"
+                         class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-600 mb-0.5 text-[11px]">Giá bán (₫)</label>
+                  <input v-model.number="themThuocForm.giaBan"
+                         type="number"
+                         step="any"
+                         class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-600 mb-0.5 text-[11px]">Giá dịch vụ (₫)</label>
+                  <input v-model.number="themThuocForm.giaDichVu"
+                         type="number"
+                         step="any"
+                         class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-600 mb-0.5 text-[11px]">Giá BH (₫)</label>
+                  <input v-model.number="themThuocForm.giaBhyt"
+                         type="number"
+                         step="any"
+                         class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-600 mb-0.5 text-[11px]">Giá nhân dân (₫)</label>
+                  <input v-model.number="themThuocForm.giaNhanDan"
+                         type="number"
+                         step="any"
+                         class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 5: Số đăng ký, Số lô, Hạn dùng -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">
+                  Số đăng ký <span class="text-rose-500">*</span>
+                </label>
+                <input v-model="themThuocForm.soDangKy"
+                       type="text"
+                       placeholder="VD: VD-19567-13 hoặc 220003061/PCBA-HN"
+                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Số Lô (Trích từ SOLO)</label>
+                <input :value="themThuocRowItem?.solo || ''"
+                       type="text"
+                       readonly
+                       class="w-full px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-mono text-slate-600 cursor-not-allowed" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Hạn dùng</label>
+                <input :value="themThuocRowItem?.handung || ''"
+                       type="text"
+                       readonly
+                       class="w-full px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-mono text-slate-600 cursor-not-allowed" />
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: THÔNG TIN THẦU -->
+          <div v-show="themThuocActiveTab === 'thau'" class="space-y-4">
+            <!-- Row 1: Nhà cung cấp, Năm -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="md:col-span-2">
+                <label class="block font-bold text-slate-700 mb-1">Nhà cung cấp</label>
+                <select v-model.number="themThuocForm.nhaCungCapId"
+                        @change="onNhaCungCapChange"
+                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                  <option :value="null">-- Chọn nhà cung cấp --</option>
+                  <option v-for="ncc in thamChieuNccList" :key="ncc.id" :value="ncc.id">
+                    {{ ncc.ten }}
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Năm cung ứng</label>
+                <input v-model="themThuocForm.namCungUng"
+                       @input="updateAutoThauGhep"
+                       type="text"
+                       placeholder="VD: 2025"
+                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+              </div>
+            </div>
+
+            <!-- Row 2: QĐ thầu, Gói thầu, Số gói thầu -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">QĐ thầu</label>
+                <div class="flex space-x-1">
+                  <select v-model="themThuocForm.qdThau"
+                          @change="updateAutoThauGhep"
+                          class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                    <option value="">-- Chọn QĐ thầu --</option>
+                    <option v-for="qd in thamChieuQdThauList" :key="qd.id" :value="qd.name">
+                      {{ qd.name }}
+                    </option>
+                  </select>
+                  <input v-model="themThuocForm.qdThau"
+                         @input="updateAutoThauGhep"
+                         type="text"
+                         placeholder="Hoặc nhập..."
+                         class="w-32 px-2 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Gói thầu</label>
+                <input v-model="themThuocForm.goiThau"
+                       @input="updateAutoThauGhep"
+                       type="text"
+                       placeholder="VD: G1, G2, G3..."
+                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Số gói thầu</label>
+                <input v-model="themThuocForm.soGoiThau"
+                       type="text"
+                       placeholder="VD: 01"
+                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+              </div>
+            </div>
+
+            <!-- Row 3: Mã nhóm thầu, STT thầu, SL thầu -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Mã nhóm thầu</label>
+                <input v-model="themThuocForm.maNhomThau"
+                       @input="updateAutoThauGhep"
+                       type="text"
+                       placeholder="VD: N1, N2, N3, N0..."
+                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">STT thầu</label>
+                <input v-model="themThuocForm.sttThau"
+                       type="text"
+                       placeholder="VD: 01"
+                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Số lượng thầu</label>
+                <input v-model.number="themThuocForm.slThau"
+                       type="number"
+                       placeholder="VD: 1000"
+                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+              </div>
+            </div>
+
+            <!-- Row 4: Loại thầu, Hình thức thầu, Thầu ghép -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Loại thầu</label>
+                <select v-model.number="themThuocForm.loaiThau"
+                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                  <option :value="1">1 - Thuốc generic</option>
+                  <option :value="2">2 - Vật tư y tế</option>
+                  <option :value="3">3 - Thuốc biệt dược gốc</option>
+                  <option :value="4">4 - Thuốc cổ truyền</option>
+                  <option :value="5">5 - Vị thuốc cổ truyền</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Hình thức thầu</label>
+                <select v-model.number="themThuocForm.htThau"
+                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                  <option :value="1">1 - Đấu thầu rộng rãi</option>
+                  <option :value="2">2 - Đấu thầu hạn chế</option>
+                  <option :value="3">3 - Chỉ định thầu</option>
+                  <option :value="4">4 - Chào hàng cạnh tranh</option>
+                  <option :value="5">5 - Mua sắm trực tiếp</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">
+                  Thầu ghép <span class="text-rose-500">*</span>
+                </label>
+                <input v-model="themThuocForm.thauGhep"
+                       type="text"
+                       placeholder="VD: QĐ;Gói;Nhóm;Năm"
+                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono text-xs text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+          <div class="text-[11px] text-slate-500">
+            * Dữ liệu lưu sẽ lập tức gửi trực tiếp lên cổng HMIS của Trạm Y Tế
+          </div>
+          <div class="flex items-center space-x-2">
+            <button @click="showThemThuocModal = false"
+                    :disabled="isSavingThemThuoc"
+                    type="button"
+                    class="px-4 py-2 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-semibold text-slate-700 transition-colors cursor-pointer">
+              Hủy
+            </button>
+            <button @click="saveThemThuocHmis"
+                    :disabled="isSavingThemThuoc"
+                    type="button"
+                    class="px-5 py-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95">
+              <i v-if="isSavingThemThuoc" data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+              <i v-else data-lucide="save" class="w-4 h-4"></i>
+              <span>Lưu vào HMIS (F4)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- TOAST THÔNG BÁO NỔI BẬT GÓC TRÊN BÊN PHẢI -->
     <div class="fixed top-5 right-5 z-[9999] flex flex-col space-y-2.5 pointer-events-none max-w-md w-full">
       <div v-for="toast in toasts" :key="toast.id" 
@@ -12672,6 +13064,235 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           }
         }
 
+
+        // State cho modal Thêm Thuốc / Vật Tư vào HMIS
+        const showThemThuocModal = ref(false);
+        const themThuocMode = ref('THUOC'); // 'THUOC' | 'VATTU'
+        const themThuocActiveTab = ref('chitiet'); // 'chitiet' | 'thau'
+        const isSavingThemThuoc = ref(false);
+        const isLoadingThamChieu = ref(false);
+        const themThuocRowItem = ref(null);
+
+        const themThuocForm = ref({
+          loai: 0,
+          maNhom: 'TH',
+          tenNhom: 'Thuốc thường',
+          maThuoc: '',
+          tenThuoc: '',
+          donViTinhId: null,
+          dongGoi: '',
+          duongDungId: null,
+          soDangKy: '',
+          giaNhap: 0,
+          giaBan: 0,
+          giaDichVu: 0,
+          giaBhyt: 0,
+          giaNhanDan: 0,
+          nhaCungCapId: null,
+          tenNcc: '',
+          qdThau: '',
+          namCungUng: new Date().getFullYear().toString(),
+          maNhomThau: '',
+          sttThau: '',
+          goiThau: '',
+          soGoiThau: '',
+          loaiThau: 1,
+          htThau: 1,
+          thauGhep: '',
+          slThau: 0
+        });
+
+        const thamChieuDvtList = ref([]);
+        const thamChieuDuongDungList = ref([]);
+        const thamChieuNccList = ref([]);
+        const thamChieuQdThauList = ref([]);
+
+        function syncAllPrices(val) {
+          const num = Number(val) || 0;
+          themThuocForm.value.giaNhap = num;
+          themThuocForm.value.giaBan = num;
+          themThuocForm.value.giaDichVu = num;
+          themThuocForm.value.giaBhyt = num;
+          themThuocForm.value.giaNhanDan = num;
+        }
+
+        function updateAutoThauGhep() {
+          const f = themThuocForm.value;
+          if (f.qdThau || f.goiThau || f.maNhomThau || f.namCungUng) {
+            f.thauGhep = `${f.qdThau || ''};${f.goiThau || ''};${f.maNhomThau || ''};${f.namCungUng || ''}`;
+          }
+        }
+
+        function onNhaCungCapChange() {
+          const selected = (thamChieuNccList.value || []).find(n => n.id === themThuocForm.value.nhaCungCapId);
+          if (selected) {
+            themThuocForm.value.tenNcc = selected.ten || '';
+          }
+        }
+
+        function onThemThuocLoaiChange() {
+          const isVt = themThuocForm.value.loai === 2;
+          themThuocForm.value.maNhom = isVt ? 'VT' : 'TH';
+          themThuocForm.value.tenNhom = isVt ? 'VẬT TƯ' : 'Thuốc thường';
+          themThuocForm.value.loaiThau = isVt ? 2 : 1;
+          if (isVt) {
+            themThuocForm.value.duongDungId = null;
+          } else if (!themThuocForm.value.duongDungId) {
+            themThuocForm.value.duongDungId = 201; // Uống
+          }
+        }
+
+        function autoDetectDonViTinh(ten) {
+          if (!ten) return;
+          const s = String(ten).toLowerCase();
+          const list = thamChieuDvtList.value || [];
+          if (list.length === 0) return;
+
+          let matched = null;
+          if (s.includes('viên') || s.includes('vien')) matched = list.find(d => d.tenDvt === 'Viên' || d.id === 203);
+          else if (s.includes('ống') || s.includes('ong')) matched = list.find(d => d.tenDvt === 'Ống' || d.id === 202);
+          else if (s.includes('lọ') || s.includes('lo')) matched = list.find(d => d.tenDvt === 'Lọ' || d.id === 205);
+          else if (s.includes('gói') || s.includes('goi')) matched = list.find(d => d.tenDvt === 'Gói' || d.id === 206);
+          else if (s.includes('chai')) matched = list.find(d => d.tenDvt === 'Chai' || d.id === 207);
+          else if (s.includes('tuýp') || s.includes('tuyp')) matched = list.find(d => d.tenDvt === 'Tuýp' || d.id === 204);
+          else if (s.includes('túi') || s.includes('tui')) matched = list.find(d => d.tenDvt === 'Túi' || d.id === 209);
+          else if (s.includes('cuộn') || s.includes('cuon')) matched = list.find(d => d.tenDvt === 'Cuộn' || d.id === 221);
+          else if (s.includes('miếng') || s.includes('mieng')) matched = list.find(d => d.tenDvt === 'Miếng' || d.id === 222);
+          else if (s.includes('bộ') || s.includes('bo')) matched = list.find(d => d.tenDvt === 'Bộ' || d.id === 200);
+          else if (s.includes('cái') || s.includes('cai') || s.includes('bơm tiêm') || s.includes('kim tiêm') || s.includes('bóng')) matched = list.find(d => d.tenDvt === 'Cái' || d.id === 201);
+          else if (s.includes('vỉ') || s.includes('vi')) matched = list.find(d => d.tenDvt === 'Vỉ' || d.id === 224);
+
+          if (matched) {
+            themThuocForm.value.donViTinhId = matched.id;
+          } else {
+            // Default: 203 (Viên) cho thuốc, 201 (Cái) cho vật tư
+            themThuocForm.value.donViTinhId = themThuocForm.value.loai === 2 ? 201 : 203;
+          }
+        }
+
+        async function loadDanhMucThamChieu() {
+          if (thamChieuDvtList.value.length > 0 && thamChieuDuongDungList.value.length > 0) return;
+          isLoadingThamChieu.value = true;
+          try {
+            const res = await axios.get('/api/tondau-thuoc/danh-muc-tham-chieu', {
+              params: { stationId: selectedDoiSoatStationId.value }
+            });
+            if (res.data.success) {
+              thamChieuDvtList.value = res.data.donViTinhList || [];
+              thamChieuDuongDungList.value = res.data.duongDungList || [];
+              thamChieuNccList.value = res.data.nhaCungCapList || [];
+              thamChieuQdThauList.value = res.data.qdThauList || [];
+
+              if (!themThuocForm.value.donViTinhId) {
+                autoDetectDonViTinh(themThuocForm.value.tenThuoc);
+              }
+            }
+          } catch (err) {
+            console.warn('Lỗi lấy danh mục tham chiếu:', err);
+          } finally {
+            isLoadingThamChieu.value = false;
+          }
+        }
+
+        async function openThemThuocModal(row, mode) {
+          themThuocRowItem.value = row;
+          themThuocMode.value = mode; // 'THUOC' or 'VATTU'
+          themThuocActiveTab.value = 'chitiet';
+
+          const isVt = mode === 'VATTU';
+          const giaVal = Number(row.giaFile) || 0;
+
+          themThuocForm.value = {
+            loai: isVt ? 2 : 0,
+            maNhom: isVt ? 'VT' : 'TH',
+            tenNhom: isVt ? 'VẬT TƯ' : 'Thuốc thường',
+            maThuoc: row.maMoiFile || '',
+            tenThuoc: row.tenFile || '',
+            donViTinhId: isVt ? 201 : 203,
+            dongGoi: isVt ? 'Cái' : '',
+            duongDungId: isVt ? null : 201, // 201: Uống
+            soDangKy: row.sdkFile || '',
+            giaNhap: giaVal,
+            giaBan: giaVal,
+            giaDichVu: giaVal,
+            giaBhyt: giaVal,
+            giaNhanDan: giaVal,
+            nhaCungCapId: null,
+            tenNcc: '',
+            qdThau: row.qdThau || '',
+            namCungUng: new Date().getFullYear().toString(),
+            maNhomThau: '',
+            sttThau: '',
+            goiThau: '',
+            soGoiThau: '',
+            loaiThau: isVt ? 2 : 1,
+            htThau: 1,
+            thauGhep: '',
+            slThau: 0
+          };
+
+          updateAutoThauGhep();
+          showThemThuocModal.value = true;
+          nextTick(() => refreshIcons());
+
+          await loadDanhMucThamChieu();
+          autoDetectDonViTinh(row.tenFile);
+        }
+
+        async function saveThemThuocHmis() {
+          if (!themThuocForm.value.maThuoc) {
+            showToast('Vui lòng nhập Mã thuốc / vật tư', 'error');
+            return;
+          }
+          if (!themThuocForm.value.tenThuoc) {
+            showToast('Vui lòng nhập Tên thuốc / vật tư', 'error');
+            return;
+          }
+          if (!themThuocForm.value.donViTinhId) {
+            showToast('Vui lòng chọn Đơn vị tính', 'error');
+            return;
+          }
+
+          isSavingThemThuoc.value = true;
+          try {
+            const res = await axios.post('/api/tondau-thuoc/them-thuoc-vattu', {
+              stationId: selectedDoiSoatStationId.value,
+              drugData: themThuocForm.value
+            });
+
+            if (res.data.success) {
+              const newMa = themThuocForm.value.maThuoc;
+              const tenDrug = themThuocForm.value.tenThuoc;
+              showToast(`Đã thêm thành công "${tenDrug}" [${newMa}] vào danh mục trạm trên HMIS!`, 'success');
+
+              const row = themThuocRowItem.value;
+              if (row) {
+                row.hmisId = res.data.newDrugId;
+                row.tenHmis = tenDrug;
+                row.maCuHmis = newMa;
+                row.isSameCode = true;
+                row.status = 'DA_TRUNG_MA';
+                row.selected = false;
+              }
+
+              if (doiSoatResult.value && doiSoatResult.value.items) {
+                doiSoatResult.value.summary.notFound = doiSoatResult.value.items.filter(r => r.status === 'KHONG_TIM_THAY').length;
+                doiSoatResult.value.summary.sameCodeCount = doiSoatResult.value.items.filter(r => r.status === 'DA_TRUNG_MA').length;
+              }
+
+              showThemThuocModal.value = false;
+              nextTick(() => refreshIcons());
+            } else {
+              showToast('Lỗi: ' + (res.data.message || 'Không thể thêm thuốc'), 'error');
+            }
+          } catch (err) {
+            console.error('Lỗi thêm thuốc/vật tư:', err);
+            showToast('Lỗi thêm thuốc vào HMIS: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isSavingThemThuoc.value = false;
+          }
+        }
+
         // =========================================================================
         // COMPUTED & METHODS CHO QUẢN LÝ & PHÂN CÔNG NHÂN VIÊN HMIS (TAB 5)
         // =========================================================================
@@ -15171,6 +15792,23 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           updateAllHmisDrugs,
           updateSelectedHmisDrugs,
           updateSingleHmisDrug,
+          showThemThuocModal,
+          themThuocMode,
+          themThuocActiveTab,
+          isSavingThemThuoc,
+          isLoadingThamChieu,
+          themThuocRowItem,
+          themThuocForm,
+          thamChieuDvtList,
+          thamChieuDuongDungList,
+          thamChieuNccList,
+          thamChieuQdThauList,
+          syncAllPrices,
+          updateAutoThauGhep,
+          onNhaCungCapChange,
+          onThemThuocLoaiChange,
+          openThemThuocModal,
+          saveThemThuocHmis,
           openPhieuInModal,
           phieuinList,
           isLoadingPhieuin,

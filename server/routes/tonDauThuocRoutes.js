@@ -414,4 +414,50 @@ router.post('/sua-mot-thuoc-hmis', async (req, res) => {
   }
 });
 
+/**
+ * API: Lấy danh mục tham chiếu (Đơn vị tính, Đường dùng, NCC, QĐ Thầu)
+ * GET /api/tondau-thuoc/danh-muc-tham-chieu
+ */
+router.get('/danh-muc-tham-chieu', async (req, res) => {
+  try {
+    const stationId = req.query.stationId;
+    if (!stationId) {
+      return res.status(400).json({ success: false, message: 'Thiếu stationId' });
+    }
+    const data = await suaMaThuocService.getDanhMucThamChieu(stationId);
+    res.json({
+      success: true,
+      ...data
+    });
+  } catch (error) {
+    console.error('Lỗi lấy danh mục tham chiếu:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+/**
+ * API: Thêm thuốc / vật tư mới vào danh mục trạm trên HMIS
+ * POST /api/tondau-thuoc/them-thuoc-vattu
+ */
+router.post('/them-thuoc-vattu', async (req, res) => {
+  try {
+    const { stationId, drugData } = req.body;
+    if (!stationId) {
+      return res.status(400).json({ success: false, message: 'Vui lòng chọn trạm y tế' });
+    }
+    if (!drugData) {
+      return res.status(400).json({ success: false, message: 'Dữ liệu thuốc / vật tư rỗng' });
+    }
+
+    const result = await suaMaThuocService.themThuocVatTuHmis(stationId, drugData);
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    console.error('Lỗi thêm thuốc/vật tư vào HMIS:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 module.exports = router;

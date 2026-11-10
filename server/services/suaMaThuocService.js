@@ -585,8 +585,8 @@ async function themThuocVatTuHmis(stationId, drugData) {
     sttDauThau: drugData.sttThau || drugData.sttDauThau || '',
     goiThau: drugData.goiThau || '',
     soGoiThau: drugData.soGoiThau || '',
-    loaiThau: drugData.loaiThau !== undefined ? Number(drugData.loaiThau) : (isVatTu ? 2 : 1),
-    htThau: drugData.htThau !== undefined ? Number(drugData.htThau) : 1,
+    loaiThau: (drugData.loaiThau !== undefined && drugData.loaiThau !== null && drugData.loaiThau !== '') ? Number(drugData.loaiThau) : 1,
+    htThau: (drugData.htThau !== undefined && drugData.htThau !== null && drugData.htThau !== '') ? Number(drugData.htThau) : 1,
     thauGhep: drugData.thauGhep || '',
     slThau: Number(drugData.slThau) || 0,
     // Cấu hình bắt buộc HMIS

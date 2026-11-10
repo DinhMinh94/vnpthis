@@ -9155,22 +9155,30 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                   <label class="block font-bold text-slate-700 mb-1">Loại thầu</label>
                   <select v-model.number="themThuocForm.loaiThau"
                           class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
-                    <option :value="1">1 - Thuốc generic</option>
-                    <option :value="2">2 - Vật tư y tế</option>
-                    <option :value="3">3 - Thuốc biệt dược gốc</option>
-                    <option :value="4">4 - Thuốc cổ truyền</option>
-                    <option :value="5">5 - Vị thuốc cổ truyền</option>
+                    <option :value="null">-- Chọn --</option>
+                    <option :value="1">Thầu tập trung</option>
+                    <option :value="2">Thầu riêng tại cơ sở khám bệnh, chữa bệnh</option>
+                    <option :value="3">Tự sản xuất</option>
+                    <option :value="4">Mua sắm theo Điều 49 Nghị định số 188/2025/NĐ-CP</option>
+                    <option :value="5">Mua sắm theo khoản 4 Điều 80 Nghị định số 214/2025/NĐ-CP</option>
+                    <option :value="6">Tùy chọn mua thêm</option>
+                    <option :value="7">Nhận điều chuyển thiết bị y tế</option>
                   </select>
                 </div>
                 <div>
                   <label class="block font-bold text-slate-700 mb-1">Hình thức thầu</label>
                   <select v-model.number="themThuocForm.htThau"
                           class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
-                    <option :value="1">1 - Đấu thầu rộng rãi</option>
-                    <option :value="2">2 - Đấu thầu hạn chế</option>
-                    <option :value="3">3 - Chỉ định thầu</option>
-                    <option :value="4">4 - Chào hàng cạnh tranh</option>
-                    <option :value="5">5 - Mua sắm trực tiếp</option>
+                    <option :value="null">-- Chọn --</option>
+                    <option :value="1">Đấu thầu rộng rãi</option>
+                    <option :value="2">Đấu thầu hạn chế</option>
+                    <option :value="3">Chỉ định thầu</option>
+                    <option :value="4">Chào hàng cạnh tranh</option>
+                    <option :value="5">Mua sắm trực tiếp</option>
+                    <option :value="6">Lựa chọn nhà thầu trong trường hợp đặc biệt</option>
+                    <option :value="7">Đàm phán giá</option>
+                    <option :value="8">Chào giá trực tuyến</option>
+                    <option :value="9">Mua sắm trực tuyến</option>
                   </select>
                 </div>
                 <div>
@@ -13306,7 +13314,6 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           const isVt = themThuocForm.value.loai === 2;
           themThuocForm.value.maNhom = isVt ? 'VT' : 'TH';
           themThuocForm.value.tenNhom = isVt ? 'VẬT TƯ' : 'Thuốc thường';
-          themThuocForm.value.loaiThau = isVt ? 2 : 1;
           themThuocForm.value.nhomMabhytId = isVt ? 15 : 10;
           if (isVt) {
             themThuocForm.value.duongDungId = null;
@@ -13405,7 +13412,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             sttThau: '',
             goiThau: '',
             soGoiThau: '',
-            loaiThau: isVt ? 2 : 1,
+            loaiThau: 1,
             htThau: 1,
             thauGhep: row.qdThau || '',
             slThau: 0

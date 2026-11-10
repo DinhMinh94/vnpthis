@@ -457,19 +457,16 @@ async function getDanhMucThamChieu(stationId) {
 
   // 2. Đường dùng
   let duongDungList = [
-    { id: 201, ma: '1.01', ten: 'Uống' },
-    { id: 200, ma: '2.10', ten: 'Tiêm' },
-    { id: 202, ma: '3.05', ten: 'Dùng ngoài' },
-    { id: 203, ma: '6.01', ten: 'Nhỏ mắt' },
-    { id: 204, ma: '5.10', ten: 'Nhỏ mũi' },
-    { id: 205, ma: '5.06', ten: 'Hít qua máy khí dung' },
-    { id: 206, ma: '6.02', ten: 'Tra mắt' },
-    { id: 207, ma: '2.15', ten: 'Tiêm truyền tĩnh mạch' },
-    { id: 208, ma: '4.01', ten: 'Đặt âm đạo' },
-    { id: 209, ma: '1.04', ten: 'Đặt dưới lưỡi' },
-    { id: 210, ma: '5.01', ten: 'Phun mù bơm vào niêm mạc' },
-    { id: 211, ma: '4.02', ten: 'Đặt hậu môn/trực tràng' },
-    { id: 212, ma: '4.03', ten: 'Thụt trực tràng' }
+    { id: 1, ma: '1.01', ten: 'Uống' },
+    { id: 2, ma: '1.02', ten: 'Ngậm' },
+    { id: 3, ma: '1.03', ten: 'Nhai' },
+    { id: 4, ma: '1.05', ten: 'Ngậm dưới lưỡi' },
+    { id: 5, ma: '2.02', ten: 'Tiêm dưới da' },
+    { id: 6, ma: '2.01', ten: 'Tiêm bắp' },
+    { id: 7, ma: '2.05', ten: 'Tiêm tĩnh mạch' },
+    { id: 15, ma: '3.01', ten: 'Dùng ngoài' },
+    { id: 16, ma: '3.02', ten: 'Bôi ngoài da' },
+    { id: 22, ma: '3.05', ten: 'Dùng ngoài' }
   ];
   try {
     const resDd = await axios.get(`${auth.gateway}pharmacy/duongdung/findAll`, { headers, timeout: 8000 });
@@ -502,11 +499,23 @@ async function getDanhMucThamChieu(stationId) {
     console.warn('Lỗi lấy loaddauthaunew từ HMIS:', e.message);
   }
 
+  // 5. Hãng sản xuất
+  let hangSanXuatList = [];
+  try {
+    const resHsx = await axios.get(`${auth.gateway}pharmacy/duchangsanxuat/findAll`, { headers, timeout: 8000 });
+    if (Array.isArray(resHsx.data?.data)) {
+      hangSanXuatList = resHsx.data.data;
+    }
+  } catch (e) {
+    console.warn('Lỗi lấy duchangsanxuat từ HMIS:', e.message);
+  }
+
   return {
     donViTinhList,
     duongDungList,
     nhaCungCapList,
-    qdThauList
+    qdThauList,
+    hangSanXuatList
   };
 }
 
@@ -561,7 +570,9 @@ async function themThuocVatTuHmis(stationId, drugData) {
     tyLeBhyt: drugData.tyLeBhyt !== undefined && drugData.tyLeBhyt !== null ? Number(drugData.tyLeBhyt) : 100,
     donViTinhId: drugData.donViTinhId ? Number(drugData.donViTinhId) : null,
     dongGoi: drugData.dongGoi || '',
-    duongDungId: isVatTu ? null : (drugData.duongDungId ? Number(drugData.duongDungId) : null),
+    hangSanXuatId: drugData.hangSanXuatId ? Number(drugData.hangSanXuatId) : null,
+    nuocSanXuatId: drugData.nuocSanXuatId ? Number(drugData.nuocSanXuatId) : null,
+    duongDungId: isVatTu ? null : (drugData.duongDungId ? (Number(drugData.duongDungId) === 201 ? 1 : Number(drugData.duongDungId)) : 1),
     dangDung: isVatTu ? null : (drugData.dangDung || null),
     soDangKy: drugData.soDangKy ? String(drugData.soDangKy).trim() : '',
     // Giá điền đồng loạt vào tất cả các ô giá theo yêu cầu user
@@ -591,7 +602,8 @@ async function themThuocVatTuHmis(stationId, drugData) {
     slThau: Number(drugData.slThau) || 0,
     // Cấu hình bắt buộc HMIS
     csytId: companyId,
-    maCsKcbThuoc: station.maTram || '11109',
+    maCsKcbThuoc: station.code || station.maTram || '11109',
+    maCsKcbTbyt: station.code || station.maTram || '11109',
     kieu: 1,
     kieuDuLieu: 1,
     dmGuiBH: '1',

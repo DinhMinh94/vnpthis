@@ -2825,14 +2825,18 @@
             <!-- Thống kê tổng quan dạng Cards -->
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               <!-- Card 1: Tổng dòng file -->
-              <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs">
+              <div @click="doiSoatFilter = 'all'; doiSoatPage = 1"
+                   class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs cursor-pointer hover:bg-slate-50 transition-all hover:scale-[1.01]"
+                   :class="{'ring-2 ring-indigo-500 bg-indigo-50/30': doiSoatFilter === 'all'}">
                 <div class="text-[11px] font-bold text-slate-500 uppercase">Tổng Dòng File</div>
                 <div class="text-lg font-black text-slate-800 mt-1">{{ doiSoatResult.summary.totalRows }}</div>
                 <div class="text-[10px] text-slate-400 mt-0.5">{{ doiSoatResult.catalogCount }} thuốc trên HMIS</div>
               </div>
 
               <!-- Card 2: Khớp EXACT -->
-              <div class="bg-emerald-50/60 p-3.5 rounded-2xl border border-emerald-200 shadow-2xs">
+              <div @click="doiSoatFilter = 'exact'; doiSoatPage = 1"
+                   class="bg-emerald-50/60 p-3.5 rounded-2xl border border-emerald-200 shadow-2xs cursor-pointer hover:bg-emerald-100/70 transition-all hover:scale-[1.01]"
+                   :class="{'ring-2 ring-emerald-500 bg-emerald-100/60': doiSoatFilter === 'exact'}">
                 <div class="text-[11px] font-bold text-emerald-800 uppercase flex items-center space-x-1">
                   <i data-lucide="check-check" class="w-3.5 h-3.5 text-emerald-600"></i>
                   <span>Khớp EXACT</span>
@@ -2842,7 +2846,9 @@
               </div>
 
               <!-- Card 3: Khớp Tên + Giá -->
-              <div class="bg-sky-50/60 p-3.5 rounded-2xl border border-sky-200 shadow-2xs">
+              <div @click="doiSoatFilter = 'khop_ten_gia'; doiSoatPage = 1"
+                   class="bg-sky-50/60 p-3.5 rounded-2xl border border-sky-200 shadow-2xs cursor-pointer hover:bg-sky-100/70 transition-all hover:scale-[1.01]"
+                   :class="{'ring-2 ring-sky-500 bg-sky-100/60': doiSoatFilter === 'khop_ten_gia'}">
                 <div class="text-[11px] font-bold text-sky-800 uppercase flex items-center space-x-1">
                   <i data-lucide="check" class="w-3.5 h-3.5 text-sky-600"></i>
                   <span>Khớp Tên + Giá</span>
@@ -2852,7 +2858,9 @@
               </div>
 
               <!-- Card 4: CẦN SỬA MÃ TRÊN HMIS (NỔI BẬT NHẤT) -->
-              <div class="bg-amber-50 p-3.5 rounded-2xl border-2 border-amber-400 shadow-xs ring-2 ring-amber-400/20">
+              <div @click="doiSoatFilter = 'can_sua'; doiSoatPage = 1"
+                   class="bg-amber-50 p-3.5 rounded-2xl border-2 border-amber-400 shadow-xs ring-2 ring-amber-400/20 cursor-pointer hover:bg-amber-100/80 transition-all hover:scale-[1.01]"
+                   :class="{'ring-4 ring-amber-500 bg-amber-100': doiSoatFilter === 'can_sua'}">
                 <div class="text-[11px] font-black text-amber-900 uppercase flex items-center space-x-1">
                   <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i>
                   <span>Cần Sửa Mã HMIS</span>
@@ -2866,7 +2874,9 @@
               </div>
 
               <!-- Card 5: ĐÃ TRÙNG MÃ -->
-              <div class="bg-teal-50/60 p-3.5 rounded-2xl border border-teal-200 shadow-2xs">
+              <div @click="doiSoatFilter = 'da_khop'; doiSoatPage = 1"
+                   class="bg-teal-50/60 p-3.5 rounded-2xl border border-teal-200 shadow-2xs cursor-pointer hover:bg-teal-100/70 transition-all hover:scale-[1.01]"
+                   :class="{'ring-2 ring-teal-500 bg-teal-100/60': doiSoatFilter === 'da_khop'}">
                 <div class="text-[11px] font-bold text-teal-800 uppercase flex items-center space-x-1">
                   <i data-lucide="badge-check" class="w-3.5 h-3.5 text-teal-600"></i>
                   <span>Đã Khớp Mã</span>
@@ -2876,7 +2886,9 @@
               </div>
 
               <!-- Card 6: CHƯA TÌM THẤY -->
-              <div class="bg-rose-50/60 p-3.5 rounded-2xl border border-rose-200 shadow-2xs">
+              <div @click="doiSoatFilter = 'chua_tim_thay'; doiSoatPage = 1"
+                   class="bg-rose-50/60 p-3.5 rounded-2xl border border-rose-200 shadow-2xs cursor-pointer hover:bg-rose-100/70 transition-all hover:scale-[1.01]"
+                   :class="{'ring-2 ring-rose-500 bg-rose-100/60': doiSoatFilter === 'chua_tim_thay'}">
                 <div class="text-[11px] font-bold text-rose-800 uppercase flex items-center space-x-1">
                   <i data-lucide="help-circle" class="w-3.5 h-3.5 text-rose-600"></i>
                   <span>Chưa Có Trong DM</span>
@@ -2946,6 +2958,13 @@
                         class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border"
                         :class="doiSoatFilter === 'chua_tim_thay' ? 'bg-rose-600 text-white border-rose-600 shadow-2xs' : 'bg-rose-50 text-rose-900 hover:bg-rose-100 border-rose-200'">
                   ❌ Chưa có trong DM ({{ doiSoatResult.summary.notFound }})
+                </button>
+                <button @click="doiSoatFilter = 'khop_ten_gia'; doiSoatPage = 1"
+                        type="button"
+                        class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border"
+                        :class="doiSoatFilter === 'khop_ten_gia' ? 'bg-sky-600 text-white border-sky-600 shadow-2xs' : 'bg-sky-50 text-sky-900 hover:bg-sky-100 border-sky-200'"
+                        title="Những thuốc / vật tư khớp Tên + Đơn giá nhưng lệch hoặc không có Số ĐK">
+                  🔍 Khớp Tên + Giá ({{ doiSoatResult.summary.secondaryMatches }})
                 </button>
               </div>
 
@@ -3048,10 +3067,18 @@
 
                       <!-- Số lô & Số ĐK -->
                       <td class="p-2.5 font-mono text-[11px]">
-                        <div class="text-slate-700 truncate" :title="item.solo">{{ item.solo }}</div>
+                        <div class="text-slate-700 truncate" :title="item.solo">{{ item.solo || '—' }}</div>
                         <div v-if="item.sdkFile" class="mt-0.5 inline-flex items-center space-x-1 text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded text-[10.5px]">
                           <span>Số ĐK:</span>
                           <span class="font-bold">{{ item.sdkFile }}</span>
+                        </div>
+                        <div v-if="item.matchConfidence === 'TEN_GIA'" class="mt-1 flex flex-wrap items-center gap-1">
+                          <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-sky-100 text-sky-800 border border-sky-300" title="Khớp theo Tên + Đơn giá (không trùng Số ĐK trên file)">
+                            🔍 Khớp Tên + Giá
+                          </span>
+                          <span v-if="item.sdkHmis && item.sdkHmis !== item.sdkFile" class="text-[10px] text-slate-500 font-mono" title="Số ĐK trên danh mục HMIS">
+                            (HMIS: {{ item.sdkHmis }})
+                          </span>
                         </div>
                       </td>
 
@@ -12753,6 +12780,10 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             list = list.filter(x => x.status === 'DA_TRUNG_MA');
           } else if (doiSoatFilter.value === 'chua_tim_thay') {
             list = list.filter(x => x.status === 'KHONG_TIM_THAY');
+          } else if (doiSoatFilter.value === 'khop_ten_gia') {
+            list = list.filter(x => (x.matchConfidence === 'TEN_GIA' || x.matchConfidence === 'TEN_SDK') && x.status !== 'KHONG_TIM_THAY');
+          } else if (doiSoatFilter.value === 'exact') {
+            list = list.filter(x => x.matchConfidence === 'EXACT');
           }
 
           if (doiSoatSearch.value) {

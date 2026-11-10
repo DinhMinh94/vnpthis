@@ -2957,7 +2957,8 @@
                         :disabled="isUpdatingHmis || selectedDoiSoatCount === 0"
                         class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed text-slate-800 font-bold text-xs rounded-xl border border-slate-300 transition-all flex items-center space-x-1.5 cursor-pointer">
                   <i data-lucide="check-square" class="w-4 h-4 text-indigo-600"></i>
-                  <span>Sửa Thuốc Đã Chọn ({{ selectedDoiSoatCount }})</span>
+                  <span v-if="selectedDoiSoatCount === selectedUniqueCount">Sửa Thuốc Đã Chọn ({{ selectedDoiSoatCount }})</span>
+                  <span v-else>Sửa Thuốc Đã Chọn ({{ selectedDoiSoatCount }} dòng / {{ selectedUniqueCount }} thuốc)</span>
                 </button>
 
                 <!-- NÚT SỬA ALL THUỐC (NỔI BẬT NHẤT THEO YÊU CẦU CỦA USER) -->
@@ -2967,7 +2968,7 @@
                         class="px-5 py-2 bg-gradient-to-r from-purple-700 via-indigo-600 to-pink-600 hover:from-purple-800 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center space-x-2 cursor-pointer active:scale-95 ring-2 ring-purple-400/30">
                   <i v-if="isUpdatingHmis" data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
                   <i v-else data-lucide="zap" class="w-4 h-4 text-amber-300"></i>
-                  <span>⚡ SỬA ALL MÃ THUỐC TRÊN CỔNG HMIS ({{ doiSoatResult.uniqueUpdates.length }} THUỐC TH, VT)</span>
+                  <span>⚡ SỬA ALL MÃ THUỐC TRÊN CỔNG HMIS ({{ doiSoatResult.summary.needUpdateCount }} DÒNG / {{ doiSoatResult.uniqueUpdates.length }} THUỐC TH, VT)</span>
                 </button>
               </div>
             </div>
@@ -12783,6 +12784,17 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           return doiSoatResult.value.items.filter(x => x.selected && x.status === 'CAN_SUA_MA').length;
         });
 
+        const selectedUniqueCount = computed(() => {
+          if (!doiSoatResult.value || !doiSoatResult.value.items) return 0;
+          const set = new Set();
+          doiSoatResult.value.items.forEach(x => {
+            if (x.selected && x.status === 'CAN_SUA_MA' && x.hmisId) {
+              set.add(x.hmisId);
+            }
+          });
+          return set.size;
+        });
+
         async function onDoiSoatFileUpload(e) {
           const file = e.target.files && e.target.files[0];
           if (!file) return;
@@ -12881,9 +12893,11 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
           const uniqueList = doiSoatResult.value.uniqueUpdates;
           const stationName = doiSoatResult.value.station?.ten || 'Trạm Y Tế';
-          const confirmMsg = `Bạn có chắc chắn muốn SỬA ALL ${uniqueList.length} MÃ THUỐC trên cổng HMIS của "${stationName}"?\n\n` +
+          const totalLines = doiSoatResult.value.items.filter(r => r.status === 'CAN_SUA_MA').length;
+          const totalDrugs = uniqueList.length;
+          const confirmMsg = `Bạn có chắc chắn muốn SỬA ALL ${totalLines} dòng (tương ứng ${totalDrugs} thuốc duy nhất trên danh mục HMIS) của "${stationName}"?\n\n` +
             `• Hệ thống sẽ trực tiếp gọi API HMIS (POST pharmacy/dmthuoc/luuthongtinthuocvattu)\n` +
-            `• Cập nhật các mã cũ (TH...) thành mã mới (${uniqueList.slice(0, 3).map(u => u.maMoi).join(', ')}...)\n` +
+            `• Khi cập nhật mã của 1 thuốc trên HMIS, toàn bộ các dòng thuộc thuốc đó trong file tồn đầu (dù khác số lô, hạn dùng) sẽ tự động khớp mã thành công!\n` +
             `• Giúp import file tồn đầu thành công vào cổng HMIS!`;
 
           if (!confirm(confirmMsg)) return;
@@ -12969,8 +12983,14 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             }
           });
           const updateList = Array.from(uniqueMap.values());
+          const lineCount = selectedItems.length;
+          const drugCount = updateList.length;
 
-          if (!confirm(`Xác nhận sửa mã cho ${updateList.length} thuốc đã chọn trên cổng HMIS?`)) return;
+          const confirmMsg = (lineCount === drugCount)
+            ? `Xác nhận sửa mã cho ${drugCount} thuốc đã chọn trên cổng HMIS?`
+            : `Xác nhận sửa mã cho ${lineCount} dòng đã chọn (tương ứng ${drugCount} thuốc duy nhất trên danh mục HMIS, do có ${lineCount - drugCount} dòng trùng thuốc khác số lô/hạn dùng)?`;
+
+          if (!confirm(confirmMsg)) return;
 
           isUpdatingHmis.value = true;
           updateHmisComplete.value = false;
@@ -15785,6 +15805,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           paginatedDoiSoatItems,
           doiSoatTotalPages,
           selectedDoiSoatCount,
+          selectedUniqueCount,
           onDoiSoatFileUpload,
           loadSample11109File,
           runDoiSoatMaThuoc,

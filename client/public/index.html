@@ -8879,7 +8879,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                   Đồng bộ lại theo Giá nhập
                 </button>
               </div>
-              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+              <div class="grid grid-cols-2 sm:grid-cols-6 gap-2.5">
                 <div>
                   <label class="block font-semibold text-slate-600 mb-0.5 text-[11px]">Giá nhập (₫)</label>
                   <input v-model.number="themThuocForm.giaNhap"
@@ -8916,6 +8916,14 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                          step="any"
                          class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
                 </div>
+                <div>
+                  <label class="block font-semibold text-rose-700 mb-0.5 text-[11px]">% BH (Tỷ lệ BHYT)</label>
+                  <input v-model.number="themThuocForm.tyLeBhyt"
+                         type="number"
+                         min="0"
+                         max="100"
+                         class="w-full px-2.5 py-1.5 bg-rose-50/40 border border-rose-300 rounded-lg font-mono font-bold text-rose-800 text-right focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500" />
+                </div>
               </div>
             </div>
 
@@ -8945,128 +8953,235 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                        class="w-full px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-mono text-slate-600 cursor-not-allowed" />
               </div>
             </div>
+
+            <!-- Row 6: Thông tin báo cáo (Mã thuốc BV, Mã BYT, Mã 4750) -->
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+              <div class="text-[11px] font-bold text-slate-700 uppercase tracking-wide flex items-center space-x-1.5">
+                <i data-lucide="file-text" class="w-3.5 h-3.5 text-blue-600"></i>
+                <span>Thông tin báo cáo</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1 text-xs">Mã thuốc BV</label>
+                  <input v-model="themThuocForm.maThuocBv"
+                         type="text"
+                         placeholder="VD: 25.V2.40.24"
+                         class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono text-xs font-bold text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1 text-xs">Mã BYT</label>
+                  <input v-model="themThuocForm.maByt"
+                         type="text"
+                         placeholder="Mã Bộ Y Tế (nếu có)"
+                         class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1 text-xs">Mã 4750</label>
+                  <input v-model="themThuocForm.ma4750"
+                         type="text"
+                         placeholder="Mã 4750 (nếu có)"
+                         class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 7: Nhóm báo cáo (Nhóm TK *, Nhóm BHXH) -->
+            <div class="p-3 bg-indigo-50/40 border border-indigo-100 rounded-xl space-y-2">
+              <div class="text-[11px] font-bold text-indigo-900 uppercase tracking-wide flex items-center space-x-1.5">
+                <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-600"></i>
+                <span>Nhóm báo cáo</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1 text-xs">
+                    Nhóm TK <span class="text-rose-500">*</span>
+                  </label>
+                  <select v-model.number="themThuocForm.khoanMucId"
+                          class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                    <option :value="6">6 - Tiền thuốc, vật tư</option>
+                    <option :value="1">1 - Tiền khám bệnh</option>
+                    <option :value="2">2 - Tiền giường</option>
+                    <option :value="3">3 - Xét nghiệm</option>
+                    <option :value="4">4 - CĐHA / TDCN</option>
+                    <option :value="5">5 - Phẫu thuật, thủ thuật</option>
+                    <option :value="7">7 - Khác</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1 text-xs">
+                    Nhóm BHXH
+                  </label>
+                  <select v-model.number="themThuocForm.nhomMabhytId"
+                          class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                    <option :value="10">10 - Thuốc</option>
+                    <option :value="15">15 - Vật tư y tế trong danh mục BHYT</option>
+                    <option :value="11">11 - Máu và chế phẩm máu</option>
+                    <option :value="12">12 - Thuốc K ung thư, chống thải ghép</option>
+                    <option :value="0">0 - Không thuộc danh mục BHYT</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- TAB 2: THÔNG TIN THẦU -->
           <div v-show="themThuocActiveTab === 'thau'" class="space-y-4">
-            <!-- Row 1: Nhà cung cấp, Năm -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div class="md:col-span-2">
-                <label class="block font-bold text-slate-700 mb-1">Nhà cung cấp</label>
-                <select v-model.number="themThuocForm.nhaCungCapId"
-                        @change="onNhaCungCapChange"
-                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
-                  <option :value="null">-- Chọn nhà cung cấp --</option>
-                  <option v-for="ncc in thamChieuNccList" :key="ncc.id" :value="ncc.id">
-                    {{ ncc.ten }}
-                  </option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-bold text-slate-700 mb-1">Năm cung ứng</label>
-                <input v-model="themThuocForm.namCungUng"
-                       @input="updateAutoThauGhep"
-                       type="text"
-                       placeholder="VD: 2025"
-                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
-              </div>
-            </div>
-
-            <!-- Row 2: QĐ thầu, Gói thầu, Số gói thầu -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div>
-                <label class="block font-bold text-slate-700 mb-1">QĐ thầu</label>
-                <div class="flex space-x-1">
-                  <select v-model="themThuocForm.qdThau"
-                          @change="updateAutoThauGhep"
-                          class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
-                    <option value="">-- Chọn QĐ thầu --</option>
-                    <option v-for="qd in thamChieuQdThauList" :key="qd.id" :value="qd.name">
-                      {{ qd.name }}
-                    </option>
-                  </select>
-                  <input v-model="themThuocForm.qdThau"
-                         @input="updateAutoThauGhep"
-                         type="text"
-                         placeholder="Hoặc nhập..."
-                         class="w-32 px-2 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+            <!-- VẬT TƯ: CHỈ HIỂN THỊ MỖI THẦU GHÉP (YÊU CẦU USER) -->
+            <div v-if="themThuocForm.loai === 2" class="p-6 bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-dashed border-amber-300 rounded-2xl space-y-4 shadow-sm">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2.5 text-amber-900 font-bold">
+                  <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                    <i data-lucide="package" class="w-5 h-5 text-amber-700"></i>
+                  </div>
+                  <div>
+                    <div class="text-sm">Thông tin thầu Vật tư y tế</div>
+                    <div class="text-[11px] font-normal text-amber-700">Đối với vật tư y tế chỉ cần nhập thông tin Thầu ghép</div>
+                  </div>
                 </div>
+                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-200 text-amber-900">Chỉ cần Thầu ghép</span>
               </div>
-              <div>
-                <label class="block font-bold text-slate-700 mb-1">Gói thầu</label>
-                <input v-model="themThuocForm.goiThau"
-                       @input="updateAutoThauGhep"
-                       type="text"
-                       placeholder="VD: G1, G2, G3..."
-                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
-              </div>
-              <div>
-                <label class="block font-bold text-slate-700 mb-1">Số gói thầu</label>
-                <input v-model="themThuocForm.soGoiThau"
-                       type="text"
-                       placeholder="VD: 01"
-                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
-              </div>
-            </div>
 
-            <!-- Row 3: Mã nhóm thầu, STT thầu, SL thầu -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div>
-                <label class="block font-bold text-slate-700 mb-1">Mã nhóm thầu</label>
-                <input v-model="themThuocForm.maNhomThau"
-                       @input="updateAutoThauGhep"
-                       type="text"
-                       placeholder="VD: N1, N2, N3, N0..."
-                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
-              </div>
-              <div>
-                <label class="block font-bold text-slate-700 mb-1">STT thầu</label>
-                <input v-model="themThuocForm.sttThau"
-                       type="text"
-                       placeholder="VD: 01"
-                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
-              </div>
-              <div>
-                <label class="block font-bold text-slate-700 mb-1">Số lượng thầu</label>
-                <input v-model.number="themThuocForm.slThau"
-                       type="number"
-                       placeholder="VD: 1000"
-                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
-              </div>
-            </div>
-
-            <!-- Row 4: Loại thầu, Hình thức thầu, Thầu ghép -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div>
-                <label class="block font-bold text-slate-700 mb-1">Loại thầu</label>
-                <select v-model.number="themThuocForm.loaiThau"
-                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
-                  <option :value="1">1 - Thuốc generic</option>
-                  <option :value="2">2 - Vật tư y tế</option>
-                  <option :value="3">3 - Thuốc biệt dược gốc</option>
-                  <option :value="4">4 - Thuốc cổ truyền</option>
-                  <option :value="5">5 - Vị thuốc cổ truyền</option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-bold text-slate-700 mb-1">Hình thức thầu</label>
-                <select v-model.number="themThuocForm.htThau"
-                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
-                  <option :value="1">1 - Đấu thầu rộng rãi</option>
-                  <option :value="2">2 - Đấu thầu hạn chế</option>
-                  <option :value="3">3 - Chỉ định thầu</option>
-                  <option :value="4">4 - Chào hàng cạnh tranh</option>
-                  <option :value="5">5 - Mua sắm trực tiếp</option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-bold text-slate-700 mb-1">
+                <label class="block font-bold text-slate-800 mb-1.5 text-sm">
                   Thầu ghép <span class="text-rose-500">*</span>
                 </label>
                 <input v-model="themThuocForm.thauGhep"
                        type="text"
-                       placeholder="VD: QĐ;Gói;Nhóm;Năm"
-                       class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono text-xs text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                       placeholder="VD: 25000000;G1;N1;2025 hoặc nhập mã QĐ thầu..."
+                       class="w-full px-4 py-2.5 bg-white border-2 border-indigo-400 focus:border-indigo-600 rounded-xl font-mono text-sm font-bold text-indigo-950 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 shadow-sm" />
+                <div class="mt-2 flex items-center justify-between text-xs text-slate-600">
+                  <span>Cú pháp: <code>&lt;QĐ Thầu&gt;;&lt;Gói&gt;;&lt;Nhóm&gt;;&lt;Năm&gt;</code></span>
+                  <button v-if="themThuocRowItem?.qdThau"
+                          type="button"
+                          @click="themThuocForm.thauGhep = themThuocRowItem.qdThau"
+                          class="text-indigo-600 hover:text-indigo-800 font-semibold underline cursor-pointer">
+                    Dùng QĐ thầu từ file: {{ themThuocRowItem.qdThau }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- THUỐC: HIỂN THỊ ĐẦY ĐỦ CÁC TRƯỜNG THẦU -->
+            <div v-else class="space-y-4">
+              <!-- Row 1: Nhà cung cấp, Năm -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="md:col-span-2">
+                  <label class="block font-bold text-slate-700 mb-1">Nhà cung cấp</label>
+                  <select v-model.number="themThuocForm.nhaCungCapId"
+                          @change="onNhaCungCapChange"
+                          class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                    <option :value="null">-- Chọn nhà cung cấp --</option>
+                    <option v-for="ncc in thamChieuNccList" :key="ncc.id" :value="ncc.id">
+                      {{ ncc.ten }}
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Năm cung ứng</label>
+                  <input v-model="themThuocForm.namCungUng"
+                         @input="updateAutoThauGhep"
+                         type="text"
+                         placeholder="VD: 2025"
+                         class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+              </div>
+
+              <!-- Row 2: QĐ thầu, Gói thầu, Số gói thầu -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">QĐ thầu</label>
+                  <div class="flex space-x-1">
+                    <select v-model="themThuocForm.qdThau"
+                            @change="updateAutoThauGhep"
+                            class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                      <option value="">-- Chọn QĐ thầu --</option>
+                      <option v-for="qd in thamChieuQdThauList" :key="qd.id" :value="qd.name">
+                        {{ qd.name }}
+                      </option>
+                    </select>
+                    <input v-model="themThuocForm.qdThau"
+                           @input="updateAutoThauGhep"
+                           type="text"
+                           placeholder="Hoặc nhập..."
+                           class="w-32 px-2 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Gói thầu</label>
+                  <input v-model="themThuocForm.goiThau"
+                         @input="updateAutoThauGhep"
+                         type="text"
+                         placeholder="VD: G1, G2, G3..."
+                         class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Số gói thầu</label>
+                  <input v-model="themThuocForm.soGoiThau"
+                         type="text"
+                         placeholder="VD: 01"
+                         class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+              </div>
+
+              <!-- Row 3: Mã nhóm thầu, STT thầu, SL thầu -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Mã nhóm thầu</label>
+                  <input v-model="themThuocForm.maNhomThau"
+                         @input="updateAutoThauGhep"
+                         type="text"
+                         placeholder="VD: N1, N2, N3, N0..."
+                         class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">STT thầu</label>
+                  <input v-model="themThuocForm.sttThau"
+                         type="text"
+                         placeholder="VD: 01"
+                         class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Số lượng thầu</label>
+                  <input v-model.number="themThuocForm.slThau"
+                         type="number"
+                         placeholder="VD: 1000"
+                         class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
+              </div>
+
+              <!-- Row 4: Loại thầu, Hình thức thầu, Thầu ghép -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Loại thầu</label>
+                  <select v-model.number="themThuocForm.loaiThau"
+                          class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                    <option :value="1">1 - Thuốc generic</option>
+                    <option :value="2">2 - Vật tư y tế</option>
+                    <option :value="3">3 - Thuốc biệt dược gốc</option>
+                    <option :value="4">4 - Thuốc cổ truyền</option>
+                    <option :value="5">5 - Vị thuốc cổ truyền</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Hình thức thầu</label>
+                  <select v-model.number="themThuocForm.htThau"
+                          class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                    <option :value="1">1 - Đấu thầu rộng rãi</option>
+                    <option :value="2">2 - Đấu thầu hạn chế</option>
+                    <option :value="3">3 - Chỉ định thầu</option>
+                    <option :value="4">4 - Chào hàng cạnh tranh</option>
+                    <option :value="5">5 - Mua sắm trực tiếp</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">
+                    Thầu ghép <span class="text-rose-500">*</span>
+                  </label>
+                  <input v-model="themThuocForm.thauGhep"
+                         type="text"
+                         placeholder="VD: QĐ;Gói;Nhóm;Năm"
+                         class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg font-mono text-xs text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500" />
+                </div>
               </div>
             </div>
           </div>
@@ -13129,6 +13244,12 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           maNhom: 'TH',
           tenNhom: 'Thuốc thường',
           maThuoc: '',
+          maThuocBv: '',
+          maByt: '',
+          ma4750: '',
+          khoanMucId: 6,
+          nhomMabhytId: 10,
+          tyLeBhyt: 100,
           tenThuoc: '',
           donViTinhId: null,
           dongGoi: '',
@@ -13186,6 +13307,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           themThuocForm.value.maNhom = isVt ? 'VT' : 'TH';
           themThuocForm.value.tenNhom = isVt ? 'VẬT TƯ' : 'Thuốc thường';
           themThuocForm.value.loaiThau = isVt ? 2 : 1;
+          themThuocForm.value.nhomMabhytId = isVt ? 15 : 10;
           if (isVt) {
             themThuocForm.value.duongDungId = null;
           } else if (!themThuocForm.value.duongDungId) {
@@ -13252,12 +13374,19 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
           const isVt = mode === 'VATTU';
           const giaVal = Number(row.giaFile) || 0;
+          const maVal = row.maMoiFile || '';
 
           themThuocForm.value = {
             loai: isVt ? 2 : 0,
             maNhom: isVt ? 'VT' : 'TH',
             tenNhom: isVt ? 'VẬT TƯ' : 'Thuốc thường',
-            maThuoc: row.maMoiFile || '',
+            maThuoc: maVal,
+            maThuocBv: maVal,
+            maByt: '',
+            ma4750: '',
+            khoanMucId: 6,
+            nhomMabhytId: isVt ? 15 : 10,
+            tyLeBhyt: 100,
             tenThuoc: row.tenFile || '',
             donViTinhId: isVt ? 201 : 203,
             dongGoi: isVt ? 'Cái' : '',
@@ -13278,7 +13407,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             soGoiThau: '',
             loaiThau: isVt ? 2 : 1,
             htThau: 1,
-            thauGhep: '',
+            thauGhep: row.qdThau || '',
             slThau: 0
           };
 
@@ -15588,6 +15717,13 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           });
 
           window.addEventListener('keydown', (e) => {
+            // Phím tắt F4 lưu modal thêm thuốc/vật tư
+            if (e.key === 'F4' && showThemThuocModal.value && !isSavingThemThuoc.value) {
+              e.preventDefault();
+              saveThemThuocHmis();
+              return;
+            }
+
             // Phím tắt F4 lưu phân công nhân viên HMIS
             if (e.key === 'F4' && currentMainTab.value === 'nhanvien_hmis' && isEditingHmisUser.value) {
               e.preventDefault();

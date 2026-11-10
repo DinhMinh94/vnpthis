@@ -5,6 +5,8 @@ const xlsx = require('xlsx');
 const path = require('path');
 const fs = require('fs');
 const tonDauService = require('../services/tonDauThuocService');
+const suaMaThuocService = require('../services/suaMaThuocService');
+const db = require('../services/db');
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -281,6 +283,133 @@ router.post('/export', (req, res) => {
     return res.send(buffer);
   } catch (error) {
     console.error('Lỗi xuất file tồn đầu thuốc:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+/**
+ * API: Lấy dữ liệu file mẫu Trạm 11109 (128 khoản thuốc)
+ * GET /api/tondau-thuoc/sample-11109
+ */
+router.get('/sample-11109', (req, res) => {
+  try {
+    const filePath = path.join(__dirname, '../../data/11109File_Import_TonDau_Thuoc_VNPT_HIS.xlsx');
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ success: false, message: 'Chưa có file mẫu 11109' });
+    }
+    const wb = xlsx.readFile(filePath);
+    const rows = xlsx.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+    const { rows: processedRows, summary } = tonDauService.processTonDauRows(rows);
+    res.json({
+      success: true,
+      headers: tonDauService.STANDARD_HEADERS,
+      totalRows: processedRows.length,
+      summary,
+      previewRows: processedRows,
+      allRows: processedRows,
+      stationCode: '11109',
+      stationName: 'Trạm Y Tế Nà Bủng Trạm chính'
+    });
+  } catch (error) {
+    console.error('Lỗi lấy file mẫu 11109:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+/**
+ * API: Đối soát danh sách thuốc tồn đầu với danh mục thuốc trạm trên HMIS
+ * POST /api/tondau-thuoc/doi-soat-ma
+ */
+router.post('/doi-soat-ma', async (req, res) => {
+  try {
+    const { stationId, rows } = req.body;
+    if (!stationId) {
+      return res.status(400).json({ success: false, message: 'Vui lòng chọn trạm y tế để đối soát' });
+    }
+    if (!rows || !Array.isArray(rows) || rows.length === 0) {
+      return res.status(400).json({ success: false, message: 'Danh sách thuốc tồn đầu rỗng hoặc không hợp lệ' });
+    }
+
+    // 1. Tải danh mục thuốc hiện tại của trạm trên cổng HMIS
+    const { station, catalog } = await suaMaThuocService.fetchCatalogForStation(stationId);
+
+    // 2. Chạy thuật toán so khớp theo tên, giá, số ĐK và ngày QĐ mới nhất
+    const { summary, items, uniqueUpdates } = suaMaThuocService.compareInventoryWithCatalog(rows, catalog);
+
+    res.json({
+      success: true,
+      station: {
+        id: station.id,
+        ten: station.tenTram || station.ten,
+        maTram: station.maTram,
+        user: station.username
+      },
+      catalogCount: catalog.length,
+      summary,
+      items,
+      uniqueUpdates
+    });
+  } catch (error) {
+    console.error('Lỗi đối soát mã thuốc:', error);
+    res.status(500).json({ success: false, message: 'Lỗi đối soát mã thuốc: ' + error.message });
+  }
+});
+
+/**
+ * API: Sửa ALL mã thuốc trên cổng HMIS cho trạm
+ * POST /api/tondau-thuoc/sua-all-ma-hmis
+ */
+router.post('/sua-all-ma-hmis', async (req, res) => {
+  try {
+    const { stationId, updateList } = req.body;
+    if (!stationId) {
+      return res.status(400).json({ success: false, message: 'Vui lòng chọn trạm y tế' });
+    }
+    if (!updateList || !Array.isArray(updateList) || updateList.length === 0) {
+      return res.status(400).json({ success: false, message: 'Danh sách thuốc cần sửa rỗng' });
+    }
+
+    const result = await suaMaThuocService.batchUpdateDrugsOnHmis(stationId, updateList);
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    console.error('Lỗi sửa all mã thuốc HMIS:', error);
+    res.status(500).json({ success: false, message: 'Lỗi cập nhật mã thuốc HMIS: ' + error.message });
+  }
+});
+
+/**
+ * API: Sửa mã của 1 thuốc đơn lẻ trên HMIS
+ * POST /api/tondau-thuoc/sua-mot-thuoc-hmis
+ */
+router.post('/sua-mot-thuoc-hmis', async (req, res) => {
+  try {
+    const { stationId, hmisId, newMa, oldMa, ten } = req.body;
+    if (!stationId || !hmisId || !newMa) {
+      return res.status(400).json({ success: false, message: 'Thiếu thông tin trạm, ID thuốc hoặc mã mới' });
+    }
+
+    const station = db.getStationById(stationId, true);
+    if (!station) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy trạm' });
+    }
+
+    const cauhinhService = require('../services/cauhinhService');
+    const auth = await cauhinhService.loginToHmis(station);
+    const result = await suaMaThuocService.updateSingleDrugOnHmis(auth, hmisId, newMa);
+
+    res.json({
+      success: true,
+      hmisId,
+      newMa,
+      oldMa,
+      ten,
+      message: result.message
+    });
+  } catch (error) {
+    console.error(`Lỗi sửa mã thuốc ID ${req.body?.hmisId}:`, error);
     res.status(500).json({ success: false, message: error.message });
   }
 });

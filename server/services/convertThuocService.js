@@ -132,7 +132,7 @@ function parseSheetSmart(sheet) {
       'TEN_THUOC_AX', 'MA_DUONG_DUNG_AX', 'DUONG_DUNG_AX', 'SO_DANG_KY_AX',
       'TIEU_CHUAN', 'MA_NHOM_9324', 'MA_NHOM_5937', 'MA_CSKCB_TBYT', 'THAUGHEP',
       'MA_VAT_TU', 'NHOM_VAT_TU', 'TEN_VAT_TU', 'MA_HIEU', 'MA_VTYT_BV', 'TEN_VTYT_BV',
-      'DEN_NGAY_HD', 'TYLE_TT_BH', 'DINH_MUC', 'DON_VI_DAU_THAU'
+      'DEN_NGAY_HD', 'TYLE_TT_BH', 'DINH_MUC', 'DON_VI_DAU_THAU', 'MA_BYT', 'MA_BHYT'
     ];
     if (standardKeys.includes(upperClean)) {
       return upperClean;
@@ -141,6 +141,7 @@ function parseSheetSmart(sheet) {
     const stripped = stripVietnamese(clean);
 
     if (stripped === 'stt') return 'STT';
+    if (stripped.includes('ma bhyt') || stripped.includes('ma byt') || stripped === 'ma_bhyt' || stripped === 'ma_byt') return 'MA_BYT';
     if (stripped.includes('ma vat tu') || stripped === 'ma_vat_tu') return 'MA_VAT_TU';
     if (stripped.includes('nhom vat tu') || stripped === 'nhom_vat_tu') return 'NHOM_VAT_TU';
     if (stripped.includes('ten vat tu') || stripped === 'ten_vat_tu') return 'TEN_VAT_TU';
@@ -154,6 +155,8 @@ function parseSheetSmart(sheet) {
     if (stripped.includes('ma cskcb tbyt')) return 'MA_CSKCB_TBYT';
     if (stripped.includes('thau ghep') || stripped.includes('thaughep')) return 'THAUGHEP';
     if (stripped.includes('ten thuoc ax') || stripped.includes('ten_thuoc_ax')) return 'TEN_THUOC_AX';
+    if (stripped.includes('ma hoat chat ax') || stripped.includes('ma hoat chat anh xa') || stripped.includes('ma_hoat_chat_ax')) return 'MA_HOAT_CHAT_AX';
+    if (stripped.includes('hoat chat ax') || stripped.includes('hoat chat anh xa') || stripped.includes('hoat_chat_ax')) return 'HOAT_CHAT_AX';
     if (stripped.includes('ma hoat chat')) return 'MA_HOAT_CHAT';
     if (stripped.includes('ma thuoc') || stripped.includes('ma hang') || stripped.includes('ma sp') || stripped.includes('ma duoc')) return 'MA_THUOC';
     if (stripped.includes('hoat chat')) return 'TEN_HOAT_CHAT';
@@ -253,7 +256,7 @@ function convertRows(sourceRows, options = {}) {
       // Xử lý Danh mục Vật tư y tế theo yêu cầu:
       // MA_VAT_TU đổi thành mã hoạt chất và maBYT
       maHoatChat = d.MA_VAT_TU || d.MA_HOAT_CHAT || '';
-      maByt = d.MA_VAT_TU || d.MA_BYT || '';
+      maByt = d.MA_VAT_TU || d.MA_BYT || d.MA_BHYT || d.MA_HOAT_CHAT || '';
       // NHOM_VAT_TU là tên hoạt chất
       hoatChat = d.NHOM_VAT_TU || d.HOAT_CHAT || d.TEN_HOAT_CHAT || '';
       // TEN_VAT_TU fill vào cột tên thuốc BH tên thuốc
@@ -271,7 +274,7 @@ function convertRows(sourceRows, options = {}) {
       hoatChat = d.HOAT_CHAT_AX || d.TEN_HOAT_CHAT || d.HOAT_CHAT || '';
       tenThuoc = d.TEN_THUOC || d.TEN_THUOC_AX || '';
       tenGiamDinhBh = d.TEN_THUOC_AX || d.TEN_THUOC || tenThuoc || '';
-      maByt = d.MA_BYT || '';
+      maByt = d.MA_HOAT_CHAT_AX || d.MA_HOAT_CHAT || d.MA_THUOC || d.MA_BYT || d.MA_BHYT || '';
     }
 
     // MA_THUOC trên HIS: nếu nhập prefix thì sinh mã (VD: thuoc -> thuoc001, TH -> TH001), nếu để trống thì giữ rỗng

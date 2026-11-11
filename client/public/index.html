@@ -2794,20 +2794,13 @@
               </div>
             </div>
 
-            <!-- Nút nạp nhanh mẫu 11109 & file khác -->
+            <!-- Nút nạp file tồn đầu -->
             <div class="flex items-center justify-end space-x-2 pt-4 md:pt-0">
               <label class="px-4 py-2 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center space-x-2 cursor-pointer active:scale-95">
                 <i data-lucide="file-spreadsheet" class="w-4 h-4 text-white"></i>
                 <span>Nạp File Excel Tồn Đầu</span>
                 <input type="file" @change="onDoiSoatFileUpload" accept=".xlsx, .xls, .csv" class="hidden" />
               </label>
-              <button @click="loadSample11109File"
-                      type="button"
-                      class="px-2.5 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold text-xs rounded-xl transition-all flex items-center space-x-1 cursor-pointer"
-                      title="Nạp nhanh file mẫu Trạm 11109 (128 khoản)">
-                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500"></i>
-                <span>Mẫu 11109</span>
-              </button>
             </div>
           </div>
 
@@ -12511,7 +12504,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
 
         async function runDoiSoatMaThuoc() {
           if (!tonDauThuocRows.value || tonDauThuocRows.value.length === 0) {
-            showToast('Bảng tồn đầu chưa có dữ liệu. Vui lòng nạp file mẫu 11109 hoặc tải lên file tồn đầu!', 'warning');
+            showToast('Bảng tồn đầu chưa có dữ liệu. Vui lòng tải lên file Excel tồn đầu để đối soát!', 'warning');
             return;
           }
           if (!selectedDoiSoatStationId.value) {

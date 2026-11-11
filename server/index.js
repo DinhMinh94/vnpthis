@@ -86,6 +86,14 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Process Level Safety Handlers để bảo vệ server chạy 24/7 không bị crash
+process.on('uncaughtException', (err) => {
+  console.error('[SERVER SAFETY] Bắt lỗi Uncaught Exception:', err?.message || err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.warn('[SERVER SAFETY] Bắt lỗi Unhandled Rejection:', reason?.message || reason);
+});
+
 app.listen(config.PORT, () => {
   console.log(`====================================================`);
   console.log(`  VNPT HMIS 4.0 - HỆ THỐNG QUẢN LÝ CẤU HÌNH TRẠM Y TẾ `);

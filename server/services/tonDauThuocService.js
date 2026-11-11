@@ -337,6 +337,9 @@ function parseSheetSmart(sheet) {
     else if (['GHICHULOI', 'GHICHU', 'NOTE', 'ERROR'].includes(stripped) || raw === 'GHICHULOI' || raw === 'GHI CHÚ') {
       if (colMap.GHICHULOI === undefined) colMap.GHICHULOI = idx;
     }
+    else if (['DVT', 'DONVITINH', 'DONVI', 'UNIT'].includes(stripped) || raw === 'ĐVT' || raw === 'ĐƠN VỊ TÍNH' || raw === 'ĐƠN VỊ' || raw === 'DVT') {
+      if (colMap.DVT === undefined) colMap.DVT = idx;
+    }
   });
 
   const result = [];
@@ -362,10 +365,12 @@ function parseSheetSmart(sheet) {
     const dinhMuc = colMap.DINHMUC !== undefined ? String(row[colMap.DINHMUC] || '').trim() : '';
     const slCanhBao = colMap.SLCANHBAO !== undefined ? String(row[colMap.SLCANHBAO] || '').trim() : '';
     const ghiChuLoi = colMap.GHICHULOI !== undefined ? String(row[colMap.GHICHULOI] || '').trim() : '';
+    const dvt = colMap.DVT !== undefined ? String(row[colMap.DVT] || '').trim() : '';
 
     result.push({
       MA: ma,
       TEN: ten,
+      DVT: dvt,
       SOLUONG: soLuong,
       GIANHAP: giaNhap,
       GIABAN: giaBan,
@@ -399,6 +404,7 @@ function processTonDauRows(rows) {
     const dinhMuc = r.DINHMUC !== undefined ? String(r.DINHMUC).trim() : (r.dinhmuc !== undefined ? String(r.dinhmuc).trim() : '');
     const slCanhBao = r.SLCANHBAO !== undefined ? String(r.SLCANHBAO).trim() : (r.slcanhbao !== undefined ? String(r.slcanhbao).trim() : '');
     const ghiChuLoi = String(r.GHICHULOI || r.ghichuloi || '').trim();
+    const dvt = String(r.DVT || r.dvt || r.DON_VI_TINH || '').trim();
 
     totalQuantity += soLuong;
     totalValue += (soLuong * giaNhap);
@@ -407,6 +413,7 @@ function processTonDauRows(rows) {
       stt: index + 1,
       MA: ma,
       TEN: ten,
+      DVT: dvt,
       SOLUONG: soLuong,
       GIANHAP: giaNhap,
       GIABAN: giaBan,

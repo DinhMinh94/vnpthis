@@ -415,47 +415,25 @@ router.post('/sua-mot-thuoc-hmis', async (req, res) => {
 });
 
 /**
- * API: Lấy danh mục tham chiếu (Đơn vị tính, Đường dùng, NCC, QĐ Thầu)
- * GET /api/tondau-thuoc/danh-muc-tham-chieu
+ * API: Xuất danh sách import những thuốc chưa có trong danh mục (mẫu chuẩn VNPT HIS 78 cột)
+ * POST /api/tondau-thuoc/export-chua-co-dm
  */
-router.get('/danh-muc-tham-chieu', async (req, res) => {
+router.post('/export-chua-co-dm', (req, res) => {
   try {
-    const stationId = req.query.stationId;
-    if (!stationId) {
-      return res.status(400).json({ success: false, message: 'Thiếu stationId' });
-    }
-    const data = await suaMaThuocService.getDanhMucThamChieu(stationId);
-    res.json({
-      success: true,
-      ...data
-    });
-  } catch (error) {
-    console.error('Lỗi lấy danh mục tham chiếu:', error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-});
-
-/**
- * API: Thêm thuốc / vật tư mới vào danh mục trạm trên HMIS
- * POST /api/tondau-thuoc/them-thuoc-vattu
- */
-router.post('/them-thuoc-vattu', async (req, res) => {
-  try {
-    const { stationId, drugData } = req.body;
-    if (!stationId) {
-      return res.status(400).json({ success: false, message: 'Vui lòng chọn trạm y tế' });
-    }
-    if (!drugData) {
-      return res.status(400).json({ success: false, message: 'Dữ liệu thuốc / vật tư rỗng' });
+    const { items, stationCode } = req.body;
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ success: false, message: 'Danh sách thuốc chưa có trong danh mục rỗng' });
     }
 
-    const result = await suaMaThuocService.themThuocVatTuHmis(stationId, drugData);
-    res.json({
-      success: true,
-      ...result
-    });
+    const { buffer, count } = suaMaThuocService.exportChuaCoTrongDmExcel(items);
+    const safeStation = String(stationCode || 'HMIS').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const fileName = `File_Import_Thuoc_Chua_Co_Trong_DM_${safeStation}_${count}Thuoc.xlsx`;
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+    return res.send(buffer);
   } catch (error) {
-    console.error('Lỗi thêm thuốc/vật tư vào HMIS:', error);
+    console.error('Lỗi xuất file import thuốc chưa có trong DM:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 });

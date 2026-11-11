@@ -7,14 +7,14 @@
     "url": "https://ytcs.hmis.vn/",
     "username": "11010.ADMINBV",
     "password": "b51ca07a22af8d0410cb5ae72adc0270:710bae0461d88cc014cc46607d3ddd0db01b152a7729260504bd59084cc9b0ca",
-    "status": "success",
+    "status": "failed",
     "active": true,
     "notes": "Tài khoản quản trị trạm thực tế HMIS Y tế cơ sở",
-    "lastTested": "2026-10-29T07:57:38.120Z",
-    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Phường Điện Biên Phủ (Cán bộ: ADMIN BV)",
+    "lastTested": "2026-11-11T05:33:14.410Z",
+    "lastTestedMessage": "Đăng nhập thất bại: Tài khoản đã bị khóa.",
     "createdAt": "2026-10-11T02:22:32.889Z",
     "updatedAt": "2026-10-11T04:04:09.056Z",
-    "lastResponseTime": 337
+    "lastResponseTime": 212
   },
   {
     "name": "Trạm y tế phường Mường Thanh",
@@ -26,12 +26,12 @@
     "notes": "",
     "active": true,
     "id": "tyt_1791689200931_7fkiu",
-    "status": "failed",
-    "lastTested": "2026-11-05T02:13:28.632Z",
-    "lastTestedMessage": "Đăng nhập thất bại: getaddrinfo ENOTFOUND ytcs-gw.hmis.vn",
+    "status": "success",
+    "lastTested": "2026-11-11T05:33:04.740Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Phường Mường Thanh (Cán bộ: ADMIN BV)",
     "createdAt": "2026-10-11T03:26:40.932Z",
     "updatedAt": "2026-10-11T04:04:09.058Z",
-    "lastResponseTime": 66
+    "lastResponseTime": 139
   },
   {
     "id": "tyt_1791691344724_fsm1s",
@@ -678,5 +678,56 @@
     "createdAt": "2026-10-29T07:57:23.545Z",
     "updatedAt": "2026-10-29T07:57:23.545Z",
     "lastResponseTime": 331
+  },
+  {
+    "name": "Trạm y tế Thanh Nưa Trạm chính",
+    "code": "11027",
+    "district": "Xã Thanh Nưa",
+    "url": "https://ytcs.hmis.vn/",
+    "username": "11027.ADMINBV",
+    "password": "b14f20c8f79647056f28a4f745365512:f3ad849e524dedf8154582c1d07260fae62261360aa85db1692ec04ff9e23f73",
+    "notes": "",
+    "active": true,
+    "id": "tyt_1794378268419_cbaen",
+    "status": "success",
+    "lastTested": "2026-11-11T06:26:01.886Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Thanh Nưa (Cán bộ: Admin BV)",
+    "createdAt": "2026-11-11T06:24:28.419Z",
+    "updatedAt": "2026-11-11T06:24:28.419Z",
+    "lastResponseTime": 448
+  },
+  {
+    "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+    "code": "11024",
+    "district": "",
+    "url": "https://ytcs.hmis.vn/",
+    "username": "11024.ADMINBV",
+    "password": "258cccb6fc5ce1b9e723a4696c31489d:bbb310ab2649c5e138916880c6e6276ab782431bd7dadc9c2a056f668d632f43",
+    "notes": "",
+    "active": true,
+    "id": "tyt_1794378305639_yfm4x",
+    "status": "success",
+    "lastTested": "2026-11-11T06:26:01.914Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn (Cán bộ: Admin BV)",
+    "createdAt": "2026-11-11T06:25:05.640Z",
+    "updatedAt": "2026-11-11T06:25:05.640Z",
+    "lastResponseTime": 442
+  },
+  {
+    "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+    "code": "11171",
+    "district": "",
+    "url": "https://ytcs.hmis.vn/",
+    "username": "11171.ADMINBV",
+    "password": "7c060603a051961389245f09e1c4a672:0e08f420df85f247956e3117fb9703f8576044e45393ec7c13ea8d05b7700037",
+    "notes": "",
+    "active": true,
+    "id": "tyt_1794378336128_ymwv4",
+    "status": "success",
+    "lastTested": "2026-11-11T06:26:01.749Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Thanh Nưa Điểm trạm Hua Thanh (Cán bộ: Admin BV)",
+    "createdAt": "2026-11-11T06:25:36.128Z",
+    "updatedAt": "2026-11-11T06:25:36.128Z",
+    "lastResponseTime": 312
   }
 ]

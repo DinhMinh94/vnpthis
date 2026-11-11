@@ -1,5 +1,323 @@
 [
   {
+    "id": "log_1794378817610_guv9c",
+    "timestamp": "2026-11-11T06:33:37.610Z",
+    "formattedTime": "11/11/2026 13:33:37",
+    "actionType": "cauhinh_giaodien",
+    "actionTitle": "Cấu hình giao diện: MH_XUTRI_KHAM_BENH",
+    "summary": "Đã cập nhật cấu hình giao diện \"Màn hình xử trí: khám bệnh\" cho 3/3 trạm (Các trạm đã tích)",
+    "details": {
+      "maCauHinh": "MH_XUTRI_KHAM_BENH",
+      "tenCauHinh": "Màn hình xử trí: khám bệnh",
+      "trangThai": 1,
+      "targetScope": "selected",
+      "targetStations": [
+        {
+          "id": "tyt_1794378268419_cbaen",
+          "name": "Trạm y tế Thanh Nưa Trạm chính",
+          "username": "11027.ADMINBV"
+        },
+        {
+          "id": "tyt_1794378336128_ymwv4",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+          "username": "11171.ADMINBV"
+        },
+        {
+          "id": "tyt_1794378305639_yfm4x",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+          "username": "11024.ADMINBV"
+        }
+      ],
+      "results": [
+        {
+          "id": "tyt_1794378268419_cbaen",
+          "name": "Trạm y tế Thanh Nưa Trạm chính",
+          "username": "11027.ADMINBV",
+          "code": "11027",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 426
+        },
+        {
+          "id": "tyt_1794378336128_ymwv4",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+          "username": "11171.ADMINBV",
+          "code": "11171",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 318
+        },
+        {
+          "id": "tyt_1794378305639_yfm4x",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+          "username": "11024.ADMINBV",
+          "code": "11024",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 346
+        }
+      ]
+    },
+    "total": 3,
+    "successCount": 3,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn"
+    ],
+    "results": [
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "code": "11027",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 426
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "code": "11171",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 318
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "code": "11024",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 346
+      }
+    ]
+  },
+  {
+    "id": "log_1794378733743_6txdh",
+    "timestamp": "2026-11-11T06:32:13.743Z",
+    "formattedTime": "11/11/2026 13:32:13",
+    "actionType": "cauhinh_giaodien",
+    "actionTitle": "Cấu hình giao diện: MH_TN_TTPK",
+    "summary": "Đã cập nhật cấu hình giao diện \"Màn hình tiếp nhận: Thông tin phiếu khám\" cho 3/3 trạm (Các trạm đã tích)",
+    "details": {
+      "maCauHinh": "MH_TN_TTPK",
+      "tenCauHinh": "Màn hình tiếp nhận: Thông tin phiếu khám",
+      "trangThai": 1,
+      "targetScope": "selected",
+      "targetStations": [
+        {
+          "id": "tyt_1794378268419_cbaen",
+          "name": "Trạm y tế Thanh Nưa Trạm chính",
+          "username": "11027.ADMINBV"
+        },
+        {
+          "id": "tyt_1794378336128_ymwv4",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+          "username": "11171.ADMINBV"
+        },
+        {
+          "id": "tyt_1794378305639_yfm4x",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+          "username": "11024.ADMINBV"
+        }
+      ],
+      "results": [
+        {
+          "id": "tyt_1794378268419_cbaen",
+          "name": "Trạm y tế Thanh Nưa Trạm chính",
+          "username": "11027.ADMINBV",
+          "code": "11027",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 611
+        },
+        {
+          "id": "tyt_1794378336128_ymwv4",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+          "username": "11171.ADMINBV",
+          "code": "11171",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 464
+        },
+        {
+          "id": "tyt_1794378305639_yfm4x",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+          "username": "11024.ADMINBV",
+          "code": "11024",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 482
+        }
+      ]
+    },
+    "total": 3,
+    "successCount": 3,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn"
+    ],
+    "results": [
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "code": "11027",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 611
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "code": "11171",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 464
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "code": "11024",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 482
+      }
+    ]
+  },
+  {
+    "id": "log_1794378582707_1kvt7",
+    "timestamp": "2026-11-11T06:29:42.707Z",
+    "formattedTime": "11/11/2026 13:29:42",
+    "actionType": "phieuin_baocao",
+    "actionTitle": "Thiết lập phiếu in & báo cáo",
+    "summary": "Thiết lập mẫu phiếu in [PHIEU_CHI_DINH_CONG_KHAM] \"Phiếu chỉ định công khám\" (Trạng thái: \"Bật\" ➔ \"Bật\")",
+    "details": {
+      "maBaoCao": "PHIEU_CHI_DINH_CONG_KHAM",
+      "ten": "Phiếu chỉ định công khám",
+      "tempCode": "RPT000119_PHIEU_CHI_DINH_CONG_KHAM_A5_DBN",
+      "service": "PhieuChiDinhCongKham",
+      "oldValue": "Bật",
+      "newValue": "Bật",
+      "trangThai": "Bật",
+      "formId": -1,
+      "soNgayXemBc": 366,
+      "ghiChu": "RPT000119_PHIEU_CHI_DINH_CONG_KHAM_A5_HTH\nRPT000119_PHIEU_CHI_DINH_CONG_KHAM_A5_HHN",
+      "heThongRender": "Dreport v1",
+      "renderType": 0
+    },
+    "total": 3,
+    "successCount": 3,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh"
+    ],
+    "results": [
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Bật\" ➔ \"BẬT\")",
+        "oldValue": "Bật",
+        "newValue": "BẬT",
+        "duration": 392
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Bật\" ➔ \"BẬT\")",
+        "oldValue": "Bật",
+        "newValue": "BẬT",
+        "duration": 308
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Bật\" ➔ \"BẬT\")",
+        "oldValue": "Bật",
+        "newValue": "BẬT",
+        "duration": 295
+      }
+    ]
+  },
+  {
+    "id": "log_1794378556229_ry2gr",
+    "timestamp": "2026-11-11T06:29:16.229Z",
+    "formattedTime": "11/11/2026 13:29:16",
+    "actionType": "phieuin_baocao",
+    "actionTitle": "Thiết lập phiếu in & báo cáo",
+    "summary": "Thiết lập mẫu phiếu in [BM_PHIEU_DKY_KHAMBENH_CHUNG] \"Tiếp nhận khám bệnh\" (Trạng thái: \"Bật\" ➔ \"Bật\")",
+    "details": {
+      "maBaoCao": "BM_PHIEU_DKY_KHAMBENH_CHUNG",
+      "ten": "Tiếp nhận khám bệnh",
+      "tempCode": "BM_PHIEU_DKY_KHAMBENH_CHUNG_BS_SIGNMARK_DBN",
+      "service": "BmPhieuDangKyKhamBenhChungSv",
+      "oldValue": "Bật",
+      "newValue": "Bật",
+      "trangThai": "Bật",
+      "formId": 2,
+      "soNgayXemBc": 365,
+      "ghiChu": "BM_PHIEU_DKY_KHAMBENH_CHUNG",
+      "heThongRender": "Dreport v1",
+      "renderType": 0
+    },
+    "total": 3,
+    "successCount": 3,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh"
+    ],
+    "results": [
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Bật\" ➔ \"BẬT\")",
+        "oldValue": "Bật",
+        "newValue": "BẬT",
+        "duration": 625
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Bật\" ➔ \"BẬT\")",
+        "oldValue": "Bật",
+        "newValue": "BẬT",
+        "duration": 446
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Bật\" ➔ \"BẬT\")",
+        "oldValue": "Bật",
+        "newValue": "BẬT",
+        "duration": 361
+      }
+    ]
+  },
+  {
     "id": "log_1794136528332_lyovp",
     "timestamp": "2026-11-08T11:15:28.332Z",
     "formattedTime": "08/11/2026 18:15:28",

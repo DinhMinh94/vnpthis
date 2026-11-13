@@ -7,14 +7,14 @@
     "url": "https://ytcs.hmis.vn/",
     "username": "11010.ADMINBV",
     "password": "b51ca07a22af8d0410cb5ae72adc0270:710bae0461d88cc014cc46607d3ddd0db01b152a7729260504bd59084cc9b0ca",
-    "status": "failed",
+    "status": "success",
     "active": true,
     "notes": "Tài khoản quản trị trạm thực tế HMIS Y tế cơ sở",
-    "lastTested": "2026-11-11T05:33:14.410Z",
-    "lastTestedMessage": "Đăng nhập thất bại: Tài khoản đã bị khóa.",
+    "lastTested": "2026-11-12T07:49:00.224Z",
+    "lastTestedMessage": "Đăng nhập thành công! Trạm y tế Phường Điện Biên Phủ (Cán bộ: ADMIN BV)",
     "createdAt": "2026-10-11T02:22:32.889Z",
     "updatedAt": "2026-10-11T04:04:09.056Z",
-    "lastResponseTime": 212
+    "lastResponseTime": 272
   },
   {
     "name": "Trạm y tế phường Mường Thanh",

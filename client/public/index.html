@@ -468,6 +468,12 @@
             <span>Cấu hình giao diện HMIS</span>
           </button>
 
+          <!-- Nút Quản Lý & Phát Thông Báo HMIS -->
+          <button @click="openThongBaoModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-sm rounded-xl border border-rose-300 transition-colors shadow-sm cursor-pointer" title="Soạn thảo, quản lý và phát thông báo hệ thống đồng loạt cho tất cả các trạm Y tế">
+            <i data-lucide="bell-ring" class="w-4 h-4 text-rose-600"></i>
+            <span>Quản lý thông báo HMIS</span>
+          </button>
+
           <!-- Nút Nhật Ký Sửa Cấu Hình Hệ Thống -->
           <button @click="openSystemLogsModal()" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm rounded-xl border border-amber-300 transition-colors shadow-sm cursor-pointer" title="Xem nhật ký & lịch sử các lần sửa cấu hình hàng loạt cho trạm">
             <i data-lucide="history" class="w-4 h-4 text-amber-600"></i>
@@ -616,6 +622,12 @@
           <button @click="openGiaoDienModal" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition-colors shadow cursor-pointer" title="Chỉnh sửa cấu hình giao diện màn hình động cho các trạm đang được chọn">
             <i data-lucide="layout-template" class="w-3.5 h-3.5"></i>
             <span>Cấu hình giao diện</span>
+          </button>
+
+          <!-- Phát thông báo cho các trạm đang tích -->
+          <button @click="openThongBaoModal" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-lg transition-colors shadow cursor-pointer" title="Phát thông báo cho các trạm đang được chọn hoặc tất cả các trạm">
+            <i data-lucide="bell-ring" class="w-3.5 h-3.5"></i>
+            <span>Phát thông báo</span>
           </button>
 
           <!-- Nhật ký cấu hình các trạm -->
@@ -7214,6 +7226,311 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
       </div>
     </div>
 
+    <!-- ========================================================================= -->
+    <!-- MODAL QUẢN LÝ & PHÁT THÔNG BÁO HMIS HÀNG LOẠT (40+ TRẠM)                   -->
+    <!-- https://ytcs.hmis.vn/new/his/quantri-hethong/thong-bao/quan-ly              -->
+    <!-- ========================================================================= -->
+    <div v-if="modals.thongbao" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-3 animate-in fade-in duration-150">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-[98vw] w-[98vw] border border-slate-200 overflow-hidden flex flex-col h-[96vh] max-h-[96vh]">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-rose-700 via-purple-700 to-indigo-800 text-white px-6 py-4 flex items-center justify-between shadow-sm flex-shrink-0">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+              <i data-lucide="bell-ring" class="w-6 h-6 text-rose-200"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-lg font-bold">Quản Lý &amp; Phát Thông Báo Hệ Thống HMIS</h3>
+                <span class="bg-rose-500/60 border border-rose-300/40 text-[11px] px-2.5 py-0.5 rounded-full font-bold">
+                  {{ thongBaoTargetScope === 'selected' ? selectedIds.length : stations.length }} trạm y tế áp dụng
+                </span>
+                <span class="bg-white/20 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                  {{ filteredThongBaoList.length }} / {{ thongbaoList.length }} Thông báo
+                </span>
+              </div>
+              <p class="text-xs text-rose-100 mt-0.5">https://ytcs.hmis.vn/new/his/quantri-hethong/thong-bao/quan-ly — Soạn thảo, quản lý và phát thông báo đồng loạt cho tất cả các trạm Y tế</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <!-- Nút Xem nhật ký thông báo -->
+            <button @click="openSystemLogsModal('thongbao_hmis')" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors cursor-pointer" title="Xem nhật ký lịch sử đã phát thông báo">
+              <i data-lucide="history" class="w-4 h-4 text-amber-300"></i>
+              <span>📜 Nhật Ký Đã Phát</span>
+            </button>
+            <!-- Nút Tải lại từ HMIS -->
+            <button @click="refreshThongBaoFromHmis" :disabled="isRefreshingThongBao" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors cursor-pointer" title="Kết nối trực tiếp cổng HMIS tải danh sách thông báo mới nhất">
+              <i data-lucide="refresh-cw" class="w-4 h-4 text-cyan-300" :class="{ 'animate-spin': isRefreshingThongBao }"></i>
+              <span>{{ isRefreshingThongBao ? 'Đang tải...' : 'Làm mới từ HMIS' }}</span>
+            </button>
+            <button @click="modals.thongbao = false" class="text-white/80 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
+              <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Thanh thông tin phạm vi áp dụng -->
+        <div class="bg-rose-50/90 border-b border-rose-100 px-6 py-2.5 flex flex-wrap items-center justify-between text-xs gap-3 flex-shrink-0">
+          <div class="flex flex-wrap items-center space-x-3 overflow-hidden flex-1">
+            <span class="font-bold text-rose-950 whitespace-nowrap">Phạm vi áp dụng:</span>
+            <div class="flex items-center space-x-2">
+              <label class="flex items-center space-x-1.5 cursor-pointer bg-white px-2.5 py-1 rounded-md border border-rose-300 shadow-2xs">
+                <input type="radio" value="all" v-model="thongbaoTargetScope" class="text-rose-600 focus:ring-rose-500 cursor-pointer">
+                <span class="font-bold text-rose-900">Tất cả trạm trong hệ thống ({{ stations.length }})</span>
+              </label>
+              <label class="flex items-center space-x-1.5 cursor-pointer bg-white px-2.5 py-1 rounded-md border border-rose-300 shadow-2xs">
+                <input type="radio" value="selected" v-model="thongbaoTargetScope" class="text-rose-600 focus:ring-rose-500 cursor-pointer">
+                <span class="font-bold text-rose-900">Chỉ các trạm đã tích ({{ selectedIds.length }})</span>
+              </label>
+            </div>
+            <div class="flex items-center space-x-1.5 overflow-x-auto py-0.5 max-w-lg">
+              <span v-for="st in thongBaoTargetStationsList" :key="st.id" class="bg-white px-2 py-0.5 rounded text-rose-800 border border-rose-200 font-semibold text-[11px] whitespace-nowrap shadow-2xs">
+                {{ st.code ? '[' + st.code + '] ' : '' }}{{ st.name }} ({{ st.username }})
+              </span>
+            </div>
+          </div>
+          <div class="text-[11px] text-rose-800 italic font-medium">
+            * Soạn nội dung bên phải &rarr; Bấm [⚡ Phát / Đồng Bộ Thông Báo] để gửi tức thời đến màn hình làm việc của nhân viên trên cổng HMIS
+          </div>
+        </div>
+
+        <!-- Body: 2 cột chia đôi -->
+        <div class="flex-1 flex overflow-hidden">
+          
+          <!-- CỘT TRÁI: DANH SÁCH THÔNG BÁO (56% width) -->
+          <div class="w-7/12 border-r border-slate-200 flex flex-col bg-white">
+            
+            <!-- Bộ lọc bảng -->
+            <div class="p-3 bg-slate-50 border-b border-slate-200 space-y-2 flex-shrink-0">
+              <div class="grid grid-cols-12 gap-2">
+                <div class="col-span-6 relative">
+                  <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                  <input v-model="thongbaoSearch" type="text" placeholder="Tìm theo tiêu đề, nội dung, ghi chú..." class="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                </div>
+                <div class="col-span-3">
+                  <select v-model="thongbaoLoaiFilter" class="w-full py-1.5 px-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                    <option value="all">Loại: Tất cả</option>
+                    <option v-for="opt in thongBaoOptions.loaiThongBao" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+                  </select>
+                </div>
+                <div class="col-span-3">
+                  <select v-model="thongbaoTrangThaiFilter" class="w-full py-1.5 px-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                    <option value="all">Trạng thái: Tất cả</option>
+                    <option value="1">Hiển thị</option>
+                    <option value="2">Ngừng hiển thị</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bảng thông báo -->
+            <div class="flex-1 overflow-y-auto">
+              <div v-if="isLoadingThongBao" class="p-8 text-center text-slate-500">
+                <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-rose-600 mb-2"></i>
+                <span>Đang tải danh sách thông báo từ HMIS...</span>
+              </div>
+              <table v-else class="w-full text-left text-xs border-collapse">
+                <thead class="bg-slate-100 text-slate-700 sticky top-0 border-b border-slate-200 shadow-2xs font-bold uppercase text-[11px] z-10">
+                  <tr>
+                    <th class="p-2.5 w-12 text-center">STT</th>
+                    <th class="p-2.5 whitespace-nowrap w-28">Loại TB</th>
+                    <th class="p-2.5 min-w-[200px]">Tiêu đề thông báo</th>
+                    <th class="p-2.5 whitespace-nowrap w-28 text-center">Ngày đăng</th>
+                    <th class="p-2.5 w-20 text-center">Ưu tiên</th>
+                    <th class="p-2.5 w-24 text-center">Trạng thái</th>
+                    <th class="p-2.5 w-16 text-center">Chọn</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-sans">
+                  <tr v-for="(item, idx) in pagedThongBaoList" :key="item.id || item.tieuDe"
+                      @click="selectThongBao(item)"
+                      class="hover:bg-rose-50/60 cursor-pointer transition-colors"
+                      :class="{ 'bg-rose-100/70 font-semibold border-l-4 border-rose-600': selectedThongBao?.tieuDe === item.tieuDe }">
+                    <td class="p-2.5 text-center text-slate-400 font-bold font-mono">{{ (thongbaoCurrentPage - 1) * thongbaoPageSize + idx + 1 }}</td>
+                    <td class="p-2.5 whitespace-nowrap">
+                      <span class="px-2 py-0.5 rounded-md text-[10.5px] font-bold border" :class="item.loaiThongBaoBg">
+                        {{ item.loaiThongBaoLabel }}
+                      </span>
+                    </td>
+                    <td class="p-2.5 font-medium text-slate-900">
+                      <div class="line-clamp-2" :title="item.tieuDe">{{ item.tieuDe }}</div>
+                    </td>
+                    <td class="p-2.5 text-center font-mono text-[11px] text-slate-600 whitespace-nowrap">
+                      {{ item.ngayDang }}
+                    </td>
+                    <td class="p-2.5 text-center">
+                      <span v-if="item.uuTien === 1" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-300">
+                        ⚡ Khẩn
+                      </span>
+                      <span v-else class="text-[11px] text-slate-500">
+                        Thường
+                      </span>
+                    </td>
+                    <td class="p-2.5 text-center">
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold" :class="item.trangThai === 1 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500'">
+                        {{ item.trangThai === 1 ? 'Hiển thị' : 'Tắt' }}
+                      </span>
+                    </td>
+                    <td class="p-2.5 text-center">
+                      <button @click.stop="selectThongBao(item)" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded border border-rose-200 font-bold text-[10px] cursor-pointer">
+                        Sửa
+                      </button>
+                    </td>
+                  </tr>
+                  <tr v-if="filteredThongBaoList.length === 0">
+                    <td colspan="7" class="p-8 text-center text-slate-400">
+                      <div class="flex flex-col items-center justify-center space-y-2">
+                        <i data-lucide="bell-off" class="w-8 h-8 text-slate-300"></i>
+                        <span>Chưa có thông báo nào. Vui lòng soạn thông báo mới ở cột bên phải rồi bấm [Phát Thông Báo]!</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Phân trang -->
+            <div class="p-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs flex-shrink-0">
+              <div class="text-slate-500">
+                Hiển thị <strong>{{ filteredThongBaoList.length > 0 ? (thongbaoCurrentPage - 1) * thongbaoPageSize + 1 : 0 }}</strong> - <strong>{{ Math.min(thongbaoCurrentPage * thongbaoPageSize, filteredThongBaoList.length) }}</strong> / <strong>{{ filteredThongBaoList.length }}</strong>
+              </div>
+              <div class="flex items-center space-x-2">
+                <select v-model="thongbaoPageSize" class="bg-white border border-slate-300 rounded px-2 py-1 text-xs">
+                  <option :value="10">10 / trang</option>
+                  <option :value="20">20 / trang</option>
+                  <option :value="50">50 / trang</option>
+                </select>
+                <div class="flex items-center space-x-1">
+                  <button @click="thongbaoCurrentPage = Math.max(1, thongbaoCurrentPage - 1)" :disabled="thongbaoCurrentPage <= 1" class="px-2 py-1 bg-white border border-slate-300 rounded disabled:opacity-40">Trước</button>
+                  <span class="px-2 py-1 font-bold">{{ thongbaoCurrentPage }} / {{ thongbaoTotalPages }}</span>
+                  <button @click="thongbaoCurrentPage = Math.min(thongbaoTotalPages, thongbaoCurrentPage + 1)" :disabled="thongbaoCurrentPage >= thongbaoTotalPages" class="px-2 py-1 bg-white border border-slate-300 rounded disabled:opacity-40">Sau</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- CỘT PHẢI: FORM SOẠN THẢO & PHÁT THÔNG BÁO (44% width) -->
+          <div class="w-5/12 p-5 overflow-y-auto bg-slate-50/40 flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+                <div>
+                  <h4 class="font-bold text-slate-800 text-sm flex items-center space-x-2">
+                    <i data-lucide="file-edit" class="w-4 h-4 text-rose-600"></i>
+                    <span>{{ selectedThongBao ? 'Chỉnh Sửa Thông Báo Hệ Thống' : 'Soạn Thông Báo Mới' }}</span>
+                  </h4>
+                  <span class="text-[11px] text-slate-500 font-medium">Tự động đẩy thông báo lên màn hình cổng HMIS của tất cả các trạm</span>
+                </div>
+                <button @click="resetThongBaoForm" type="button" class="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs rounded-lg border border-slate-300 shadow-2xs transition-colors flex items-center space-x-1 cursor-pointer">
+                  <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+                  <span>Làm mới form</span>
+                </button>
+              </div>
+
+              <!-- Loại thông báo & Mức ưu tiên -->
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Loại thông báo <span class="text-rose-500">*</span></label>
+                  <select v-model="thongBaoForm.loaiThongBao" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                    <option v-for="opt in thongBaoOptions.loaiThongBao" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Mức độ ưu tiên <span class="text-rose-500">*</span></label>
+                  <select v-model="thongBaoForm.uuTien" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                    <option :value="0">Bình thường (Thông báo chuẩn)</option>
+                    <option :value="1">⚡ Khẩn (Bật cảnh báo)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Trạng thái & Ngày đăng -->
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Trạng thái <span class="text-rose-500">*</span></label>
+                  <select v-model="thongBaoForm.trangThai" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                    <option :value="1">Hiển thị trên HMIS</option>
+                    <option :value="2">Ngừng hiển thị (Tắt)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Ngày đăng</label>
+                  <input v-model="thongBaoForm.ngayDang" type="text" placeholder="DD/MM/YYYY HH:mm:ss" class="w-full p-2 bg-white border border-slate-300 rounded-lg font-mono text-slate-800 focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                </div>
+              </div>
+
+              <!-- Tiêu đề thông báo -->
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Tiêu đề thông báo <span class="text-rose-500">*</span></label>
+                <input v-model="thongBaoForm.tieuDe" type="text" placeholder="VD: Thông báo bảo trì hệ thống / Cập nhật giá viện phí..." class="w-full p-2.5 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 focus:ring-2 focus:ring-rose-500 focus:outline-none">
+              </div>
+
+              <!-- Nội dung thông báo -->
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Nội dung chi tiết thông báo <span class="text-rose-500">*</span></label>
+                <textarea v-model="thongBaoForm.noiDung" rows="6" placeholder="Nhập nội dung đầy đủ của thông báo gửi đến các trạm Y tế..." class="w-full p-2.5 bg-white border border-slate-300 rounded-lg text-slate-800 focus:ring-2 focus:ring-rose-500 focus:outline-none text-xs leading-relaxed"></textarea>
+              </div>
+
+              <!-- Ghi chú nội bộ -->
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Ghi chú</label>
+                <input v-model="thongBaoForm.ghiChu" type="text" placeholder="Ghi chú nội bộ quản trị..." class="w-full p-2 bg-white border border-slate-300 rounded-lg text-slate-700 focus:ring-2 focus:ring-rose-500 focus:outline-none">
+              </div>
+
+              <!-- Hộp kết quả đồng bộ hàng loạt -->
+              <div v-if="thongBaoBroadcastResults" class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm space-y-2">
+                <div class="flex items-center justify-between text-xs font-bold">
+                  <span class="text-slate-800">Kết quả phát thông báo:</span>
+                  <span class="px-2 py-0.5 rounded-full text-[11px]" :class="thongBaoBroadcastResults.failedCount === 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'">
+                    Thành công {{ thongBaoBroadcastResults.successCount }}/{{ thongBaoBroadcastResults.total }} trạm
+                  </span>
+                </div>
+                <div class="max-h-36 overflow-y-auto divide-y divide-slate-100 text-[11px]">
+                  <div v-for="res in thongBaoBroadcastResults.results" :key="res.id" class="py-1.5 flex items-center justify-between">
+                    <div class="flex items-center space-x-1.5 truncate max-w-[220px]">
+                      <span :class="res.success ? 'text-emerald-500 font-bold' : 'text-rose-500 font-bold'">{{ res.success ? '✓' : '✗' }}</span>
+                      <span class="font-medium text-slate-800">{{ res.name }}</span>
+                    </div>
+                    <span :class="res.success ? 'text-emerald-700' : 'text-rose-600'" class="truncate max-w-[160px] text-[10px] text-right font-semibold">
+                      {{ res.message }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nút hành động cuối form -->
+            <div class="pt-4 border-t border-slate-200 flex items-center justify-between gap-3 mt-4">
+              <button v-if="selectedThongBao" @click="deleteSelectedThongBaoBatch" :disabled="isDeletingThongBao" type="button" class="px-3 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-xl border border-rose-200 transition-colors flex items-center space-x-1 cursor-pointer">
+                <i v-if="isDeletingThongBao" data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                <i v-else data-lucide="trash-2" class="w-4 h-4"></i>
+                <span>Xóa Trên {{ thongBaoTargetStationsList.length }} Trạm</span>
+              </button>
+              <div v-else></div>
+
+              <button @click="submitBroadcastThongBao" :disabled="isBroadcastingThongBao" type="button" class="px-5 py-2.5 bg-gradient-to-r from-rose-600 via-purple-600 to-indigo-600 hover:from-rose-700 hover:to-indigo-700 text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center space-x-2 cursor-pointer active:scale-95 disabled:opacity-50">
+                <i v-if="isBroadcastingThongBao" data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                <i v-else data-lucide="send" class="w-4 h-4"></i>
+                <span>{{ isBroadcastingThongBao ? 'Đang Phát Thông Báo...' : ('⚡ PHÁT THÔNG BÁO CHO ' + thongBaoTargetStationsList.length + ' TRẠM') }}</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-3 bg-slate-100 border-t border-slate-200 flex items-center justify-between text-xs flex-shrink-0">
+          <div class="flex items-center space-x-2 text-slate-500">
+            <i data-lucide="info" class="w-4 h-4 text-rose-600"></i>
+            <span>Thông báo được phát đồng bộ qua API chuẩn cổng HMIS (<strong>common/thongbao/create</strong>) cho <strong>{{ thongBaoTargetStationsList.length }} trạm</strong>.</span>
+          </div>
+          <button @click="modals.thongbao = false" class="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 font-semibold rounded-xl border border-slate-300 cursor-pointer">
+            Đóng
+          </button>
+        </div>
+
+      </div>
+    </div>
+
 <!-- ========================================================================= -->
     <!-- MODAL HƯỚNG DẪN TỰ ĐỘNG ĐIỀN & ĐĂNG NHẬP 1-CLICK HMIS                      -->
     <!-- ========================================================================= -->
@@ -8795,7 +9112,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           giaoDien: false,
           batchAssignDichVuPhong: false,
           addMappingDichVuPhong: false,
-          batchAddXuTriAll: false
+          batchAddXuTriAll: false,
+          thongbao: false
         });
 
         // TRẠNG THÁI CHO CẤU HÌNH GIAO DIỆN MÀN HÌNH ĐỘNG (HMIS)
@@ -10395,6 +10713,269 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             showToast('Lỗi cập nhật phiếu in hàng loạt: ' + (err.response?.data?.message || err.message), 'error');
           } finally {
             isUpdatingPhieuIn.value = false;
+            refreshIcons();
+          }
+        }
+
+        
+        // ==========================================
+        // TRẠNG THÁI & HÀM QUẢN LÝ THÔNG BÁO HMIS (TAB 2)
+        // ==========================================
+        const thongbaoList = ref([]);
+        const isLoadingThongBao = ref(false);
+        const isRefreshingThongBao = ref(false);
+        const isBroadcastingThongBao = ref(false);
+        const isDeletingThongBao = ref(false);
+        const thongbaoSearch = ref('');
+        const thongbaoLoaiFilter = ref('all');
+        const thongbaoTrangThaiFilter = ref('all');
+        const thongbaoCurrentPage = ref(1);
+        const thongbaoPageSize = ref(10);
+        const thongbaoTargetScope = ref('all');
+        const selectedThongBao = ref(null);
+        const thongBaoBroadcastResults = ref(null);
+
+        const thongBaoForm = ref({
+          id: null,
+          loaiThongBao: 1,
+          uuTien: 0,
+          trangThai: 1,
+          ngayDang: '',
+          tieuDe: '',
+          noiDung: '',
+          ghiChu: ''
+        });
+
+        const thongBaoOptions = ref({
+          loaiThongBao: [
+            { value: 1, label: 'Quan trọng', color: 'rose', bg: 'bg-rose-50 text-rose-700 border-rose-200' },
+            { value: 2, label: 'Hệ thống', color: 'blue', bg: 'bg-blue-50 text-blue-700 border-blue-200' },
+            { value: 3, label: 'Hướng dẫn', color: 'emerald', bg: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+            { value: 4, label: 'Tin tức', color: 'purple', bg: 'bg-purple-50 text-purple-700 border-purple-200' },
+            { value: 5, label: 'Đào tạo', color: 'amber', bg: 'bg-amber-50 text-amber-700 border-amber-200' }
+          ],
+          uuTien: [
+            { value: 0, label: 'Bình thường' },
+            { value: 1, label: 'Khẩn' }
+          ],
+          trangThai: [
+            { value: 1, label: 'Hiển thị' },
+            { value: 2, label: 'Ngừng hiển thị' }
+          ]
+        });
+
+        function getThongBaoCurrentDateTime() {
+          const d = new Date();
+          const day = String(d.getDate()).padStart(2, '0');
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const year = d.getFullYear();
+          const hours = String(d.getHours()).padStart(2, '0');
+          const minutes = String(d.getMinutes()).padStart(2, '0');
+          const seconds = String(d.getSeconds()).padStart(2, '0');
+          return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+        }
+
+        const thongBaoTargetStationsList = computed(() => {
+          if (thongbaoTargetScope.value === 'all') {
+            return stations.value || [];
+          }
+          return (stations.value || []).filter(s => selectedIds.value.includes(s.id));
+        });
+
+        const filteredThongBaoList = computed(() => {
+          let list = thongbaoList.value || [];
+          if (thongbaoLoaiFilter.value !== 'all') {
+            list = list.filter(item => Number(item.loaiThongBao) === Number(thongbaoLoaiFilter.value));
+          }
+          if (thongbaoTrangThaiFilter.value !== 'all') {
+            list = list.filter(item => Number(item.trangThai) === Number(thongbaoTrangThaiFilter.value));
+          }
+          if (thongbaoSearch.value) {
+            const q = thongbaoSearch.value.toLowerCase().trim();
+            list = list.filter(item =>
+              (item.tieuDe && item.tieuDe.toLowerCase().includes(q)) ||
+              (item.noiDung && item.noiDung.toLowerCase().includes(q)) ||
+              (item.ghiChu && item.ghiChu.toLowerCase().includes(q))
+            );
+          }
+          return list;
+        });
+
+        const thongbaoTotalPages = computed(() => {
+          return Math.ceil(filteredThongBaoList.value.length / thongbaoPageSize.value) || 1;
+        });
+
+        const pagedThongBaoList = computed(() => {
+          const start = (thongbaoCurrentPage.value - 1) * thongbaoPageSize.value;
+          return filteredThongBaoList.value.slice(start, start + thongbaoPageSize.value);
+        });
+
+        function selectThongBao(item) {
+          selectedThongBao.value = item;
+          thongBaoForm.value = {
+            id: item.id || null,
+            loaiThongBao: Number(item.loaiThongBao) || 1,
+            uuTien: Number(item.uuTien) || 0,
+            trangThai: Number(item.trangThai) || 1,
+            ngayDang: item.ngayDang || getThongBaoCurrentDateTime(),
+            tieuDe: item.tieuDe || '',
+            noiDung: item.noiDung || '',
+            ghiChu: item.ghiChu || ''
+          };
+          refreshIcons();
+        }
+
+        function resetThongBaoForm() {
+          selectedThongBao.value = null;
+          thongBaoForm.value = {
+            id: null,
+            loaiThongBao: 1,
+            uuTien: 0,
+            trangThai: 1,
+            ngayDang: getThongBaoCurrentDateTime(),
+            tieuDe: '',
+            noiDung: '',
+            ghiChu: ''
+          };
+          refreshIcons();
+        }
+
+        async function openThongBaoModal() {
+          modals.value.thongbao = true;
+          thongBaoBroadcastResults.value = null;
+          if (selectedIds.value.length > 0) {
+            thongbaoTargetScope.value = 'selected';
+          } else {
+            thongbaoTargetScope.value = 'all';
+          }
+          if (!thongBaoForm.value.ngayDang) {
+            thongBaoForm.value.ngayDang = getThongBaoCurrentDateTime();
+          }
+
+          if (thongbaoList.value.length === 0) {
+            isLoadingThongBao.value = true;
+            try {
+              const res = await axios.get('/api/thongbao/list');
+              if (res.data && res.data.success) {
+                thongbaoList.value = res.data.data || [];
+                if (res.data.options) {
+                  thongBaoOptions.value = res.data.options;
+                }
+                if (thongbaoList.value.length > 0) {
+                  selectThongBao(thongbaoList.value[0]);
+                }
+              }
+            } catch (err) {
+              showToast('Lỗi tải danh sách thông báo: ' + err.message, 'error');
+            } finally {
+              isLoadingThongBao.value = false;
+              refreshIcons();
+            }
+          } else if (!selectedThongBao.value && thongbaoList.value.length > 0) {
+            selectThongBao(thongbaoList.value[0]);
+          }
+          refreshIcons();
+        }
+
+        async function refreshThongBaoFromHmis() {
+          isRefreshingThongBao.value = true;
+          try {
+            const firstStation = thongBaoTargetStationsList.value[0];
+            const res = await axios.post('/api/thongbao/refresh', {
+              stationId: firstStation ? firstStation.id : null
+            });
+            if (res.data && res.data.success) {
+              thongbaoList.value = res.data.data || [];
+              showToast(res.data.message || 'Đã làm mới thông báo từ cổng HMIS!', 'success');
+              if (thongbaoList.value.length > 0) {
+                selectThongBao(thongbaoList.value[0]);
+              }
+            }
+          } catch (err) {
+            showToast('Lỗi làm mới từ HMIS: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isRefreshingThongBao.value = false;
+            refreshIcons();
+          }
+        }
+
+        async function submitBroadcastThongBao() {
+          const targets = thongBaoTargetStationsList.value;
+          if (!targets || targets.length === 0) {
+            showToast('Vui lòng chọn ít nhất 1 trạm y tế áp dụng', 'error');
+            return;
+          }
+          if (!thongBaoForm.value.tieuDe || !thongBaoForm.value.tieuDe.trim()) {
+            showToast('Vui lòng nhập tiêu đề thông báo', 'error');
+            return;
+          }
+          if (!thongBaoForm.value.noiDung || !thongBaoForm.value.noiDung.trim()) {
+            showToast('Vui lòng nhập nội dung thông báo', 'error');
+            return;
+          }
+
+          isBroadcastingThongBao.value = true;
+          thongBaoBroadcastResults.value = null;
+
+          try {
+            const res = await axios.post('/api/thongbao/broadcast', {
+              stationIds: targets.map(s => s.id),
+              thongBaoData: thongBaoForm.value
+            });
+
+            if (res.data.success) {
+              thongBaoBroadcastResults.value = res.data;
+              showToast(res.data.message || 'Đã phát thông báo thành công!', 'success');
+              fetchSystemLogs();
+
+              // Cập nhật lại trong danh sách cục bộ
+              if (res.data.updatedItem) {
+                const idx = thongbaoList.value.findIndex(item => item.tieuDe && item.tieuDe.trim().toLowerCase() === thongBaoForm.value.tieuDe.trim().toLowerCase());
+                if (idx >= 0) {
+                  thongbaoList.value[idx] = { ...thongbaoList.value[idx], ...res.data.updatedItem };
+                } else {
+                  thongbaoList.value.unshift(res.data.updatedItem);
+                }
+              }
+            } else {
+              showToast(res.data.message || 'Lỗi khi phát thông báo', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi phát thông báo: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isBroadcastingThongBao.value = false;
+            refreshIcons();
+          }
+        }
+
+        async function deleteSelectedThongBaoBatch() {
+          if (!thongBaoForm.value.tieuDe || !thongBaoForm.value.tieuDe.trim()) {
+            showToast('Vui lòng chọn thông báo cần xóa', 'warning');
+            return;
+          }
+          const targets = thongBaoTargetStationsList.value;
+          if (!confirm(`Bạn có chắc chắn muốn xóa thông báo "${thongBaoForm.value.tieuDe}" trên ${targets.length} trạm y tế đã chọn?`)) {
+            return;
+          }
+
+          isDeletingThongBao.value = true;
+          try {
+            const res = await axios.post('/api/thongbao/delete-batch', {
+              stationIds: targets.map(s => s.id),
+              tieuDe: thongBaoForm.value.tieuDe
+            });
+            if (res.data.success) {
+              showToast(res.data.message || 'Đã xóa thông báo trên các trạm!', 'success');
+              thongbaoList.value = thongbaoList.value.filter(item => item.tieuDe.trim().toLowerCase() !== thongBaoForm.value.tieuDe.trim().toLowerCase());
+              resetThongBaoForm();
+              fetchSystemLogs();
+            } else {
+              showToast(res.data.message || 'Lỗi xóa thông báo', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi xóa thông báo: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isDeletingThongBao.value = false;
             refreshIcons();
           }
         }
@@ -15327,6 +15908,31 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           refreshPhieuInFromHmis,
           saveApiConfig,
           submitBulkPhieuInUpdate,
+          openThongBaoModal,
+          thongbaoList,
+          isLoadingThongBao,
+          isRefreshingThongBao,
+          isBroadcastingThongBao,
+          isDeletingThongBao,
+          thongbaoSearch,
+          thongbaoLoaiFilter,
+          thongbaoTrangThaiFilter,
+          thongbaoCurrentPage,
+          thongbaoPageSize,
+          thongbaoTargetScope,
+          thongBaoTargetStationsList,
+          filteredThongBaoList,
+          pagedThongBaoList,
+          thongbaoTotalPages,
+          selectedThongBao,
+          thongBaoForm,
+          thongBaoOptions,
+          thongBaoBroadcastResults,
+          selectThongBao,
+          resetThongBaoForm,
+          refreshThongBaoFromHmis,
+          submitBroadcastThongBao,
+          deleteSelectedThongBaoBatch,
           openChucDanhModal,
           chucdanhList,
           isLoadingChucDanh,

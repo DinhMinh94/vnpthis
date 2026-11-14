@@ -214,6 +214,7 @@ function exportChuaCoTrongDmExcel(items) {
 
   const resultRows = [HIS_TARGET_HEADER];
   const nguonCtCol = HIS_TARGET_HEADER.indexOf('NGUONCT');
+  const thauGhepCol = HIS_TARGET_HEADER.indexOf('THAUGHEP');
 
   uniqueList.forEach((it, idx) => {
     const row = new Array(HIS_TARGET_HEADER.length).fill('');
@@ -237,6 +238,11 @@ function exportChuaCoTrongDmExcel(items) {
       row[nguonCtCol] = 1;          // NGUONCT (col 33) = 1 (Tự động để là 1 theo yêu cầu)
     } else {
       row[33] = 1;
+    }
+    if (thauGhepCol !== -1) {
+      row[thauGhepCol] = maThuoc;   // THAUGHEP (col 35) lấy theo MA_THUOC theo yêu cầu
+    } else {
+      row[35] = maThuoc;
     }
     // Tất cả các cột khác để trống theo yêu cầu
 

@@ -192,8 +192,9 @@ function mergeKiemKeAndXntFiles(kiemKeBuffer, xntBuffer) {
       const stt = String(r[0] || '').trim();
       const ma = String(r[1] || '').trim();
       const ten = String(r[2] || '').trim();
+      const dvt = String(r[3] || '').trim();
       if (stt && /^\d+$/.test(stt) && ma && ten) {
-        xntMap.set(ma, { ma, ten });
+        xntMap.set(ma, { ma, ten, dvt });
       }
     }
   }
@@ -212,6 +213,7 @@ function mergeKiemKeAndXntFiles(kiemKeBuffer, xntBuffer) {
 
     const maBBKK = String(r[1] || '').trim();
     const tenBBKK = String(r[2] || '').trim();
+    const dvtBBKK = String(r[3] || '').trim();
     const donGia = parseNumberVi(r[4]);
     const soKiemSoat = String(r[5] || '').trim();
     const hanDungRaw = r[7];
@@ -220,10 +222,17 @@ function mergeKiemKeAndXntFiles(kiemKeBuffer, xntBuffer) {
     // Ánh xạ Mã & Tên từ file Báo cáo XNT
     let finalMa = maBBKK;
     let finalTen = tenBBKK;
+    let finalDvt = dvtBBKK;
     if (xntMap.has(maBBKK)) {
       const fromXnt = xntMap.get(maBBKK);
       finalMa = fromXnt.ma;
       finalTen = fromXnt.ten;
+      if (!finalDvt && fromXnt.dvt) finalDvt = fromXnt.dvt;
+    }
+
+    const { autoDetectDvt } = require('./suaMaThuocService');
+    if (!finalDvt) {
+      finalDvt = autoDetectDvt(finalTen);
     }
 
     const finalHanDung = convertHanDung(hanDungRaw);
@@ -236,6 +245,7 @@ function mergeKiemKeAndXntFiles(kiemKeBuffer, xntBuffer) {
       stt: finalItems.length + 1,
       MA: finalMa,
       TEN: finalTen,
+      DVT: finalDvt,
       SOLUONG: soLuongThucTe,
       GIANHAP: donGia,
       GIABAN: donGia,
@@ -365,7 +375,11 @@ function parseSheetSmart(sheet) {
     const dinhMuc = colMap.DINHMUC !== undefined ? String(row[colMap.DINHMUC] || '').trim() : '';
     const slCanhBao = colMap.SLCANHBAO !== undefined ? String(row[colMap.SLCANHBAO] || '').trim() : '';
     const ghiChuLoi = colMap.GHICHULOI !== undefined ? String(row[colMap.GHICHULOI] || '').trim() : '';
-    const dvt = colMap.DVT !== undefined ? String(row[colMap.DVT] || '').trim() : '';
+    let dvt = colMap.DVT !== undefined ? String(row[colMap.DVT] || '').trim() : '';
+    if (!dvt) {
+      const { autoDetectDvt } = require('./suaMaThuocService');
+      dvt = autoDetectDvt(ten);
+    }
 
     result.push({
       MA: ma,
@@ -404,7 +418,11 @@ function processTonDauRows(rows) {
     const dinhMuc = r.DINHMUC !== undefined ? String(r.DINHMUC).trim() : (r.dinhmuc !== undefined ? String(r.dinhmuc).trim() : '');
     const slCanhBao = r.SLCANHBAO !== undefined ? String(r.SLCANHBAO).trim() : (r.slcanhbao !== undefined ? String(r.slcanhbao).trim() : '');
     const ghiChuLoi = String(r.GHICHULOI || r.ghichuloi || '').trim();
-    const dvt = String(r.DVT || r.dvt || r.DON_VI_TINH || '').trim();
+    let dvt = String(r.DVT || r.dvt || r.DON_VI_TINH || '').trim();
+    if (!dvt) {
+      const { autoDetectDvt } = require('./suaMaThuocService');
+      dvt = autoDetectDvt(ten);
+    }
 
     totalQuantity += soLuong;
     totalValue += (soLuong * giaNhap);

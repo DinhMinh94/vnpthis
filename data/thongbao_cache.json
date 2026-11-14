@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "id": 1794544132769,
+    "loaiThongBao": 2,
+    "loaiThongBaoLabel": "Hệ thống",
+    "loaiThongBaoColor": "blue",
+    "loaiThongBaoBg": "bg-blue-50 text-blue-700 border-blue-200",
+    "tieuDe": "Thông báo phần mềm",
+    "noiDung": "Các luồng ký số và quy trình ký số trên HMIS",
+    "ngayDang": "13/11/2026 11:27:49",
+    "uuTien": 0,
+    "uuTienLabel": "Bình thường",
+    "trangThai": 1,
+    "trangThaiLabel": "Hiển thị",
+    "ghiChu": ""
+  }
+]

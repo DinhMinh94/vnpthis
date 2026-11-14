@@ -128,24 +128,42 @@ async function fetchCatalogForStation(stationId) {
  * Tự động nhận diện Đơn vị tính từ tên thuốc / vật tư nếu file không có cột DVT
  */
 function autoDetectDvt(ten) {
-  if (!ten) return '';
-  const s = String(ten).toLowerCase();
-  if (s.includes('viên') || s.includes('vien')) return 'Viên';
-  if (s.includes('ống') || s.includes('ong')) return 'Ống';
-  if (s.includes('lọ') || s.includes('lo')) return 'Lọ';
-  if (s.includes('gói') || s.includes('goi')) return 'Gói';
-  if (s.includes('chai')) return 'Chai';
-  if (s.includes('tuýp') || s.includes('tuyp')) return 'Tuýp';
-  if (s.includes('hộp') || s.includes('hop')) return 'Hộp';
-  if (s.includes('bình') || s.includes('binh')) return 'Bình';
-  if (s.includes('cuộn') || s.includes('cuon')) return 'Cuộn';
-  if (s.includes('túi') || s.includes('tui')) return 'Túi';
-  if (s.includes('bộ') || s.includes('bo')) return 'Bộ';
-  if (s.includes('vỉ') || s.includes('vi')) return 'Vỉ';
-  if (s.includes('đôi') || s.includes('doi')) return 'Đôi';
-  if (s.includes('miếng') || s.includes('mieng')) return 'Miếng';
-  if (s.includes('cái') || s.includes('cai') || s.includes('bơm tiêm') || s.includes('kim tiêm') || s.includes('dây truyền') || s.includes('găng') || s.includes('ống thông') || s.includes('bông') || s.includes('dây thở')) return 'Cái';
-  return '';
+  if (!ten) return 'Cái';
+  const raw = String(ten).toLowerCase();
+  const c = ' ' + cleanStr(ten) + ' ';
+
+  // 1. Kiểm tra từ nguyên vẹn / cụm từ đặc trưng cho Vật tư & Dụng cụ y tế
+  if (/\b(gang|gang tay|bao tay)\b/.test(c)) return 'Đôi';
+  if (/\b(bom tiem|kim tiem|kim luon|kim canh b|kim lay thuoc|que thu|test|nhiet ke|de luoi|ong thong|sonde|catheter|canun|day tho|mat na tho)\b/.test(c)) return 'Cái';
+  if (/\b(bo day truyen|day truyen|bo truyen|day noi|bo co dinh)\b/.test(c)) return 'Bộ';
+  if (/\b(urgosyval|bang keo|bang dinh|bang cuon|bang thun|bong cuon|cuon)\b/.test(c)) return 'Cuộn';
+  if (/\b(bong y te|bong hut nuoc|bong gam|bong tham)\b/.test(c)) return 'Cuộn';
+  if (/\b(mieng dan|cao dan|gac mieng)\b/.test(c)) return 'Miếng';
+  if (/\b(hop)\b/.test(c)) return 'Hộp';
+  if (/\b(binh|binh khi)\b/.test(c)) return 'Bình';
+  if (/\b(tui mau|tui nuoc tieu|tui dung)\b/.test(c)) return 'Túi';
+
+  // 2. Kiểm tra các dạng thuốc đặc thù
+  if (/\b(presept|effervescent|vien|nen|nang|bao phim|sui|ngam|dat)\b/.test(c)) return 'Viên';
+  if (/\b(osaphine|morphin|magnesi sulfat|atropin|adrenalin|lidocain|diazepam|seduxen|furosemid|analgin|gentamycin|ong tiem|dung dich tiem|thuoc tiem)\b/.test(c) || raw.includes('ống') || raw.includes('tiêm')) return 'Ống';
+  if (/\b(con|con y te|povidone|betadine|sat khuan|rua tay|dung dich|nuoc cat|siro|nuoc suc mieng|chai|lo)\b/.test(c) || raw.includes('chai') || raw.includes('lọ')) return 'Chai';
+  if (/\b(tuyp|kem|mo|gel|tra mat)\b/.test(c) || raw.includes('tuýp')) return 'Tuýp';
+  if (/\b(goi|hon dich|bot pha|bot uong|oresol|smecta|apigel|asigastrogit)\b/.test(c) || raw.includes('gói')) return 'Gói';
+  if (/\b(vi)\b/.test(c) && !c.includes('vihankok') && !c.includes('povidone')) return 'Vỉ';
+
+  // 3. Fallback theo từ khóa tiếng Việt có dấu
+  if (raw.includes('viên')) return 'Viên';
+  if (raw.includes('ống')) return 'Ống';
+  if (raw.includes('chai')) return 'Chai';
+  if (raw.includes('lọ')) return 'Lọ';
+  if (raw.includes('tuýp')) return 'Tuýp';
+  if (raw.includes('gói')) return 'Gói';
+  if (raw.includes('cuộn')) return 'Cuộn';
+  if (raw.includes('đôi')) return 'Đôi';
+  if (raw.includes('bộ')) return 'Bộ';
+  if (raw.includes('miếng')) return 'Miếng';
+
+  return 'Cái'; // Default an toàn
 }
 
 /**
@@ -195,13 +213,14 @@ function exportChuaCoTrongDmExcel(items) {
   }
 
   const resultRows = [HIS_TARGET_HEADER];
+  const nguonCtCol = HIS_TARGET_HEADER.indexOf('NGUONCT');
 
   uniqueList.forEach((it, idx) => {
     const row = new Array(HIS_TARGET_HEADER.length).fill('');
     const stt = idx + 1;
     const maThuoc = String(it.maMoiFile || it.ma || '').trim();
     const tenThuoc = String(it.tenFile || it.ten || '').trim();
-    const donViTinh = String(it.dvt || autoDetectDvt(tenThuoc) || '').trim();
+    const donViTinh = String(it.dvt || autoDetectDvt(tenThuoc) || 'Cái').trim();
     const donGia = Number(it.giaFile !== undefined ? it.giaFile : (it.gia || it.gianhap || 0)) || 0;
     const soDangKy = String(it.sdkFile || extractSdk(it.solo) || '').trim();
 
@@ -214,6 +233,11 @@ function exportChuaCoTrongDmExcel(items) {
     row[16] = donGia || '';          // GIA_DICH_VU (col 16)
     row[17] = donGia || '';          // GIA_BHYT (col 17)
     row[22] = soDangKy;             // SO_DANG_KY (col 22)
+    if (nguonCtCol !== -1) {
+      row[nguonCtCol] = 1;          // NGUONCT (col 33) = 1 (Tự động để là 1 theo yêu cầu)
+    } else {
+      row[33] = 1;
+    }
     // Tất cả các cột khác để trống theo yêu cầu
 
     resultRows.push(row);
@@ -246,7 +270,7 @@ function compareInventoryWithCatalog(rows, catalog) {
     const sdk = extractSdk(r.SOLO);
     const cleanTen = cleanStr(r.TEN);
     const rGia = Number(r.GIANHAP) || Number(r.GIABAN) || 0;
-    const rDvt = r.DVT || r.DON_VI_TINH || r.donViTinh || autoDetectDvt(r.TEN) || '';
+    const rDvt = r.DVT || r.dvt || r.DON_VI_TINH || r.donViTinh || autoDetectDvt(r.TEN) || 'Cái';
 
     // 1. Khớp ưu tiên 1: Tên + Giá + Số ĐK
     let candidates = catalog.filter(h => {
@@ -340,7 +364,7 @@ function compareInventoryWithCatalog(rows, catalog) {
         hmisId: best.id,
         tenFile: r.TEN || '',
         tenHmis: best.ten || '',
-        dvt: rDvt || best.tenDonViTinh || '',
+        dvt: rDvt || best.tenDonViTinh || 'Cái',
         solo: r.SOLO || '',
         handung: r.HANDUNG || '',
         sdkFile: sdk,

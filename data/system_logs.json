@@ -1,5 +1,31 @@
 [
   {
+    "id": "log_1794544132761_p8vzg",
+    "timestamp": "2026-11-13T04:28:52.761Z",
+    "formattedTime": "13/11/2026 11:28:52",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa cấu hình hàng loạt",
+    "summary": "Sửa cấu hình hàng loạt cho 0 trạm",
+    "details": "Phát thông báo loại 2, ưu tiên: Bình thường. Trạng thái: Hiển thị.",
+    "total": 1,
+    "successCount": 0,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "action": "Tạo mới",
+        "message": "Đã phát thông báo mới thành công",
+        "timeMs": 381
+      }
+    ]
+  },
+  {
     "id": "log_1794475936008_qbg1y",
     "timestamp": "2026-11-12T09:32:16.008Z",
     "formattedTime": "12/11/2026 16:32:16",

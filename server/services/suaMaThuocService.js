@@ -184,6 +184,40 @@ const HIS_TARGET_HEADER = [
   'QLTHEOTUIMAU', 'DUOCDUYETLE', 'THUOCDIEUTRILAO', 'THUOCCORTICOID', 'VATNHAP', 'VATXUAT'
 ];
 
+// Đọc dữ liệu tham chiếu Nước SX từ Biên bản kiểm kê nếu có
+const bbkkRefPath = path.join(__dirname, '../../data/bbkk_reference.json');
+let bbkkRef = {};
+if (fs.existsSync(bbkkRefPath)) {
+  try {
+    bbkkRef = JSON.parse(fs.readFileSync(bbkkRefPath, 'utf8'));
+  } catch (e) {}
+}
+
+function lookupNuocSx(item) {
+  // 1. Trực tiếp từ object nếu có sẵn
+  const direct = String(item.nuocSx || item.NUOC_SX || item.nuoc_sx || item.NUOCSANXUAT || '').trim();
+  if (direct) return direct;
+
+  // 2. Tra cứu từ BBKK reference map theo mã hoặc tên
+  const ma = String(item.maMoiFile || item.ma || '').trim().toLowerCase();
+  const ten = String(item.tenFile || item.ten || '').trim().toLowerCase();
+
+  const cleanMa = ma.replace(/^2[56]\./, '');
+  for (const k of [ma, cleanMa, '25.' + cleanMa, '26.' + cleanMa]) {
+    if (bbkkRef[k]?.nuocSx) return bbkkRef[k].nuocSx;
+  }
+
+  if (bbkkRef[ten]?.nuocSx) return bbkkRef[ten].nuocSx;
+  for (const [k, v] of Object.entries(bbkkRef)) {
+    if (v.nuocSx && (ten.includes(k) || k.includes(ten))) {
+      return v.nuocSx;
+    }
+  }
+
+  // 3. Mặc định
+  return 'Việt Nam';
+}
+
 /**
  * Xuất file Excel chuẩn import thuốc VNPT HIS (78 cột) cho những thuốc chưa có trong danh mục:
  * Theo đúng yêu cầu:
@@ -193,6 +227,9 @@ const HIS_TARGET_HEADER = [
  * - Đơn giá (GIA_THAU, GIA_BAN, GIA_DICH_VU, GIA_BHYT)
  * - Số đăng ký (SO_DANG_KY)
  * - Đơn vị tính (DON_VI_TINH)
+ * - Nước sản xuất (NUOC_SX) lấy từ Biên bản kiểm kê
+ * - Nguồn chi trả (NGUONCT = 1)
+ * - Thầu ghép (THAUGHEP = MA_THUOC)
  * - Còn các cột khác để trống
  */
 function exportChuaCoTrongDmExcel(items) {
@@ -215,6 +252,7 @@ function exportChuaCoTrongDmExcel(items) {
   const resultRows = [HIS_TARGET_HEADER];
   const nguonCtCol = HIS_TARGET_HEADER.indexOf('NGUONCT');
   const thauGhepCol = HIS_TARGET_HEADER.indexOf('THAUGHEP');
+  const nuocSxCol = HIS_TARGET_HEADER.indexOf('NUOC_SX');
 
   uniqueList.forEach((it, idx) => {
     const row = new Array(HIS_TARGET_HEADER.length).fill('');
@@ -224,11 +262,17 @@ function exportChuaCoTrongDmExcel(items) {
     const donViTinh = String(it.dvt || autoDetectDvt(tenThuoc) || 'Cái').trim();
     const donGia = Number(it.giaFile !== undefined ? it.giaFile : (it.gia || it.gianhap || 0)) || 0;
     const soDangKy = String(it.sdkFile || extractSdk(it.solo) || '').trim();
+    const nuocSx = lookupNuocSx(it);
 
     row[0] = stt;                    // STT (col 0)
     row[5] = maThuoc;               // MA_THUOC (col 5)
     row[6] = tenThuoc;              // TEN_THUOC (col 6)
     row[8] = donViTinh;             // DON_VI_TINH (col 8)
+    if (nuocSxCol !== -1) {
+      row[nuocSxCol] = nuocSx;      // NUOC_SX (col 12) từ Biên bản kiểm kê
+    } else {
+      row[12] = nuocSx;
+    }
     row[13] = donGia || '';          // GIA_THAU (col 13)
     row[15] = donGia || '';          // GIA_BAN (col 15)
     row[16] = donGia || '';          // GIA_DICH_VU (col 16)
@@ -277,6 +321,7 @@ function compareInventoryWithCatalog(rows, catalog) {
     const cleanTen = cleanStr(r.TEN);
     const rGia = Number(r.GIANHAP) || Number(r.GIABAN) || 0;
     const rDvt = r.DVT || r.dvt || r.DON_VI_TINH || r.donViTinh || autoDetectDvt(r.TEN) || 'Cái';
+    const rNuocSx = String(r.NUOC_SX || r.nuocSx || r.NUOCSANXUAT || r.nuoc_sx || '').trim();
 
     // 1. Khớp ưu tiên 1: Tên + Giá + Số ĐK
     let candidates = catalog.filter(h => {
@@ -379,6 +424,7 @@ function compareInventoryWithCatalog(rows, catalog) {
         giaHmis: Number(best.giaNhap) || Number(best.giaBan) || 0,
         maCuHmis: maCu,
         maMoiFile: maMoi,
+        nuocSx: rNuocSx,
         isSameCode,
         status,
         matchConfidence, // EXACT, TEN_SDK, TEN_GIA
@@ -424,6 +470,7 @@ function compareInventoryWithCatalog(rows, catalog) {
         giaHmis: 0,
         maCuHmis: '---',
         maMoiFile: String(r.MA || '').trim(),
+        nuocSx: rNuocSx,
         isSameCode: false,
         status: 'KHONG_TIM_THAY',
         matchConfidence: 'NOT_FOUND',

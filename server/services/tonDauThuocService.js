@@ -216,6 +216,7 @@ function mergeKiemKeAndXntFiles(kiemKeBuffer, xntBuffer) {
     const dvtBBKK = String(r[3] || '').trim();
     const donGia = parseNumberVi(r[4]);
     const soKiemSoat = String(r[5] || '').trim();
+    const nuocSxBBKK = String(r[6] || '').trim();
     const hanDungRaw = r[7];
     const soLuongThucTe = parseNumberVi(r[9] !== undefined && r[9] !== '' ? r[9] : r[8]);
 
@@ -246,6 +247,7 @@ function mergeKiemKeAndXntFiles(kiemKeBuffer, xntBuffer) {
       MA: finalMa,
       TEN: finalTen,
       DVT: finalDvt,
+      NUOC_SX: nuocSxBBKK || 'Việt Nam',
       SOLUONG: soLuongThucTe,
       GIANHAP: donGia,
       GIABAN: donGia,
@@ -350,6 +352,9 @@ function parseSheetSmart(sheet) {
     else if (['DVT', 'DONVITINH', 'DONVI', 'UNIT'].includes(stripped) || raw === 'ĐVT' || raw === 'ĐƠN VỊ TÍNH' || raw === 'ĐƠN VỊ' || raw === 'DVT') {
       if (colMap.DVT === undefined) colMap.DVT = idx;
     }
+    else if (['NUOCSX', 'NUOCSANXUAT', 'COUNTRY', 'ORIGIN'].includes(stripped) || raw === 'NƯỚC SX' || raw === 'NƯỚC SẢN XUẤT' || raw === 'NUOC_SX') {
+      if (colMap.NUOC_SX === undefined) colMap.NUOC_SX = idx;
+    }
   });
 
   const result = [];
@@ -380,11 +385,13 @@ function parseSheetSmart(sheet) {
       const { autoDetectDvt } = require('./suaMaThuocService');
       dvt = autoDetectDvt(ten);
     }
+    const nuocSx = colMap.NUOC_SX !== undefined ? String(row[colMap.NUOC_SX] || '').trim() : '';
 
     result.push({
       MA: ma,
       TEN: ten,
       DVT: dvt,
+      NUOC_SX: nuocSx,
       SOLUONG: soLuong,
       GIANHAP: giaNhap,
       GIABAN: giaBan,
@@ -423,6 +430,7 @@ function processTonDauRows(rows) {
       const { autoDetectDvt } = require('./suaMaThuocService');
       dvt = autoDetectDvt(ten);
     }
+    const nuocSx = String(r.NUOC_SX || r.nuocSx || r.NUOCSANXUAT || r.nuoc_sx || '').trim();
 
     totalQuantity += soLuong;
     totalValue += (soLuong * giaNhap);
@@ -432,6 +440,7 @@ function processTonDauRows(rows) {
       MA: ma,
       TEN: ten,
       DVT: dvt,
+      NUOC_SX: nuocSx,
       SOLUONG: soLuong,
       GIANHAP: giaNhap,
       GIABAN: giaBan,

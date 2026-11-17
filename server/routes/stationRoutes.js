@@ -73,7 +73,7 @@ router.post('/cauhinh-nghiepvu/refresh', async (req, res) => {
  */
 router.post('/cauhinh-nghiepvu/batch-update-param', async (req, res) => {
   try {
-    const { stationIds, maCauHinh, paramKey, paramValue, tenCauHinh, paramName, oldValue } = req.body;
+    const { stationIds, maCauHinh, paramKey, paramValue, tenCauHinh, paramName, oldValue, useStationCode } = req.body;
     if (!Array.isArray(stationIds) || stationIds.length === 0) {
       return res.status(400).json({ success: false, message: 'Vui lòng chọn ít nhất 1 trạm y tế' });
     }
@@ -81,7 +81,12 @@ router.post('/cauhinh-nghiepvu/batch-update-param', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Thiếu mã cấu hình hoặc khóa tham số' });
     }
 
-    const result = await cauhinhService.updateParamForStations(stationIds, maCauHinh, paramKey, paramValue, { tenCauHinh, paramName, oldValue });
+    const result = await cauhinhService.updateParamForStations(stationIds, maCauHinh, paramKey, paramValue, {
+      tenCauHinh,
+      paramName,
+      oldValue,
+      useStationCode: Boolean(useStationCode)
+    });
     res.json({
       success: true,
       message: `Đã cập nhật tham số cho ${result.successCount}/${result.total} trạm thành công`,

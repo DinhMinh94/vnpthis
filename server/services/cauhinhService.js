@@ -196,16 +196,35 @@ async function refreshCauHinhFromHmis(stationId = null) {
 }
 
 /**
+ * Trích xuất mã CSKCB 5 số của trạm (ưu tiên station.code, fallback tiền tố username)
+ */
+function resolveStationCode5Digits(station) {
+  if (!station) return '';
+  const fromCode = String(station.code || '').trim();
+  if (fromCode) return fromCode;
+  const fromUser = String(station.username || '').split('.')[0].trim();
+  return fromUser;
+}
+
+/**
  * Cập nhật 1 tham số cấu hình cho danh sách các trạm được chọn
  */
 async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValue, extraMeta = {}) {
   const stations = stationIds.map(id => db.getStationById(id, true)).filter(Boolean);
   const results = [];
   let capturedOldValue;
+  const useStationCode = Boolean(extraMeta?.useStationCode) || paramValue === '{{MA_CSKCB}}';
 
   for (const station of stations) {
     const startTime = Date.now();
     try {
+      const stationCode = resolveStationCode5Digits(station);
+      const resolvedValue = useStationCode ? stationCode : String(paramValue ?? '');
+
+      if (useStationCode && !resolvedValue) {
+        throw new Error('Trạm này chưa có Mã CSKCB (5 số) hợp lệ');
+      }
+
       const auth = await loginToHmis(station);
 
       // 1. Tìm bản ghi cấu hình theo mã
@@ -242,9 +261,9 @@ async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValu
       }
 
       if (thietLap[paramKey]) {
-        thietLap[paramKey].giatri = String(paramValue);
+        thietLap[paramKey].giatri = String(resolvedValue);
       } else {
-        thietLap[paramKey] = { giatri: String(paramValue), mota: '' };
+        thietLap[paramKey] = { giatri: String(resolvedValue), mota: extraMeta?.paramName || '' };
       }
 
       item.giaTriThietLap = JSON.stringify(thietLap);
@@ -264,16 +283,17 @@ async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValu
 
       if (updateRes.status === 200 && (updateRes.data?.code === 0 || updateRes.data?.code === 200)) {
         const msg = stationOldValue 
-          ? `Đã cập nhật ${paramKey}: "${stationOldValue}" ➔ "${paramValue}"`
-          : `Đã cập nhật ${paramKey} = "${paramValue}"`;
+          ? `Đã cập nhật ${paramKey}: "${stationOldValue}" ➔ "${resolvedValue}"`
+          : `Đã cập nhật ${paramKey} = "${resolvedValue}"`;
         results.push({
           id: station.id,
+          code: stationCode,
           name: station.name,
           username: station.username,
           success: true,
           message: msg,
           oldValue: stationOldValue,
-          newValue: String(paramValue),
+          newValue: String(resolvedValue),
           duration: Date.now() - startTime
         });
       } else {
@@ -282,6 +302,7 @@ async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValu
     } catch (err) {
       results.push({
         id: station.id,
+        code: resolveStationCode5Digits(station),
         name: station.name,
         username: station.username,
         success: false,
@@ -316,12 +337,16 @@ async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValu
     }
   } catch (e) {}
 
+  const displayNewValue = useStationCode ? '[Theo Mã CSKCB 5 số từng trạm]' : String(paramValue ?? '');
+
   // Ghi log hệ thống lưu lại đã sửa những gì và thời gian nào
   try {
     const logService = require('./logService');
-    const summaryText = oldValue !== ''
-      ? `Sửa tham số [${paramKey}] từ "${oldValue}" ➔ "${paramValue}" trong cấu hình ${maCauHinh}${tenCauHinh ? ' (' + tenCauHinh + ')' : ''}`
-      : `Sửa tham số [${paramKey}] = "${paramValue}" trong cấu hình ${maCauHinh}${tenCauHinh ? ' (' + tenCauHinh + ')' : ''}`;
+    const summaryText = useStationCode
+      ? `Sửa tham số [${paramKey}] theo Mã CSKCB 5 số riêng của từng trạm trong cấu hình ${maCauHinh}${tenCauHinh ? ' (' + tenCauHinh + ')' : ''}`
+      : (oldValue !== ''
+          ? `Sửa tham số [${paramKey}] từ "${oldValue}" ➔ "${paramValue}" trong cấu hình ${maCauHinh}${tenCauHinh ? ' (' + tenCauHinh + ')' : ''}`
+          : `Sửa tham số [${paramKey}] = "${paramValue}" trong cấu hình ${maCauHinh}${tenCauHinh ? ' (' + tenCauHinh + ')' : ''}`);
 
     logService.addLog({
       actionType: 'cauhinh_thamso',
@@ -332,8 +357,9 @@ async function updateParamForStations(stationIds, maCauHinh, paramKey, paramValu
         tenCauHinh,
         paramKey,
         paramName,
+        useStationCode,
         oldValue,
-        newValue: String(paramValue)
+        newValue: displayNewValue
       },
       total: results.length,
       successCount,

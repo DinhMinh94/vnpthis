@@ -370,13 +370,13 @@
             <div>
               <div class="flex items-center space-x-2">
                 <h3 class="text-sm font-black uppercase text-slate-800 tracking-wide">QUẢN LÝ &amp; CẤU HÌNH TRẠM Y TẾ (HMIS)</h3>
-                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">3 Phân Hệ</span>
+                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">4 Phân Hệ</span>
               </div>
-              <p class="text-xs text-slate-500 mt-0.5">Quản lý trạm, phân công yêu cầu khám - buồng khám và ánh xạ kết quả điều trị - xử trí</p>
+              <p class="text-xs text-slate-500 mt-0.5">Quản lý trạm, phân công khám, map KQĐT - xử trí và cấu hình phòng ban sử dụng kho vật tư</p>
             </div>
           </div>
 
-          <!-- BỘ 3 SUB-TABS TRONG PHẦN 2 -->
+          <!-- BỘ 4 SUB-TABS TRONG PHẦN 2 -->
           <div class="inline-flex p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200/80 self-start md:self-auto overflow-x-auto max-w-full">
             <!-- Sub-tab 1: Danh Sách & Tài Khoản Trạm -->
             <button @click="setStationSubTab('list')"
@@ -411,6 +411,18 @@
               <span>3. Map KQĐT &amp; Xử Trí</span>
               <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase" :class="currentStationSubTab === 'map_kqdt_xutri' ? 'bg-amber-300 text-amber-950' : 'bg-amber-100 text-amber-800'">
                 All Trạm
+              </span>
+            </button>
+
+            <!-- Sub-tab 4: Phòng Ban Sử Dụng Kho Vật Tư (HMIS) -->
+            <button @click="setStationSubTab('phong_su_dung_kho')"
+                    type="button"
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer whitespace-nowrap"
+                    :class="currentStationSubTab === 'phong_su_dung_kho' ? 'bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">
+              <i data-lucide="warehouse" class="w-4 h-4"></i>
+              <span>4. Phòng Sử Dụng Kho Vật Tư</span>
+              <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase" :class="currentStationSubTab === 'phong_su_dung_kho' ? 'bg-amber-300 text-amber-950' : 'bg-sky-100 text-sky-800'">
+                Mới
               </span>
             </button>
           </div>
@@ -457,9 +469,15 @@
           </button>
 
           <!-- Nút Cấu hình nghiệp vụ HMIS -->
-          <button @click="openCauHinhModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium text-sm rounded-xl border border-indigo-200 transition-colors shadow-sm" title="Xem & tải toàn bộ 160 cấu hình nghiệp vụ thực tế từ cổng HMIS">
+          <button @click="openCauHinhModal" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium text-sm rounded-xl border border-indigo-200 transition-colors shadow-sm cursor-pointer" title="Xem & tải toàn bộ 160 cấu hình nghiệp vụ thực tế từ cổng HMIS">
             <i data-lucide="sliders" class="w-4 h-4 text-indigo-600"></i>
             <span>Cấu hình nghiệp vụ HMIS</span>
+          </button>
+
+          <!-- Nút Sửa Tham Số Cấu Hình Nhanh (Hỗ trợ Mã CSKCB 5 số từng trạm) -->
+          <button @click="openBulkParamEditModal()" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm rounded-xl border border-purple-700 transition-colors shadow-sm cursor-pointer" title="Sửa nhanh tham số cấu hình cho các trạm đã chọn hoặc tất cả 43 trạm (hỗ trợ gán tự động theo Mã CSKCB 5 số từng trạm)">
+            <i data-lucide="wand-2" class="w-4 h-4 text-amber-300"></i>
+            <span>Sửa tham số cấu hình nhanh</span>
           </button>
 
           <!-- Nút Cấu hình giao diện HMIS -->
@@ -505,6 +523,12 @@
           <button @click="setStationSubTab('map_kqdt_xutri')" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold text-sm rounded-xl border border-purple-300 transition-colors shadow-sm cursor-pointer" title="Ánh xạ liên kết Kết quả điều trị với Xử trí cho các trạm">
             <i data-lucide="git-merge" class="w-4 h-4 text-purple-600"></i>
             <span>Map KQĐT &amp; Xử trí</span>
+          </button>
+
+          <!-- Nút Phòng sử dụng kho vật tư HMIS -->
+          <button @click="setStationSubTab('phong_su_dung_kho')" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold text-sm rounded-xl border border-sky-300 transition-colors shadow-sm cursor-pointer" title="Cấu hình danh sách phòng ban sử dụng kho vật tư (dm-chung/phong-su-dung-kho-vtu)">
+            <i data-lucide="warehouse" class="w-4 h-4 text-sky-600"></i>
+            <span>Phòng sử dụng kho vật tư</span>
           </button>
 
           <!-- Nút Thêm Xã / Phường -->
@@ -1425,6 +1449,479 @@
             </div>
           </div>
 
+        </div>
+
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- SUB-VIEW 4: PHÒNG BAN SỬ DỤNG KHO VẬT TƯ (HMIS LIVE PORTAL)    -->
+      <!-- ============================================================== -->
+      <div v-if="currentStationSubTab === 'phong_su_dung_kho'" class="space-y-5" @keydown.f4.prevent="savePsdkConfig">
+
+        <!-- BANNER HEADER & CHỌN TRẠM -->
+        <div class="bg-gradient-to-r from-sky-800 via-blue-800 to-indigo-900 rounded-3xl p-5 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4 border border-sky-500/30">
+          <div class="flex items-start sm:items-center space-x-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-md flex-shrink-0">
+              <i data-lucide="warehouse" class="w-6 h-6 text-amber-300"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2 flex-wrap">
+                <h2 class="text-lg sm:text-xl font-black uppercase tracking-wide">DANH MỤC PHÒNG BAN SỬ DỤNG KHO VẬT TƯ (HMIS)</h2>
+                <span class="bg-amber-400 text-slate-950 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs">Live Portal</span>
+                <span class="bg-sky-400/20 text-sky-200 border border-sky-400/40 text-[10px] font-mono px-2 py-0.5 rounded-full">
+                  dm-chung/phong-su-dung-kho-vtu
+                </span>
+              </div>
+              <p class="text-xs text-sky-100 mt-1">
+                Thiết lập trực tiếp cấu hình <b class="text-white">Loại KCB - Loại kê - Kho - Khoa/Phòng - Đối tượng - Tuyến</b> đồng bộ thời gian thực với cổng <span class="underline">ytcs.hmis.vn</span>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Chọn trạm & xuất Excel -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <div class="flex items-center space-x-2 bg-white/10 p-1.5 rounded-2xl border border-white/20">
+              <span class="text-xs font-bold text-sky-200 pl-2 whitespace-nowrap">Trạm Y Tế:</span>
+              <select
+                v-model="selectedPsdkStationId"
+                @change="loadPsdkStationData(selectedPsdkStationId)"
+                class="bg-white text-slate-900 text-xs font-bold rounded-xl px-3 py-2 focus:ring-2 focus:ring-amber-400 focus:outline-none w-64 sm:w-72 cursor-pointer"
+              >
+                <option v-for="st in stations" :key="st.id" :value="st.id">
+                  [{{ st.code }}] {{ st.name }}
+                </option>
+              </select>
+              <button
+                type="button"
+                @click="loadPsdkStationData(selectedPsdkStationId)"
+                :disabled="isLoadingPsdkData"
+                class="p-2 bg-white/15 hover:bg-white/25 text-white rounded-xl transition-colors cursor-pointer"
+                title="Làm mới dữ liệu trạm"
+              >
+                <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingPsdkData }"></i>
+              </button>
+            </div>
+
+            <button
+              type="button"
+              @click="downloadPsdkExcel"
+              class="inline-flex items-center space-x-1.5 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
+            >
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>Xuất Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- THÔNG BÁO KHI THÀNH CÔNG / LỖI (HIỂN THỊ NỔI BẬT NGAY TRÊN GIAO DIỆN) -->
+        <div
+          v-if="psdkNotice.show"
+          class="p-4 rounded-2xl border-2 shadow-lg flex items-start justify-between gap-3 animate-in fade-in duration-150"
+          :class="psdkNotice.type === 'success' ? 'bg-emerald-50 border-emerald-400 text-emerald-950' : 'bg-rose-50 border-rose-400 text-rose-950'"
+        >
+          <div class="flex items-start space-x-3">
+            <div
+              class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 shadow-xs"
+              :class="psdkNotice.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'"
+            >
+              <i :data-lucide="psdkNotice.type === 'success' ? 'check-circle-2' : 'alert-triangle'" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2 flex-wrap">
+                <span class="font-black text-sm uppercase tracking-wide">
+                  {{ psdkNotice.title || (psdkNotice.type === 'success' ? 'THÔNG BÁO CẬP NHẬT THÀNH CÔNG LÊN CỔNG HMIS' : 'THÔNG BÁO LỖI') }}
+                </span>
+                <span v-if="psdkNotice.time" class="text-[11px] font-mono px-2 py-0.5 rounded bg-white/80 border border-emerald-300 font-bold">
+                  {{ psdkNotice.time }}
+                </span>
+              </div>
+              <p class="text-xs font-semibold mt-1 leading-relaxed">
+                {{ psdkNotice.message }}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            @click="psdkNotice.show = false"
+            class="p-1.5 rounded-lg hover:bg-black/5 text-slate-500 hover:text-slate-800 cursor-pointer"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- KHUNG FORM THIẾT LẬP (CHUẨN GIAO DIỆN HMIS NHƯ ẢNH) -->
+        <div class="bg-white rounded-xl border border-slate-200/90 shadow-xs p-5">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-3.5 items-center text-xs">
+
+            <!-- 1. Loại KCB * -->
+            <div class="flex items-center">
+              <label class="w-24 shrink-0 font-medium text-slate-700">
+                Loại KCB<span class="text-rose-500 font-bold ml-0.5">*</span>
+              </label>
+              <select
+                v-model="psdkForm.loaiKcbId"
+                @change="onPsdkLoaiKcbChange"
+                class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded text-xs font-medium text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+              >
+                <option :value="null">Chọn</option>
+                <option v-for="item in psdkStationData.listLoaiKCB" :key="item.giaTri" :value="item.giaTri">
+                  {{ item.ten }}
+                </option>
+              </select>
+            </div>
+
+            <!-- 2. Loại kê * -->
+            <div class="flex items-center">
+              <label class="w-24 shrink-0 font-medium text-slate-700">
+                Loại kê<span class="text-rose-500 font-bold ml-0.5">*</span>
+              </label>
+              <select
+                v-model="psdkForm.loaiKeId"
+                class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded text-xs font-medium text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+              >
+                <option :value="null">Chọn</option>
+                <option v-for="item in psdkFormLoaiKeOptions" :key="item.giaTri" :value="item.giaTri">
+                  {{ item.ten }}
+                </option>
+              </select>
+            </div>
+
+            <!-- 3. Kho * -->
+            <div class="flex items-center">
+              <label class="w-24 shrink-0 font-medium text-slate-700">
+                Kho<span class="text-rose-500 font-bold ml-0.5">*</span>
+              </label>
+              <select
+                v-model="psdkForm.khoId"
+                class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded text-xs font-medium text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+              >
+                <option :value="null">Chọn</option>
+                <option v-for="k in psdkStationData.listKho" :key="k.id" :value="k.id">
+                  {{ k.tenKho }} ({{ k.maKho }})
+                </option>
+              </select>
+            </div>
+
+            <!-- 4. Khoa : -->
+            <div class="flex items-center">
+              <label class="w-24 shrink-0 font-medium text-slate-700">
+                Khoa :
+              </label>
+              <select
+                v-model="psdkForm.khoaId"
+                @change="onPsdkKhoaChange"
+                class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded text-xs font-medium text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+              >
+                <option :value="null">Chọn</option>
+                <option v-for="k in psdkStationData.listKhoa" :key="k.id" :value="k.id">
+                  {{ k.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- 5. Phòng : -->
+            <div class="flex items-center">
+              <label class="w-24 shrink-0 font-medium text-slate-700">
+                Phòng :
+              </label>
+              <select
+                v-model="psdkForm.phongId"
+                class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded text-xs font-medium text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+              >
+                <option :value="-1">Chọn (Tất cả phòng)</option>
+                <option v-for="p in psdkFormPhongOptions" :key="p.id" :value="p.id">
+                  {{ p.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- 6. Đối tượng : -->
+            <div class="flex items-center">
+              <label class="w-24 shrink-0 font-medium text-slate-700">
+                Đối tượng :
+              </label>
+              <select
+                v-model="psdkForm.doiTuongBenhNhanId"
+                @change="onPsdkDoiTuongChange"
+                :disabled="Number(psdkForm.loaiKcbId) === 9"
+                class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded text-xs font-medium text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none disabled:bg-slate-100 disabled:text-slate-400"
+              >
+                <option v-for="dt in psdkStationData.listDoiTuong" :key="dt.id" :value="dt.id">
+                  {{ dt.tenDtbn }}
+                </option>
+              </select>
+            </div>
+
+            <!-- 7. Tuyến + Nút Lưu (F4) & Hủy -->
+            <div class="lg:col-span-2 flex flex-wrap items-center gap-3">
+              <div class="flex items-center flex-1 min-w-[200px]">
+                <label class="w-24 shrink-0 font-medium text-slate-700">
+                  Tuyến :
+                </label>
+                <select
+                  v-model="psdkForm.bhytLoaiId"
+                  :disabled="Number(psdkForm.doiTuongBenhNhanId) !== 1"
+                  class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded text-xs font-medium text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none disabled:bg-slate-100 disabled:text-slate-400"
+                >
+                  <option :value="null">Chọn</option>
+                  <option v-for="t in psdkStationData.listTuyen" :key="t.id" :value="t.id">
+                    {{ t.tenloaibhyt }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Bộ nút Lưu (F4), Hủy & Đồng bộ ALL Trạm -->
+              <div class="flex items-center space-x-2">
+                <button
+                  type="button"
+                  @click="savePsdkConfig"
+                  :disabled="isSavingPsdk"
+                  class="px-4 py-2 bg-[#1890ff] hover:bg-blue-600 text-white font-bold text-xs rounded shadow-xs transition-colors cursor-pointer disabled:opacity-50 flex items-center space-x-1.5"
+                >
+                  <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin" v-if="isSavingPsdk"></i>
+                  <span>{{ isSavingPsdk ? 'Đang lưu...' : 'Lưu (F4)' }}</span>
+                </button>
+
+                <button
+                  type="button"
+                  @click="resetPsdkForm"
+                  class="px-4 py-2 bg-white hover:bg-slate-50 text-blue-600 font-semibold text-xs rounded border border-blue-400 transition-colors cursor-pointer"
+                >
+                  Hủy
+                </button>
+
+                <button
+                  type="button"
+                  @click="savePsdkConfigAllStations"
+                  :disabled="isSavingPsdk"
+                  class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs rounded shadow-xs transition-colors cursor-pointer disabled:opacity-50 flex items-center space-x-1"
+                  title="Lưu cấu hình đang chọn trên form này đồng loạt cho toàn bộ các trạm y tế"
+                >
+                  <i data-lucide="zap" class="w-3.5 h-3.5 fill-current"></i>
+                  <span>Lưu cho ALL ({{ stations.length }} Trạm)</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- KHUNG BẢNG: DANH SÁCH PHÒNG BAN SỬ DỤNG KHO VẬT TƯ (CHUẨN GIAO DIỆN HMIS NHƯ ẢNH) -->
+        <div class="bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
+          <!-- Tiêu đề bảng -->
+          <div class="px-4 py-3 bg-slate-100/80 border-b border-slate-200 flex items-center justify-between">
+            <h3 class="font-bold text-slate-800 text-xs sm:text-sm">
+              Danh sách phòng ban sử dụng kho vật tư
+            </h3>
+            <span class="text-xs text-slate-600 font-semibold">
+              Tổng số: <strong class="text-blue-700 font-mono">{{ filteredPsdkRows.length }}</strong> / {{ psdkStationData.rows.length }} bản ghi
+            </span>
+          </div>
+
+          <!-- Bảng dữ liệu -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-800 border-collapse">
+              <thead>
+                <!-- Dòng tiêu đề cột -->
+                <tr class="bg-slate-100 text-[#004f9e] font-bold border-b border-slate-200">
+                  <th class="px-3 py-2.5 min-w-[140px]">Loại khám chữa bệnh</th>
+                  <th class="px-3 py-2.5 min-w-[160px]">Loại kê</th>
+                  <th class="px-3 py-2.5 min-w-[180px]">Kho</th>
+                  <th class="px-3 py-2.5 min-w-[150px]">Phòng</th>
+                  <th class="px-3 py-2.5 min-w-[190px]">Khoa</th>
+                  <th class="px-3 py-2.5 min-w-[120px]">Đối tượng</th>
+                  <th class="px-3 py-2.5 min-w-[120px]">Tuyến</th>
+                  <th class="px-3 py-2.5 w-28">Stt order</th>
+                  <th class="px-3 py-2.5 w-16 text-center">Xóa</th>
+                </tr>
+
+                <!-- Dòng bộ lọc từng cột (Giống hệt giao diện HMIS trong ảnh) -->
+                <tr class="bg-slate-50/70 border-b border-slate-200">
+                  <!-- Lọc Loại KCB -->
+                  <td class="px-2 py-1.5">
+                    <select v-model="psdkTableFilter.loaiKcbId" class="w-full px-2 py-1.5 bg-white border border-slate-300 rounded text-xs text-slate-700 focus:outline-none focus:border-blue-500">
+                      <option value="">Chọn</option>
+                      <option v-for="item in psdkStationData.listLoaiKCB" :key="item.giaTri" :value="String(item.giaTri)">
+                        {{ item.ten }}
+                      </option>
+                    </select>
+                  </td>
+
+                  <!-- Lọc Loại kê -->
+                  <td class="px-2 py-1.5">
+                    <select v-model="psdkTableFilter.loaiKeId" class="w-full px-2 py-1.5 bg-white border border-slate-300 rounded text-xs text-slate-700 focus:outline-none focus:border-blue-500">
+                      <option value="">Chọn</option>
+                      <option v-for="item in psdkFilterLoaiKeOptions" :key="item.giaTri + '_' + item.ten" :value="String(item.giaTri)">
+                        {{ item.ten }}
+                      </option>
+                    </select>
+                  </td>
+
+                  <!-- Lọc Kho -->
+                  <td class="px-2 py-1.5">
+                    <select v-model="psdkTableFilter.khoId" class="w-full px-2 py-1.5 bg-white border border-slate-300 rounded text-xs text-slate-700 focus:outline-none focus:border-blue-500">
+                      <option value="">Chọn</option>
+                      <option v-for="k in psdkStationData.listKho" :key="k.id" :value="String(k.id)">
+                        {{ k.tenKho }}
+                      </option>
+                    </select>
+                  </td>
+
+                  <!-- Lọc Phòng -->
+                  <td class="px-2 py-1.5">
+                    <select v-model="psdkTableFilter.phongId" class="w-full px-2 py-1.5 bg-white border border-slate-300 rounded text-xs text-slate-700 focus:outline-none focus:border-blue-500">
+                      <option value="">Chọn</option>
+                      <option v-for="p in psdkStationData.listPhong" :key="p.id" :value="String(p.id)">
+                        {{ p.name }}
+                      </option>
+                    </select>
+                  </td>
+
+                  <!-- Lọc Khoa -->
+                  <td class="px-2 py-1.5">
+                    <select v-model="psdkTableFilter.khoaId" class="w-full px-2 py-1.5 bg-white border border-slate-300 rounded text-xs text-slate-700 focus:outline-none focus:border-blue-500">
+                      <option value="">Chọn</option>
+                      <option v-for="k in psdkStationData.listKhoa" :key="k.id" :value="String(k.id)">
+                        {{ k.name }}
+                      </option>
+                    </select>
+                  </td>
+
+                  <!-- Lọc Đối tượng -->
+                  <td class="px-2 py-1.5">
+                    <select v-model="psdkTableFilter.doiTuongBenhNhanId" class="w-full px-2 py-1.5 bg-white border border-slate-300 rounded text-xs text-slate-700 focus:outline-none focus:border-blue-500">
+                      <option value="">Chọn</option>
+                      <option v-for="dt in psdkStationData.listDoiTuong" :key="dt.id" :value="String(dt.id)">
+                        {{ dt.tenDtbn }}
+                      </option>
+                    </select>
+                  </td>
+
+                  <!-- Lọc Tuyến -->
+                  <td class="px-2 py-1.5">
+                    <select v-model="psdkTableFilter.bhytLoaiId" class="w-full px-2 py-1.5 bg-white border border-slate-300 rounded text-xs text-slate-700 focus:outline-none focus:border-blue-500">
+                      <option value="">Chọn</option>
+                      <option v-for="t in psdkStationData.listTuyen" :key="t.id" :value="String(t.id)">
+                        {{ t.tenloaibhyt }}
+                      </option>
+                    </select>
+                  </td>
+
+                  <!-- Tìm Stt order -->
+                  <td class="px-2 py-1.5">
+                    <input
+                      v-model="psdkTableFilter.stt"
+                      type="text"
+                      placeholder="Tìm"
+                      class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded text-xs text-slate-700 focus:outline-none focus:border-blue-500"
+                    />
+                  </td>
+
+                  <!-- Xóa bộ lọc -->
+                  <td class="px-2 py-1.5 text-center">
+                    <button
+                      v-if="hasActivePsdkFilter"
+                      type="button"
+                      @click="clearPsdkTableFilter"
+                      class="text-[11px] text-blue-600 hover:underline font-semibold cursor-pointer"
+                      title="Xóa bộ lọc"
+                    >
+                      Bỏ lọc
+                    </button>
+                  </td>
+                </tr>
+              </thead>
+
+              <tbody class="divide-y divide-slate-200/80">
+                <tr v-if="isLoadingPsdkData">
+                  <td colspan="9" class="px-4 py-12 text-center text-slate-400">
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                      <i data-lucide="loader-2" class="w-7 h-7 animate-spin text-blue-600"></i>
+                      <span>Đang tải danh sách phòng ban sử dụng kho vật tư từ cổng HMIS...</span>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr v-else-if="filteredPsdkRows.length === 0">
+                  <td colspan="9" class="px-4 py-10 text-center text-slate-400">
+                    Không có bản ghi phòng ban sử dụng kho vật tư nào khớp điều kiện lọc.
+                  </td>
+                </tr>
+
+                <tr
+                  v-else
+                  v-for="row in pagedPsdkRows"
+                  :key="row.id"
+                  @click="selectPsdkRow(row)"
+                  class="hover:bg-blue-50/50 transition-colors cursor-pointer"
+                  :class="{ 'bg-blue-50/80': selectedPsdkRowId === row.id }"
+                >
+                  <td class="px-3 py-2.5 font-medium text-slate-800">{{ row.loaiKcbTen }}</td>
+                  <td class="px-3 py-2.5 text-slate-800">{{ row.loaiKeTen }}</td>
+                  <td class="px-3 py-2.5 text-slate-800">{{ row.tenKho }}</td>
+                  <td class="px-3 py-2.5 text-slate-700">{{ row.phongTen }}</td>
+                  <td class="px-3 py-2.5 text-slate-700">{{ row.khoaTen }}</td>
+                  <td class="px-3 py-2.5 text-slate-700">{{ row.doiTuongTen }}</td>
+                  <td class="px-3 py-2.5 text-slate-700">{{ row.tuyenTen }}</td>
+                  <td class="px-2 py-1.5" @click.stop>
+                    <input
+                      v-model="row.stt"
+                      type="text"
+                      @keydown.enter.prevent="updatePsdkRowStt(row)"
+                      @blur="onPsdkSttBlur(row)"
+                      class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded text-xs text-slate-800 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                    />
+                  </td>
+                  <td class="px-2 py-1.5 text-center" @click.stop>
+                    <button
+                      type="button"
+                      @click="deletePsdkRow(row)"
+                      :disabled="isDeletingPsdkId === row.id"
+                      class="inline-flex items-center justify-center w-7 h-7 bg-[#ff4d4f] hover:bg-rose-600 text-white rounded shadow-2xs transition-colors cursor-pointer disabled:opacity-50"
+                      title="Xóa dòng cấu hình này"
+                    >
+                      <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin" v-if="isDeletingPsdkId === row.id"></i>
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5" v-else></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Phân trang bảng -->
+          <div class="px-4 py-3 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
+            <div>
+              Tổng số: <strong class="font-mono text-slate-900">{{ filteredPsdkRows.length }}</strong> bản ghi
+            </div>
+            <div class="flex items-center space-x-2">
+              <button
+                type="button"
+                @click="psdkCurrentPage--"
+                :disabled="psdkCurrentPage <= 1"
+                class="px-2.5 py-1 bg-white hover:bg-slate-100 disabled:opacity-40 text-slate-700 font-bold rounded border border-slate-300 cursor-pointer"
+              >
+                &lt;
+              </button>
+              <span class="px-2.5 py-1 bg-[#004f9e] text-white font-bold rounded font-mono">
+                {{ psdkCurrentPage }}
+              </span>
+              <span class="text-slate-500">/ {{ psdkTotalPages }}</span>
+              <button
+                type="button"
+                @click="psdkCurrentPage++"
+                :disabled="psdkCurrentPage >= psdkTotalPages"
+                class="px-2.5 py-1 bg-white hover:bg-slate-100 disabled:opacity-40 text-slate-700 font-bold rounded border border-slate-300 cursor-pointer"
+              >
+                &gt;
+              </button>
+              <select v-model.number="psdkPageSize" @change="psdkCurrentPage = 1" class="px-2 py-1 bg-white border border-slate-300 rounded text-xs">
+                <option :value="10">10 / trang</option>
+                <option :value="20">20 / trang</option>
+                <option :value="50">50 / trang</option>
+              </select>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -5288,12 +5785,24 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 max-h-[460px] overflow-y-auto">
                 <div v-for="p in parseParams(item.giaTriThietLap)" :key="p.key" class="p-4 bg-white rounded-xl border border-slate-200/90 hover:border-indigo-300 hover:shadow-xs transition-all flex flex-col justify-between" :class="{ 'ring-2 ring-indigo-500 bg-indigo-50/70 border-indigo-400 font-semibold shadow-xs': cauhinhSearch && (p.key.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()) || (p.mota && p.mota.toLowerCase().includes(cauhinhSearch.toLowerCase().trim()))) }">
-                  <div class="flex items-center justify-between gap-2 border-b border-slate-200/80 pb-2.5 mb-2.5">
-                    <span class="font-mono font-bold text-base text-slate-900 break-all">{{ p.key }}</span>
-                    <span class="text-sm font-mono font-black px-2.5 py-0.5 rounded-lg bg-indigo-100 text-indigo-900 border border-indigo-200 shrink-0">{{ p.giatri !== undefined ? p.giatri : '—' }}</span>
+                  <div>
+                    <div class="flex items-center justify-between gap-2 border-b border-slate-200/80 pb-2.5 mb-2.5">
+                      <span class="font-mono font-bold text-base text-slate-900 break-all">{{ p.key }}</span>
+                      <span class="text-sm font-mono font-black px-2.5 py-0.5 rounded-lg bg-indigo-100 text-indigo-900 border border-indigo-200 shrink-0">{{ p.giatri !== undefined ? p.giatri : '—' }}</span>
+                    </div>
+                    <div v-if="p.mota" class="text-slate-800 text-[13pt] text-param-desc leading-relaxed whitespace-pre-line font-medium pt-1">{{ p.mota }}</div>
+                    <div v-else class="text-slate-400 text-sm italic pt-1">(Không có mô tả tham số)</div>
                   </div>
-                  <div v-if="p.mota" class="text-slate-800 text-[13pt] text-param-desc leading-relaxed whitespace-pre-line font-medium pt-1">{{ p.mota }}</div>
-                  <div v-else class="text-slate-400 text-sm italic pt-1">(Không có mô tả tham số)</div>
+                  <div class="pt-3 mt-3 border-t border-slate-100 flex justify-end">
+                    <button
+                      type="button"
+                      @click="openBulkParamEditWithPreset(item.maCauHinh, p.key)"
+                      class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs rounded-lg border border-purple-200 transition-colors cursor-pointer"
+                    >
+                      <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                      <span>Sửa tham số này cho các trạm</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -5311,7 +5820,7 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
     </div>
 
     <!-- ========================================================================= -->
-    <!-- MODAL 8: SỬA THAM SỐ CẤU HÌNH NHANH CHO CÁC TRẠM ĐANG TÍCH               -->
+    <!-- MODAL 8: SỬA THAM SỐ CẤU HÌNH NHANH CHO CÁC TRẠM                          -->
     <!-- ========================================================================= -->
     <div v-if="modals.bulkParamEdit" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-3 animate-in fade-in duration-150">
       <div class="bg-white rounded-2xl shadow-2xl max-w-[97vw] w-[97vw] border border-slate-200 overflow-hidden flex flex-col h-[96vh] max-h-[96vh]">
@@ -5325,13 +5834,23 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               <div class="flex items-center space-x-2">
                 <h3 class="text-lg font-bold">Sửa Tham Số Cấu Hình Nhanh</h3>
                 <span class="bg-purple-500/60 border border-purple-300/40 text-[11px] px-2.5 py-0.5 rounded-full font-bold">
-                  {{ selectedIds.length }} trạm y tế
+                  Áp dụng: {{ bulkParamTargetStationsList.length }} trạm y tế
                 </span>
               </div>
-              <p class="text-xs text-purple-100 mt-0.5">Tìm kiếm theo tên cấu hình, tên tham số hoặc mô tả nghiệp vụ và cập nhật hàng loạt</p>
+              <p class="text-xs text-purple-100 mt-0.5">Tìm kiếm theo tên cấu hình, tên tham số hoặc gán tự động theo Mã CSKCB (5 số) riêng của từng trạm</p>
             </div>
           </div>
-          <div class="flex items-center space-x-2">
+          <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+            <!-- Nút mẫu nhanh: hisNoiKhamChuaBenhBanDau theo mã 5 số từng trạm -->
+            <button
+              type="button"
+              @click="applyPresetNoiKcbBanDau()"
+              class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold rounded-xl transition-all border border-amber-200 shadow-sm cursor-pointer"
+              title="Chọn nhanh cấu hình hisNoiKhamChuaBenhBanDau và tự động lấy Mã CSKCB 5 số của từng trạm"
+            >
+              <i data-lucide="zap" class="w-4 h-4 text-slate-950 fill-slate-950"></i>
+              <span>⚡ Mẫu nhanh: hisNoiKhamChuaBenhBanDau (Theo Mã 5 Số Từng Trạm)</span>
+            </button>
             <button
               @click="openSystemLogsModal('cauhinh_thamso')"
               class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold rounded-xl transition-all border border-white/30 shadow-sm cursor-pointer"
@@ -5349,13 +5868,34 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           </div>
         </div>
 
-        <!-- Thanh thông tin các trạm áp dụng -->
-        <div class="bg-purple-50/80 border-b border-purple-100 px-6 py-2.5 flex items-center justify-between text-xs gap-3">
-          <div class="flex items-center space-x-2 overflow-hidden flex-1">
-            <span class="font-bold text-purple-900 whitespace-nowrap">Danh sách trạm áp dụng ({{ selectedStationsList.length }}):</span>
+        <!-- Thanh chọn phạm vi trạm & thông tin các trạm áp dụng -->
+        <div class="bg-purple-50/80 border-b border-purple-100 px-6 py-2.5 flex flex-wrap items-center justify-between text-xs gap-3">
+          <div class="flex items-center space-x-2 shrink-0">
+            <span class="font-bold text-purple-950">Phạm vi áp dụng:</span>
+            <button
+              type="button"
+              @click="bulkParamTargetScope = 'selected'"
+              :disabled="selectedIds.length === 0"
+              class="px-2.5 py-1 rounded-lg font-bold text-xs border transition-all cursor-pointer disabled:opacity-40"
+              :class="bulkParamTargetScope === 'selected' ? 'bg-purple-600 text-white border-purple-700 shadow-2xs' : 'bg-white text-purple-800 border-purple-200 hover:bg-purple-100/60'"
+            >
+              Các trạm đang tích ({{ selectedIds.length }})
+            </button>
+            <button
+              type="button"
+              @click="bulkParamTargetScope = 'all'"
+              class="px-2.5 py-1 rounded-lg font-bold text-xs border transition-all cursor-pointer"
+              :class="bulkParamTargetScope === 'all' ? 'bg-purple-600 text-white border-purple-700 shadow-2xs' : 'bg-white text-purple-800 border-purple-200 hover:bg-purple-100/60'"
+            >
+              Tất cả các trạm ({{ stations.length }})
+            </button>
+          </div>
+
+          <div class="flex items-center space-x-2 overflow-hidden flex-1 min-w-[200px]">
+            <span class="font-bold text-purple-900 whitespace-nowrap">Danh sách ({{ bulkParamTargetStationsList.length }}):</span>
             <div class="flex items-center space-x-1.5 overflow-x-auto py-0.5">
-              <span v-for="st in selectedStationsList" :key="st.id" class="bg-white px-2 py-0.5 rounded text-purple-800 border border-purple-200 font-medium text-[11px] whitespace-nowrap shadow-2xs">
-                {{ st.name }} ({{ st.username }})
+              <span v-for="st in bulkParamTargetStationsList" :key="st.id" class="bg-white px-2 py-0.5 rounded text-purple-800 border border-purple-200 font-medium text-[11px] whitespace-nowrap shadow-2xs">
+                [{{ getStationCode5Digits(st) }}] {{ st.name }}
               </span>
             </div>
           </div>
@@ -5561,19 +6101,54 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               </div>
 
               <!-- BƯỚC 3: NHẬP GIÁ TRỊ MỚI CHO THAM SỐ -->
-              <div v-if="bulkParamForm.paramKey" class="pt-3 border-t border-slate-200">
-                <label class="block font-bold text-slate-900 text-base mb-1.5">
-                  3. Nhập Giá Trị Mới Cho Tham Số <span class="text-rose-500">*</span>:
-                </label>
-                <input
-                  v-model="bulkParamForm.paramValue"
-                  type="text"
-                  placeholder="Nhập giá trị mới cho tham số này..."
-                  class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-base focus:ring-2 focus:ring-purple-500 focus:outline-none font-mono text-slate-900 font-bold bg-white shadow-2xs placeholder:text-slate-400 placeholder:text-sm"
-                />
-                <p class="text-xs text-slate-500 mt-1.5">
-                  Giá trị cũ đang lưu trên HMIS là: <code class="bg-slate-100 px-2 py-0.5 rounded text-slate-800 font-bold text-xs">{{ selectedParamMeta?.giatri }}</code>
-                </p>
+              <div v-if="bulkParamForm.paramKey" class="pt-3 border-t border-slate-200 space-y-3">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <label class="block font-bold text-slate-900 text-base">
+                    3. Nhập Giá Trị Mới Cho Tham Số <span class="text-rose-500">*</span>:
+                  </label>
+                  <!-- Tùy chọn lấy theo Mã CSKCB 5 số của từng trạm -->
+                  <label class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl border cursor-pointer transition-all select-none"
+                         :class="bulkParamForm.useStationCode ? 'bg-amber-50 border-amber-400 text-amber-950 shadow-2xs ring-2 ring-amber-300/60' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'">
+                    <input type="checkbox" v-model="bulkParamForm.useStationCode" class="rounded border-slate-300 text-purple-600 focus:ring-purple-500 w-4 h-4 cursor-pointer">
+                    <span class="text-xs font-extrabold">🎯 Tự động lấy theo Mã CSKCB (5 số) riêng của từng trạm</span>
+                  </label>
+                </div>
+
+                <!-- Chế độ 1: Gán tự động theo Mã CSKCB 5 số riêng của từng trạm -->
+                <div v-if="bulkParamForm.useStationCode" class="p-3.5 bg-amber-50/90 border border-amber-300 rounded-xl space-y-2.5">
+                  <div class="flex items-center justify-between text-xs text-amber-950 font-bold">
+                    <div class="flex items-center space-x-1.5">
+                      <i data-lucide="sparkles" class="w-4 h-4 text-amber-600"></i>
+                      <span>Mỗi trạm sẽ được gán đúng Mã CSKCB 5 số của chính trạm đó ({{ bulkParamTargetStationsList.length }} trạm):</span>
+                    </div>
+                    <span class="font-mono bg-amber-200/80 text-amber-950 px-2 py-0.5 rounded border border-amber-300 text-[11px]">
+                      {{ bulkParamForm.paramKey }} = [Mã CSKCB 5 số]
+                    </span>
+                  </div>
+                  <div class="max-h-40 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-1.5 bg-white p-2.5 rounded-lg border border-amber-200">
+                    <div v-for="(st, idx) in bulkParamTargetStationsList" :key="st.id" class="flex items-center justify-between px-2.5 py-1.5 rounded bg-slate-50 border border-slate-200/80 text-[11px]">
+                      <span class="truncate font-semibold text-slate-800 pr-2" :title="st.name">
+                        {{ idx + 1 }}. {{ st.name }}
+                      </span>
+                      <span class="font-mono font-black text-purple-700 bg-purple-100 px-2 py-0.5 rounded border border-purple-200 shrink-0">
+                        ➔ {{ getStationCode5Digits(st) }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Chế độ 2: Nhập 1 giá trị cố định dùng chung -->
+                <div v-else>
+                  <input
+                    v-model="bulkParamForm.paramValue"
+                    type="text"
+                    placeholder="Nhập giá trị mới cho tham số này..."
+                    class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-base focus:ring-2 focus:ring-purple-500 focus:outline-none font-mono text-slate-900 font-bold bg-white shadow-2xs placeholder:text-slate-400 placeholder:text-sm"
+                  />
+                  <p class="text-xs text-slate-500 mt-1.5">
+                    Giá trị mẫu đang lưu trên HMIS là: <code class="bg-slate-100 px-2 py-0.5 rounded text-slate-800 font-bold text-xs">{{ selectedParamMeta?.giatri }}</code>
+                  </p>
+                </div>
               </div>
 
               <!-- KẾT QUẢ THỰC THI HÀNG LOẠT (NẾU CÓ) -->
@@ -5623,11 +6198,11 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
             </button>
             <button
               @click="submitBulkParamUpdate"
-              :disabled="!bulkParamForm.maCauHinh || !bulkParamForm.paramKey || isUpdatingParams"
-              class="px-6 py-2.5 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl shadow transition-colors flex items-center space-x-2 disabled:opacity-50"
+              :disabled="!bulkParamForm.maCauHinh || !bulkParamForm.paramKey || isUpdatingParams || bulkParamTargetStationsList.length === 0"
+              class="px-6 py-2.5 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl shadow transition-colors flex items-center space-x-2 disabled:opacity-50 cursor-pointer"
             >
               <i data-lucide="check" class="w-4 h-4"></i>
-              <span>{{ isUpdatingParams ? 'Đang cập nhật...' : 'Cập nhật cho ' + selectedIds.length + ' trạm' }}</span>
+              <span>{{ isUpdatingParams ? 'Đang cập nhật...' : 'Cập nhật cho ' + bulkParamTargetStationsList.length + ' trạm' }}</span>
             </button>
           </div>
         </div>
@@ -9253,8 +9828,9 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           (initialHash === '#nhanvien' ? 'nhanvien' : 'thuoc'))
         );
         const currentStationSubTab = ref(
-          (initialHash === '#map_kqdt_xutri' || initialHash === '#kqdt_xutri') ? 'map_kqdt_xutri' :
-          ((initialHash === '#congkham' || initialHash === '#user_dichvu_phong') ? 'user_dichvu_phong' : 'list')
+          (initialHash === '#phong_su_dung_kho' || initialHash === '#phong-su-dung-kho-vtu') ? 'phong_su_dung_kho' :
+          ((initialHash === '#map_kqdt_xutri' || initialHash === '#kqdt_xutri') ? 'map_kqdt_xutri' :
+          ((initialHash === '#congkham' || initialHash === '#user_dichvu_phong') ? 'user_dichvu_phong' : 'list'))
         );
 
         function setStationSubTab(subTab) {
@@ -9281,8 +9857,19 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                 loadKqdtStationData(firstWithCreds.id);
               }
             }
+          } else if (subTab === 'phong_su_dung_kho') {
+            if (window.location.hash !== '#phong_su_dung_kho') {
+              history.replaceState(null, '', '#phong_su_dung_kho');
+            }
+            if (!selectedPsdkStationId.value && stations.value.length > 0) {
+              const firstWithCreds = stations.value.find(s => s.username && s.password) || stations.value[0];
+              if (firstWithCreds) {
+                selectedPsdkStationId.value = firstWithCreds.id;
+                loadPsdkStationData(firstWithCreds.id);
+              }
+            }
           } else {
-            if (window.location.hash === '#congkham' || window.location.hash === '#user_dichvu_phong' || window.location.hash === '#map_kqdt_xutri' || window.location.hash === '#kqdt_xutri') {
+            if (window.location.hash === '#congkham' || window.location.hash === '#user_dichvu_phong' || window.location.hash === '#map_kqdt_xutri' || window.location.hash === '#kqdt_xutri' || window.location.hash === '#phong_su_dung_kho') {
               history.replaceState(null, '', '#stations');
             }
           }
@@ -9298,7 +9885,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           });
         }
         const currentMainTab = ref(
-          (initialHash === '#map_kqdt_xutri' || initialHash === '#kqdt_xutri') ? 'stations' :
+          (initialHash === '#phong_su_dung_kho' || initialHash === '#phong-su-dung-kho-vtu') ? 'stations' :
+          ((initialHash === '#map_kqdt_xutri' || initialHash === '#kqdt_xutri') ? 'stations' :
           ((initialHash === '#congkham' || initialHash === '#user_dichvu_phong') ? 'stations' :
           (initialHash === '#nhanvien_hmis' ? 'nhanvien_hmis' :
           (initialHash === '#stations' ? 'stations' :
@@ -9483,10 +10071,13 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
             } else if (tab === 'map_kqdt_xutri' || tab === 'kqdt_xutri') {
               currentMainTab.value = 'stations';
               setStationSubTab('map_kqdt_xutri');
+            } else if (tab === 'phong_su_dung_kho' || tab === 'phong-su-dung-kho-vtu') {
+              currentMainTab.value = 'stations';
+              setStationSubTab('phong_su_dung_kho');
             } else if (tab === 'stations') {
               currentMainTab.value = 'stations';
               if (!currentStationSubTab.value) currentStationSubTab.value = 'list';
-              if (window.location.hash !== '' && window.location.hash !== '#stations' && window.location.hash !== '#congkham' && window.location.hash !== '#map_kqdt_xutri') {
+              if (window.location.hash !== '' && window.location.hash !== '#stations' && window.location.hash !== '#congkham' && window.location.hash !== '#map_kqdt_xutri' && window.location.hash !== '#phong_su_dung_kho') {
                 history.replaceState(null, '', '#stations');
               }
             }
@@ -9501,7 +10092,8 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
         const isLoadingCauhinh = ref(false);
         const isRefreshingCauhinh = ref(false);
 
-        const bulkParamForm = ref({ maCauHinh: '', paramKey: '', paramValue: '' });
+        const bulkParamForm = ref({ maCauHinh: '', paramKey: '', paramValue: '', useStationCode: false });
+        const bulkParamTargetScope = ref('selected'); // 'selected' | 'all'
         const selectedGroupParams = ref([]);
         const selectedParamMeta = ref(null);
         const isUpdatingParams = ref(false);
@@ -9721,6 +10313,10 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               if (!selectedDoiSoatStationId.value && stations.value.length > 0) {
                 const st11109 = stations.value.find(s => s.username === '11109.ADMINBV' || s.maTram === '11109' || (s.tenTram && s.tenTram.includes('Nà Bủng')));
                 selectedDoiSoatStationId.value = st11109 ? st11109.id : stations.value[0].id;
+              }
+              if (currentStationSubTab.value === 'phong_su_dung_kho' && !selectedPsdkStationId.value && stations.value.length > 0) {
+                selectedPsdkStationId.value = stations.value[0].id;
+                loadPsdkStationData(stations.value[0].id);
               }
             }
           } catch (err) {
@@ -10345,11 +10941,24 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           return stations.value.filter(s => selectedIds.value.includes(s.id));
         });
 
-        async function openBulkParamEditModal() {
-          if (selectedIds.value.length === 0) {
-            showToast('Vui lòng chọn ít nhất 1 trạm y tế', 'error');
-            return;
+        const bulkParamTargetStationsList = computed(() => {
+          if (bulkParamTargetScope.value === 'all') {
+            return stations.value;
           }
+          const sel = stations.value.filter(s => selectedIds.value.includes(s.id));
+          return sel.length > 0 ? sel : stations.value;
+        });
+
+        function getStationCode5Digits(station) {
+          if (!station) return '';
+          const fromCode = String(station.code || '').trim();
+          if (fromCode) return fromCode;
+          const fromUser = String(station.username || '').split('.')[0].trim();
+          return fromUser;
+        }
+
+        async function openBulkParamEditModal() {
+          bulkParamTargetScope.value = selectedIds.value.length > 0 ? 'selected' : 'all';
           if (cauhinhList.value.length === 0) {
             try {
               const res = await axios.get('/api/stations/cauhinh-nghiepvu');
@@ -10358,7 +10967,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
               }
             } catch (e) {}
           }
-          bulkParamForm.value = { maCauHinh: '', paramKey: '', paramValue: '' };
+          bulkParamForm.value = { maCauHinh: '', paramKey: '', paramValue: '', useStationCode: false };
           selectedGroupParams.value = [];
           selectedParamMeta.value = null;
           bulkUpdateResults.value = null;
@@ -10367,6 +10976,42 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           paramSearchQuery.value = '';
           isParamDropdownOpen.value = false;
           modals.value.bulkParamEdit = true;
+          refreshIcons();
+        }
+
+        async function openBulkParamEditWithPreset(maCauHinh, paramKey) {
+          modals.value.cauhinh = false;
+          await openBulkParamEditModal();
+          const group = cauhinhList.value.find(c => c.maCauHinh === maCauHinh);
+          if (group) {
+            selectConfigGroup(group);
+            const matched = selectedGroupParams.value.find(p => p.key === paramKey);
+            if (matched) {
+              selectParamItem(matched);
+            }
+          }
+          refreshIcons();
+        }
+
+        function applyPresetNoiKcbBanDau() {
+          const group = cauhinhList.value.find(c => c.maCauHinh === 'HIS_NOI_KHAM_CHUA_BENH_BAN_DAU');
+          if (group) {
+            selectConfigGroup(group);
+            const matched = selectedGroupParams.value.find(p => p.key === 'hisNoiKhamChuaBenhBanDau') || selectedGroupParams.value[0];
+            if (matched) {
+              selectParamItem(matched);
+            }
+          } else {
+            bulkParamForm.value.maCauHinh = 'HIS_NOI_KHAM_CHUA_BENH_BAN_DAU';
+            bulkParamForm.value.paramKey = 'hisNoiKhamChuaBenhBanDau';
+            selectedParamMeta.value = {
+              key: 'hisNoiKhamChuaBenhBanDau',
+              giatri: '11010',
+              mota: 'Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu'
+            };
+          }
+          bulkParamForm.value.useStationCode = true;
+          showToast('Đã chọn cấu hình hisNoiKhamChuaBenhBanDau theo Mã CSKCB 5 số của từng trạm!');
           refreshIcons();
         }
 
@@ -10458,6 +11103,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           bulkParamForm.value.paramKey = p.key;
           selectedParamMeta.value = p;
           bulkParamForm.value.paramValue = p.giatri !== undefined ? p.giatri : '';
+          bulkParamForm.value.useStationCode = (p.key === 'hisNoiKhamChuaBenhBanDau');
           isParamDropdownOpen.value = false;
           paramSearchQuery.value = '';
           refreshIcons();
@@ -10467,6 +11113,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           bulkParamForm.value.paramKey = '';
           selectedParamMeta.value = null;
           bulkParamForm.value.paramValue = '';
+          bulkParamForm.value.useStationCode = false;
           paramSearchQuery.value = '';
           isParamDropdownOpen.value = true;
           refreshIcons();
@@ -10476,6 +11123,7 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           const p = selectedGroupParams.value.find(item => item.key === bulkParamForm.value.paramKey);
           selectedParamMeta.value = p || null;
           bulkParamForm.value.paramValue = p?.giatri !== undefined ? p.giatri : '';
+          bulkParamForm.value.useStationCode = (bulkParamForm.value.paramKey === 'hisNoiKhamChuaBenhBanDau');
         }
 
         async function submitBulkParamUpdate() {
@@ -10483,16 +11131,22 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
             showToast('Vui lòng chọn nhóm và tham số', 'error');
             return;
           }
+          const targetIds = bulkParamTargetStationsList.value.map(s => s.id);
+          if (targetIds.length === 0) {
+            showToast('Vui lòng chọn ít nhất 1 trạm y tế', 'error');
+            return;
+          }
           isUpdatingParams.value = true;
           try {
             const res = await axios.post('/api/stations/cauhinh-nghiepvu/batch-update-param', {
-              stationIds: selectedIds.value,
+              stationIds: targetIds,
               maCauHinh: bulkParamForm.value.maCauHinh,
               tenCauHinh: selectedGroupObj.value?.tenCauHinh || '',
               paramKey: bulkParamForm.value.paramKey,
               paramName: selectedParamMeta.value?.mota || '',
               oldValue: selectedParamMeta.value?.giatri !== undefined ? String(selectedParamMeta.value.giatri) : '',
-              paramValue: bulkParamForm.value.paramValue
+              paramValue: bulkParamForm.value.paramValue,
+              useStationCode: Boolean(bulkParamForm.value.useStationCode)
             });
             if (res.data.success) {
               bulkUpdateResults.value = res.data.data;
@@ -15172,6 +15826,485 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           }
         }
 
+        // =========================================================================
+        // SUB-VIEW 4: PHÒNG BAN SỬ DỤNG KHO VẬT TƯ (HMIS dm-chung/phong-su-dung-kho-vtu)
+        // =========================================================================
+        const selectedPsdkStationId = ref('');
+        const isLoadingPsdkData = ref(false);
+        const isSavingPsdk = ref(false);
+        const isDeletingPsdkId = ref(null);
+        const selectedPsdkRowId = ref(null);
+        const psdkCurrentPage = ref(1);
+        const psdkPageSize = ref(10);
+        const psdkPhongByKhoaList = ref([]);
+
+        const psdkNotice = ref({
+          show: false,
+          type: 'success',
+          title: '',
+          message: '',
+          time: ''
+        });
+
+        function showPsdkNotice(type, title, message) {
+          const now = new Date();
+          const timeStr = now.toLocaleTimeString('vi-VN') + ' ' + now.toLocaleDateString('vi-VN');
+          psdkNotice.value = {
+            show: true,
+            type,
+            title,
+            message,
+            time: timeStr
+          };
+          showToast(message, type === 'success' ? 'success' : 'error');
+        }
+
+        const psdkStationData = ref({
+          stationId: '',
+          stationCode: '',
+          stationName: '',
+          companyId: 1,
+          totalRows: 0,
+          rows: [],
+          listLoaiKCB: [
+            { giaTri: 1, ten: 'Ngoại trú' },
+            { giaTri: 3, ten: 'Điều trị ngoại trú' },
+            { giaTri: 5, ten: 'Khám sk theo đoàn' },
+            { giaTri: 0, ten: 'Nội trú' },
+            { giaTri: 9, ten: 'Dược' }
+          ],
+          listLoaiKeDon: [
+            { giaTri: 1, ten: 'Kê thuốc từ kho' },
+            { giaTri: 2, ten: 'Kê thuốc từ tủ trực' },
+            { giaTri: 3, ten: 'Kê thuốc mua ngoài' },
+            { giaTri: 6, ten: 'Kê thuốc đông y' },
+            { giaTri: 7, ten: 'Phiếu thuốc miễn phí' },
+            { giaTri: 8, ten: 'Kê vật tư' },
+            { giaTri: 9, ten: 'Kê thuốc hao phí' },
+            { giaTri: 10, ten: 'Kê vật tư hao phí' },
+            { giaTri: 11, ten: 'Kê thuốc đi kèm' },
+            { giaTri: 12, ten: 'Kê vật tư đi kèm' }
+          ],
+          listLoaiKeDuoc: [
+            { giaTri: 1, ten: 'Nhà cung cấp' },
+            { giaTri: 2, ten: 'Nhập xuất giữa các kho' },
+            { giaTri: 3, ten: 'Kho lẻ' },
+            { giaTri: 4, ten: 'Xuất tvt tiêu hao khoa phòng' },
+            { giaTri: 5, ten: 'Bù kho' },
+            { giaTri: 6, ten: 'Xuất thiếu' },
+            { giaTri: 7, ten: 'Xuất hủy' },
+            { giaTri: 8, ten: 'Xuất khác (cũ Kiếm nghiệm thuốc)' },
+            { giaTri: 9, ten: 'Tủ trực' },
+            { giaTri: 10, ten: 'Bù tủ trực' },
+            { giaTri: 11, ten: 'Yêu cầu nhập trả' },
+            { giaTri: 12, ten: 'Phiếu lĩnh nội trú' },
+            { giaTri: 13, ten: 'Bệnh nhân' }
+          ],
+          listKho: [],
+          listKhoa: [],
+          listPhong: [],
+          listDoiTuong: [
+            { id: -1, tenDtbn: 'Tất cả' },
+            { id: 1, tenDtbn: 'BHYT' },
+            { id: 2, tenDtbn: 'Viện phí' },
+            { id: 5, tenDtbn: 'Miễn Phí' }
+          ],
+          listTuyen: [
+            { id: -1, tenloaibhyt: 'Tất cả' },
+            { id: 1, tenloaibhyt: 'Đúng tuyến' },
+            { id: 2, tenloaibhyt: 'Đúng tuyến giới thiệu' },
+            { id: 3, tenloaibhyt: 'Đúng tuyến cấp cứu' },
+            { id: 4, tenloaibhyt: 'Trái tuyến' },
+            { id: 5, tenloaibhyt: 'Thông tuyến' }
+          ],
+          listNhanVien: []
+        });
+
+        const psdkForm = ref({
+          loaiKcbId: null,
+          loaiKeId: null,
+          khoId: null,
+          khoaId: null,
+          phongId: -1,
+          doiTuongBenhNhanId: -1,
+          bhytLoaiId: null
+        });
+
+        const psdkTableFilter = ref({
+          loaiKcbId: '',
+          loaiKeId: '',
+          khoId: '',
+          phongId: '',
+          khoaId: '',
+          doiTuongBenhNhanId: '',
+          bhytLoaiId: '',
+          stt: ''
+        });
+
+        const psdkFormLoaiKeOptions = computed(() => {
+          if (Number(psdkForm.value.loaiKcbId) === 9) {
+            return psdkStationData.value.listLoaiKeDuoc || [];
+          }
+          return psdkStationData.value.listLoaiKeDon || [];
+        });
+
+        const psdkFilterLoaiKeOptions = computed(() => {
+          if (String(psdkTableFilter.value.loaiKcbId) === '9') {
+            return psdkStationData.value.listLoaiKeDuoc || [];
+          }
+          if (psdkTableFilter.value.loaiKcbId !== '') {
+            return psdkStationData.value.listLoaiKeDon || [];
+          }
+          return [
+            ...(psdkStationData.value.listLoaiKeDon || []),
+            ...(psdkStationData.value.listLoaiKeDuoc || [])
+          ];
+        });
+
+        const psdkFormPhongOptions = computed(() => {
+          if (psdkPhongByKhoaList.value.length > 0) {
+            return psdkPhongByKhoaList.value;
+          }
+          return psdkStationData.value.listPhong || [];
+        });
+
+        const hasActivePsdkFilter = computed(() => {
+          const f = psdkTableFilter.value;
+          return Boolean(f.loaiKcbId || f.loaiKeId || f.khoId || f.phongId || f.khoaId || f.doiTuongBenhNhanId || f.bhytLoaiId || f.stt);
+        });
+
+        function clearPsdkTableFilter() {
+          psdkTableFilter.value = {
+            loaiKcbId: '',
+            loaiKeId: '',
+            khoId: '',
+            phongId: '',
+            khoaId: '',
+            doiTuongBenhNhanId: '',
+            bhytLoaiId: '',
+            stt: ''
+          };
+          psdkCurrentPage.value = 1;
+        }
+
+        const filteredPsdkRows = computed(() => {
+          let list = psdkStationData.value.rows || [];
+          const f = psdkTableFilter.value;
+          if (f.loaiKcbId !== '') {
+            list = list.filter(r => String(r.loaiKcbId) === String(f.loaiKcbId));
+          }
+          if (f.loaiKeId !== '') {
+            list = list.filter(r => String(r.loaiKeId) === String(f.loaiKeId));
+          }
+          if (f.khoId !== '') {
+            list = list.filter(r => String(r.khoId) === String(f.khoId));
+          }
+          if (f.phongId !== '') {
+            list = list.filter(r => String(r.phongId) === String(f.phongId));
+          }
+          if (f.khoaId !== '') {
+            list = list.filter(r => String(r.khoaId) === String(f.khoaId));
+          }
+          if (f.doiTuongBenhNhanId !== '') {
+            if (String(f.doiTuongBenhNhanId) === '-1') {
+              list = list.filter(r => r.doiTuongBenhNhanId == null || Number(r.doiTuongBenhNhanId) === -1);
+            } else {
+              list = list.filter(r => String(r.doiTuongBenhNhanId) === String(f.doiTuongBenhNhanId));
+            }
+          }
+          if (f.bhytLoaiId !== '') {
+            if (String(f.bhytLoaiId) === '-1') {
+              list = list.filter(r => r.bhytLoaiId == null || Number(r.bhytLoaiId) === -1);
+            } else {
+              list = list.filter(r => String(r.bhytLoaiId) === String(f.bhytLoaiId));
+            }
+          }
+          if (f.stt && String(f.stt).trim() !== '') {
+            const q = String(f.stt).trim().toLowerCase();
+            list = list.filter(r => String(r.stt ?? '').toLowerCase().includes(q));
+          }
+          return list;
+        });
+
+        const psdkTotalPages = computed(() => {
+          return Math.max(1, Math.ceil(filteredPsdkRows.value.length / psdkPageSize.value));
+        });
+
+        const pagedPsdkRows = computed(() => {
+          const start = (psdkCurrentPage.value - 1) * psdkPageSize.value;
+          return filteredPsdkRows.value.slice(start, start + psdkPageSize.value);
+        });
+
+        async function loadPsdkStationData(stationId) {
+          if (!stationId) {
+            if (stations.value.length > 0) {
+              stationId = stations.value[0].id;
+              selectedPsdkStationId.value = stationId;
+            } else {
+              return;
+            }
+          } else {
+            selectedPsdkStationId.value = stationId;
+          }
+
+          isLoadingPsdkData.value = true;
+          try {
+            const res = await axios.get(`/api/phong-su-dung-kho/station-data?stationId=${stationId}`);
+            if (res.data?.success && res.data.data) {
+              psdkStationData.value = res.data.data;
+              psdkStationData.value.rows.forEach(r => {
+                r._origStt = r.stt ?? '';
+              });
+            } else {
+              showToast(res.data?.message || 'Không thể tải danh sách phòng sử dụng kho', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi tải dữ liệu phòng sử dụng kho: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isLoadingPsdkData.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function onPsdkLoaiKcbChange() {
+          psdkForm.value.loaiKeId = null;
+          if (Number(psdkForm.value.loaiKcbId) === 9) {
+            psdkForm.value.doiTuongBenhNhanId = -1;
+            psdkForm.value.bhytLoaiId = null;
+          }
+        }
+
+        async function onPsdkKhoaChange() {
+          psdkForm.value.phongId = -1;
+          psdkPhongByKhoaList.value = [];
+          if (psdkForm.value.khoaId && selectedPsdkStationId.value) {
+            try {
+              const res = await axios.get(`/api/phong-su-dung-kho/phong-by-khoa?stationId=${selectedPsdkStationId.value}&khoaId=${psdkForm.value.khoaId}`);
+              if (res.data?.success && Array.isArray(res.data.data)) {
+                psdkPhongByKhoaList.value = res.data.data;
+              }
+            } catch (e) {}
+          }
+        }
+
+        function onPsdkDoiTuongChange() {
+          if (Number(psdkForm.value.doiTuongBenhNhanId) !== 1) {
+            psdkForm.value.bhytLoaiId = null;
+          } else if (psdkForm.value.bhytLoaiId == null) {
+            psdkForm.value.bhytLoaiId = -1;
+          }
+        }
+
+        function resetPsdkForm() {
+          selectedPsdkRowId.value = null;
+          psdkPhongByKhoaList.value = [];
+          psdkForm.value = {
+            loaiKcbId: null,
+            loaiKeId: null,
+            khoId: null,
+            khoaId: null,
+            phongId: -1,
+            doiTuongBenhNhanId: -1,
+            bhytLoaiId: null
+          };
+        }
+
+        async function selectPsdkRow(row) {
+          selectedPsdkRowId.value = row.id;
+          psdkForm.value = {
+            loaiKcbId: row.loaiKcbId,
+            loaiKeId: row.loaiKeId,
+            khoId: row.khoId || null,
+            khoaId: row.khoaId || null,
+            phongId: row.phongId || -1,
+            doiTuongBenhNhanId: row.doiTuongBenhNhanId != null ? row.doiTuongBenhNhanId : -1,
+            bhytLoaiId: row.bhytLoaiId != null ? row.bhytLoaiId : (row.doiTuongBenhNhanId === 1 ? -1 : null)
+          };
+          if (row.khoaId && selectedPsdkStationId.value) {
+            try {
+              const res = await axios.get(`/api/phong-su-dung-kho/phong-by-khoa?stationId=${selectedPsdkStationId.value}&khoaId=${row.khoaId}`);
+              if (res.data?.success && Array.isArray(res.data.data)) {
+                psdkPhongByKhoaList.value = res.data.data;
+              }
+            } catch (e) {}
+          } else {
+            psdkPhongByKhoaList.value = [];
+          }
+        }
+
+        async function savePsdkConfig() {
+          if (psdkForm.value.loaiKcbId == null || psdkForm.value.loaiKeId == null) {
+            showPsdkNotice('error', 'THIẾU THÔNG TIN BẮT BUỘC', 'Vui lòng chọn đầy đủ Loại KCB (*) và Loại kê (*) trước khi bấm Lưu!');
+            return;
+          }
+          const isMuaNgoai = Number(psdkForm.value.loaiKeId) === 3 && Number(psdkForm.value.loaiKcbId) !== 9;
+          if (!isMuaNgoai && !psdkForm.value.khoId) {
+            showPsdkNotice('error', 'THIẾU THÔNG TIN KHO (*)', 'Vui lòng chọn Kho (*) sử dụng vật tư/thuốc trước khi bấm Lưu!');
+            return;
+          }
+
+          isSavingPsdk.value = true;
+          try {
+            const payload = {
+              stationId: selectedPsdkStationId.value,
+              loaiKcbId: psdkForm.value.loaiKcbId,
+              loaiKeId: psdkForm.value.loaiKeId,
+              khoIds: psdkForm.value.khoId ? [psdkForm.value.khoId] : [],
+              khoaId: psdkForm.value.khoaId,
+              phongIds: (psdkForm.value.phongId && Number(psdkForm.value.phongId) !== -1) ? [psdkForm.value.phongId] : [],
+              doiTuongBenhNhanId: psdkForm.value.doiTuongBenhNhanId,
+              bhytLoaiId: psdkForm.value.bhytLoaiId
+            };
+
+            const res = await axios.post('/api/phong-su-dung-kho/create', payload);
+            if (res.data?.success) {
+              const lkcbTen = psdkStationData.value.listLoaiKCB.find(x => x.giaTri === Number(psdkForm.value.loaiKcbId))?.ten || '';
+              const lkeTen = psdkFormLoaiKeOptions.value.find(x => x.giaTri === Number(psdkForm.value.loaiKeId))?.ten || '';
+              const khoTen = psdkStationData.value.listKho.find(k => k.id === Number(psdkForm.value.khoId))?.tenKho || '';
+              showPsdkNotice(
+                'success',
+                'LƯU THÀNH CÔNG PHÒNG BAN SỬ DỤNG KHO VẬT TƯ LÊN HMIS!',
+                `Đã lưu cấu hình [${lkcbTen} ➔ ${lkeTen} ➔ ${khoTen}] cho trạm [${psdkStationData.value.stationCode}] ${psdkStationData.value.stationName}.`
+              );
+              fetchSystemLogs();
+              resetPsdkForm();
+              await loadPsdkStationData(selectedPsdkStationId.value);
+            } else {
+              showPsdkNotice('error', 'LỖI KHI LƯU CẤU HÌNH', res.data?.message || 'Không thể lưu cấu hình phòng sử dụng kho');
+            }
+          } catch (err) {
+            showPsdkNotice('error', 'LỖI KẾT NỐI HMIS', err.response?.data?.message || err.message);
+          } finally {
+            isSavingPsdk.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function savePsdkConfigAllStations() {
+          if (psdkForm.value.loaiKcbId == null || psdkForm.value.loaiKeId == null) {
+            showPsdkNotice('error', 'THIẾU THÔNG TIN BẮT BUỘC', 'Vui lòng chọn đầy đủ Loại KCB (*) và Loại kê (*) trước khi lưu hàng loạt!');
+            return;
+          }
+          const selectedKhoObj = psdkStationData.value.listKho.find(k => k.id === Number(psdkForm.value.khoId));
+          const selectedKhoaObj = psdkStationData.value.listKhoa.find(k => k.id === Number(psdkForm.value.khoaId));
+          const selectedPhongObj = psdkFormPhongOptions.value.find(p => p.id === Number(psdkForm.value.phongId));
+          const lkcbTen = psdkStationData.value.listLoaiKCB.find(x => x.giaTri === Number(psdkForm.value.loaiKcbId))?.ten || '';
+          const lkeTen = psdkFormLoaiKeOptions.value.find(x => x.giaTri === Number(psdkForm.value.loaiKeId))?.ten || '';
+
+          if (!confirm(`Đồng bộ cấu hình [${lkcbTen} - ${lkeTen} - ${selectedKhoObj?.tenKho || 'Mặc định'}] cho TẤT CẢ ${stations.value.length} Trạm Y Tế (tự động bỏ qua các trạm đã có sẵn)?`)) {
+            return;
+          }
+
+          isSavingPsdk.value = true;
+          try {
+            const res = await axios.post('/api/phong-su-dung-kho/batch-create', {
+              stationIds: 'all',
+              loaiKcbId: psdkForm.value.loaiKcbId,
+              loaiKeId: psdkForm.value.loaiKeId,
+              khoId: psdkForm.value.khoId,
+              maKho: selectedKhoObj?.maKho || '',
+              tenKho: selectedKhoObj?.tenKho || '',
+              khoaId: psdkForm.value.khoaId,
+              khoaCode: selectedKhoaObj?.code || '',
+              khoaName: selectedKhoaObj?.name || '',
+              phongId: psdkForm.value.phongId,
+              phongName: selectedPhongObj?.name || '',
+              doiTuongBenhNhanId: psdkForm.value.doiTuongBenhNhanId,
+              bhytLoaiId: psdkForm.value.bhytLoaiId,
+              skipDuplicates: true
+            });
+
+            if (res.data?.success) {
+              const d = res.data.data;
+              showPsdkNotice(
+                'success',
+                `ĐỒNG BỘ THÀNH CÔNG CHO ${d.totalStations} TRẠM Y TẾ!`,
+                `Đã thêm mới +${d.totalAdded} trạm, bỏ qua ${d.totalSkipped} trạm đã có sẵn (Lỗi: ${d.totalErrors}).`
+              );
+              fetchSystemLogs();
+              await loadPsdkStationData(selectedPsdkStationId.value);
+            } else {
+              showPsdkNotice('error', 'LỖI ĐỒNG BỘ HÀNG LOẠT', res.data?.message || 'Lỗi khi đồng bộ');
+            }
+          } catch (err) {
+            showPsdkNotice('error', 'LỖI ĐỒNG BỘ HÀNG LOẠT', err.response?.data?.message || err.message);
+          } finally {
+            isSavingPsdk.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function updatePsdkRowStt(row) {
+          if (!row || !row.id) return;
+          try {
+            const res = await axios.post('/api/phong-su-dung-kho/update-stt', {
+              stationId: selectedPsdkStationId.value,
+              id: row.id,
+              stt: row.stt
+            });
+            if (res.data?.success) {
+              row._origStt = row.stt;
+              showPsdkNotice('success', 'UPDATE STT THÀNH CÔNG!', `Đã cập nhật Stt order = "${row.stt || ''}" cho dòng [${row.loaiKcbTen} - ${row.loaiKeTen} - ${row.tenKho}].`);
+            } else {
+              showPsdkNotice('error', 'LỖI CẬP NHẬT STT', res.data?.message || 'Không thể cập nhật STT');
+            }
+          } catch (err) {
+            showPsdkNotice('error', 'LỖI CẬP NHẬT STT', err.response?.data?.message || err.message);
+          } finally {
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function onPsdkSttBlur(row) {
+          if (!row) return;
+          if (String(row.stt ?? '') !== String(row._origStt ?? '')) {
+            updatePsdkRowStt(row);
+          }
+        }
+
+        async function deletePsdkRow(row) {
+          if (!row || !row.id) return;
+          if (!confirm(`Bạn có chắc chắn muốn xóa cấu hình:\n- Loại KCB: ${row.loaiKcbTen}\n- Loại kê: ${row.loaiKeTen}\n- Kho: ${row.tenKho}\n- Khoa/Phòng: ${row.khoaTen || 'Tất cả'} / ${row.phongTen || 'Tất cả'}?`)) {
+            return;
+          }
+
+          isDeletingPsdkId.value = row.id;
+          try {
+            const res = await axios.delete(`/api/phong-su-dung-kho/delete?stationId=${selectedPsdkStationId.value}&id=${row.id}`);
+            if (res.data?.success) {
+              showPsdkNotice('success', 'XÓA THÀNH CÔNG!', `Đã xóa dòng cấu hình [${row.loaiKcbTen} - ${row.loaiKeTen} - ${row.tenKho}] khỏi cổng HMIS.`);
+              fetchSystemLogs();
+              await loadPsdkStationData(selectedPsdkStationId.value);
+            } else {
+              showPsdkNotice('error', 'KHÔNG THỂ XÓA!', res.data?.message || 'Lỗi khi xóa dòng cấu hình kho');
+            }
+          } catch (err) {
+            showPsdkNotice('error', 'KHÔNG THỂ XÓA!', err.response?.data?.message || err.message);
+          } finally {
+            isDeletingPsdkId.value = null;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function downloadPsdkExcel() {
+          if (!selectedPsdkStationId.value) return;
+          try {
+            const res = await axios.get(`/api/phong-su-dung-kho/export-excel?stationId=${selectedPsdkStationId.value}`, { responseType: 'blob' });
+            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Phong_Su_Dung_Kho_${selectedPsdkStationId.value}_${Date.now()}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            showToast('Đã tải xuống file Excel danh sách phòng sử dụng kho!', 'success');
+          } catch (err) {
+            showToast('Lỗi tải file Excel: ' + (err.response?.data?.message || err.message), 'error');
+          }
+        }
+
 
         // TAB 6: THỐNG KÊ & BIỂU ĐỒ KCB NGOẠI TRÚ
         // ==========================================
@@ -15711,6 +16844,11 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           isLoadingCauhinh,
           isRefreshingCauhinh,
           bulkParamForm,
+          bulkParamTargetScope,
+          bulkParamTargetStationsList,
+          getStationCode5Digits,
+          openBulkParamEditWithPreset,
+          applyPresetNoiKcbBanDau,
           selectedGroupParams,
           selectedParamMeta,
           isUpdatingParams,
@@ -16170,7 +17308,38 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           selectCommonBatchKqdtKq,
           selectChuyenVienNgoaiTruOnly,
           executeBatchAddXuTriAll,
-          downloadKqdtExcel
+          downloadKqdtExcel,
+          selectedPsdkStationId,
+          isLoadingPsdkData,
+          isSavingPsdk,
+          isDeletingPsdkId,
+          selectedPsdkRowId,
+          psdkCurrentPage,
+          psdkPageSize,
+          psdkNotice,
+          psdkStationData,
+          psdkForm,
+          psdkTableFilter,
+          psdkFormLoaiKeOptions,
+          psdkFilterLoaiKeOptions,
+          psdkFormPhongOptions,
+          hasActivePsdkFilter,
+          clearPsdkTableFilter,
+          filteredPsdkRows,
+          psdkTotalPages,
+          pagedPsdkRows,
+          loadPsdkStationData,
+          onPsdkLoaiKcbChange,
+          onPsdkKhoaChange,
+          onPsdkDoiTuongChange,
+          resetPsdkForm,
+          selectPsdkRow,
+          savePsdkConfig,
+          savePsdkConfigAllStations,
+          updatePsdkRowStt,
+          onPsdkSttBlur,
+          deletePsdkRow,
+          downloadPsdkExcel
         };
       }
     }).mount('#app');

@@ -1478,19 +1478,91 @@
             </div>
           </div>
 
-          <!-- Chọn trạm & xuất Excel -->
+          <!-- Chọn trạm (Hỗ trợ tìm kiếm theo Mã trạm hoặc Tên trạm) & xuất Excel -->
           <div class="flex flex-wrap items-center gap-2.5">
             <div class="flex items-center space-x-2 bg-white/10 p-1.5 rounded-2xl border border-white/20">
               <span class="text-xs font-bold text-sky-200 pl-2 whitespace-nowrap">Trạm Y Tế:</span>
-              <select
-                v-model="selectedPsdkStationId"
-                @change="loadPsdkStationData(selectedPsdkStationId)"
-                class="bg-white text-slate-900 text-xs font-bold rounded-xl px-3 py-2 focus:ring-2 focus:ring-amber-400 focus:outline-none w-64 sm:w-72 cursor-pointer"
-              >
-                <option v-for="st in stations" :key="st.id" :value="st.id">
-                  [{{ st.code }}] {{ st.name }}
-                </option>
-              </select>
+
+              <!-- Custom Searchable Dropdown cho Trạm Y Tế -->
+              <div class="relative w-72 sm:w-80">
+                <div
+                  v-if="isPsdkStationDropdownOpen"
+                  class="fixed inset-0 z-40"
+                  @click="isPsdkStationDropdownOpen = false"
+                ></div>
+
+                <!-- Ô hiển thị trạm đang chọn & bấm để mở tìm kiếm -->
+                <div
+                  @click="isPsdkStationDropdownOpen = !isPsdkStationDropdownOpen; if(isPsdkStationDropdownOpen) nextTick(() => { refreshIcons(); $refs.psdkStationSearchInput?.focus(); })"
+                  class="bg-white text-slate-900 text-xs font-bold rounded-xl px-3 py-2 border border-sky-300 shadow-xs flex items-center justify-between cursor-pointer hover:border-amber-400 select-none transition-all group relative z-40"
+                >
+                  <div class="flex items-center space-x-1.5 truncate">
+                    <i data-lucide="search" class="w-3.5 h-3.5 text-blue-600 shrink-0"></i>
+                    <span class="truncate" :title="currentSelectedPsdkStationObj ? '[' + currentSelectedPsdkStationObj.code + '] ' + currentSelectedPsdkStationObj.name : 'Tìm hoặc chọn trạm y tế...'">
+                      <template v-if="currentSelectedPsdkStationObj">
+                        <span class="font-mono text-blue-700">[{{ currentSelectedPsdkStationObj.code }}]</span>
+                        <span> {{ currentSelectedPsdkStationObj.name }}</span>
+                      </template>
+                      <span v-else class="text-slate-400 font-normal italic">-- Tìm mã hoặc tên trạm --</span>
+                    </span>
+                  </div>
+                  <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-hover:text-blue-600 shrink-0 ml-1 transition-transform duration-200" :class="{ 'rotate-180': isPsdkStationDropdownOpen }"></i>
+                </div>
+
+                <!-- Bảng xổ xuống có ô gõ tìm kiếm Mã trạm / Tên trạm -->
+                <div
+                  v-if="isPsdkStationDropdownOpen"
+                  class="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 text-slate-800"
+                  @click.stop
+                >
+                  <div class="p-2.5 bg-slate-50 border-b border-slate-200">
+                    <div class="relative">
+                      <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5"></i>
+                      <input
+                        type="text"
+                        ref="psdkStationSearchInput"
+                        v-model="psdkStationSearchQuery"
+                        placeholder="Gõ mã trạm (VD: 11010) hoặc tên trạm..."
+                        class="w-full pl-8 pr-7 py-1.5 text-xs bg-white border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none font-semibold text-slate-800"
+                        @keydown.esc="isPsdkStationDropdownOpen = false"
+                        @keydown.enter.prevent="if(filteredPsdkSelectorStations.length > 0) selectPsdkStationFromSearch(filteredPsdkSelectorStations[0])"
+                      />
+                      <button
+                        v-if="psdkStationSearchQuery"
+                        type="button"
+                        @click="psdkStationSearchQuery = ''"
+                        class="absolute right-2.5 top-1.5 text-slate-400 hover:text-slate-600 text-xs cursor-pointer font-bold"
+                      >✕</button>
+                    </div>
+                    <div class="flex items-center justify-between mt-1.5 px-1 text-[10px] text-slate-500 font-semibold">
+                      <span>Tìm thấy: <strong class="text-blue-700">{{ filteredPsdkSelectorStations.length }}</strong> / {{ stations.length }} trạm</span>
+                      <span class="text-slate-400 italic">Nhấp hoặc Enter để chọn</span>
+                    </div>
+                  </div>
+
+                  <div class="max-h-64 overflow-y-auto divide-y divide-slate-100">
+                    <div
+                      v-for="s in filteredPsdkSelectorStations"
+                      :key="'psdk-st-' + s.id"
+                      @click="selectPsdkStationFromSearch(s)"
+                      class="px-3.5 py-2 text-xs flex items-center justify-between hover:bg-blue-50 cursor-pointer transition-colors"
+                      :class="s.id === selectedPsdkStationId ? 'bg-blue-50/90 text-blue-900 font-bold border-l-4 border-l-blue-600' : 'text-slate-700'"
+                    >
+                      <div class="flex items-center space-x-2 min-w-0">
+                        <span class="font-mono text-[11px] px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 text-blue-700 shrink-0 font-bold">
+                          {{ s.code || 'N/A' }}
+                        </span>
+                        <span class="truncate">{{ s.name }}</span>
+                      </div>
+                      <i v-if="s.id === selectedPsdkStationId" data-lucide="check" class="w-4 h-4 text-blue-600 shrink-0 ml-2"></i>
+                    </div>
+                    <div v-if="filteredPsdkSelectorStations.length === 0" class="p-5 text-center text-slate-400 text-xs italic">
+                      Không tìm thấy trạm nào khớp với "{{ psdkStationSearchQuery }}"
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <button
                 type="button"
                 @click="loadPsdkStationData(selectedPsdkStationId)"
@@ -15830,6 +15902,8 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         // SUB-VIEW 4: PHÒNG BAN SỬ DỤNG KHO VẬT TƯ (HMIS dm-chung/phong-su-dung-kho-vtu)
         // =========================================================================
         const selectedPsdkStationId = ref('');
+        const isPsdkStationDropdownOpen = ref(false);
+        const psdkStationSearchQuery = ref('');
         const isLoadingPsdkData = ref(false);
         const isSavingPsdk = ref(false);
         const isDeletingPsdkId = ref(null);
@@ -15837,6 +15911,34 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
         const psdkCurrentPage = ref(1);
         const psdkPageSize = ref(10);
         const psdkPhongByKhoaList = ref([]);
+
+        const currentSelectedPsdkStationObj = computed(() => {
+          if (!selectedPsdkStationId.value) return null;
+          return stations.value.find(s => s.id === selectedPsdkStationId.value) || null;
+        });
+
+        const filteredPsdkSelectorStations = computed(() => {
+          if (!psdkStationSearchQuery.value || !psdkStationSearchQuery.value.trim()) {
+            return stations.value;
+          }
+          const rawQ = psdkStationSearchQuery.value.trim().toLowerCase();
+          const noAccentQ = rawQ.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          return stations.value.filter(s => {
+            const code = String(s.code || '').toLowerCase();
+            const name = String(s.name || '').toLowerCase();
+            const nameNoAccent = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const user = String(s.username || '').toLowerCase();
+            return code.includes(rawQ) || name.includes(rawQ) || nameNoAccent.includes(noAccentQ) || user.includes(rawQ);
+          });
+        });
+
+        function selectPsdkStationFromSearch(st) {
+          if (!st) return;
+          selectedPsdkStationId.value = st.id;
+          isPsdkStationDropdownOpen.value = false;
+          psdkStationSearchQuery.value = '';
+          loadPsdkStationData(st.id);
+        }
 
         const psdkNotice = ref({
           show: false,
@@ -17310,6 +17412,11 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           executeBatchAddXuTriAll,
           downloadKqdtExcel,
           selectedPsdkStationId,
+          isPsdkStationDropdownOpen,
+          psdkStationSearchQuery,
+          currentSelectedPsdkStationObj,
+          filteredPsdkSelectorStations,
+          selectPsdkStationFromSearch,
           isLoadingPsdkData,
           isSavingPsdk,
           isDeletingPsdkId,

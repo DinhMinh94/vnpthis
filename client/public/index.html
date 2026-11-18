@@ -370,13 +370,13 @@
             <div>
               <div class="flex items-center space-x-2">
                 <h3 class="text-sm font-black uppercase text-slate-800 tracking-wide">QUẢN LÝ &amp; CẤU HÌNH TRẠM Y TẾ (HMIS)</h3>
-                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">4 Phân Hệ</span>
+                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">5 Phân Hệ</span>
               </div>
-              <p class="text-xs text-slate-500 mt-0.5">Quản lý trạm, phân công khám, map KQĐT - xử trí và cấu hình phòng ban sử dụng kho vật tư</p>
+              <p class="text-xs text-slate-500 mt-0.5">Quản lý trạm, phân công khám, map KQĐT, kho vật tư và điều chỉnh cấu hình menu cho All Trạm</p>
             </div>
           </div>
 
-          <!-- BỘ 4 SUB-TABS TRONG PHẦN 2 -->
+          <!-- BỘ 5 SUB-TABS TRONG PHẦN 2 -->
           <div class="inline-flex p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200/80 self-start md:self-auto overflow-x-auto max-w-full">
             <!-- Sub-tab 1: Danh Sách & Tài Khoản Trạm -->
             <button @click="setStationSubTab('list')"
@@ -423,6 +423,18 @@
               <span>4. Phòng Sử Dụng Kho Vật Tư</span>
               <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase" :class="currentStationSubTab === 'phong_su_dung_kho' ? 'bg-amber-300 text-amber-950' : 'bg-sky-100 text-sky-800'">
                 Mới
+              </span>
+            </button>
+
+            <!-- Sub-tab 5: Điều Chỉnh Menu HMIS (All Trạm + Test Thử An Toàn) -->
+            <button @click="setStationSubTab('cauhinh_menu')"
+                    type="button"
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer whitespace-nowrap"
+                    :class="currentStationSubTab === 'cauhinh_menu' ? 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'">
+              <i data-lucide="menu-square" class="w-4 h-4"></i>
+              <span>5. Điều Chỉnh Menu (All Trạm)</span>
+              <span class="px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase" :class="currentStationSubTab === 'cauhinh_menu' ? 'bg-white text-orange-900' : 'bg-orange-100 text-orange-800'">
+                Có Test Thử
               </span>
             </button>
           </div>
@@ -529,6 +541,12 @@
           <button @click="setStationSubTab('phong_su_dung_kho')" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold text-sm rounded-xl border border-sky-300 transition-colors shadow-sm cursor-pointer" title="Cấu hình danh sách phòng ban sử dụng kho vật tư (dm-chung/phong-su-dung-kho-vtu)">
             <i data-lucide="warehouse" class="w-4 h-4 text-sky-600"></i>
             <span>Phòng sử dụng kho vật tư</span>
+          </button>
+
+          <!-- Nút Điều chỉnh Menu HMIS (All Trạm + Test Thử) -->
+          <button @click="setStationSubTab('cauhinh_menu')" class="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-orange-50 hover:bg-orange-100 text-orange-800 font-bold text-sm rounded-xl border border-orange-300 transition-colors shadow-sm cursor-pointer" title="Điều chỉnh cấu hình Menu / Button / Tab HMIS (quantri-hethong/cauhinh-menu) cho 1 trạm hoặc ALL 43 trạm kèm chế độ Test Thử an toàn">
+            <i data-lucide="menu-square" class="w-4 h-4 text-orange-600"></i>
+            <span>Điều chỉnh Menu HMIS</span>
           </button>
 
           <!-- Nút Thêm Xã / Phường -->
@@ -1994,6 +2012,806 @@
               </select>
             </div>
           </div>
+        </div>
+
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- SUB-VIEW 5: ĐIỀU CHỈNH CẤU HÌNH MENU / BUTTON / TAB (HMIS)     -->
+      <!-- ============================================================== -->
+      <div v-if="currentStationSubTab === 'cauhinh_menu'" class="space-y-5">
+
+        <!-- BANNER HEADER & CHỌN TRẠM MẪU -->
+        <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-orange-950 rounded-3xl p-5 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4 border border-orange-500/30">
+          <div class="flex items-start sm:items-center space-x-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-orange-500/20 backdrop-blur-md flex items-center justify-center border border-orange-400/30 shadow-md flex-shrink-0">
+              <i data-lucide="menu-square" class="w-6 h-6 text-amber-300"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                <h2 class="text-lg sm:text-xl font-black uppercase tracking-wide">ĐIỀU CHỈNH CẤU HÌNH MENU / BUTTON / TAB (HMIS)</h2>
+                <span class="bg-emerald-400 text-slate-950 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-xs">Có Chế Độ Test Thử An Toàn</span>
+                <span class="bg-orange-400/20 text-orange-200 border border-orange-400/40 text-[10px] font-mono px-2 py-0.5 rounded-full">
+                  quantri-hethong/cauhinh-menu
+                </span>
+              </div>
+              <p class="text-xs text-slate-200 mt-1">
+                Tải đầy đủ <b class="text-amber-300">{{ menuStationData.totalItems || 2920 }} chức năng Menu / Button / Tab</b> trên cổng HMIS. Hỗ trợ <b class="text-emerald-300">🧪 Test Thử (Dry-Run) trước khi chạy thật</b> cho 1 trạm hoặc <b class="text-amber-300">ALL {{ stations.length }} Trạm</b> để bảo vệ 100% hệ thống thật.
+              </p>
+            </div>
+          </div>
+
+          <!-- Chọn Trạm Y Tế (Hỗ trợ tìm Mã trạm / Tên trạm) + Làm mới + Xuất Excel -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <div class="flex items-center space-x-2 bg-white/10 p-1.5 rounded-2xl border border-white/20">
+              <span class="text-xs font-bold text-amber-200 pl-2 whitespace-nowrap">Trạm Y Tế:</span>
+
+              <!-- Searchable Dropdown Chọn Trạm -->
+              <div class="relative w-72 sm:w-80">
+                <div
+                  v-if="isMenuStationDropdownOpen"
+                  class="fixed inset-0 z-40"
+                  @click="isMenuStationDropdownOpen = false"
+                ></div>
+
+                <div
+                  @click="isMenuStationDropdownOpen = !isMenuStationDropdownOpen; isMenuStationDropdownOpen && nextTick(() => { refreshIcons(); $refs.menuStationSearchInput?.focus(); })"
+                  class="bg-white text-slate-900 text-xs font-bold rounded-xl px-3 py-2 border border-orange-300 shadow-xs flex items-center justify-between cursor-pointer hover:border-amber-400 select-none transition-all group relative z-40"
+                >
+                  <div class="flex items-center space-x-1.5 truncate">
+                    <i data-lucide="search" class="w-3.5 h-3.5 text-orange-600 shrink-0"></i>
+                    <span class="truncate" :title="currentSelectedMenuStationObj ? '[' + currentSelectedMenuStationObj.code + '] ' + currentSelectedMenuStationObj.name : 'Tìm hoặc chọn trạm y tế...'">
+                      <template v-if="currentSelectedMenuStationObj">
+                        <span class="font-mono text-orange-700">[{{ currentSelectedMenuStationObj.code }}]</span>
+                        <span> {{ currentSelectedMenuStationObj.name }}</span>
+                      </template>
+                      <span v-else class="text-slate-400 font-normal italic">-- Tìm mã hoặc tên trạm --</span>
+                    </span>
+                  </div>
+                  <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-hover:text-orange-600 shrink-0 ml-1 transition-transform duration-200" :class="{ 'rotate-180': isMenuStationDropdownOpen }"></i>
+                </div>
+
+                <div
+                  v-if="isMenuStationDropdownOpen"
+                  class="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 text-slate-800"
+                  @click.stop
+                >
+                  <div class="p-2.5 bg-slate-50 border-b border-slate-200">
+                    <div class="relative">
+                      <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5"></i>
+                      <input
+                        type="text"
+                        ref="menuStationSearchInput"
+                        v-model="menuStationSearchQuery"
+                        placeholder="Gõ mã trạm (VD: 11010) hoặc tên trạm..."
+                        class="w-full pl-8 pr-7 py-1.5 text-xs bg-white border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none font-semibold text-slate-800"
+                        @keydown.esc="isMenuStationDropdownOpen = false"
+                        @keydown.enter.prevent="filteredMenuSelectorStations.length > 0 && selectMenuStationFromSearch(filteredMenuSelectorStations[0])"
+                      />
+                      <button
+                        v-if="menuStationSearchQuery"
+                        type="button"
+                        @click="menuStationSearchQuery = ''"
+                        class="absolute right-2.5 top-1.5 text-slate-400 hover:text-slate-600 text-xs cursor-pointer font-bold"
+                      >✕</button>
+                    </div>
+                    <div class="flex items-center justify-between mt-1.5 px-1 text-[10px] text-slate-500 font-semibold">
+                      <span>Tìm thấy: <strong class="text-orange-700">{{ filteredMenuSelectorStations.length }}</strong> / {{ stations.length }} trạm</span>
+                      <span class="text-slate-400 italic">Nhấp hoặc Enter để chọn</span>
+                    </div>
+                  </div>
+
+                  <div class="max-h-64 overflow-y-auto divide-y divide-slate-100">
+                    <div
+                      v-for="s in filteredMenuSelectorStations"
+                      :key="'menu-st-' + s.id"
+                      @click="selectMenuStationFromSearch(s)"
+                      class="px-3.5 py-2 text-xs flex items-center justify-between hover:bg-orange-50 cursor-pointer transition-colors"
+                      :class="s.id === selectedMenuStationId ? 'bg-orange-50/90 text-orange-900 font-bold border-l-4 border-l-orange-600' : 'text-slate-700'"
+                    >
+                      <div class="flex items-center space-x-2 min-w-0">
+                        <span class="font-mono text-[11px] px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 text-orange-700 shrink-0 font-bold">
+                          {{ s.code || 'N/A' }}
+                        </span>
+                        <span class="truncate">{{ s.name }}</span>
+                      </div>
+                      <i v-if="s.id === selectedMenuStationId" data-lucide="check" class="w-4 h-4 text-orange-600 shrink-0 ml-2"></i>
+                    </div>
+                    <div v-if="filteredMenuSelectorStations.length === 0" class="p-5 text-center text-slate-400 text-xs italic">
+                      Không tìm thấy trạm nào khớp với "{{ menuStationSearchQuery }}"
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                @click="loadMenuStationData(selectedMenuStationId, true)"
+                :disabled="isLoadingMenuData"
+                class="p-2 bg-white/15 hover:bg-white/25 text-white rounded-xl transition-colors cursor-pointer"
+                title="Làm mới danh sách menu trực tiếp từ cổng HMIS"
+              >
+                <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': isLoadingMenuData }"></i>
+              </button>
+            </div>
+
+            <button
+              type="button"
+              @click="downloadMenuExcel"
+              class="inline-flex items-center space-x-1.5 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
+            >
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>Xuất Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- THÔNG BÁO KHI TEST THỬ HOẶC CẬP NHẬT THÀNH CÔNG / LỖI -->
+        <div
+          v-if="menuNotice.show"
+          class="p-4 rounded-2xl border-2 shadow-lg flex items-start justify-between gap-3 animate-in fade-in duration-150"
+          :class="menuNotice.type === 'success' ? 'bg-emerald-50 border-emerald-400 text-emerald-950' : (menuNotice.type === 'test' ? 'bg-sky-50 border-sky-400 text-sky-950' : 'bg-rose-50 border-rose-400 text-rose-950')"
+        >
+          <div class="flex items-start space-x-3">
+            <div
+              class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 shadow-xs text-white"
+              :class="menuNotice.type === 'success' ? 'bg-emerald-600' : (menuNotice.type === 'test' ? 'bg-sky-600' : 'bg-rose-600')"
+            >
+              <i :data-lucide="menuNotice.type === 'success' ? 'check-circle-2' : (menuNotice.type === 'test' ? 'flask-conical' : 'alert-triangle')" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2 flex-wrap">
+                <span class="font-black text-sm uppercase tracking-wide">{{ menuNotice.title }}</span>
+                <span v-if="menuNotice.time" class="text-[11px] font-mono px-2 py-0.5 rounded bg-white/80 border border-slate-300 font-bold">
+                  {{ menuNotice.time }}
+                </span>
+              </div>
+              <p class="text-xs font-semibold mt-1 leading-relaxed">{{ menuNotice.message }}</p>
+            </div>
+          </div>
+          <button type="button" @click="menuNotice.show = false" class="p-1.5 rounded-lg hover:bg-black/5 text-slate-500 hover:text-slate-800 cursor-pointer">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- GIAO DIỆN 2 CỘT CHUẨN HMIS (DANH SÁCH CẤU HÌNH MENU BÊN TRÁI + FORM ĐIỀU CHỈNH BÊN PHẢI) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+          <!-- ============================================================== -->
+          <!-- CỘT TRÁI (5/12): DANH SÁCH CẤU HÌNH MENU (2,920+ CHỨC NĂNG)    -->
+          <!-- ============================================================== -->
+          <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden flex flex-col">
+            <!-- Header bảng -->
+            <div class="px-4 py-3 bg-slate-100 border-b border-slate-200 flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center space-x-2">
+                <span class="font-black text-xs sm:text-sm text-slate-800 uppercase tracking-wide">DANH SÁCH CẤU HÌNH MENU</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-100 text-blue-800 border border-blue-200 font-mono">
+                  {{ filteredMenuItems.length }} / {{ menuStationData.totalItems }}
+                </span>
+              </div>
+              <div class="flex items-center space-x-2 text-[11px]">
+                <span class="text-emerald-700 font-bold">🔓 Bật: {{ menuStationData.activeCount }}</span>
+                <span class="text-slate-300">|</span>
+                <span class="text-rose-600 font-bold">🔒 Khóa: {{ menuStationData.lockedCount }}</span>
+              </div>
+            </div>
+
+            <!-- Thanh lọc nhanh theo Loại (Tất cả / Menu / Button / Tab) & Mở/Thu gọn cây -->
+            <div class="px-3 py-2 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+              <div class="flex items-center space-x-1">
+                <button type="button" @click="menuTableFilter.loai = ''; menuCurrentPage = 1" class="px-2 py-1 rounded font-bold cursor-pointer border" :class="menuTableFilter.loai === '' ? 'bg-[#004f9e] text-white border-[#004f9e]' : 'bg-white text-slate-600 border-slate-200'">
+                  Tất cả
+                </button>
+                <button type="button" @click="menuTableFilter.loai = 'menu'; menuCurrentPage = 1" class="px-2 py-1 rounded font-bold cursor-pointer border" :class="menuTableFilter.loai === 'menu' ? 'bg-[#004f9e] text-white border-[#004f9e]' : 'bg-white text-slate-600 border-slate-200'">
+                  Menu
+                </button>
+                <button type="button" @click="menuTableFilter.loai = 'button'; menuCurrentPage = 1" class="px-2 py-1 rounded font-bold cursor-pointer border" :class="menuTableFilter.loai === 'button' ? 'bg-[#004f9e] text-white border-[#004f9e]' : 'bg-white text-slate-600 border-slate-200'">
+                  Button
+                </button>
+                <button type="button" @click="menuTableFilter.loai = 'tab'; menuCurrentPage = 1" class="px-2 py-1 rounded font-bold cursor-pointer border" :class="menuTableFilter.loai === 'tab' ? 'bg-[#004f9e] text-white border-[#004f9e]' : 'bg-white text-slate-600 border-slate-200'">
+                  Tab
+                </button>
+              </div>
+              <div class="flex items-center space-x-1.5">
+                <button type="button" @click="expandAllMenuTree" class="text-blue-700 hover:underline font-semibold cursor-pointer">Mở hết cây</button>
+                <span class="text-slate-300">|</span>
+                <button type="button" @click="collapseAllMenuTree" class="text-slate-600 hover:underline font-semibold cursor-pointer">Thu gọn</button>
+                <template v-if="hasActiveMenuFilter">
+                  <span class="text-slate-300">|</span>
+                  <button type="button" @click="clearMenuTableFilter" class="text-rose-600 hover:underline font-bold cursor-pointer">Xóa lọc</button>
+                </template>
+              </div>
+            </div>
+
+            <!-- Bảng 4 cột chuẩn HMIS: Mã | Tên | Nhóm | Tr.thái -->
+            <div class="overflow-x-auto max-h-[620px] overflow-y-auto">
+              <table class="w-full text-left text-xs text-slate-800 border-collapse">
+                <thead class="sticky top-0 z-20 bg-slate-100 shadow-2xs">
+                  <tr class="text-[#004f9e] font-bold border-b border-slate-200">
+                    <th class="px-2.5 py-2 w-[170px]">Mã</th>
+                    <th class="px-2.5 py-2 min-w-[160px]">Tên</th>
+                    <th class="px-2.5 py-2 w-[140px]">Nhóm</th>
+                    <th class="px-2 py-2 w-[64px] text-center">Tr.thái</th>
+                  </tr>
+                  <!-- Dòng filter dưới tiêu đề cột giống hệt HMIS -->
+                  <tr class="bg-slate-50 border-b border-slate-200">
+                    <td class="p-1.5">
+                      <input
+                        v-model="menuTableFilter.ma"
+                        @input="menuCurrentPage = 1"
+                        type="text"
+                        placeholder="Tìm mã..."
+                        class="w-full px-2 py-1 bg-white border border-slate-300 rounded text-xs text-slate-800 focus:outline-none focus:border-blue-500 font-mono"
+                      />
+                    </td>
+                    <td class="p-1.5">
+                      <input
+                        v-model="menuTableFilter.ten"
+                        @input="menuCurrentPage = 1"
+                        type="text"
+                        placeholder="Tìm tên chức năng..."
+                        class="w-full px-2 py-1 bg-white border border-slate-300 rounded text-xs text-slate-800 focus:outline-none focus:border-blue-500"
+                      />
+                    </td>
+                    <td class="p-1.5">
+                      <select
+                        v-model="menuTableFilter.nhomId"
+                        @change="menuCurrentPage = 1"
+                        class="w-full px-1.5 py-1 bg-white border border-slate-300 rounded text-[11px] text-slate-700 focus:outline-none focus:border-blue-500"
+                      >
+                        <option value="">Chọn (17 nhóm)</option>
+                        <option v-for="n in menuStationData.listNhom" :key="n.giaTri" :value="String(n.giaTri)">
+                          {{ n.giaTri }}. {{ n.ten }}
+                        </option>
+                      </select>
+                    </td>
+                    <td class="p-1.5">
+                      <select
+                        v-model="menuTableFilter.trangThai"
+                        @change="menuCurrentPage = 1"
+                        class="w-full px-1 py-1 bg-white border border-slate-300 rounded text-[11px] text-slate-700 focus:outline-none focus:border-blue-500"
+                      >
+                        <option value="">Tất cả</option>
+                        <option value="1">Kích hoạt</option>
+                        <option value="0">Khóa</option>
+                      </select>
+                    </td>
+                  </tr>
+                </thead>
+
+                <tbody class="divide-y divide-slate-200/70">
+                  <tr v-if="isLoadingMenuData">
+                    <td colspan="4" class="px-4 py-12 text-center text-slate-400">
+                      <div class="flex flex-col items-center justify-center space-y-2">
+                        <i data-lucide="loader-2" class="w-7 h-7 animate-spin text-orange-600"></i>
+                        <span>Đang tải toàn bộ cấu hình menu từ cổng HMIS...</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr v-else-if="pagedMenuItems.length === 0">
+                    <td colspan="4" class="px-4 py-10 text-center text-slate-400">
+                      Không tìm thấy cấu hình menu / button nào khớp bộ lọc.
+                    </td>
+                  </tr>
+
+                  <tr
+                    v-else
+                    v-for="item in pagedMenuItems"
+                    :key="item.id"
+                    @click="selectMenuItem(item)"
+                    class="hover:bg-blue-50/60 transition-colors cursor-pointer"
+                    :class="selectedMenuItem && selectedMenuItem.id === item.id ? 'bg-blue-100/80 font-bold border-l-4 border-l-[#004f9e]' : ''"
+                  >
+                    <!-- Cột Mã (Có thụt lề theo cấp cha-con & nút đóng/mở nhánh) -->
+                    <td class="px-2.5 py-2 font-mono text-[11px] text-slate-800 break-all">
+                      <div class="flex items-start space-x-1" :style="{ paddingLeft: (item.level * 12) + 'px' }">
+                        <button
+                          v-if="item.hasChildren"
+                          type="button"
+                          @click.stop="toggleMenuNodeCollapse(item.id)"
+                          class="w-4 h-4 rounded hover:bg-slate-200 flex items-center justify-center text-slate-600 shrink-0 mt-0.5 cursor-pointer font-bold"
+                          :title="collapsedMenuNodeIds.has(item.id) ? 'Mở nhánh con' : 'Thu gọn nhánh con'"
+                        >
+                          {{ collapsedMenuNodeIds.has(item.id) ? '+' : '−' }}
+                        </button>
+                        <span v-else class="w-4 shrink-0 inline-block text-slate-300 select-none">•</span>
+                        <span>{{ item.ma }}</span>
+                      </div>
+                    </td>
+
+                    <!-- Cột Tên + Nhãn loại -->
+                    <td class="px-2.5 py-2 text-slate-900">
+                      <div class="flex items-center justify-between gap-1">
+                        <span>{{ item.ten }}</span>
+                        <span
+                          class="text-[9px] font-mono uppercase px-1.5 py-0.2 rounded border shrink-0"
+                          :class="item.loai === 'menu' ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : (item.loai === 'button' ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-teal-50 text-teal-700 border-teal-200')"
+                        >
+                          {{ item.loai }}
+                        </span>
+                      </div>
+                    </td>
+
+                    <!-- Cột Nhóm -->
+                    <td class="px-2.5 py-2 text-[11px] text-slate-600">
+                      {{ item.nhomTen }}
+                    </td>
+
+                    <!-- Cột Tr.thái (Icon Mở khóa xanh / Khóa đỏ chuẩn HMIS + Bấm để bật/tắt nhanh trên form) -->
+                    <td class="px-2 py-2 text-center">
+                      <span
+                        v-if="item.trangThai === 1"
+                        class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200"
+                        title="Đang kích hoạt (1)"
+                      >
+                        <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+                      </span>
+                      <span
+                        v-else
+                        class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-rose-50 text-rose-600 border border-rose-200"
+                        title="Đang khóa (0)"
+                      >
+                        <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Footer phân trang bảng trái -->
+            <div class="px-3 py-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-2 text-xs text-slate-600">
+              <div class="text-[11px]">
+                Trang <strong class="font-mono text-slate-900">{{ menuCurrentPage }}</strong> / {{ menuTotalPages }}
+              </div>
+              <div class="flex items-center space-x-1.5">
+                <button type="button" @click="menuCurrentPage = Math.max(1, menuCurrentPage - 1)" :disabled="menuCurrentPage <= 1" class="px-2 py-1 bg-white hover:bg-slate-100 disabled:opacity-40 rounded border border-slate-300 font-bold cursor-pointer">
+                  &lt;
+                </button>
+                <button type="button" @click="menuCurrentPage = Math.min(menuTotalPages, menuCurrentPage + 1)" :disabled="menuCurrentPage >= menuTotalPages" class="px-2 py-1 bg-white hover:bg-slate-100 disabled:opacity-40 rounded border border-slate-300 font-bold cursor-pointer">
+                  &gt;
+                </button>
+                <select v-model.number="menuPageSize" @change="menuCurrentPage = 1" class="px-1.5 py-1 bg-white border border-slate-300 rounded text-[11px]">
+                  <option :value="20">20 / trang</option>
+                  <option :value="50">50 / trang</option>
+                  <option :value="100">100 / trang</option>
+                  <option :value="300">300 / trang</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- ============================================================== -->
+          <!-- CỘT PHẢI (7/12): FORM CHI TIẾT MENU & CHẠY TEST THỬ / ALL TRẠM -->
+          <!-- ============================================================== -->
+          <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 space-y-5">
+
+            <!-- Trạng thái chưa chọn dòng nào ở cột trái -->
+            <div v-if="!selectedMenuItem" class="py-16 text-center text-slate-400 space-y-3">
+              <div class="w-16 h-16 mx-auto rounded-2xl bg-orange-50 text-orange-500 border border-orange-200 flex items-center justify-center">
+                <i data-lucide="mouse-pointer-click" class="w-8 h-8"></i>
+              </div>
+              <h4 class="font-bold text-slate-700 text-sm">
+                Hãy chọn một mục Menu / Button / Tab ở bảng bên trái để xem và điều chỉnh
+              </h4>
+              <p class="text-xs text-slate-500 max-w-md mx-auto">
+                Bạn có thể lọc theo <b>Mã</b>, <b>Tên chức năng</b>, <b>Nhóm nghiệp vụ (17 nhóm)</b> hoặc trạng thái <b>Kích hoạt / Khóa</b>, sau đó chạy <b>🧪 Test Thử (Dry-Run)</b> trước khi áp dụng cho 1 trạm hoặc toàn bộ 43 trạm.
+              </p>
+            </div>
+
+            <!-- Đã chọn 1 mục cấu hình menu -->
+            <div v-else class="space-y-4 text-xs">
+
+              <!-- Thanh tiêu đề mục đang chọn -->
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center space-x-2">
+                  <span class="px-2.5 py-1 rounded-lg bg-[#004f9e] text-white font-mono font-bold text-xs">
+                    ID: {{ selectedMenuItem.id }}
+                  </span>
+                  <span class="font-bold text-slate-800 text-sm">{{ selectedMenuItem.ten }}</span>
+                  <span class="font-mono text-xs text-slate-500">({{ selectedMenuItem.ma }})</span>
+                </div>
+                <span
+                  class="px-2.5 py-1 rounded-full text-xs font-extrabold border"
+                  :class="menuForm.trangThai === 1 ? 'bg-emerald-50 text-emerald-700 border-emerald-300' : 'bg-rose-50 text-rose-700 border-rose-300'"
+                >
+                  {{ menuForm.trangThai === 1 ? '🔓 Đang Kích hoạt (1)' : '🔒 Đang Khóa (0)' }}
+                </span>
+              </div>
+
+              <!-- HÀNG 1: Mã cấu hình * + Trạng thái * -->
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                <div class="sm:col-span-8 flex items-center">
+                  <label class="w-32 shrink-0 font-bold text-slate-700">
+                    Mã cấu hình <span class="text-rose-500">*</span>
+                  </label>
+                  <input
+                    v-model="menuForm.ma"
+                    type="text"
+                    class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  />
+                </div>
+                <div class="sm:col-span-4 flex items-center justify-between sm:justify-start space-x-3">
+                  <label class="font-bold text-slate-700">
+                    Trạng thái <span class="text-rose-500">*</span>
+                  </label>
+                  <button
+                    type="button"
+                    @click="menuForm.trangThai = menuForm.trangThai === 1 ? 0 : 1"
+                    class="relative inline-flex h-6 w-12 items-center rounded-full transition-colors cursor-pointer"
+                    :class="menuForm.trangThai === 1 ? 'bg-[#1890ff]' : 'bg-slate-300'"
+                  >
+                    <span
+                      class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow"
+                      :class="menuForm.trangThai === 1 ? 'translate-x-7' : 'translate-x-1'"
+                    ></span>
+                  </button>
+                  <span class="font-bold" :class="menuForm.trangThai === 1 ? 'text-blue-700' : 'text-rose-600'">
+                    {{ menuForm.trangThai === 1 ? 'Kích hoạt' : 'Khóa' }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- HÀNG 2: Tên cấu hình * -->
+              <div class="flex items-center">
+                <label class="w-32 shrink-0 font-bold text-slate-700">
+                  Tên cấu hình <span class="text-rose-500">*</span>
+                </label>
+                <input
+                  v-model="menuForm.ten"
+                  type="text"
+                  class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <!-- HÀNG 3: Nhóm cấu hình * + Cấu hình cha -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="flex items-center">
+                  <label class="w-32 shrink-0 font-bold text-slate-700">
+                    Nhóm cấu hình <span class="text-rose-500">*</span>
+                  </label>
+                  <select
+                    v-model.number="menuForm.nhomId"
+                    class="flex-1 px-2.5 py-2 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  >
+                    <option v-for="n in menuStationData.listNhom" :key="n.giaTri" :value="Number(n.giaTri)">
+                      {{ n.giaTri }} - {{ n.ten }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="flex items-center">
+                  <label class="w-28 shrink-0 font-bold text-slate-700">
+                    Cấu hình cha
+                  </label>
+                  <select
+                    v-model="menuForm.parentId"
+                    @change="onMenuParentChange"
+                    class="flex-1 px-2.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  >
+                    <option :value="null">-- Không có (Menu gốc) --</option>
+                    <option v-for="p in menuParentCandidates" :key="p.id" :value="p.id">
+                      {{ '— '.repeat(p.level || 0) }}{{ p.ten }} ({{ p.ma }})
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- HÀNG 4: Số thứ tự * + Loại * -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="flex items-center">
+                  <label class="w-32 shrink-0 font-bold text-slate-700">
+                    Số thứ tự <span class="text-rose-500">*</span>
+                  </label>
+                  <input
+                    v-model.number="menuForm.stt"
+                    type="number"
+                    class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-lg font-mono font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                <div class="flex items-center">
+                  <label class="w-28 shrink-0 font-bold text-slate-700">
+                    Loại <span class="text-rose-500">*</span>
+                  </label>
+                  <select
+                    v-model="menuForm.loai"
+                    class="flex-1 px-2.5 py-2 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  >
+                    <option v-for="l in menuStationData.listLoai" :key="l.giaTri" :value="l.giaTri">
+                      {{ l.ten }} ({{ l.giaTri }})
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- TRƯỜNG THEO LOẠI: 1. Nếu là MENU -> Ô nhập Icon -->
+              <div v-if="menuForm.loai === 'menu'" class="flex items-center">
+                <label class="w-32 shrink-0 font-bold text-slate-700">
+                  Icon
+                </label>
+                <input
+                  v-model="menuForm.ghiChu"
+                  type="text"
+                  placeholder="VD: clipboard-list, heartbeat, user..."
+                  class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-lg font-mono text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <!-- TRƯỜNG THEO LOẠI: 2. Nếu là TAB -> Trình sửa Cấu hình JSON -->
+              <div v-if="menuForm.loai === 'tab'" class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <label class="font-bold text-slate-700">Cấu hình Tab (JSON):</label>
+                  <button
+                    type="button"
+                    @click="formatMenuTabJson"
+                    class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded border border-slate-300 cursor-pointer"
+                  >
+                    ✨ Định dạng &amp; Kiểm tra JSON
+                  </button>
+                </div>
+                <textarea
+                  v-model="menuForm.ghiChu"
+                  rows="6"
+                  placeholder='{"customColumn": [...]}'
+                  class="w-full p-3 bg-slate-900 text-emerald-300 font-mono text-xs rounded-xl border border-slate-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                ></textarea>
+              </div>
+
+              <!-- TRƯỜNG THEO LOẠI: 3. Nếu là BUTTON -> Khung Icon & Cấu hình Button giống hệt HMIS -->
+              <div v-if="menuForm.loai === 'button'" class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3.5">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                  <span class="font-extrabold text-slate-800 uppercase tracking-wide text-xs">Cấu hình Icon &amp; Thuộc tính Button</span>
+                  <span class="text-[11px] text-slate-500 italic">Hệ thống sử dụng bộ icon riêng</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                  <div class="sm:col-span-8 flex items-center">
+                    <label class="w-28 shrink-0 font-bold text-slate-700">
+                      Loại button <span class="text-rose-500">*</span>
+                    </label>
+                    <select
+                      v-model="menuForm.iconConfig.hisType"
+                      class="flex-1 px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-semibold text-slate-800"
+                    >
+                      <option v-for="bt in menuStationData.listButtonType" :key="bt.giaTri" :value="bt.giaTri">
+                        {{ bt.ten }} ({{ bt.giaTri }})
+                      </option>
+                    </select>
+                  </div>
+                  <div class="sm:col-span-4 flex items-center space-x-2">
+                    <label class="font-bold text-slate-700 shrink-0">Phím tắt:</label>
+                    <input
+                      v-model="menuForm.iconConfig.hisShortcut"
+                      type="text"
+                      placeholder="VD: F1, F4"
+                      class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-mono text-slate-800"
+                    />
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                  <div class="sm:col-span-8 flex items-center">
+                    <label class="w-28 shrink-0 font-bold text-slate-700">Icon:</label>
+                    <input
+                      v-model="menuForm.iconConfig.hisIcon"
+                      type="text"
+                      placeholder="VD: save, printer, plus..."
+                      class="flex-1 px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg font-mono text-slate-800"
+                    />
+                  </div>
+                  <div class="sm:col-span-4 flex items-center space-x-2">
+                    <label class="font-bold text-slate-700">Tính nguy hiểm:</label>
+                    <input type="checkbox" v-model="menuForm.iconConfig.hisDanger" class="w-4 h-4 rounded text-rose-600 cursor-pointer" />
+                  </div>
+                </div>
+
+                <!-- Bảng Disable nếu thuộc mảng/giá trị -->
+                <div>
+                  <div class="flex items-center justify-between mb-1.5">
+                    <label class="font-bold text-slate-700">Disable nếu thuộc mảng/giá trị:</label>
+                    <button
+                      type="button"
+                      @click="addMenuDisableRule"
+                      class="inline-flex items-center space-x-1 px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-[11px] rounded border border-blue-200 cursor-pointer"
+                    >
+                      <i data-lucide="plus" class="w-3 h-3"></i>
+                      <span>Thêm điều kiện</span>
+                    </button>
+                  </div>
+                  <table class="w-full text-left text-xs border border-slate-200 rounded-lg overflow-hidden bg-white">
+                    <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                      <tr>
+                        <th class="px-2.5 py-1.5">Thuộc tính (property)</th>
+                        <th class="px-2.5 py-1.5">Giá trị (value)</th>
+                        <th class="px-2 py-1.5 w-10 text-center">Xóa</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                      <tr v-if="!menuForm.iconConfig.listDisableTrangThai || menuForm.iconConfig.listDisableTrangThai.length === 0">
+                        <td colspan="3" class="px-3 py-2 text-center text-slate-400 italic">Không có điều kiện disable</td>
+                      </tr>
+                      <tr v-for="(cond, cIdx) in menuForm.iconConfig.listDisableTrangThai" :key="cIdx">
+                        <td class="p-1.5">
+                          <input v-model="cond.property" type="text" placeholder="Nhập thuộc tính..." class="w-full px-2 py-1 border border-slate-200 rounded font-mono text-xs" />
+                        </td>
+                        <td class="p-1.5">
+                          <input v-model="cond.value" type="text" placeholder="Nhập giá trị..." class="w-full px-2 py-1 border border-slate-200 rounded font-mono text-xs" />
+                        </td>
+                        <td class="p-1.5 text-center">
+                          <button type="button" @click="removeMenuDisableRule(cIdx)" class="text-rose-500 hover:text-rose-700 p-1 cursor-pointer">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- HÀNG 5: Nhóm người dùng không sử dụng (excludedRoles) -->
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <label class="font-bold text-slate-700">
+                    Nhóm người dùng không sử dụng ({{ menuForm.excludedRoleIds.length }} nhóm bị chặn):
+                  </label>
+                  <button
+                    v-if="menuForm.excludedRoleIds.length > 0"
+                    type="button"
+                    @click="menuForm.excludedRoleIds = []"
+                    class="text-[11px] text-rose-600 hover:underline font-semibold cursor-pointer"
+                  >
+                    Bỏ chọn hết
+                  </button>
+                </div>
+                <div class="max-h-28 overflow-y-auto p-2.5 bg-slate-50 border border-slate-200 rounded-xl grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                  <label
+                    v-for="r in menuStationData.listRoles"
+                    :key="r.roleId"
+                    class="inline-flex items-center space-x-2 px-2 py-1 rounded bg-white border border-slate-200/80 hover:border-blue-300 cursor-pointer"
+                  >
+                    <input type="checkbox" :value="r.roleId" v-model="menuForm.excludedRoleIds" class="rounded text-blue-600 w-3.5 h-3.5 cursor-pointer" />
+                    <span class="truncate text-[11px] font-medium text-slate-800" :title="r.roleName">
+                      [{{ r.roleId }}] {{ r.roleName }}
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- ============================================================== -->
+              <!-- KHUNG AN TOÀN HỆ THỐNG: PHẠM VI ÁP DỤNG + TEST THỬ & CHẠY THẬT -->
+              <!-- ============================================================== -->
+              <div class="p-4 bg-gradient-to-br from-amber-50/90 via-orange-50/60 to-sky-50/70 rounded-2xl border-2 border-amber-300 space-y-3.5">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex items-center space-x-2">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600"></i>
+                    <span class="font-black text-slate-900 text-xs sm:text-sm uppercase">
+                      BẢNG ĐIỀU KHIỂN CẤU HÌNH MENU AN TOÀN (1 TRẠM / ALL TRẠM)
+                    </span>
+                  </div>
+                  <span class="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                    🛡️ Luôn khuyến nghị bấm "Test Thử" trước khi Lưu thật
+                  </span>
+                </div>
+
+                <!-- Chọn phạm vi trạm & chế độ cập nhật -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1">1. Phạm vi trạm áp dụng:</label>
+                    <select v-model="menuTargetScope" class="w-full px-3 py-2 bg-white border border-amber-300 rounded-xl font-bold text-slate-900 focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                      <option value="current">Chỉ trạm đang xem ({{ currentSelectedMenuStationObj?.code }} - {{ currentSelectedMenuStationObj?.name }})</option>
+                      <option value="selected" :disabled="selectedIds.length === 0">Các trạm đã tích ở bảng chính ({{ selectedIds.length }} trạm)</option>
+                      <option value="all">Tất cả các trạm (ALL {{ stations.length }} Trạm Y Tế)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1">2. Chế độ đồng bộ dữ liệu:</label>
+                    <select v-model="menuUpdateMode" class="w-full px-3 py-2 bg-white border border-amber-300 rounded-xl font-bold text-slate-900 focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                      <option value="status_only">An toàn cao: Chỉ cập nhật Trạng thái Bật/Khóa (Giữ nguyên các trường khác)</option>
+                      <option value="full">Cập nhật toàn bộ các trường trên form (Tên, STT, Trạng thái, Cấu hình, Quyền)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Bộ 3 nút: Test Thử (Dry-Run) | Lưu Thật Lên HMIS | Khôi Phục Về Mặc Định Trạm -->
+                <div class="flex flex-wrap items-center justify-between gap-2.5 pt-1">
+                  <div class="flex flex-wrap items-center gap-2.5">
+                    <!-- NÚT 1: TEST THỬ (DRY-RUN) -->
+                    <button
+                      type="button"
+                      @click="runMenuUpdate(true)"
+                      :disabled="isExecutingMenuUpdate"
+                      class="px-4 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-black text-xs rounded-xl shadow-md transition-all cursor-pointer disabled:opacity-50 flex items-center space-x-1.5"
+                      title="Chạy kiểm tra thử trên các trạm (100% chỉ đọc, không ghi đè vào cơ sở dữ liệu thật)"
+                    >
+                      <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-if="isExecutingMenuUpdate && menuLastRunMode === 'dryRun'"></i>
+                      <i data-lucide="flask-conical" class="w-4 h-4 text-amber-300" v-else></i>
+                      <span>🧪 1. TEST THỬ TRƯỚC KHI CHẠY THẬT ({{ menuTargetStationCount }} TRẠM)</span>
+                    </button>
+
+                    <!-- NÚT 2: CHẠY THẬT LÊN HMIS -->
+                    <button
+                      type="button"
+                      @click="runMenuUpdate(false)"
+                      :disabled="isExecutingMenuUpdate"
+                      class="px-5 py-2.5 bg-[#1890ff] hover:bg-blue-700 text-white font-black text-xs rounded-xl shadow-md transition-all cursor-pointer disabled:opacity-50 flex items-center space-x-1.5"
+                      title="Lưu thay đổi thật lên cổng HMIS cho phạm vi trạm đã chọn"
+                    >
+                      <i data-lucide="loader-2" class="w-4 h-4 animate-spin" v-if="isExecutingMenuUpdate && menuLastRunMode === 'live'"></i>
+                      <i data-lucide="save" class="w-4 h-4" v-else></i>
+                      <span>🚀 2. LƯU THẬT LÊN HMIS ({{ menuTargetStationCount }} TRẠM)</span>
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    @click="selectMenuItem(selectedMenuItem)"
+                    class="px-3.5 py-2 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs rounded-xl border border-slate-300 cursor-pointer"
+                  >
+                    Hủy sửa
+                  </button>
+                </div>
+              </div>
+
+              <!-- BẢNG KẾT QUẢ TEST THỬ (DRY-RUN) HOẶC KẾT QUẢ CHẠY THẬT -->
+              <div v-if="menuExecutionResults" class="p-4 rounded-2xl border-2 space-y-3" :class="menuExecutionResults.dryRun ? 'bg-sky-50/80 border-sky-300' : 'bg-emerald-50/80 border-emerald-300'">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex items-center space-x-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase" :class="menuExecutionResults.dryRun ? 'bg-sky-600 text-white' : 'bg-emerald-600 text-white'">
+                      {{ menuExecutionResults.dryRun ? '🧪 KẾT QUẢ TEST THỬ (CHƯA GHI DB THẬT)' : '✅ KẾT QUẢ CẬP NHẬT THẬT' }}
+                    </span>
+                    <span class="font-bold text-slate-800 text-xs">
+                      Tổng: {{ menuExecutionResults.totalStations }} trạm
+                    </span>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-2 text-[11px] font-bold">
+                    <span v-if="menuExecutionResults.dryRun" class="text-sky-800 bg-white px-2 py-0.5 rounded border border-sky-200">
+                      Sẽ thay đổi: {{ menuExecutionResults.willUpdateCount }} trạm
+                    </span>
+                    <span v-else class="text-emerald-800 bg-white px-2 py-0.5 rounded border border-emerald-200">
+                      Đã cập nhật: {{ menuExecutionResults.updatedCount }} trạm
+                    </span>
+                    <span class="text-slate-700 bg-white px-2 py-0.5 rounded border border-slate-200">
+                      Đã khớp sẵn (Bỏ qua): {{ menuExecutionResults.unchangedCount }} trạm
+                    </span>
+                    <span v-if="menuExecutionResults.notFoundCount > 0" class="text-amber-800 bg-amber-100 px-2 py-0.5 rounded border border-amber-300">
+                      Không có mục này: {{ menuExecutionResults.notFoundCount }} trạm
+                    </span>
+                    <span v-if="menuExecutionResults.errorCount > 0" class="text-rose-700 bg-rose-100 px-2 py-0.5 rounded border border-rose-300">
+                      Lỗi: {{ menuExecutionResults.errorCount }} trạm
+                    </span>
+                  </div>
+                </div>
+
+                <div class="max-h-56 overflow-y-auto divide-y divide-slate-200/80 bg-white rounded-xl border border-slate-200">
+                  <div
+                    v-for="r in menuExecutionResults.results"
+                    :key="r.stationId"
+                    class="px-3 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[11px]"
+                  >
+                    <div class="font-bold text-slate-800">
+                      <span class="font-mono text-blue-700">[{{ r.stationCode }}]</span> {{ r.stationName }}
+                      <span v-if="r.matchedId" class="font-mono text-[10px] text-slate-400 ml-1">(ID={{ r.matchedId }})</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                      <span
+                        class="px-2 py-0.5 rounded font-semibold"
+                        :class="r.status === 'UPDATED' || r.status === 'WILL_UPDATE' ? 'bg-blue-50 text-blue-800 border border-blue-200' : (r.status === 'UNCHANGED' ? 'bg-slate-100 text-slate-600' : (r.status === 'NOT_FOUND' ? 'bg-amber-50 text-amber-800' : 'bg-rose-50 text-rose-700'))"
+                      >
+                        {{ r.message }}
+                      </span>
+                      <span class="text-[10px] font-mono text-slate-400">{{ r.duration }}ms</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
       </div>
@@ -9900,9 +10718,10 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           (initialHash === '#nhanvien' ? 'nhanvien' : 'thuoc'))
         );
         const currentStationSubTab = ref(
-          (initialHash === '#phong_su_dung_kho' || initialHash === '#phong-su-dung-kho-vtu') ? 'phong_su_dung_kho' :
+          (initialHash === '#cauhinh_menu' || initialHash === '#cauhinh-menu') ? 'cauhinh_menu' :
+          ((initialHash === '#phong_su_dung_kho' || initialHash === '#phong-su-dung-kho-vtu') ? 'phong_su_dung_kho' :
           ((initialHash === '#map_kqdt_xutri' || initialHash === '#kqdt_xutri') ? 'map_kqdt_xutri' :
-          ((initialHash === '#congkham' || initialHash === '#user_dichvu_phong') ? 'user_dichvu_phong' : 'list'))
+          ((initialHash === '#congkham' || initialHash === '#user_dichvu_phong') ? 'user_dichvu_phong' : 'list')))
         );
 
         function setStationSubTab(subTab) {
@@ -9940,8 +10759,19 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
                 loadPsdkStationData(firstWithCreds.id);
               }
             }
+          } else if (subTab === 'cauhinh_menu') {
+            if (window.location.hash !== '#cauhinh_menu') {
+              history.replaceState(null, '', '#cauhinh_menu');
+            }
+            if (!selectedMenuStationId.value && stations.value.length > 0) {
+              const firstWithCreds = stations.value.find(s => s.username && s.password) || stations.value[0];
+              if (firstWithCreds) {
+                selectedMenuStationId.value = firstWithCreds.id;
+                loadMenuStationData(firstWithCreds.id);
+              }
+            }
           } else {
-            if (window.location.hash === '#congkham' || window.location.hash === '#user_dichvu_phong' || window.location.hash === '#map_kqdt_xutri' || window.location.hash === '#kqdt_xutri' || window.location.hash === '#phong_su_dung_kho') {
+            if (window.location.hash === '#congkham' || window.location.hash === '#user_dichvu_phong' || window.location.hash === '#map_kqdt_xutri' || window.location.hash === '#kqdt_xutri' || window.location.hash === '#phong_su_dung_kho' || window.location.hash === '#cauhinh_menu' || window.location.hash === '#cauhinh-menu') {
               history.replaceState(null, '', '#stations');
             }
           }
@@ -9957,12 +10787,13 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
           });
         }
         const currentMainTab = ref(
-          (initialHash === '#phong_su_dung_kho' || initialHash === '#phong-su-dung-kho-vtu') ? 'stations' :
+          (initialHash === '#cauhinh_menu' || initialHash === '#cauhinh-menu') ? 'stations' :
+          ((initialHash === '#phong_su_dung_kho' || initialHash === '#phong-su-dung-kho-vtu') ? 'stations' :
           ((initialHash === '#map_kqdt_xutri' || initialHash === '#kqdt_xutri') ? 'stations' :
           ((initialHash === '#congkham' || initialHash === '#user_dichvu_phong') ? 'stations' :
           (initialHash === '#nhanvien_hmis' ? 'nhanvien_hmis' :
           (initialHash === '#stations' ? 'stations' :
-          ((initialHash === '#thuoc' || initialHash === '#vattu' || initialHash === '#nhanvien' || initialHash === '#tondau_thuoc' || initialHash === '#import_file') ? 'import_file' : 'kcb')))))
+          ((initialHash === '#thuoc' || initialHash === '#vattu' || initialHash === '#nhanvien' || initialHash === '#tondau_thuoc' || initialHash === '#import_file') ? 'import_file' : 'kcb'))))))
         ); // 'kcb' | 'stations' | 'import_file' | 'nhanvien_hmis'
         const vattuFile = ref(null);
         const vattuFileName = ref('');
@@ -10146,10 +10977,13 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
             } else if (tab === 'phong_su_dung_kho' || tab === 'phong-su-dung-kho-vtu') {
               currentMainTab.value = 'stations';
               setStationSubTab('phong_su_dung_kho');
+            } else if (tab === 'cauhinh_menu' || tab === 'cauhinh-menu') {
+              currentMainTab.value = 'stations';
+              setStationSubTab('cauhinh_menu');
             } else if (tab === 'stations') {
               currentMainTab.value = 'stations';
               if (!currentStationSubTab.value) currentStationSubTab.value = 'list';
-              if (window.location.hash !== '' && window.location.hash !== '#stations' && window.location.hash !== '#congkham' && window.location.hash !== '#map_kqdt_xutri' && window.location.hash !== '#phong_su_dung_kho') {
+              if (window.location.hash !== '' && window.location.hash !== '#stations' && window.location.hash !== '#congkham' && window.location.hash !== '#map_kqdt_xutri' && window.location.hash !== '#phong_su_dung_kho' && window.location.hash !== '#cauhinh_menu') {
                 history.replaceState(null, '', '#stations');
               }
             }
@@ -10389,6 +11223,10 @@ Trạm Y tế Xã Cẩm Giang | 01003 | tyt_camgiang | Password@123 | https://hi
               if (currentStationSubTab.value === 'phong_su_dung_kho' && !selectedPsdkStationId.value && stations.value.length > 0) {
                 selectedPsdkStationId.value = stations.value[0].id;
                 loadPsdkStationData(stations.value[0].id);
+              }
+              if (currentStationSubTab.value === 'cauhinh_menu' && !selectedMenuStationId.value && stations.value.length > 0) {
+                selectedMenuStationId.value = stations.value[0].id;
+                loadMenuStationData(stations.value[0].id);
               }
             }
           } catch (err) {
@@ -16407,6 +17245,460 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           }
         }
 
+        // =========================================================================
+        // SUB-VIEW 5: ĐIỀU CHỈNH CẤU HÌNH MENU / BUTTON / TAB (HMIS cauhinh-menu)
+        // =========================================================================
+        const selectedMenuStationId = ref('');
+        const isMenuStationDropdownOpen = ref(false);
+        const menuStationSearchQuery = ref('');
+        const isLoadingMenuData = ref(false);
+        const isExecutingMenuUpdate = ref(false);
+        const menuLastRunMode = ref('dryRun'); // 'dryRun' | 'live'
+        const selectedMenuItem = ref(null);
+        const menuCurrentPage = ref(1);
+        const menuPageSize = ref(50);
+        const collapsedMenuNodeIds = ref(new Set());
+        const menuTargetScope = ref('current'); // 'current' | 'selected' | 'all'
+        const menuUpdateMode = ref('status_only'); // 'status_only' | 'full'
+        const menuExecutionResults = ref(null);
+
+        const menuNotice = ref({
+          show: false,
+          type: 'success',
+          title: '',
+          message: '',
+          time: ''
+        });
+
+        function showMenuNotice(type, title, message) {
+          const now = new Date();
+          const timeStr = now.toLocaleTimeString('vi-VN') + ' ' + now.toLocaleDateString('vi-VN');
+          menuNotice.value = {
+            show: true,
+            type,
+            title,
+            message,
+            time: timeStr
+          };
+          showToast(message, type === 'error' ? 'error' : 'success');
+        }
+
+        const menuStationData = ref({
+          stationId: '',
+          stationCode: '',
+          stationName: '',
+          totalItems: 0,
+          activeCount: 0,
+          lockedCount: 0,
+          items: [],
+          listNhom: [
+            { giaTri: 1, ten: 'Nhóm menu khám bệnh' },
+            { giaTri: 2, ten: 'Nhóm menu điều trị ngoại trú' },
+            { giaTri: 3, ten: 'Nhóm button tiếp nhận' },
+            { giaTri: 4, ten: 'Nhóm button danh sách khám bệnh' },
+            { giaTri: 5, ten: 'Nhóm button thông tin tiếp nhận' },
+            { giaTri: 6, ten: 'Nhóm tab ds phiếu chỉ định' },
+            { giaTri: 7, ten: 'Nhóm menu KSK theo đoàn' },
+            { giaTri: 8, ten: 'Nhóm button danh sách điều trị ngoại trú' },
+            { giaTri: 9, ten: 'Nhóm button dược' },
+            { giaTri: 10, ten: 'Nhóm menu nội trú' },
+            { giaTri: 11, ten: 'Nhóm menu bệnh án chi tiết' },
+            { giaTri: 12, ten: 'Nhóm button danh sách điều trị nội trú' },
+            { giaTri: 13, ten: 'Nhóm tab CLS kết quả chi tiết' },
+            { giaTri: 14, ten: 'Nhóm menu CLS và module khác' },
+            { giaTri: 15, ten: 'Nhóm tab CLS và module khác' },
+            { giaTri: 16, ten: 'Nhóm button CLS và module khác' },
+            { giaTri: 17, ten: 'Nhóm gọi button tiếp nhận' }
+          ],
+          listLoai: [
+            { giaTri: 'menu', ten: 'Cấu hình menu' },
+            { giaTri: 'button', ten: 'Cấu hình button' },
+            { giaTri: 'tab', ten: 'Cấu hình tab' }
+          ],
+          listButtonType: [
+            { giaTri: 'primary', ten: 'Loại button: primary' },
+            { giaTri: 'default', ten: 'Loại button: default' },
+            { giaTri: 'dashed', ten: 'Loại button: dashed' },
+            { giaTri: 'text', ten: 'Loại button: text' },
+            { giaTri: 'link', ten: 'Loại button: link' },
+            { giaTri: 'his-primary', ten: 'Loại button: HIS primary' },
+            { giaTri: 'success', ten: 'Loại button: success' },
+            { giaTri: 'warning', ten: 'Loại button: warning' }
+          ],
+          listRoles: []
+        });
+
+        const menuTableFilter = ref({
+          ma: '',
+          ten: '',
+          nhomId: '',
+          trangThai: '',
+          loai: ''
+        });
+
+        const menuForm = ref({
+          id: null,
+          originalMa: '',
+          ma: '',
+          ten: '',
+          nhomId: 1,
+          parentId: null,
+          parentMa: '',
+          parentChanged: false,
+          stt: 0,
+          loai: 'menu',
+          trangThai: 1,
+          ghiChu: '',
+          excludedRoleIds: [],
+          iconConfig: {
+            hisIcon: '',
+            hisType: 'primary',
+            hisDanger: false,
+            hisShortcut: '',
+            giaTri: '',
+            listDisableTrangThai: []
+          }
+        });
+
+        const currentSelectedMenuStationObj = computed(() => {
+          if (!selectedMenuStationId.value) return null;
+          return stations.value.find(s => s.id === selectedMenuStationId.value) || null;
+        });
+
+        const filteredMenuSelectorStations = computed(() => {
+          if (!menuStationSearchQuery.value || !menuStationSearchQuery.value.trim()) {
+            return stations.value;
+          }
+          const rawQ = menuStationSearchQuery.value.trim().toLowerCase();
+          const noAccentQ = rawQ.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          return stations.value.filter(s => {
+            const code = String(s.code || '').toLowerCase();
+            const name = String(s.name || '').toLowerCase();
+            const nameNoAccent = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const user = String(s.username || '').toLowerCase();
+            return code.includes(rawQ) || name.includes(rawQ) || nameNoAccent.includes(noAccentQ) || user.includes(rawQ);
+          });
+        });
+
+        function selectMenuStationFromSearch(st) {
+          if (!st) return;
+          selectedMenuStationId.value = st.id;
+          isMenuStationDropdownOpen.value = false;
+          menuStationSearchQuery.value = '';
+          loadMenuStationData(st.id);
+        }
+
+        const hasActiveMenuFilter = computed(() => {
+          const f = menuTableFilter.value;
+          return Boolean(f.ma || f.ten || f.nhomId || f.trangThai !== '' || f.loai);
+        });
+
+        function clearMenuTableFilter() {
+          menuTableFilter.value = { ma: '', ten: '', nhomId: '', trangThai: '', loai: '' };
+          menuCurrentPage.value = 1;
+        }
+
+        function toggleMenuNodeCollapse(nodeId) {
+          const s = new Set(collapsedMenuNodeIds.value);
+          if (s.has(nodeId)) s.delete(nodeId);
+          else s.add(nodeId);
+          collapsedMenuNodeIds.value = s;
+        }
+
+        function expandAllMenuTree() {
+          collapsedMenuNodeIds.value = new Set();
+        }
+
+        function collapseAllMenuTree() {
+          const s = new Set();
+          (menuStationData.value.items || []).forEach(i => {
+            if (i.hasChildren) s.add(i.id);
+          });
+          collapsedMenuNodeIds.value = s;
+          menuCurrentPage.value = 1;
+        }
+
+        const filteredMenuItems = computed(() => {
+          let list = menuStationData.value.items || [];
+          const f = menuTableFilter.value;
+          const isSearchingText = Boolean((f.ma && f.ma.trim()) || (f.ten && f.ten.trim()));
+
+          if (f.nhomId !== '') {
+            list = list.filter(i => String(i.nhomId) === String(f.nhomId));
+          }
+          if (f.trangThai !== '') {
+            list = list.filter(i => String(i.trangThai) === String(f.trangThai));
+          }
+          if (f.loai) {
+            list = list.filter(i => i.loai === f.loai);
+          }
+          if (f.ma && f.ma.trim()) {
+            const q = f.ma.trim().toLowerCase();
+            list = list.filter(i =>
+              String(i.ma || '').toLowerCase().includes(q) ||
+              String(i.parentMa || '').toLowerCase().includes(q)
+            );
+          }
+          if (f.ten && f.ten.trim()) {
+            const rawQ = f.ten.trim().toLowerCase();
+            const noAccQ = rawQ.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            list = list.filter(i => {
+              const t = String(i.ten || '').toLowerCase();
+              const tNoAcc = t.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+              const pt = String(i.parentTen || '').toLowerCase();
+              return t.includes(rawQ) || tNoAcc.includes(noAccQ) || pt.includes(rawQ);
+            });
+          }
+
+          // Nếu không gõ tìm kiếm text, áp dụng ẩn các nhánh con của node đang thu gọn
+          if (!isSearchingText && collapsedMenuNodeIds.value.size > 0) {
+            list = list.filter(i => {
+              if (!i.ancestorIds || i.ancestorIds.length === 0) return true;
+              return !i.ancestorIds.some(aid => collapsedMenuNodeIds.value.has(aid));
+            });
+          }
+
+          return list;
+        });
+
+        const menuTotalPages = computed(() => {
+          return Math.max(1, Math.ceil(filteredMenuItems.value.length / menuPageSize.value));
+        });
+
+        const pagedMenuItems = computed(() => {
+          const start = (menuCurrentPage.value - 1) * menuPageSize.value;
+          return filteredMenuItems.value.slice(start, start + menuPageSize.value);
+        });
+
+        const menuParentCandidates = computed(() => {
+          const nhomId = Number(menuForm.value.nhomId);
+          const curId = menuForm.value.id;
+          return (menuStationData.value.items || []).filter(i => i.nhomId === nhomId && i.id !== curId);
+        });
+
+        const menuTargetStationIds = computed(() => {
+          if (menuTargetScope.value === 'all') {
+            return stations.value.map(s => s.id);
+          }
+          if (menuTargetScope.value === 'selected' && selectedIds.value.length > 0) {
+            return [...selectedIds.value];
+          }
+          return selectedMenuStationId.value ? [selectedMenuStationId.value] : [];
+        });
+
+        const menuTargetStationCount = computed(() => {
+          return menuTargetStationIds.value.length;
+        });
+
+        async function loadMenuStationData(stationId, forceRefresh = false) {
+          if (!stationId) {
+            if (stations.value.length > 0) {
+              stationId = stations.value[0].id;
+              selectedMenuStationId.value = stationId;
+            } else {
+              return;
+            }
+          } else {
+            selectedMenuStationId.value = stationId;
+          }
+
+          isLoadingMenuData.value = true;
+          try {
+            const res = await axios.get(`/api/cauhinh-menu/station-data?stationId=${stationId}&forceRefresh=${forceRefresh ? 'true' : 'false'}`);
+            if (res.data?.success && res.data.data) {
+              menuStationData.value = res.data.data;
+              if (selectedMenuItem.value) {
+                const refreshed = (res.data.data.items || []).find(i => i.id === selectedMenuItem.value.id || (i.ma === selectedMenuItem.value.ma && i.nhomId === selectedMenuItem.value.nhomId));
+                if (refreshed) selectMenuItem(refreshed, true);
+              } else if (res.data.data.items && res.data.data.items.length > 0) {
+                selectMenuItem(res.data.data.items[0], true);
+              }
+            } else {
+              showToast(res.data?.message || 'Không thể tải danh sách cấu hình menu', 'error');
+            }
+          } catch (err) {
+            showToast('Lỗi tải cấu hình menu: ' + (err.response?.data?.message || err.message), 'error');
+          } finally {
+            isLoadingMenuData.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        function selectMenuItem(item, preserveResults = false) {
+          if (!item) return;
+          selectedMenuItem.value = item;
+          if (!preserveResults) {
+            menuExecutionResults.value = null;
+          }
+          const iconCfg = item.iconConfig || {
+            hisIcon: '',
+            hisType: 'primary',
+            hisDanger: false,
+            hisShortcut: '',
+            giaTri: '',
+            listDisableTrangThai: []
+          };
+          menuForm.value = {
+            id: item.id,
+            originalMa: item.ma || '',
+            ma: item.ma || '',
+            ten: item.ten || '',
+            nhomId: Number(item.nhomId ?? 1),
+            parentId: item.parentId || null,
+            parentMa: item.parentMa || '',
+            parentChanged: false,
+            stt: Number(item.stt ?? 0),
+            loai: item.loai || 'menu',
+            trangThai: Number(item.trangThai) === 1 ? 1 : 0,
+            ghiChu: item.ghiChu ?? '',
+            excludedRoleIds: Array.isArray(item.excludedRoleIds) ? [...item.excludedRoleIds] : [],
+            iconConfig: {
+              hisIcon: iconCfg.hisIcon || '',
+              hisType: iconCfg.hisType || 'primary',
+              hisDanger: Boolean(iconCfg.hisDanger),
+              hisShortcut: iconCfg.hisShortcut || '',
+              giaTri: iconCfg.giaTri || '',
+              listDisableTrangThai: Array.isArray(iconCfg.listDisableTrangThai)
+                ? iconCfg.listDisableTrangThai.map(x => ({ property: x.property || '', value: x.value ?? '' }))
+                : []
+            }
+          };
+          nextTick(() => refreshIcons());
+        }
+
+        function onMenuParentChange() {
+          menuForm.value.parentChanged = true;
+          const parentObj = (menuStationData.value.items || []).find(i => i.id === Number(menuForm.value.parentId));
+          menuForm.value.parentMa = parentObj ? parentObj.ma : '';
+        }
+
+        function addMenuDisableRule() {
+          if (!Array.isArray(menuForm.value.iconConfig.listDisableTrangThai)) {
+            menuForm.value.iconConfig.listDisableTrangThai = [];
+          }
+          menuForm.value.iconConfig.listDisableTrangThai.push({ property: '', value: '' });
+          nextTick(() => refreshIcons());
+        }
+
+        function removeMenuDisableRule(idx) {
+          if (Array.isArray(menuForm.value.iconConfig.listDisableTrangThai)) {
+            menuForm.value.iconConfig.listDisableTrangThai.splice(idx, 1);
+          }
+        }
+
+        function formatMenuTabJson() {
+          const raw = String(menuForm.value.ghiChu || '').trim();
+          if (!raw) {
+            showToast('Nội dung JSON đang trống', 'info');
+            return;
+          }
+          try {
+            const parsed = JSON.parse(raw);
+            menuForm.value.ghiChu = JSON.stringify(parsed, null, 2);
+            showMenuNotice('test', 'KIỂM TRA JSON HỢP LỆ', 'Cấu trúc JSON của Tab hoàn toàn hợp lệ và đã được định dạng đẹp.');
+          } catch (err) {
+            showMenuNotice('error', 'LỖI CÚ PHÁP JSON', 'Cấu hình JSON không hợp lệ: ' + err.message);
+          }
+        }
+
+        async function runMenuUpdate(dryRun = true) {
+          if (!selectedMenuItem.value || !menuForm.value.ma || !menuForm.value.ten) {
+            showMenuNotice('error', 'CHƯA CHỌN MỤC MENU', 'Vui lòng chọn một mục Menu / Button / Tab và nhập đầy đủ Mã, Tên cấu hình.');
+            return;
+          }
+
+          const targetIds = menuTargetStationIds.value;
+          if (targetIds.length === 0) {
+            showMenuNotice('error', 'CHƯA CHỌN TRẠM ÁP DỤNG', 'Vui lòng chọn ít nhất 1 trạm y tế để thực hiện.');
+            return;
+          }
+
+          if (!dryRun) {
+            const scopeText = targetIds.length === 1
+              ? `trạm [${currentSelectedMenuStationObj.value?.code}] ${currentSelectedMenuStationObj.value?.name}`
+              : `${targetIds.length} Trạm Y Tế`;
+            const modeText = menuUpdateMode.value === 'status_only'
+              ? `Chỉ cập nhật Trạng thái = ${menuForm.value.trangThai === 1 ? 'Kích hoạt (1)' : 'Khóa (0)'}`
+              : 'Cập nhật toàn bộ các trường trên form';
+            if (!confirm(`XÁC NHẬN LƯU THẬT LÊN CỔNG HMIS:\n- Mục: [${menuForm.value.ma}] ${menuForm.value.ten}\n- Phạm vi: ${scopeText}\n- Chế độ: ${modeText}\n\nBạn có chắc chắn muốn thực hiện?`)) {
+              return;
+            }
+          }
+
+          isExecutingMenuUpdate.value = true;
+          menuLastRunMode.value = dryRun ? 'dryRun' : 'live';
+          try {
+            const payload = {
+              dryRun,
+              updateMode: menuUpdateMode.value,
+              stationIds: targetIds,
+              item: {
+                id: menuForm.value.id,
+                originalMa: menuForm.value.originalMa || menuForm.value.ma,
+                ma: menuForm.value.ma,
+                ten: menuForm.value.ten,
+                nhomId: menuForm.value.nhomId,
+                parentId: menuForm.value.parentId,
+                parentMa: menuForm.value.parentMa,
+                parentChanged: menuForm.value.parentChanged,
+                stt: menuForm.value.stt,
+                loai: menuForm.value.loai,
+                trangThai: menuForm.value.trangThai,
+                ghiChu: menuForm.value.ghiChu,
+                excludedRoles: menuForm.value.excludedRoleIds.length > 0 ? menuForm.value.excludedRoleIds.join(',') : null,
+                iconConfig: menuForm.value.iconConfig
+              }
+            };
+
+            const res = await axios.post('/api/cauhinh-menu/execute', payload);
+            if (res.data?.success && res.data.data) {
+              menuExecutionResults.value = res.data.data;
+              if (dryRun) {
+                showMenuNotice(
+                  'test',
+                  `🧪 TEST THỬ (DRY-RUN) HOÀN TẤT TRÊN ${res.data.data.totalStations} TRẠM — AN TOÀN 100%`,
+                  res.data.message
+                );
+              } else {
+                showMenuNotice(
+                  'success',
+                  `✅ ĐÃ CẬP NHẬT THẬT CẤU HÌNH MENU CHO ${res.data.data.updatedCount}/${res.data.data.totalStations} TRẠM!`,
+                  res.data.message
+                );
+                fetchSystemLogs();
+                await loadMenuStationData(selectedMenuStationId.value, true);
+              }
+            } else {
+              showMenuNotice('error', 'LỖI THỰC THI CẤU HÌNH MENU', res.data?.message || 'Có lỗi xảy ra');
+            }
+          } catch (err) {
+            showMenuNotice('error', 'LỖI THỰC THI CẤU HÌNH MENU', err.response?.data?.message || err.message);
+          } finally {
+            isExecutingMenuUpdate.value = false;
+            nextTick(() => refreshIcons());
+          }
+        }
+
+        async function downloadMenuExcel() {
+          if (!selectedMenuStationId.value) return;
+          try {
+            const nhomQuery = menuTableFilter.value.nhomId ? `&nhomId=${encodeURIComponent(menuTableFilter.value.nhomId)}` : '';
+            const res = await axios.get(`/api/cauhinh-menu/export-excel?stationId=${selectedMenuStationId.value}${nhomQuery}`, { responseType: 'blob' });
+            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `CauHinh_Menu_HMIS_${selectedMenuStationId.value}_${Date.now()}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            showToast('Đã tải xuống file Excel danh sách cấu hình menu!', 'success');
+          } catch (err) {
+            showToast('Lỗi tải file Excel: ' + (err.response?.data?.message || err.message), 'error');
+          }
+        }
+
 
         // TAB 6: THỐNG KÊ & BIỂU ĐỒ KCB NGOẠI TRÚ
         // ==========================================
@@ -17446,7 +18738,46 @@ Trạm Y tế Xã Sơn Hải | 01015 | tyt_sonhai | Password@123 | https://his-l
           updatePsdkRowStt,
           onPsdkSttBlur,
           deletePsdkRow,
-          downloadPsdkExcel
+          downloadPsdkExcel,
+          selectedMenuStationId,
+          isMenuStationDropdownOpen,
+          menuStationSearchQuery,
+          isLoadingMenuData,
+          isExecutingMenuUpdate,
+          menuLastRunMode,
+          selectedMenuItem,
+          menuCurrentPage,
+          menuPageSize,
+          collapsedMenuNodeIds,
+          menuTargetScope,
+          menuUpdateMode,
+          menuExecutionResults,
+          menuNotice,
+          menuStationData,
+          menuTableFilter,
+          menuForm,
+          currentSelectedMenuStationObj,
+          filteredMenuSelectorStations,
+          selectMenuStationFromSearch,
+          hasActiveMenuFilter,
+          clearMenuTableFilter,
+          toggleMenuNodeCollapse,
+          expandAllMenuTree,
+          collapseAllMenuTree,
+          filteredMenuItems,
+          menuTotalPages,
+          pagedMenuItems,
+          menuParentCandidates,
+          menuTargetStationIds,
+          menuTargetStationCount,
+          loadMenuStationData,
+          selectMenuItem,
+          onMenuParentChange,
+          addMenuDisableRule,
+          removeMenuDisableRule,
+          formatMenuTabJson,
+          runMenuUpdate,
+          downloadMenuExcel
         };
       }
     }).mount('#app');

@@ -17,6 +17,7 @@ const mapKqdtXuTriRoutes = require('./routes/mapKqdtXuTriRoutes');
 const tonDauThuocRoutes = require('./routes/tonDauThuocRoutes');
 const thongBaoRoutes = require('./routes/thongBaoRoutes');
 const phongSuDungKhoRoutes = require('./routes/phongSuDungKhoRoutes');
+const cauHinhMenuRoutes = require('./routes/cauHinhMenuRoutes');
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use('/api/map-kqdt-xutri', mapKqdtXuTriRoutes);
 app.use('/api/tondau-thuoc', tonDauThuocRoutes);
 app.use('/api/thongbao', thongBaoRoutes);
 app.use('/api/phong-su-dung-kho', phongSuDungKhoRoutes);
+app.use('/api/cauhinh-menu', cauHinhMenuRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

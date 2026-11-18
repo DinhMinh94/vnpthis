@@ -11,3 +11,6 @@
 ## 3. Ưu tiên giải pháp xuất file nạp chuẩn (Native Import Flow)
 - Đối với các nghiệp vụ bổ sung dữ liệu danh mục, ưu tiên sinh file Excel/CSV chuẩn theo đúng định dạng mẫu của VNPT HIS (như file mẫu 78 cột) để người dùng tải về và nạp qua chức năng Import chính thức của phần mềm.
 - Cách tiếp cận này đảm bảo toàn bộ dữ liệu đi qua bộ lọc kiểm tra tính hợp lệ (validation engine) của chính cổng HMIS.
+
+## 4. Tự động đẩy code lên Git (Auto Commit & Push) mỗi khi hoàn thành
+- Sau mỗi lần hoàn thành việc thêm tính năng, sửa lỗi hoặc cập nhật giao diện/backend, phải kiểm tra cú pháp (`JS syntax OK`) và tự động thực hiện `git add`, `git commit` và `git push` lên nhánh chính (`main`) ngay trong lượt phản hồi mà không cần chờ người dùng nhắc.

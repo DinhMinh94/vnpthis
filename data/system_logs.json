@@ -1,5 +1,3504 @@
 [
   {
+    "id": "log_1794736212646_gyog8",
+    "timestamp": "2026-11-15T09:50:12.646Z",
+    "formattedTime": "15/11/2026 16:50:12",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [hisNoiKhamChuaBenhBanDau] theo Mã CSKCB 5 số riêng của từng trạm trong cấu hình HIS_NOI_KHAM_CHUA_BENH_BAN_DAU (Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu)",
+    "details": {
+      "maCauHinh": "HIS_NOI_KHAM_CHUA_BENH_BAN_DAU",
+      "tenCauHinh": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "paramKey": "hisNoiKhamChuaBenhBanDau",
+      "paramName": "Cấu hình mã nơi đăng kí khám chữa bệnh ban đầu",
+      "useStationCode": true,
+      "oldValue": "11010",
+      "newValue": "[Theo Mã CSKCB 5 số từng trạm]"
+    },
+    "total": 43,
+    "successCount": 43,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ",
+      "Trạm y tế phường Mường Thanh",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+      "Trạm y tế xã Mường Lạn Trạm chính",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+      "Trạm y tế xã Na Sang Trạm chính",
+      "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+      "Trạm Y tế xã Mường Pồn Trạm chính",
+      "Trạm Y tế xã Mường Ảng Trạm chính",
+      "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+      "Trạm Y tế xã Búng Lao Trạm chính",
+      "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+      "Trạm y tế xã Nà Tấu Trạm chính",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+      "Trạm Y tế xã Si Pa Phìn Trạm chính",
+      "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm y tế xã Mường Phăng",
+      "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+      "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+      "Trạm Y tế xã Pa Ham Trạm chính",
+      "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+      "Trạm Y tế Nậm Nèn Trạm chính",
+      "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+      "Trạm Y tế Thanh An Trạm chính",
+      "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+      "Trạm Y tế Thanh Yên Trạm chính",
+      "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+      "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm Y tế Sam Mứn Trạm chính",
+      "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+      "Trạm y tế Núa Ngam Trạm chính",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+      "Trạm y tế Mường Nhà Trạm chính",
+      "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "code": "11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11010\"",
+        "oldValue": "11010",
+        "newValue": "11010",
+        "duration": 538
+      },
+      {
+        "id": "tyt_1791689200931_7fkiu",
+        "code": "11017",
+        "name": "Trạm y tế phường Mường Thanh",
+        "username": "11017.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11017\" ➔ \"11017\"",
+        "oldValue": "11017",
+        "newValue": "11017",
+        "duration": 393
+      },
+      {
+        "id": "tyt_1791691344724_fsm1s",
+        "code": "11139",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+        "username": "11139.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11139\" ➔ \"11139\"",
+        "oldValue": "11139",
+        "newValue": "11139",
+        "duration": 355
+      },
+      {
+        "id": "tyt_1791691344725_6m9dr",
+        "code": "11138",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+        "username": "11138.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11138\" ➔ \"11138\"",
+        "oldValue": "11138",
+        "newValue": "11138",
+        "duration": 420
+      },
+      {
+        "id": "tyt_1791691344725_pw04b",
+        "code": "11095",
+        "name": "Trạm y tế xã Mường Lạn Trạm chính",
+        "username": "11095.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11095\" ➔ \"11095\"",
+        "oldValue": "11095",
+        "newValue": "11095",
+        "duration": 341
+      },
+      {
+        "id": "tyt_1791691344725_2ahoh",
+        "code": "11137",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+        "username": "11137.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11137\" ➔ \"11137\"",
+        "oldValue": "11137",
+        "newValue": "11137",
+        "duration": 351
+      },
+      {
+        "id": "tyt_1791691344725_oo5x9",
+        "code": "11141",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+        "username": "11141.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11141\" ➔ \"11141\"",
+        "oldValue": "11141",
+        "newValue": "11141",
+        "duration": 326
+      },
+      {
+        "id": "tyt_1791691344725_g1n8b",
+        "code": "11142",
+        "name": "Trạm y tế xã Na Sang Trạm chính",
+        "username": "11142.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11142\" ➔ \"11142\"",
+        "oldValue": "11142",
+        "newValue": "11142",
+        "duration": 425
+      },
+      {
+        "id": "tyt_1791691344725_wd7z3",
+        "code": "11029",
+        "name": "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+        "username": "11029.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11029\" ➔ \"11029\"",
+        "oldValue": "11029",
+        "newValue": "11029",
+        "duration": 340
+      },
+      {
+        "id": "tyt_1791691344725_0ikn9",
+        "code": "11055",
+        "name": "Trạm Y tế xã Mường Pồn Trạm chính",
+        "username": "11055.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11055\" ➔ \"11055\"",
+        "oldValue": "11055",
+        "newValue": "11055",
+        "duration": 373
+      },
+      {
+        "id": "tyt_1791691344725_d2t3c",
+        "code": "11096",
+        "name": "Trạm Y tế xã Mường Ảng Trạm chính",
+        "username": "11096.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11097\" ➔ \"11096\"",
+        "oldValue": "11097",
+        "newValue": "11096",
+        "duration": 340
+      },
+      {
+        "id": "tyt_1791691344726_t41eg",
+        "code": "11097",
+        "name": "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+        "username": "11097.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11097\" ➔ \"11097\"",
+        "oldValue": "11097",
+        "newValue": "11097",
+        "duration": 366
+      },
+      {
+        "id": "tyt_1791691344726_rfb3u",
+        "code": "11163",
+        "name": "Trạm Y tế xã Búng Lao Trạm chính",
+        "username": "11163.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11163\" ➔ \"11163\"",
+        "oldValue": "11163",
+        "newValue": "11163",
+        "duration": 330
+      },
+      {
+        "id": "tyt_1791691344726_r1yq1",
+        "code": "11098",
+        "name": "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+        "username": "11098.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11098\" ➔ \"11098\"",
+        "oldValue": "11098",
+        "newValue": "11098",
+        "duration": 369
+      },
+      {
+        "id": "tyt_1791691344726_v55ue",
+        "code": "11119",
+        "name": "Trạm y tế xã Nà Tấu Trạm chính",
+        "username": "11119.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11119\" ➔ \"11119\"",
+        "oldValue": "11119",
+        "newValue": "11119",
+        "duration": 330
+      },
+      {
+        "id": "tyt_1791691344726_tk8qe",
+        "code": "11099",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+        "username": "11099.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11099\" ➔ \"11099\"",
+        "oldValue": "11099",
+        "newValue": "11099",
+        "duration": 378
+      },
+      {
+        "id": "tyt_1791691344726_tyxu3",
+        "code": "11140",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+        "username": "11140.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11140\" ➔ \"11140\"",
+        "oldValue": "11140",
+        "newValue": "11140",
+        "duration": 337
+      },
+      {
+        "id": "tyt_1791691344726_dd8tb",
+        "code": "11057",
+        "name": "Trạm Y tế xã Si Pa Phìn Trạm chính",
+        "username": "11057.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11057\" ➔ \"11057\"",
+        "oldValue": "11057",
+        "newValue": "11057",
+        "duration": 373
+      },
+      {
+        "id": "tyt_1791691344726_tfxlt",
+        "code": "11143",
+        "name": "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+        "username": "11143.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11143\" ➔ \"11143\"",
+        "oldValue": "11143",
+        "newValue": "11143",
+        "duration": 373
+      },
+      {
+        "id": "tyt_1791691344726_9xjnz",
+        "code": "11109",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11109.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11109\" ➔ \"11109\"",
+        "oldValue": "11109",
+        "newValue": "11109",
+        "duration": 365
+      },
+      {
+        "id": "tyt_1791695109044_1lj0m",
+        "code": "11021",
+        "name": "Trạm y tế xã Mường Phăng",
+        "username": "11021.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11021\" ➔ \"11021\"",
+        "oldValue": "11021",
+        "newValue": "11021",
+        "duration": 364
+      },
+      {
+        "id": "tyt_1791695160278_2epf0",
+        "code": "11121",
+        "name": "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+        "username": "11121.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11121\" ➔ \"11121\"",
+        "oldValue": "11121",
+        "newValue": "11121",
+        "duration": 343
+      },
+      {
+        "id": "tyt_1791695192777_6fjbv",
+        "code": "11176",
+        "name": "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+        "username": "11176.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11176\" ➔ \"11176\"",
+        "oldValue": "11176",
+        "newValue": "11176",
+        "duration": 303
+      },
+      {
+        "id": "tyt_1792720046961_d1las",
+        "code": "11056",
+        "name": "Trạm Y tế xã Pa Ham Trạm chính",
+        "username": "11056.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11056\" ➔ \"11056\"",
+        "oldValue": "11056",
+        "newValue": "11056",
+        "duration": 340
+      },
+      {
+        "id": "tyt_1792720046961_32c6q",
+        "code": "11052",
+        "name": "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+        "username": "11052.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11052\" ➔ \"11052\"",
+        "oldValue": "11052",
+        "newValue": "11052",
+        "duration": 346
+      },
+      {
+        "id": "tyt_1792720046961_8ec20",
+        "code": "11160",
+        "name": "Trạm Y tế Nậm Nèn Trạm chính",
+        "username": "11160.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11160\" ➔ \"11160\"",
+        "oldValue": "11160",
+        "newValue": "11160",
+        "duration": 385
+      },
+      {
+        "id": "tyt_1792720046961_bjcd7",
+        "code": "11159",
+        "name": "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+        "username": "11159.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11159\" ➔ \"11159\"",
+        "oldValue": "11159",
+        "newValue": "11159",
+        "duration": 360
+      },
+      {
+        "id": "tyt_1792720046961_m5xgy",
+        "code": "11025",
+        "name": "Trạm Y tế Thanh An Trạm chính",
+        "username": "11025.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11025\" ➔ \"11025\"",
+        "oldValue": "11025",
+        "newValue": "11025",
+        "duration": 358
+      },
+      {
+        "id": "tyt_1792720046961_gpwrk",
+        "code": "11019",
+        "name": "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+        "username": "11019.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11019\" ➔ \"11019\"",
+        "oldValue": "11019",
+        "newValue": "11019",
+        "duration": 344
+      },
+      {
+        "id": "tyt_1792720046961_2mzqg",
+        "code": "11022",
+        "name": "Trạm Y tế Thanh Yên Trạm chính",
+        "username": "11022.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11022\" ➔ \"11022\"",
+        "oldValue": "11022",
+        "newValue": "11022",
+        "duration": 344
+      },
+      {
+        "id": "tyt_1792720046962_gxt8s",
+        "code": "11030",
+        "name": "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+        "username": "11030.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11030\" ➔ \"11030\"",
+        "oldValue": "11030",
+        "newValue": "11030",
+        "duration": 339
+      },
+      {
+        "id": "tyt_1792720046962_6r0co",
+        "code": "11020",
+        "name": "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+        "username": "11020.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11020\" ➔ \"11020\"",
+        "oldValue": "11020",
+        "newValue": "11020",
+        "duration": 380
+      },
+      {
+        "id": "tyt_1793260643544_64rvw",
+        "code": "11162",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11162.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11162\"",
+        "oldValue": "11010",
+        "newValue": "11162",
+        "duration": 366
+      },
+      {
+        "id": "tyt_1793260643544_jt9hs",
+        "code": "11158",
+        "name": "Trạm Y tế Sam Mứn Trạm chính",
+        "username": "11158.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11158\"",
+        "oldValue": "11010",
+        "newValue": "11158",
+        "duration": 396
+      },
+      {
+        "id": "tyt_1793260643544_6t1pb",
+        "code": "11031",
+        "name": "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+        "username": "11031.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11031\"",
+        "oldValue": "11010",
+        "newValue": "11031",
+        "duration": 331
+      },
+      {
+        "id": "tyt_1793260643544_5vp2k",
+        "code": "11026",
+        "name": "Trạm y tế Núa Ngam Trạm chính",
+        "username": "11026.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11026\"",
+        "oldValue": "11010",
+        "newValue": "11026",
+        "duration": 361
+      },
+      {
+        "id": "tyt_1793260643545_wzqnj",
+        "code": "11170",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+        "username": "11170.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11170\"",
+        "oldValue": "11010",
+        "newValue": "11170",
+        "duration": 338
+      },
+      {
+        "id": "tyt_1793260643545_adc4m",
+        "code": "11177",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+        "username": "11177.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11177\"",
+        "oldValue": "11010",
+        "newValue": "11177",
+        "duration": 383
+      },
+      {
+        "id": "tyt_1793260643545_h8tz9",
+        "code": "11157",
+        "name": "Trạm y tế Mường Nhà Trạm chính",
+        "username": "11157.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11157\"",
+        "oldValue": "11010",
+        "newValue": "11157",
+        "duration": 333
+      },
+      {
+        "id": "tyt_1793260643545_gp167",
+        "code": "11028",
+        "name": "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+        "username": "11028.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11028\"",
+        "oldValue": "11010",
+        "newValue": "11028",
+        "duration": 359
+      },
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "code": "11027",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11027\"",
+        "oldValue": "11010",
+        "newValue": "11027",
+        "duration": 333
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "code": "11024",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11024\"",
+        "oldValue": "11010",
+        "newValue": "11024",
+        "duration": 348
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "code": "11171",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật hisNoiKhamChuaBenhBanDau: \"11010\" ➔ \"11171\"",
+        "oldValue": "11010",
+        "newValue": "11171",
+        "duration": 367
+      }
+    ]
+  },
+  {
+    "id": "log_1794734452857_q3qxr",
+    "timestamp": "2026-11-15T09:20:52.857Z",
+    "formattedTime": "15/11/2026 16:20:52",
+    "actionType": "phieuin_baocao",
+    "actionTitle": "Thiết lập phiếu in & báo cáo",
+    "summary": "Thiết lập mẫu phiếu in [BANG_KE_BHYT] \"Bảng kê chi phí khám chữa bệnh Dân Quý\" (Trạng thái: \"Bật\" ➔ \"Bật\")",
+    "details": {
+      "maBaoCao": "BANG_KE_BHYT",
+      "ten": "Bảng kê chi phí khám chữa bệnh Dân Quý",
+      "tempCode": "RPT000056_BANG_KE_CV697_F9_SIGNMARK_COPY_20261115:161209",
+      "service": "BangKe",
+      "oldValue": "Bật",
+      "newValue": "Bật",
+      "trangThai": "Bật",
+      "formId": -1,
+      "soNgayXemBc": 366,
+      "ghiChu": "RPT000056_BANG_KE_CV697_F9",
+      "heThongRender": "Dreport v1",
+      "renderType": 0
+    },
+    "total": 43,
+    "successCount": 43,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ",
+      "Trạm y tế phường Mường Thanh",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+      "Trạm y tế xã Mường Lạn Trạm chính",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+      "Trạm y tế xã Na Sang Trạm chính",
+      "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+      "Trạm Y tế xã Mường Pồn Trạm chính",
+      "Trạm Y tế xã Mường Ảng Trạm chính",
+      "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+      "Trạm Y tế xã Búng Lao Trạm chính",
+      "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+      "Trạm y tế xã Nà Tấu Trạm chính",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+      "Trạm Y tế xã Si Pa Phìn Trạm chính",
+      "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm y tế xã Mường Phăng",
+      "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+      "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+      "Trạm Y tế xã Pa Ham Trạm chính",
+      "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+      "Trạm Y tế Nậm Nèn Trạm chính",
+      "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+      "Trạm Y tế Thanh An Trạm chính",
+      "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+      "Trạm Y tế Thanh Yên Trạm chính",
+      "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+      "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm Y tế Sam Mứn Trạm chính",
+      "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+      "Trạm y tế Núa Ngam Trạm chính",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+      "Trạm y tế Mường Nhà Trạm chính",
+      "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 410
+      },
+      {
+        "id": "tyt_1791689200931_7fkiu",
+        "name": "Trạm y tế phường Mường Thanh",
+        "username": "11017.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 1081
+      },
+      {
+        "id": "tyt_1791691344724_fsm1s",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+        "username": "11139.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 314
+      },
+      {
+        "id": "tyt_1791691344725_6m9dr",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+        "username": "11138.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 333
+      },
+      {
+        "id": "tyt_1791691344725_pw04b",
+        "name": "Trạm y tế xã Mường Lạn Trạm chính",
+        "username": "11095.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 320
+      },
+      {
+        "id": "tyt_1791691344725_2ahoh",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+        "username": "11137.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 335
+      },
+      {
+        "id": "tyt_1791691344725_oo5x9",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+        "username": "11141.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 282
+      },
+      {
+        "id": "tyt_1791691344725_g1n8b",
+        "name": "Trạm y tế xã Na Sang Trạm chính",
+        "username": "11142.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 307
+      },
+      {
+        "id": "tyt_1791691344725_wd7z3",
+        "name": "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+        "username": "11029.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 288
+      },
+      {
+        "id": "tyt_1791691344725_0ikn9",
+        "name": "Trạm Y tế xã Mường Pồn Trạm chính",
+        "username": "11055.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 304
+      },
+      {
+        "id": "tyt_1791691344725_d2t3c",
+        "name": "Trạm Y tế xã Mường Ảng Trạm chính",
+        "username": "11096.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 321
+      },
+      {
+        "id": "tyt_1791691344726_t41eg",
+        "name": "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+        "username": "11097.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 312
+      },
+      {
+        "id": "tyt_1791691344726_rfb3u",
+        "name": "Trạm Y tế xã Búng Lao Trạm chính",
+        "username": "11163.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 289
+      },
+      {
+        "id": "tyt_1791691344726_r1yq1",
+        "name": "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+        "username": "11098.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 282
+      },
+      {
+        "id": "tyt_1791691344726_v55ue",
+        "name": "Trạm y tế xã Nà Tấu Trạm chính",
+        "username": "11119.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 313
+      },
+      {
+        "id": "tyt_1791691344726_tk8qe",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+        "username": "11099.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 286
+      },
+      {
+        "id": "tyt_1791691344726_tyxu3",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+        "username": "11140.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 360
+      },
+      {
+        "id": "tyt_1791691344726_dd8tb",
+        "name": "Trạm Y tế xã Si Pa Phìn Trạm chính",
+        "username": "11057.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 311
+      },
+      {
+        "id": "tyt_1791691344726_tfxlt",
+        "name": "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+        "username": "11143.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 309
+      },
+      {
+        "id": "tyt_1791691344726_9xjnz",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11109.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 312
+      },
+      {
+        "id": "tyt_1791695109044_1lj0m",
+        "name": "Trạm y tế xã Mường Phăng",
+        "username": "11021.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 316
+      },
+      {
+        "id": "tyt_1791695160278_2epf0",
+        "name": "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+        "username": "11121.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 318
+      },
+      {
+        "id": "tyt_1791695192777_6fjbv",
+        "name": "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+        "username": "11176.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 306
+      },
+      {
+        "id": "tyt_1792720046961_d1las",
+        "name": "Trạm Y tế xã Pa Ham Trạm chính",
+        "username": "11056.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 303
+      },
+      {
+        "id": "tyt_1792720046961_32c6q",
+        "name": "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+        "username": "11052.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 293
+      },
+      {
+        "id": "tyt_1792720046961_8ec20",
+        "name": "Trạm Y tế Nậm Nèn Trạm chính",
+        "username": "11160.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 308
+      },
+      {
+        "id": "tyt_1792720046961_bjcd7",
+        "name": "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+        "username": "11159.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 334
+      },
+      {
+        "id": "tyt_1792720046961_m5xgy",
+        "name": "Trạm Y tế Thanh An Trạm chính",
+        "username": "11025.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 298
+      },
+      {
+        "id": "tyt_1792720046961_gpwrk",
+        "name": "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+        "username": "11019.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 324
+      },
+      {
+        "id": "tyt_1792720046961_2mzqg",
+        "name": "Trạm Y tế Thanh Yên Trạm chính",
+        "username": "11022.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 336
+      },
+      {
+        "id": "tyt_1792720046962_gxt8s",
+        "name": "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+        "username": "11030.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 349
+      },
+      {
+        "id": "tyt_1792720046962_6r0co",
+        "name": "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+        "username": "11020.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 304
+      },
+      {
+        "id": "tyt_1793260643544_64rvw",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11162.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 286
+      },
+      {
+        "id": "tyt_1793260643544_jt9hs",
+        "name": "Trạm Y tế Sam Mứn Trạm chính",
+        "username": "11158.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 302
+      },
+      {
+        "id": "tyt_1793260643544_6t1pb",
+        "name": "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+        "username": "11031.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 342
+      },
+      {
+        "id": "tyt_1793260643544_5vp2k",
+        "name": "Trạm y tế Núa Ngam Trạm chính",
+        "username": "11026.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 314
+      },
+      {
+        "id": "tyt_1793260643545_wzqnj",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+        "username": "11170.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 305
+      },
+      {
+        "id": "tyt_1793260643545_adc4m",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+        "username": "11177.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 312
+      },
+      {
+        "id": "tyt_1793260643545_h8tz9",
+        "name": "Trạm y tế Mường Nhà Trạm chính",
+        "username": "11157.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 288
+      },
+      {
+        "id": "tyt_1793260643545_gp167",
+        "name": "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+        "username": "11028.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 317
+      },
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 302
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 326
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 319
+      }
+    ]
+  },
+  {
+    "id": "log_1794734433693_ralkv",
+    "timestamp": "2026-11-15T09:20:33.693Z",
+    "formattedTime": "15/11/2026 16:20:33",
+    "actionType": "phieuin_baocao",
+    "actionTitle": "Thiết lập phiếu in & báo cáo",
+    "summary": "Thiết lập mẫu phiếu in [BANG_KE] \"Bảng kê chi phí khám chữa bệnh Dân Quý\" (Trạng thái: \"Bật\" ➔ \"Bật\")",
+    "details": {
+      "maBaoCao": "BANG_KE",
+      "ten": "Bảng kê chi phí khám chữa bệnh Dân Quý",
+      "tempCode": "RPT000056_BANG_KE_CV697_F9_SIGNMARK_COPY_20261115:161209",
+      "service": "BangKe",
+      "oldValue": "Bật",
+      "newValue": "Bật",
+      "trangThai": "Bật",
+      "formId": -1,
+      "soNgayXemBc": 366,
+      "ghiChu": "RPT000056_BANG_KE_CV697_F9\nRPT000056_BANG_KE_A4_DANQUY",
+      "heThongRender": "Dreport v1",
+      "renderType": 0
+    },
+    "total": 43,
+    "successCount": 43,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ",
+      "Trạm y tế phường Mường Thanh",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+      "Trạm y tế xã Mường Lạn Trạm chính",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+      "Trạm y tế xã Na Sang Trạm chính",
+      "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+      "Trạm Y tế xã Mường Pồn Trạm chính",
+      "Trạm Y tế xã Mường Ảng Trạm chính",
+      "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+      "Trạm Y tế xã Búng Lao Trạm chính",
+      "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+      "Trạm y tế xã Nà Tấu Trạm chính",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+      "Trạm Y tế xã Si Pa Phìn Trạm chính",
+      "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm y tế xã Mường Phăng",
+      "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+      "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+      "Trạm Y tế xã Pa Ham Trạm chính",
+      "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+      "Trạm Y tế Nậm Nèn Trạm chính",
+      "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+      "Trạm Y tế Thanh An Trạm chính",
+      "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+      "Trạm Y tế Thanh Yên Trạm chính",
+      "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+      "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm Y tế Sam Mứn Trạm chính",
+      "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+      "Trạm y tế Núa Ngam Trạm chính",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+      "Trạm y tế Mường Nhà Trạm chính",
+      "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 461
+      },
+      {
+        "id": "tyt_1791689200931_7fkiu",
+        "name": "Trạm y tế phường Mường Thanh",
+        "username": "11017.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 322
+      },
+      {
+        "id": "tyt_1791691344724_fsm1s",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+        "username": "11139.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 382
+      },
+      {
+        "id": "tyt_1791691344725_6m9dr",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+        "username": "11138.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 346
+      },
+      {
+        "id": "tyt_1791691344725_pw04b",
+        "name": "Trạm y tế xã Mường Lạn Trạm chính",
+        "username": "11095.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 356
+      },
+      {
+        "id": "tyt_1791691344725_2ahoh",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+        "username": "11137.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 338
+      },
+      {
+        "id": "tyt_1791691344725_oo5x9",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+        "username": "11141.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 358
+      },
+      {
+        "id": "tyt_1791691344725_g1n8b",
+        "name": "Trạm y tế xã Na Sang Trạm chính",
+        "username": "11142.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 386
+      },
+      {
+        "id": "tyt_1791691344725_wd7z3",
+        "name": "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+        "username": "11029.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 338
+      },
+      {
+        "id": "tyt_1791691344725_0ikn9",
+        "name": "Trạm Y tế xã Mường Pồn Trạm chính",
+        "username": "11055.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 344
+      },
+      {
+        "id": "tyt_1791691344725_d2t3c",
+        "name": "Trạm Y tế xã Mường Ảng Trạm chính",
+        "username": "11096.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 340
+      },
+      {
+        "id": "tyt_1791691344726_t41eg",
+        "name": "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+        "username": "11097.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 386
+      },
+      {
+        "id": "tyt_1791691344726_rfb3u",
+        "name": "Trạm Y tế xã Búng Lao Trạm chính",
+        "username": "11163.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 336
+      },
+      {
+        "id": "tyt_1791691344726_r1yq1",
+        "name": "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+        "username": "11098.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 318
+      },
+      {
+        "id": "tyt_1791691344726_v55ue",
+        "name": "Trạm y tế xã Nà Tấu Trạm chính",
+        "username": "11119.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 318
+      },
+      {
+        "id": "tyt_1791691344726_tk8qe",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+        "username": "11099.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 370
+      },
+      {
+        "id": "tyt_1791691344726_tyxu3",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+        "username": "11140.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 360
+      },
+      {
+        "id": "tyt_1791691344726_dd8tb",
+        "name": "Trạm Y tế xã Si Pa Phìn Trạm chính",
+        "username": "11057.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 362
+      },
+      {
+        "id": "tyt_1791691344726_tfxlt",
+        "name": "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+        "username": "11143.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 366
+      },
+      {
+        "id": "tyt_1791691344726_9xjnz",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11109.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 343
+      },
+      {
+        "id": "tyt_1791695109044_1lj0m",
+        "name": "Trạm y tế xã Mường Phăng",
+        "username": "11021.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 328
+      },
+      {
+        "id": "tyt_1791695160278_2epf0",
+        "name": "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+        "username": "11121.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 329
+      },
+      {
+        "id": "tyt_1791695192777_6fjbv",
+        "name": "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+        "username": "11176.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 352
+      },
+      {
+        "id": "tyt_1792720046961_d1las",
+        "name": "Trạm Y tế xã Pa Ham Trạm chính",
+        "username": "11056.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 344
+      },
+      {
+        "id": "tyt_1792720046961_32c6q",
+        "name": "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+        "username": "11052.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 374
+      },
+      {
+        "id": "tyt_1792720046961_8ec20",
+        "name": "Trạm Y tế Nậm Nèn Trạm chính",
+        "username": "11160.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 328
+      },
+      {
+        "id": "tyt_1792720046961_bjcd7",
+        "name": "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+        "username": "11159.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 373
+      },
+      {
+        "id": "tyt_1792720046961_m5xgy",
+        "name": "Trạm Y tế Thanh An Trạm chính",
+        "username": "11025.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 350
+      },
+      {
+        "id": "tyt_1792720046961_gpwrk",
+        "name": "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+        "username": "11019.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 348
+      },
+      {
+        "id": "tyt_1792720046961_2mzqg",
+        "name": "Trạm Y tế Thanh Yên Trạm chính",
+        "username": "11022.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 322
+      },
+      {
+        "id": "tyt_1792720046962_gxt8s",
+        "name": "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+        "username": "11030.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 359
+      },
+      {
+        "id": "tyt_1792720046962_6r0co",
+        "name": "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+        "username": "11020.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 358
+      },
+      {
+        "id": "tyt_1793260643544_64rvw",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11162.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 371
+      },
+      {
+        "id": "tyt_1793260643544_jt9hs",
+        "name": "Trạm Y tế Sam Mứn Trạm chính",
+        "username": "11158.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 353
+      },
+      {
+        "id": "tyt_1793260643544_6t1pb",
+        "name": "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+        "username": "11031.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 360
+      },
+      {
+        "id": "tyt_1793260643544_5vp2k",
+        "name": "Trạm y tế Núa Ngam Trạm chính",
+        "username": "11026.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 360
+      },
+      {
+        "id": "tyt_1793260643545_wzqnj",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+        "username": "11170.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 380
+      },
+      {
+        "id": "tyt_1793260643545_adc4m",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+        "username": "11177.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 318
+      },
+      {
+        "id": "tyt_1793260643545_h8tz9",
+        "name": "Trạm y tế Mường Nhà Trạm chính",
+        "username": "11157.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 367
+      },
+      {
+        "id": "tyt_1793260643545_gp167",
+        "name": "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+        "username": "11028.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 342
+      },
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 341
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 331
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "success": true,
+        "message": "Đã lưu thành công (Trạng thái: \"Tắt\" ➔ \"BẬT\")",
+        "oldValue": "Tắt",
+        "newValue": "BẬT",
+        "duration": 329
+      }
+    ]
+  },
+  {
+    "id": "log_1794710380838_0n6br",
+    "timestamp": "2026-11-15T02:39:40.838Z",
+    "formattedTime": "15/11/2026 09:39:40",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [ngayDenKhamBangKe] từ \"0\" ➔ \"1\" trong cấu hình VPI_BAOHIEM (Viện phí bảo hiểm)",
+    "details": {
+      "maCauHinh": "VPI_BAOHIEM",
+      "tenCauHinh": "Viện phí bảo hiểm",
+      "paramKey": "ngayDenKhamBangKe",
+      "paramName": "Ngày đến khám trong bảng kê chi phí KCB:\n            0: Ưu tiên lấy ngày vào phòng khám (Khám bệnh), ngày vào viện (điều trị). Nếu rỗng lấy ngày tiếp nhận\n            1: Ngày tiếp nhận",
+      "oldValue": "0",
+      "newValue": "1"
+    },
+    "total": 43,
+    "successCount": 43,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ",
+      "Trạm y tế phường Mường Thanh",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+      "Trạm y tế xã Mường Lạn Trạm chính",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+      "Trạm y tế xã Na Sang Trạm chính",
+      "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+      "Trạm Y tế xã Mường Pồn Trạm chính",
+      "Trạm Y tế xã Mường Ảng Trạm chính",
+      "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+      "Trạm Y tế xã Búng Lao Trạm chính",
+      "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+      "Trạm y tế xã Nà Tấu Trạm chính",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+      "Trạm Y tế xã Si Pa Phìn Trạm chính",
+      "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm y tế xã Mường Phăng",
+      "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+      "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+      "Trạm Y tế xã Pa Ham Trạm chính",
+      "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+      "Trạm Y tế Nậm Nèn Trạm chính",
+      "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+      "Trạm Y tế Thanh An Trạm chính",
+      "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+      "Trạm Y tế Thanh Yên Trạm chính",
+      "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+      "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm Y tế Sam Mứn Trạm chính",
+      "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+      "Trạm y tế Núa Ngam Trạm chính",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+      "Trạm y tế Mường Nhà Trạm chính",
+      "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 516
+      },
+      {
+        "id": "tyt_1791689200931_7fkiu",
+        "name": "Trạm y tế phường Mường Thanh",
+        "username": "11017.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 406
+      },
+      {
+        "id": "tyt_1791691344724_fsm1s",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+        "username": "11139.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 375
+      },
+      {
+        "id": "tyt_1791691344725_6m9dr",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+        "username": "11138.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 364
+      },
+      {
+        "id": "tyt_1791691344725_pw04b",
+        "name": "Trạm y tế xã Mường Lạn Trạm chính",
+        "username": "11095.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 368
+      },
+      {
+        "id": "tyt_1791691344725_2ahoh",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+        "username": "11137.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 351
+      },
+      {
+        "id": "tyt_1791691344725_oo5x9",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+        "username": "11141.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 368
+      },
+      {
+        "id": "tyt_1791691344725_g1n8b",
+        "name": "Trạm y tế xã Na Sang Trạm chính",
+        "username": "11142.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 375
+      },
+      {
+        "id": "tyt_1791691344725_wd7z3",
+        "name": "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+        "username": "11029.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 374
+      },
+      {
+        "id": "tyt_1791691344725_0ikn9",
+        "name": "Trạm Y tế xã Mường Pồn Trạm chính",
+        "username": "11055.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 341
+      },
+      {
+        "id": "tyt_1791691344725_d2t3c",
+        "name": "Trạm Y tế xã Mường Ảng Trạm chính",
+        "username": "11096.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 349
+      },
+      {
+        "id": "tyt_1791691344726_t41eg",
+        "name": "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+        "username": "11097.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 326
+      },
+      {
+        "id": "tyt_1791691344726_rfb3u",
+        "name": "Trạm Y tế xã Búng Lao Trạm chính",
+        "username": "11163.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 397
+      },
+      {
+        "id": "tyt_1791691344726_r1yq1",
+        "name": "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+        "username": "11098.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 345
+      },
+      {
+        "id": "tyt_1791691344726_v55ue",
+        "name": "Trạm y tế xã Nà Tấu Trạm chính",
+        "username": "11119.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 360
+      },
+      {
+        "id": "tyt_1791691344726_tk8qe",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+        "username": "11099.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 432
+      },
+      {
+        "id": "tyt_1791691344726_tyxu3",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+        "username": "11140.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 368
+      },
+      {
+        "id": "tyt_1791691344726_dd8tb",
+        "name": "Trạm Y tế xã Si Pa Phìn Trạm chính",
+        "username": "11057.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 366
+      },
+      {
+        "id": "tyt_1791691344726_tfxlt",
+        "name": "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+        "username": "11143.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 394
+      },
+      {
+        "id": "tyt_1791691344726_9xjnz",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11109.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 391
+      },
+      {
+        "id": "tyt_1791695109044_1lj0m",
+        "name": "Trạm y tế xã Mường Phăng",
+        "username": "11021.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 363
+      },
+      {
+        "id": "tyt_1791695160278_2epf0",
+        "name": "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+        "username": "11121.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 381
+      },
+      {
+        "id": "tyt_1791695192777_6fjbv",
+        "name": "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+        "username": "11176.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 391
+      },
+      {
+        "id": "tyt_1792720046961_d1las",
+        "name": "Trạm Y tế xã Pa Ham Trạm chính",
+        "username": "11056.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 372
+      },
+      {
+        "id": "tyt_1792720046961_32c6q",
+        "name": "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+        "username": "11052.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 408
+      },
+      {
+        "id": "tyt_1792720046961_8ec20",
+        "name": "Trạm Y tế Nậm Nèn Trạm chính",
+        "username": "11160.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 377
+      },
+      {
+        "id": "tyt_1792720046961_bjcd7",
+        "name": "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+        "username": "11159.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 356
+      },
+      {
+        "id": "tyt_1792720046961_m5xgy",
+        "name": "Trạm Y tế Thanh An Trạm chính",
+        "username": "11025.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 345
+      },
+      {
+        "id": "tyt_1792720046961_gpwrk",
+        "name": "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+        "username": "11019.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 383
+      },
+      {
+        "id": "tyt_1792720046961_2mzqg",
+        "name": "Trạm Y tế Thanh Yên Trạm chính",
+        "username": "11022.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 375
+      },
+      {
+        "id": "tyt_1792720046962_gxt8s",
+        "name": "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+        "username": "11030.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 384
+      },
+      {
+        "id": "tyt_1792720046962_6r0co",
+        "name": "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+        "username": "11020.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 341
+      },
+      {
+        "id": "tyt_1793260643544_64rvw",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11162.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 392
+      },
+      {
+        "id": "tyt_1793260643544_jt9hs",
+        "name": "Trạm Y tế Sam Mứn Trạm chính",
+        "username": "11158.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 370
+      },
+      {
+        "id": "tyt_1793260643544_6t1pb",
+        "name": "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+        "username": "11031.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 373
+      },
+      {
+        "id": "tyt_1793260643544_5vp2k",
+        "name": "Trạm y tế Núa Ngam Trạm chính",
+        "username": "11026.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 339
+      },
+      {
+        "id": "tyt_1793260643545_wzqnj",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+        "username": "11170.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 361
+      },
+      {
+        "id": "tyt_1793260643545_adc4m",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+        "username": "11177.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 387
+      },
+      {
+        "id": "tyt_1793260643545_h8tz9",
+        "name": "Trạm y tế Mường Nhà Trạm chính",
+        "username": "11157.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 365
+      },
+      {
+        "id": "tyt_1793260643545_gp167",
+        "name": "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+        "username": "11028.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 383
+      },
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 392
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 392
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayDenKhamBangKe: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 363
+      }
+    ]
+  },
+  {
+    "id": "log_1794709921432_57845",
+    "timestamp": "2026-11-15T02:32:01.432Z",
+    "formattedTime": "15/11/2026 09:32:01",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [checkIcd] từ \"1\" ➔ \"2\" trong cấu hình CHECKICD (CHECKICD)",
+    "details": {
+      "maCauHinh": "CHECKICD",
+      "tenCauHinh": "CHECKICD",
+      "paramKey": "checkIcd",
+      "paramName": "+ CHECKICD = 0 giữ nguyên như hiện tại không thay đổi\n+ CHECKICD = 1 hiển thị xác nhận có thông báo tương ứng với 06 trường hợp có xác nhận Tiếp tục hay Hủy bỏ. Nếu chọn Tiếp tục thì lưu thông tin và xử lý được tiếp\n\nTH1: Khi kê ICD chính vào các mã thuộc cột 24 (Mã bệnh không được phép chỉ định làm bệnh chính theo thông tư 06/2026/TT-BYT)\nTH2:  Khi kê ICD chính vào các mã thuộc cột 25 (Mã bệnh không khuyến khích dùng là bệnh chính theo thông tư 06/2026/TT-BYT)\nTH3: Khi kê ICD chính/phụ vào các mã thuộc cột 26 (Mã bệnh không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn theo thông tư 06/2026/TT-BYT)\nTH4: Khi kê ICD chính/phụ vào các mã thuộc cột 27 chỉ thực hiện ở màn hình \"Thông tin tử vong\", trường \"Nguyên nhân chính\"\nTH5: Dựa vào giới tính Nam/Nữ để ràng buộc. Nếu giới tính là Nam khi kê ICD chính/phụ vào các mã chỉ có hoặc chủ yếu có ở Nữ giới\nTH6: Dựa vào giới tính Nam/Nữ để ràng buộc. Nếu giới tính là Nữ khi kê ICD chính/phụ vào các mã chỉ có hoặc chủ yếu có ở Nam giới\n\n+ CHECKICD = 2 cảnh báo và chặn cứng không cho thực hiện tương ứng với 06 trường hợp (cột 24 -> cột 29)",
+      "oldValue": "1",
+      "newValue": "2"
+    },
+    "total": 43,
+    "successCount": 43,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ",
+      "Trạm y tế phường Mường Thanh",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+      "Trạm y tế xã Mường Lạn Trạm chính",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+      "Trạm y tế xã Na Sang Trạm chính",
+      "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+      "Trạm Y tế xã Mường Pồn Trạm chính",
+      "Trạm Y tế xã Mường Ảng Trạm chính",
+      "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+      "Trạm Y tế xã Búng Lao Trạm chính",
+      "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+      "Trạm y tế xã Nà Tấu Trạm chính",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+      "Trạm Y tế xã Si Pa Phìn Trạm chính",
+      "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm y tế xã Mường Phăng",
+      "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+      "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+      "Trạm Y tế xã Pa Ham Trạm chính",
+      "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+      "Trạm Y tế Nậm Nèn Trạm chính",
+      "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+      "Trạm Y tế Thanh An Trạm chính",
+      "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+      "Trạm Y tế Thanh Yên Trạm chính",
+      "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+      "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm Y tế Sam Mứn Trạm chính",
+      "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+      "Trạm y tế Núa Ngam Trạm chính",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+      "Trạm y tế Mường Nhà Trạm chính",
+      "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"2\" ➔ \"2\"",
+        "oldValue": "2",
+        "newValue": "2",
+        "duration": 378
+      },
+      {
+        "id": "tyt_1791689200931_7fkiu",
+        "name": "Trạm y tế phường Mường Thanh",
+        "username": "11017.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 339
+      },
+      {
+        "id": "tyt_1791691344724_fsm1s",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+        "username": "11139.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 337
+      },
+      {
+        "id": "tyt_1791691344725_6m9dr",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+        "username": "11138.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 344
+      },
+      {
+        "id": "tyt_1791691344725_pw04b",
+        "name": "Trạm y tế xã Mường Lạn Trạm chính",
+        "username": "11095.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 354
+      },
+      {
+        "id": "tyt_1791691344725_2ahoh",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+        "username": "11137.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 308
+      },
+      {
+        "id": "tyt_1791691344725_oo5x9",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+        "username": "11141.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 324
+      },
+      {
+        "id": "tyt_1791691344725_g1n8b",
+        "name": "Trạm y tế xã Na Sang Trạm chính",
+        "username": "11142.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 942
+      },
+      {
+        "id": "tyt_1791691344725_wd7z3",
+        "name": "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+        "username": "11029.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 346
+      },
+      {
+        "id": "tyt_1791691344725_0ikn9",
+        "name": "Trạm Y tế xã Mường Pồn Trạm chính",
+        "username": "11055.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 353
+      },
+      {
+        "id": "tyt_1791691344725_d2t3c",
+        "name": "Trạm Y tế xã Mường Ảng Trạm chính",
+        "username": "11096.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 334
+      },
+      {
+        "id": "tyt_1791691344726_t41eg",
+        "name": "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+        "username": "11097.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 339
+      },
+      {
+        "id": "tyt_1791691344726_rfb3u",
+        "name": "Trạm Y tế xã Búng Lao Trạm chính",
+        "username": "11163.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 329
+      },
+      {
+        "id": "tyt_1791691344726_r1yq1",
+        "name": "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+        "username": "11098.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 344
+      },
+      {
+        "id": "tyt_1791691344726_v55ue",
+        "name": "Trạm y tế xã Nà Tấu Trạm chính",
+        "username": "11119.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 336
+      },
+      {
+        "id": "tyt_1791691344726_tk8qe",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+        "username": "11099.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 379
+      },
+      {
+        "id": "tyt_1791691344726_tyxu3",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+        "username": "11140.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 343
+      },
+      {
+        "id": "tyt_1791691344726_dd8tb",
+        "name": "Trạm Y tế xã Si Pa Phìn Trạm chính",
+        "username": "11057.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 330
+      },
+      {
+        "id": "tyt_1791691344726_tfxlt",
+        "name": "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+        "username": "11143.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 316
+      },
+      {
+        "id": "tyt_1791691344726_9xjnz",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11109.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 324
+      },
+      {
+        "id": "tyt_1791695109044_1lj0m",
+        "name": "Trạm y tế xã Mường Phăng",
+        "username": "11021.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 384
+      },
+      {
+        "id": "tyt_1791695160278_2epf0",
+        "name": "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+        "username": "11121.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 337
+      },
+      {
+        "id": "tyt_1791695192777_6fjbv",
+        "name": "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+        "username": "11176.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 358
+      },
+      {
+        "id": "tyt_1792720046961_d1las",
+        "name": "Trạm Y tế xã Pa Ham Trạm chính",
+        "username": "11056.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 335
+      },
+      {
+        "id": "tyt_1792720046961_32c6q",
+        "name": "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+        "username": "11052.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 352
+      },
+      {
+        "id": "tyt_1792720046961_8ec20",
+        "name": "Trạm Y tế Nậm Nèn Trạm chính",
+        "username": "11160.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 353
+      },
+      {
+        "id": "tyt_1792720046961_bjcd7",
+        "name": "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+        "username": "11159.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 345
+      },
+      {
+        "id": "tyt_1792720046961_m5xgy",
+        "name": "Trạm Y tế Thanh An Trạm chính",
+        "username": "11025.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 316
+      },
+      {
+        "id": "tyt_1792720046961_gpwrk",
+        "name": "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+        "username": "11019.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 343
+      },
+      {
+        "id": "tyt_1792720046961_2mzqg",
+        "name": "Trạm Y tế Thanh Yên Trạm chính",
+        "username": "11022.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 341
+      },
+      {
+        "id": "tyt_1792720046962_gxt8s",
+        "name": "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+        "username": "11030.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 345
+      },
+      {
+        "id": "tyt_1792720046962_6r0co",
+        "name": "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+        "username": "11020.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 334
+      },
+      {
+        "id": "tyt_1793260643544_64rvw",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11162.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 325
+      },
+      {
+        "id": "tyt_1793260643544_jt9hs",
+        "name": "Trạm Y tế Sam Mứn Trạm chính",
+        "username": "11158.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 331
+      },
+      {
+        "id": "tyt_1793260643544_6t1pb",
+        "name": "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+        "username": "11031.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 390
+      },
+      {
+        "id": "tyt_1793260643544_5vp2k",
+        "name": "Trạm y tế Núa Ngam Trạm chính",
+        "username": "11026.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 356
+      },
+      {
+        "id": "tyt_1793260643545_wzqnj",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+        "username": "11170.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 318
+      },
+      {
+        "id": "tyt_1793260643545_adc4m",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+        "username": "11177.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 352
+      },
+      {
+        "id": "tyt_1793260643545_h8tz9",
+        "name": "Trạm y tế Mường Nhà Trạm chính",
+        "username": "11157.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 351
+      },
+      {
+        "id": "tyt_1793260643545_gp167",
+        "name": "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+        "username": "11028.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 378
+      },
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 323
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 370
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 335
+      }
+    ]
+  },
+  {
+    "id": "log_1794709822983_9ppva",
+    "timestamp": "2026-11-15T02:30:22.983Z",
+    "formattedTime": "15/11/2026 09:30:22",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [checkIcd] từ \"1\" ➔ \"2\" trong cấu hình CHECKICD (CHECKICD)",
+    "details": {
+      "maCauHinh": "CHECKICD",
+      "tenCauHinh": "CHECKICD",
+      "paramKey": "checkIcd",
+      "paramName": "+ CHECKICD = 0 giữ nguyên như hiện tại không thay đổi\n+ CHECKICD = 1 hiển thị xác nhận có thông báo tương ứng với 06 trường hợp có xác nhận Tiếp tục hay Hủy bỏ. Nếu chọn Tiếp tục thì lưu thông tin và xử lý được tiếp\n\nTH1: Khi kê ICD chính vào các mã thuộc cột 24 (Mã bệnh không được phép chỉ định làm bệnh chính theo thông tư 06/2026/TT-BYT)\nTH2:  Khi kê ICD chính vào các mã thuộc cột 25 (Mã bệnh không khuyến khích dùng là bệnh chính theo thông tư 06/2026/TT-BYT)\nTH3: Khi kê ICD chính/phụ vào các mã thuộc cột 26 (Mã bệnh không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn theo thông tư 06/2026/TT-BYT)\nTH4: Khi kê ICD chính/phụ vào các mã thuộc cột 27 chỉ thực hiện ở màn hình \"Thông tin tử vong\", trường \"Nguyên nhân chính\"\nTH5: Dựa vào giới tính Nam/Nữ để ràng buộc. Nếu giới tính là Nam khi kê ICD chính/phụ vào các mã chỉ có hoặc chủ yếu có ở Nữ giới\nTH6: Dựa vào giới tính Nam/Nữ để ràng buộc. Nếu giới tính là Nữ khi kê ICD chính/phụ vào các mã chỉ có hoặc chủ yếu có ở Nam giới\n\n+ CHECKICD = 2 cảnh báo và chặn cứng không cho thực hiện tương ứng với 06 trường hợp (cột 24 -> cột 29)",
+      "oldValue": "1",
+      "newValue": "2"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật checkIcd: \"1\" ➔ \"2\"",
+        "oldValue": "1",
+        "newValue": "2",
+        "duration": 504
+      }
+    ]
+  },
+  {
+    "id": "log_1794709718860_8e9uh",
+    "timestamp": "2026-11-15T02:28:38.860Z",
+    "formattedTime": "15/11/2026 09:28:38",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [soTayGhiChuCachDung] từ \"0\" ➔ \"1\" trong cấu hình KB_CHIDINHTVT (Chỉ định thuốc vật tư)",
+    "details": {
+      "maCauHinh": "KB_CHIDINHTVT",
+      "tenCauHinh": "Chỉ định thuốc vật tư",
+      "paramKey": "soTayGhiChuCachDung",
+      "paramName": "Load danh sách cách dùng vào ô cách dùng khi kê thuốc\n1: load danh sách vào ô cách dùng; 0: load vào ô số lượng",
+      "oldValue": "0",
+      "newValue": "1"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật soTayGhiChuCachDung = \"1\"",
+        "oldValue": "",
+        "newValue": "1",
+        "duration": 453
+      }
+    ]
+  },
+  {
+    "id": "log_1794709600705_y45ed",
+    "timestamp": "2026-11-15T02:26:40.705Z",
+    "formattedTime": "15/11/2026 09:26:40",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [cachDungHTH] từ \"0\" ➔ \"0\" trong cấu hình KB_CHIDINHTVT (Chỉ định thuốc vật tư)",
+    "details": {
+      "maCauHinh": "KB_CHIDINHTVT",
+      "tenCauHinh": "Chỉ định thuốc vật tư",
+      "paramKey": "cachDungHTH",
+      "paramName": "Hiển thị cách dùng sáng trưa chiều tối trong ngoặc khi kê thuốc\n1: sử dụng; 0: Không sử dụng",
+      "oldValue": "0",
+      "newValue": "0"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật cachDungHTH: \"1\" ➔ \"0\"",
+        "oldValue": "1",
+        "newValue": "0",
+        "duration": 692
+      }
+    ]
+  },
+  {
+    "id": "log_1794709528371_y27vk",
+    "timestamp": "2026-11-15T02:25:28.371Z",
+    "formattedTime": "15/11/2026 09:25:28",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [cachDungHTH] từ \"0\" ➔ \"1\" trong cấu hình KB_CHIDINHTVT (Chỉ định thuốc vật tư)",
+    "details": {
+      "maCauHinh": "KB_CHIDINHTVT",
+      "tenCauHinh": "Chỉ định thuốc vật tư",
+      "paramKey": "cachDungHTH",
+      "paramName": "Hiển thị cách dùng sáng trưa chiều tối trong ngoặc khi kê thuốc\n1: sử dụng; 0: Không sử dụng",
+      "oldValue": "0",
+      "newValue": "1"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật cachDungHTH = \"1\"",
+        "oldValue": "",
+        "newValue": "1",
+        "duration": 428
+      }
+    ]
+  },
+  {
+    "id": "log_1794709492689_qgp4u",
+    "timestamp": "2026-11-15T02:24:52.689Z",
+    "formattedTime": "15/11/2026 09:24:52",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [cachDungBDHCM] từ \"0\" ➔ \"0\" trong cấu hình KB_CHIDINHTVT (Chỉ định thuốc vật tư)",
+    "details": {
+      "maCauHinh": "KB_CHIDINHTVT",
+      "tenCauHinh": "Chỉ định thuốc vật tư",
+      "paramKey": "cachDungBDHCM",
+      "paramName": "Cách dùng khi kê thuốc sử dụng cho BDHCM\n0: Không sử dụng; 1: sử dụng",
+      "oldValue": "0",
+      "newValue": "0"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật cachDungBDHCM: \"1\" ➔ \"0\"",
+        "oldValue": "1",
+        "newValue": "0",
+        "duration": 563
+      }
+    ]
+  },
+  {
+    "id": "log_1794709430254_lnc2y",
+    "timestamp": "2026-11-15T02:23:50.253Z",
+    "formattedTime": "15/11/2026 09:23:50",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [cachDungBDHCM] từ \"0\" ➔ \"1\" trong cấu hình KB_CHIDINHTVT (Chỉ định thuốc vật tư)",
+    "details": {
+      "maCauHinh": "KB_CHIDINHTVT",
+      "tenCauHinh": "Chỉ định thuốc vật tư",
+      "paramKey": "cachDungBDHCM",
+      "paramName": "Cách dùng khi kê thuốc sử dụng cho BDHCM\n0: Không sử dụng; 1: sử dụng",
+      "oldValue": "0",
+      "newValue": "1"
+    },
+    "total": 1,
+    "successCount": 1,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật cachDungBDHCM = \"1\"",
+        "oldValue": "",
+        "newValue": "1",
+        "duration": 530
+      }
+    ]
+  },
+  {
+    "id": "log_1794663538910_3rnq2",
+    "timestamp": "2026-11-14T13:38:58.910Z",
+    "formattedTime": "14/11/2026 20:38:58",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [ngayVao] từ \"0\" ➔ \"1\" trong cấu hình VPI_XML (VPI_XML)",
+    "details": {
+      "maCauHinh": "VPI_XML",
+      "tenCauHinh": "VPI_XML",
+      "paramKey": "ngayVao",
+      "paramName": "Cách lấy NGAY_VAO trong XML1 (XML7, XML13, XML14 lấy lại NGAY_VAO của XML1)\n1: Lấy ngày bắt đầu khám (KBH_PHONGKHAMDANGKY.NGAY_BD) sớm nhất trong các phòng khám đăng ký của hồ sơ. Nếu hồ sơ không có phòng khám đăng ký thì lấy ngày tiếp nhận\n0/Khác/Không cấu hình (mặc định): Lấy ngày tiếp nhận (KBH_TIEPNHAN.NGAYTIEPNHAN)",
+      "oldValue": "0",
+      "newValue": "1"
+    },
+    "total": 43,
+    "successCount": 43,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Phường Điện Biên Phủ",
+      "Trạm y tế phường Mường Thanh",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+      "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+      "Trạm y tế xã Mường Lạn Trạm chính",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+      "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+      "Trạm y tế xã Na Sang Trạm chính",
+      "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+      "Trạm Y tế xã Mường Pồn Trạm chính",
+      "Trạm Y tế xã Mường Ảng Trạm chính",
+      "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+      "Trạm Y tế xã Búng Lao Trạm chính",
+      "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+      "Trạm y tế xã Nà Tấu Trạm chính",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+      "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+      "Trạm Y tế xã Si Pa Phìn Trạm chính",
+      "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm y tế xã Mường Phăng",
+      "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+      "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+      "Trạm Y tế xã Pa Ham Trạm chính",
+      "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+      "Trạm Y tế Nậm Nèn Trạm chính",
+      "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+      "Trạm Y tế Thanh An Trạm chính",
+      "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+      "Trạm Y tế Thanh Yên Trạm chính",
+      "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+      "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+      "Trạm Y tế Nà Bủng Trạm chính",
+      "Trạm Y tế Sam Mứn Trạm chính",
+      "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+      "Trạm y tế Núa Ngam Trạm chính",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+      "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+      "Trạm y tế Mường Nhà Trạm chính",
+      "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh"
+    ],
+    "results": [
+      {
+        "id": "tyt_dienbienphu_11010",
+        "name": "Trạm y tế Phường Điện Biên Phủ",
+        "username": "11010.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 4664
+      },
+      {
+        "id": "tyt_1791689200931_7fkiu",
+        "name": "Trạm y tế phường Mường Thanh",
+        "username": "11017.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"1\" ➔ \"1\"",
+        "oldValue": "1",
+        "newValue": "1",
+        "duration": 592
+      },
+      {
+        "id": "tyt_1791691344724_fsm1s",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Nặm Lịch",
+        "username": "11139.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 923
+      },
+      {
+        "id": "tyt_1791691344725_6m9dr",
+        "name": "Trạm y tế xã Mường Lạn Điểm trạm Y tế Xuân Lao",
+        "username": "11138.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 731
+      },
+      {
+        "id": "tyt_1791691344725_pw04b",
+        "name": "Trạm y tế xã Mường Lạn Trạm chính",
+        "username": "11095.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 646
+      },
+      {
+        "id": "tyt_1791691344725_2ahoh",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Na Sang",
+        "username": "11137.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 605
+      },
+      {
+        "id": "tyt_1791691344725_oo5x9",
+        "name": "Trạm y tế xã Na Sang  Điểm trạm Y tế Sa Lông",
+        "username": "11141.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 643
+      },
+      {
+        "id": "tyt_1791691344725_g1n8b",
+        "name": "Trạm y tế xã Na Sang Trạm chính",
+        "username": "11142.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 584
+      },
+      {
+        "id": "tyt_1791691344725_wd7z3",
+        "name": "Trạm Y tế xã Mường Pồn Điểm trạm Y tế Mường Pồn",
+        "username": "11029.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 600
+      },
+      {
+        "id": "tyt_1791691344725_0ikn9",
+        "name": "Trạm Y tế xã Mường Pồn Trạm chính",
+        "username": "11055.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 573
+      },
+      {
+        "id": "tyt_1791691344725_d2t3c",
+        "name": "Trạm Y tế xã Mường Ảng Trạm chính",
+        "username": "11096.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 561
+      },
+      {
+        "id": "tyt_1791691344726_t41eg",
+        "name": "Trạm Y tế xã Mường Ảng  Điểm trạm Y tế Ẳng Nưa",
+        "username": "11097.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 599
+      },
+      {
+        "id": "tyt_1791691344726_rfb3u",
+        "name": "Trạm Y tế xã Búng Lao Trạm chính",
+        "username": "11163.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 564
+      },
+      {
+        "id": "tyt_1791691344726_r1yq1",
+        "name": "Trạm Y tế xã Búng Lao Điểm trạm Y tế Ẳng Tở",
+        "username": "11098.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 578
+      },
+      {
+        "id": "tyt_1791691344726_v55ue",
+        "name": "Trạm y tế xã Nà Tấu Trạm chính",
+        "username": "11119.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 574
+      },
+      {
+        "id": "tyt_1791691344726_tk8qe",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Mường Đăng",
+        "username": "11099.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 675
+      },
+      {
+        "id": "tyt_1791691344726_tyxu3",
+        "name": "Trạm y tế xã Nà Tấu Điểm trạm Y tế Ngối Cáy",
+        "username": "11140.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 603
+      },
+      {
+        "id": "tyt_1791691344726_dd8tb",
+        "name": "Trạm Y tế xã Si Pa Phìn Trạm chính",
+        "username": "11057.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 615
+      },
+      {
+        "id": "tyt_1791691344726_tfxlt",
+        "name": "Trạm Y tế xã Si Pa Phìn Điểm trạm Y tế Phìn Hồ",
+        "username": "11143.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 640
+      },
+      {
+        "id": "tyt_1791691344726_9xjnz",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11109.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 623
+      },
+      {
+        "id": "tyt_1791695109044_1lj0m",
+        "name": "Trạm y tế xã Mường Phăng",
+        "username": "11021.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"1\" ➔ \"1\"",
+        "oldValue": "1",
+        "newValue": "1",
+        "duration": 611
+      },
+      {
+        "id": "tyt_1791695160278_2epf0",
+        "name": "Trạm y tế xã Mường Phăng Điểm trạm Nà nhạn",
+        "username": "11121.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 593
+      },
+      {
+        "id": "tyt_1791695192777_6fjbv",
+        "name": "Trạm y tế xã Mường Phăng điểm trạm Pá Khoang",
+        "username": "11176.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 601
+      },
+      {
+        "id": "tyt_1792720046961_d1las",
+        "name": "Trạm Y tế xã Pa Ham Trạm chính",
+        "username": "11056.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 619
+      },
+      {
+        "id": "tyt_1792720046961_32c6q",
+        "name": "Trạm Y tế xã Pa Ham Điểm trạm Hừa ngài",
+        "username": "11052.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 566
+      },
+      {
+        "id": "tyt_1792720046961_8ec20",
+        "name": "Trạm Y tế Nậm Nèn Trạm chính",
+        "username": "11160.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 619
+      },
+      {
+        "id": "tyt_1792720046961_bjcd7",
+        "name": "Trạm Y tế Nậm Nèn Điểm trạm Y tế Huổi Mí",
+        "username": "11159.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 636
+      },
+      {
+        "id": "tyt_1792720046961_m5xgy",
+        "name": "Trạm Y tế Thanh An Trạm chính",
+        "username": "11025.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 645
+      },
+      {
+        "id": "tyt_1792720046961_gpwrk",
+        "name": "Trạm Y tế Thanh An Điểm trạm Sam Mứn",
+        "username": "11019.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 568
+      },
+      {
+        "id": "tyt_1792720046961_2mzqg",
+        "name": "Trạm Y tế Thanh Yên Trạm chính",
+        "username": "11022.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 655
+      },
+      {
+        "id": "tyt_1792720046962_gxt8s",
+        "name": "Trạm Y tế Thanh yên Điểm trạm Pa Thơm",
+        "username": "11030.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 606
+      },
+      {
+        "id": "tyt_1792720046962_6r0co",
+        "name": "Trạm Y tế Thanh Yên Điểm trạm y tế Thanh Yên",
+        "username": "11020.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 615
+      },
+      {
+        "id": "tyt_1793260643544_64rvw",
+        "name": "Trạm Y tế Nà Bủng Trạm chính",
+        "username": "11162.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 615
+      },
+      {
+        "id": "tyt_1793260643544_jt9hs",
+        "name": "Trạm Y tế Sam Mứn Trạm chính",
+        "username": "11158.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 567
+      },
+      {
+        "id": "tyt_1793260643544_6t1pb",
+        "name": "Trạm Y tế Sam Mứn Điểm trạm Y tế Na Ư",
+        "username": "11031.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 596
+      },
+      {
+        "id": "tyt_1793260643544_5vp2k",
+        "name": "Trạm y tế Núa Ngam Trạm chính",
+        "username": "11026.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 648
+      },
+      {
+        "id": "tyt_1793260643545_wzqnj",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Hẹ Muông",
+        "username": "11170.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 644
+      },
+      {
+        "id": "tyt_1793260643545_adc4m",
+        "name": "Trạm y tế Núa Ngam Điểm trạm Y tế Na Tông",
+        "username": "11177.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 585
+      },
+      {
+        "id": "tyt_1793260643545_h8tz9",
+        "name": "Trạm y tế Mường Nhà Trạm chính",
+        "username": "11157.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 624
+      },
+      {
+        "id": "tyt_1793260643545_gp167",
+        "name": "Trạm y tế Mường Nhà Điểm trạm Y tế Mường Lói",
+        "username": "11028.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 643
+      },
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 565
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 628
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 581
+      }
+    ]
+  },
+  {
+    "id": "log_1794663488393_6yfvr",
+    "timestamp": "2026-11-14T13:38:08.393Z",
+    "formattedTime": "14/11/2026 20:38:08",
+    "actionType": "cauhinh_thamso",
+    "actionTitle": "Sửa tham số cấu hình nhanh",
+    "summary": "Sửa tham số [ngayVao] từ \"0\" ➔ \"1\" trong cấu hình VPI_XML (VPI_XML)",
+    "details": {
+      "maCauHinh": "VPI_XML",
+      "tenCauHinh": "VPI_XML",
+      "paramKey": "ngayVao",
+      "paramName": "Cách lấy NGAY_VAO trong XML1 (XML7, XML13, XML14 lấy lại NGAY_VAO của XML1)\n1: Lấy ngày bắt đầu khám (KBH_PHONGKHAMDANGKY.NGAY_BD) sớm nhất trong các phòng khám đăng ký của hồ sơ. Nếu hồ sơ không có phòng khám đăng ký thì lấy ngày tiếp nhận\n0/Khác/Không cấu hình (mặc định): Lấy ngày tiếp nhận (KBH_TIEPNHAN.NGAYTIEPNHAN)",
+      "oldValue": "0",
+      "newValue": "1"
+    },
+    "total": 2,
+    "successCount": 2,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế phường Mường Thanh",
+      "Trạm y tế xã Mường Phăng"
+    ],
+    "results": [
+      {
+        "id": "tyt_1791689200931_7fkiu",
+        "name": "Trạm y tế phường Mường Thanh",
+        "username": "11017.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 611
+      },
+      {
+        "id": "tyt_1791695109044_1lj0m",
+        "name": "Trạm y tế xã Mường Phăng",
+        "username": "11021.ADMINBV",
+        "success": true,
+        "message": "Đã cập nhật ngayVao: \"0\" ➔ \"1\"",
+        "oldValue": "0",
+        "newValue": "1",
+        "duration": 407
+      }
+    ]
+  },
+  {
+    "id": "log_1794663110150_si6cj",
+    "timestamp": "2026-11-14T13:31:50.150Z",
+    "formattedTime": "14/11/2026 20:31:50",
+    "actionType": "cauhinh_giaodien",
+    "actionTitle": "Cấu hình giao diện: MH_XUTRI_KHAM_BENH",
+    "summary": "Đã cập nhật cấu hình giao diện \"Màn hình xử trí: khám bệnh\" cho 4/4 trạm (Các trạm đã tích)",
+    "details": {
+      "maCauHinh": "MH_XUTRI_KHAM_BENH",
+      "tenCauHinh": "Màn hình xử trí: khám bệnh",
+      "trangThai": 1,
+      "targetScope": "selected",
+      "targetStations": [
+        {
+          "id": "tyt_1794378268419_cbaen",
+          "name": "Trạm y tế Thanh Nưa Trạm chính",
+          "username": "11027.ADMINBV"
+        },
+        {
+          "id": "tyt_1794378305639_yfm4x",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+          "username": "11024.ADMINBV"
+        },
+        {
+          "id": "tyt_1794378336128_ymwv4",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+          "username": "11171.ADMINBV"
+        },
+        {
+          "id": "tyt_1791689200931_7fkiu",
+          "name": "Trạm y tế phường Mường Thanh",
+          "username": "11017.ADMINBV"
+        }
+      ],
+      "results": [
+        {
+          "id": "tyt_1794378268419_cbaen",
+          "name": "Trạm y tế Thanh Nưa Trạm chính",
+          "username": "11027.ADMINBV",
+          "code": "11027",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 461
+        },
+        {
+          "id": "tyt_1794378305639_yfm4x",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+          "username": "11024.ADMINBV",
+          "code": "11024",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 377
+        },
+        {
+          "id": "tyt_1794378336128_ymwv4",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+          "username": "11171.ADMINBV",
+          "code": "11171",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 851
+        },
+        {
+          "id": "tyt_1791689200931_7fkiu",
+          "name": "Trạm y tế phường Mường Thanh",
+          "username": "11017.ADMINBV",
+          "code": "11017",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 339
+        }
+      ]
+    },
+    "total": 4,
+    "successCount": 4,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+      "Trạm y tế phường Mường Thanh"
+    ],
+    "results": [
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "code": "11027",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 461
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "code": "11024",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 377
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "code": "11171",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 851
+      },
+      {
+        "id": "tyt_1791689200931_7fkiu",
+        "name": "Trạm y tế phường Mường Thanh",
+        "username": "11017.ADMINBV",
+        "code": "11017",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 339
+      }
+    ]
+  },
+  {
+    "id": "log_1794663085702_ihtgr",
+    "timestamp": "2026-11-14T13:31:25.702Z",
+    "formattedTime": "14/11/2026 20:31:25",
+    "actionType": "cauhinh_giaodien",
+    "actionTitle": "Cấu hình giao diện: MH_XUTRI_KHAM_BENH",
+    "summary": "Đã cập nhật cấu hình giao diện \"Màn hình xử trí: khám bệnh\" cho 3/3 trạm (Các trạm đã tích)",
+    "details": {
+      "maCauHinh": "MH_XUTRI_KHAM_BENH",
+      "tenCauHinh": "Màn hình xử trí: khám bệnh",
+      "trangThai": 1,
+      "targetScope": "selected",
+      "targetStations": [
+        {
+          "id": "tyt_1794378268419_cbaen",
+          "name": "Trạm y tế Thanh Nưa Trạm chính",
+          "username": "11027.ADMINBV"
+        },
+        {
+          "id": "tyt_1794378305639_yfm4x",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+          "username": "11024.ADMINBV"
+        },
+        {
+          "id": "tyt_1794378336128_ymwv4",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+          "username": "11171.ADMINBV"
+        }
+      ],
+      "results": [
+        {
+          "id": "tyt_1794378268419_cbaen",
+          "name": "Trạm y tế Thanh Nưa Trạm chính",
+          "username": "11027.ADMINBV",
+          "code": "11027",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 527
+        },
+        {
+          "id": "tyt_1794378305639_yfm4x",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+          "username": "11024.ADMINBV",
+          "code": "11024",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 405
+        },
+        {
+          "id": "tyt_1794378336128_ymwv4",
+          "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+          "username": "11171.ADMINBV",
+          "code": "11171",
+          "success": true,
+          "message": "Cập nhật thành công",
+          "duration": 346
+        }
+      ]
+    },
+    "total": 3,
+    "successCount": 3,
+    "failedCount": 0,
+    "stationNames": [
+      "Trạm y tế Thanh Nưa Trạm chính",
+      "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+      "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh"
+    ],
+    "results": [
+      {
+        "id": "tyt_1794378268419_cbaen",
+        "name": "Trạm y tế Thanh Nưa Trạm chính",
+        "username": "11027.ADMINBV",
+        "code": "11027",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 527
+      },
+      {
+        "id": "tyt_1794378305639_yfm4x",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Thanh Chăn",
+        "username": "11024.ADMINBV",
+        "code": "11024",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 405
+      },
+      {
+        "id": "tyt_1794378336128_ymwv4",
+        "name": "Trạm y tế Thanh Nưa Điểm trạm Hua Thanh",
+        "username": "11171.ADMINBV",
+        "code": "11171",
+        "success": true,
+        "message": "Cập nhật thành công",
+        "duration": 346
+      }
+    ]
+  },
+  {
     "id": "log_1794479231351_yl8el",
     "timestamp": "2026-11-12T10:27:11.351Z",
     "formattedTime": "12/11/2026 17:27:11",

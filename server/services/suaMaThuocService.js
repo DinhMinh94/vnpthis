@@ -497,6 +497,178 @@ function compareInventoryWithCatalog(rows, catalog) {
 }
 
 /**
+ * Chuẩn hóa payload lưu thuốc theo đúng cấu trúc form Angular HMIS (luuThuocVatTu)
+ * Tránh để các trường boolean/number là null gây lỗi NullPointerException trong bảng duclogthuocvattu ở lần sửa tiếp theo.
+ */
+function buildHmisDrugSavePayload(d, hmisId, newMa, companyId = 1) {
+  const finalMa = newMa || d.ma;
+  return {
+    thuocVatTuId: hmisId,
+    maThuoc: finalMa,
+    maNhom: d.maNhom,
+    thuocVatTuIdCha: d.thuocVatTuIdCha || null,
+    ten: d.ten,
+    tenKhoaHoc: d.tenKhoaHoc || d.ten,
+    tenVtytThuongMai: d.tenVtytThuongMai || '',
+    hoatChat: d.hoatChat || '',
+    maHoatChat: d.maHoatChat || '',
+    nongDo: d.nongDo || '',
+    lieuLuong: d.lieuLuong || '',
+    donViTinhId: d.donViTinhId || null,
+    dongGoi: d.dongGoi || '',
+    thuocKhangSinh: d.thuocKhangSinh ? 1 : 0,
+    keTrungHoatChat: d.keTrungHoatChat ? 1 : 0,
+    duongDungId: d.duongDungId || null,
+    soLuongNgay: Number(d.soLuongNgay) || 0,
+    thuocTanDuoc: d.thuocTanDuoc ? 1 : 0,
+    loai: d.loai || 0,
+    atc: d.atc || '',
+    viThuocYhct: d.viThuocYhct ? 1 : 0,
+    chePhamYhct: d.chePhamYhct ? 1 : 0,
+    hangSanXuatId: d.hangSanXuatId || 0,
+    nuocSanXuatId: d.nuocSanXuatId || 0,
+    nhaCungCapId: d.nhaCungCapId || 0,
+    goiThau: d.goiThau || '',
+    namCungUng: d.namCungUng || '',
+    benhVienApThau: d.benhVienApThau || '',
+    maThau: d.maThau || 0,
+    maNhomThau: d.maNhomThau || '',
+    sttDauThau: d.sttDauThau || '',
+    huongDanSuDung: d.huongDanSuDung || '',
+    canhBaoHsd: Number(d.canhBaoHsd) || 0,
+    khongNhapMoi: d.khongNhapMoi ? 1 : 0,
+    khongInHamLuong: d.khongInHamLuong ? 1 : 0,
+    giaNhap: Number(d.giaNhap) || 0,
+    vatNhap: Number(d.vatNhap) || 0,
+    choLanhDaoDuyet: d.choLanhDaoDuyet ?? null,
+    giaBan: Number(d.giaBan) || 0,
+    vatBan: Number(d.vatBan) || 0,
+    soLo: d.soLo || '',
+    tyLeHuHao: Number(d.tyLeHuHao) || 0,
+    soDangKy: d.soDangKy || '',
+    chuy: d.chuy || '',
+    nhomQuyCheId: Number(d.nhomQuyCheId) || 0,
+    nhomQuanLyId: Number(d.nhomQuanLyId) || 0,
+    nhomBaoCaoId: Number(d.nhomBaoCaoId) || 0,
+    nhomNghienCuuId: Number(d.nhomNghienCuuId) || 0,
+    nhomDuocLyId: Number(d.nhomDuocLyId) || 0,
+    nhomAbcVenId: Number(d.nhomAbcVenId) || 0,
+    nhomTieuDuocLyId: Number(d.nhomTieuDuocLyId) || 0,
+    nguonChuongTrinhId: d.nguonChuongTrinhId || null,
+    khoanMucId: d.khoanMucId || null,
+    nhomMabhytId: d.nhomMabhytId || 10,
+    nhomTkBaoCao: d.nhomTkBaoCao || '',
+    khongChuyenDoiTuongHaoPhi: d.khongChuyenDoiTuongHaoPhi ? 1 : 0,
+    giaVienPhi: Number(d.giaVienPhi) || 0,
+    giaBhyt: Number(d.giaBhyt) || 0,
+    giaNuocNgoai: Number(d.giaNuocNgoai) || 0,
+    giaTranBhyt: Number(d.giaTranBhyt) || 0,
+    ngayCapNhat: '',
+    nguoiCapNhat: 0,
+    ngayThucHien: '',
+    nguoiThucHien: '',
+    giaNhanDan: Number(d.giaNhanDan) || 0,
+    tyLeLoiNhuan: Number(d.tyLeLoiNhuan) || 0,
+    tyLeLoiNhuanNhanDan: Number(d.tyLeLoiNhuanNhanDan) || 0,
+    tyLeLoiNhuanBhyt: Number(d.tyLeLoiNhuanBhyt) || 0,
+    tyLeLoiNhuanNuocNgoai: Number(d.tyLeLoiNhuanNuocNgoai) || 0,
+    tyLeBhyt: Number(d.tyLeBhyt) || 0,
+    bhytTt: Number(d.bhytTt) || 0,
+    csytId: companyId,
+    kieu: d.kieu ?? 1,
+    khoa: d.khoa ? 1 : 0,
+    maByt: d.maByt || '',
+    dvLamTron: Number(d.dvLamTron) || 0,
+    canhBaoSoLuong: Number(d.canhBaoSoLuong) || 0,
+    soLanSuDung: Number(d.soLanSuDung) || 0,
+    donViTinhIdQd: d.donViTinhIdQd || null,
+    thuocPhongXa: d.thuocPhongXa ? 1 : 0,
+    duocPhepKeLe: d.duocPhepKeLe ? 1 : 0,
+    soGoiThau: d.soGoiThau || '',
+    sttThuoc: d.sttThuoc || '',
+    soNgayTtBaoHiem: Number(d.soNgayTtBaoHiem) || 0,
+    soNgaySdkHangSinh: Number(d.soNgaySdkHangSinh) || 0,
+    danhSttDungThuoc: d.danhSttDungThuoc ? 1 : 0,
+    thuocNhieuHoatChat: d.thuocNhieuHoatChat ? 1 : 0,
+    nhomDieuTriId: Number(d.nhomDieuTriId) || 0,
+    thuocKeDon: d.thuocKeDon ? 1 : 0,
+    ycsdKhangSinh: null,
+    tienChatGnht: d.tienChatGnht ? 1 : 0,
+    tuoiMin: Number(d.tuoiMin) || 0,
+    tuoiMax: Number(d.tuoiMax) || 0,
+    ngayHlBhyt: d.ngayHlBhyt ? toIsoDate(d.ngayHlBhyt) : null,
+    tyLeBhytCu: Number(d.tyLeBhytCu) || 0,
+    barCode: d.barCode || '',
+    stt05: d.stt05 || '',
+    khongTinhXnt: d.khongTinhXnt ? 1 : 0,
+    thangSoBanLe: Number(d.thangSoBanLe) || 0,
+    qlTheoTuiMau: d.qlTheoTuiMau ? 1 : 0,
+    bietDuoc: d.bietDuoc || '',
+    thuocDieuTriLao: d.thuocDieuTriLao ? 1 : 0,
+    thuocCorticoid: d.thuocCorticoid ? 1 : 0,
+    duocDuyetLe: d.duocDuyetLe ? 1 : 0,
+    luonChuyenDoiTuongHaoPhi: d.luonChuyenDoiTuongHaoPhi ? 1 : 0,
+    slThau: Number(d.slThau) || 0,
+    thauGhep: d.thauGhep || '',
+    loaiThau: Number(d.loaiThau) || 0,
+    tonToiThieu: Number(d.tonToiThieu) || 0,
+    slKeTheoDot: Number(d.slKeTheoDot) || 0,
+    slKeTheoNgay: Number(d.slKeTheoNgay) || 0,
+    maThuocBv: finalMa,
+    soGiayPhep: d.soGiayPhep || '',
+    thuocDacBiet: d.thuocDacBiet ? 1 : 0,
+    tenAtc: 'string',
+    dvtUuTien: d.dvtUuTien || null,
+    lyDoKhoaThuoc: d.lyDoKhoaThuoc || '',
+    giaChenh: Number(d.giaChenh) || 0,
+    thuocChuyenKhoaTamThan: d.thuocChuyenKhoaTamThan ? 1 : 0,
+    tonToiDa: Number(d.tonToiDa) || 0,
+    khongThanhToanNgoaiTru: d.khongThanhToanNgoaiTru ? 1 : 0,
+    tuoiThangMin: Number(d.tuoiThangMin) || 0,
+    tuoiThangMax: Number(d.tuoiThangMax) || 0,
+    thanhToanHaoPhi: d.thanhToanHaoPhi ? 1 : 0,
+    tangNguyCo: d.tangNguyCo ? 1 : 0,
+    chiPhiTuiMau: d.chiPhiTuiMau ? 1 : 0,
+    khiYtet: d.khiYtet ? 1 : 0,
+    molnupiravir: d.molnupiravir ? 1 : 0,
+    maHieuSp: d.maHieuSp || '',
+    ghepMaxMl: null,
+    ppCheBien: d.ppCheBien || '',
+    maPpCheBien: d.maPpCheBien || '',
+    ma4750: d.ma4750 || '',
+    ngayKetThucHd: d.ngayKetThucHd ? toIsoDate(d.ngayKetThucHd) : '',
+    teme: d.teme ? 1 : 0,
+    vitamin: d.vitamin ? 1 : 0,
+    theTich: Number(d.theTich) || null,
+    capNhatGiaKho: 0,
+    tyLeHaoHutCheBien: 0,
+    nguongCB: 0,
+    tyLeQuyDoi: '',
+    maMoiThau: d.maMoiThau || '',
+    dangBaoChe: d.dangBaoChe || '',
+    dmGuiBH: d.dmGuiBH ? 1 : 0,
+    ngayCheckGuiBH: d.ngayCheckGuiBH ? toIsoDate(d.ngayCheckGuiBH) : null,
+    htThau: Number(d.htThau) || 0,
+    tuNgay: d.tuNgay ? toIsoDate(d.tuNgay) : null,
+    denNgay: d.denNgay ? toIsoDate(d.denNgay) : null,
+    maCsKcbThuoc: d.maCsKcbThuoc || '',
+    maCsKcbTbyt: d.maCsKcbTbyt || d.maCsKcbThuoc || '',
+    dmNsxCdd: d.dmNsxCdd || '',
+    lieuBqPx: d.lieuBqPx || '',
+    tlThucteBqPx: d.tlThucteBqPx || '',
+    thanhTienThuoc: d.thanhTienThuoc || '',
+    soLuuHanh: d.soLuuHanh || '',
+    dmThucteCdd: d.dmThucteCdd || '',
+    tinhNangKt: d.tinhNangKt || '',
+    ttLieuDung: d.ttLieuDung || '',
+    chiDinh: d.chiDinh || '',
+    chongChiDinh: d.chongChiDinh || '',
+    thuocDocCapCuu: d.thuocDocCapCuu ? 1 : 0,
+    slDauKyTmp: d.slDauKyTmp ? 1 : 0
+  };
+}
+
+/**
  * Cập nhật mã thuốc cho 1 thuốc trên HMIS
  */
 async function updateSingleDrugOnHmis(auth, hmisId, newMa) {
@@ -509,6 +681,20 @@ async function updateSingleDrugOnHmis(auth, hmisId, newMa) {
     'Content-Type': 'application/json'
   };
 
+  // 0. Dọn các bản ghi log lỗi (tenAtc === null do bản cũ ghi thiếu trường mặc định) nếu có
+  try {
+    const logSearchUrl = `${auth.gateway}pharmacy/duclogthuocvattu/search?page=0&size=50&sort=id,asc&filter=thuocVatTuId==${hmisId}`;
+    const logRes = await axios.get(logSearchUrl, { headers, timeout: 10000 });
+    const logs = logRes.data?.data?.content || [];
+    for (const l of logs) {
+      if (l.tenAtc === null && l.ghiChu !== 'INSERT') {
+        await axios.delete(`${auth.gateway}pharmacy/duclogthuocvattu/delete?id=${l.id}`, { headers, timeout: 10000 });
+      }
+    }
+  } catch (e) {
+    // Bỏ qua nếu không có log lỗi
+  }
+
   // 1. Lấy chi tiết hiện tại của thuốc
   const detailUrl = `${auth.gateway}pharmacy/dmthuoc/layctthuoctheoid?thuocVatTuId=${hmisId}&csytId=${companyId}`;
   const detailRes = await axios.get(detailUrl, { headers, timeout: 15000 });
@@ -517,24 +703,10 @@ async function updateSingleDrugOnHmis(auth, hmisId, newMa) {
     throw new Error(`Không lấy được thông tin chi tiết thuốc ID ${hmisId}`);
   }
 
-  // 2. Chuẩn bị payload sửa mã
-  const payload = { ...detail };
-  payload.thuocVatTuId = hmisId;
-  payload.ma = newMa;
-  payload.maThuoc = newMa;
-  payload.maThuocBv = newMa;
+  // 2. Chuẩn bị payload sửa mã theo đúng chuẩn Angular UI của HMIS
+  const payload = buildHmisDrugSavePayload(detail, hmisId, newMa, companyId);
 
-  // 3. Chuẩn hóa trường ngày sang ISO string
-  const dateKeys = ['tuNgay', 'denNgay', 'ngayCheckGuiBH', 'ngayHlBhyt', 'ngayKetThucHd'];
-  for (const k of dateKeys) {
-    if (payload[k]) {
-      payload[k] = toIsoDate(payload[k]);
-    }
-  }
-  payload.ngayCapNhat = null;
-  payload.ngayThucHien = null;
-
-  // 4. Gửi lưu lên cổng HMIS
+  // 3. Gửi lưu lên cổng HMIS
   const saveUrl = `${auth.gateway}pharmacy/dmthuoc/luuthongtinthuocvattu`;
   const saveRes = await axios.post(saveUrl, payload, { headers, timeout: 20000 });
   

@@ -687,7 +687,7 @@ async function updateSingleDrugOnHmis(auth, hmisId, newMa) {
     const logRes = await axios.get(logSearchUrl, { headers, timeout: 10000 });
     const logs = logRes.data?.data?.content || [];
     for (const l of logs) {
-      if (l.tenAtc === null && l.ghiChu !== 'INSERT') {
+      if (l.tenAtc === null) {
         await axios.delete(`${auth.gateway}pharmacy/duclogthuocvattu/delete?id=${l.id}`, { headers, timeout: 10000 });
       }
     }

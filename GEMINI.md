@@ -14,3 +14,8 @@
 
 ## 4. Tự động đẩy code lên Git (Auto Commit & Push) mỗi khi hoàn thành
 - Sau mỗi lần hoàn thành việc thêm tính năng, sửa lỗi hoặc cập nhật giao diện/backend, phải kiểm tra cú pháp (`JS syntax OK`) và tự động thực hiện `git add`, `git commit` và `git push` lên nhánh chính (`main`) ngay trong lượt phản hồi mà không cần chờ người dùng nhắc.
+
+## 5. Quy tắc an toàn khi sửa danh mục thuốc/vật tư (`pharmacy/dmthuoc/luuthongtinthuocvattu`)
+- Luôn tuân thủ skill `.agents/skills/sua-ma-thuoc-hmis/SKILL.md` và dùng hàm chuẩn `buildHmisDrugSavePayload` / `updateSingleDrugOnHmis` trong `server/services/suaMaThuocService.js`.
+- Tuyệt đối không gửi nguyên object `{ ...detail }` từ `layctthuoctheoid` có chứa các trường `null` (như `tenAtc: null`, các cờ boolean/số `null`) lên `luuthongtinthuocvattu`, vì sẽ ghi bản ghi log `null` vào `pharmacy/duclogthuocvattu` gây lỗi `HTTP 500` ở lần sửa tiếp theo.
+- Luôn dọn log lỗi (`tenAtc === null`) trong `pharmacy/duclogthuocvattu` trước khi lưu và kiểm chứng lưu thành công **2 lần liên tiếp** (`200 OK`).
